@@ -1,0 +1,40 @@
+E:\مشروع التخرج\Graduation Project\Graduation Project\bin\Debug\net5.0\appsettings.Development.json
+E:\مشروع التخرج\Graduation Project\Graduation Project\bin\Debug\net5.0\appsettings.json
+E:\مشروع التخرج\Graduation Project\Graduation Project\bin\Debug\net5.0\Graduation Project.exe
+E:\مشروع التخرج\Graduation Project\Graduation Project\bin\Debug\net5.0\Graduation Project.deps.json
+E:\مشروع التخرج\Graduation Project\Graduation Project\bin\Debug\net5.0\Graduation Project.runtimeconfig.json
+E:\مشروع التخرج\Graduation Project\Graduation Project\bin\Debug\net5.0\Graduation Project.runtimeconfig.dev.json
+E:\مشروع التخرج\Graduation Project\Graduation Project\bin\Debug\net5.0\Graduation Project.dll
+E:\مشروع التخرج\Graduation Project\Graduation Project\bin\Debug\net5.0\ref\Graduation Project.dll
+E:\مشروع التخرج\Graduation Project\Graduation Project\bin\Debug\net5.0\Graduation Project.pdb
+E:\مشروع التخرج\Graduation Project\Graduation Project\bin\Debug\net5.0\Graduation Project.Views.dll
+E:\مشروع التخرج\Graduation Project\Graduation Project\bin\Debug\net5.0\Graduation Project.Views.pdb
+E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\Graduation Project.csprojAssemblyReference.cache
+E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\Graduation Project.GeneratedMSBuildEditorConfig.editorconfig
+E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\Graduation Project.AssemblyInfoInputs.cache
+E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\Graduation Project.AssemblyInfo.cs
+E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\Graduation Project.csproj.CoreCompileInputs.cache
+E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\Graduation Project.MvcApplicationPartsAssemblyInfo.cache
+E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\Graduation Project.RazorAssemblyInfo.cache
+E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\Graduation Project.RazorAssemblyInfo.cs
+E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\staticwebassets\Graduation Project.StaticWebAssets.Manifest.cache
+E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\staticwebassets\Graduation Project.StaticWebAssets.xml
+E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\scopedcss\bundle\Graduation Project.styles.css
+E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\Graduation Project.TagHelpers.input.cache
+E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\Graduation Project.TagHelpers.output.cache
+E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\Graduation Project.RazorCoreGenerate.cache
+E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
+E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\Razor\Views\Home\Privacy.cshtml.g.cs
+E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\Razor\Views\Shared\Error.cshtml.g.cs
+E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\Razor\Views\Shared\_Layout.cshtml.g.cs
+E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
+E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\Razor\Views\_ViewImports.cshtml.g.cs
+E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\Razor\Views\_ViewStart.cshtml.g.cs
+E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\Graduation Project.RazorTargetAssemblyInfo.cache
+E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\Graduation Project.RazorTargetAssemblyInfo.cs
+E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\Graduation Project.Views.pdb
+E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\Graduation Project.dll
+E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\ref\Graduation Project.dll
+E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\Graduation Project.pdb
+E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\Graduation Project.genruntimeconfig.cache
+E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\Graduation Project.csproj.CopyComplete
