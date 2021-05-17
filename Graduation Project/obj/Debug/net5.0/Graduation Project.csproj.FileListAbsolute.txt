@@ -38,3 +38,43 @@ E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.
 E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\Graduation Project.pdb
 E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\Graduation Project.genruntimeconfig.cache
 E:\مشروع التخرج\Graduation Project\Graduation Project\obj\Debug\net5.0\Graduation Project.csproj.CopyComplete
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\bin\Debug\net5.0\appsettings.Development.json
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\bin\Debug\net5.0\appsettings.json
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\bin\Debug\net5.0\Graduation Project.exe
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\bin\Debug\net5.0\Graduation Project.deps.json
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\bin\Debug\net5.0\Graduation Project.runtimeconfig.json
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\bin\Debug\net5.0\Graduation Project.runtimeconfig.dev.json
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\bin\Debug\net5.0\Graduation Project.dll
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\bin\Debug\net5.0\ref\Graduation Project.dll
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\bin\Debug\net5.0\Graduation Project.pdb
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\bin\Debug\net5.0\Graduation Project.Views.dll
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\bin\Debug\net5.0\Graduation Project.Views.pdb
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Graduation Project.csprojAssemblyReference.cache
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Graduation Project.GeneratedMSBuildEditorConfig.editorconfig
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Graduation Project.AssemblyInfoInputs.cache
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Graduation Project.AssemblyInfo.cs
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Graduation Project.csproj.CoreCompileInputs.cache
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Graduation Project.MvcApplicationPartsAssemblyInfo.cache
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Graduation Project.RazorAssemblyInfo.cache
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Graduation Project.RazorAssemblyInfo.cs
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\staticwebassets\Graduation Project.StaticWebAssets.Manifest.cache
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\staticwebassets\Graduation Project.StaticWebAssets.xml
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\scopedcss\bundle\Graduation Project.styles.css
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Graduation Project.TagHelpers.input.cache
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Graduation Project.TagHelpers.output.cache
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Graduation Project.RazorCoreGenerate.cache
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Razor\Views\Home\Privacy.cshtml.g.cs
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Razor\Views\Shared\Error.cshtml.g.cs
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Razor\Views\Shared\_Layout.cshtml.g.cs
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Razor\Views\_ViewImports.cshtml.g.cs
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Razor\Views\_ViewStart.cshtml.g.cs
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Graduation Project.RazorTargetAssemblyInfo.cache
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Graduation Project.RazorTargetAssemblyInfo.cs
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Graduation Project.Views.pdb
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Graduation Project.dll
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\ref\Graduation Project.dll
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Graduation Project.pdb
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Graduation Project.genruntimeconfig.cache
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Graduation Project.csproj.CopyComplete
