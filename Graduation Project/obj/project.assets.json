@@ -8,19 +8,19 @@
     "net5.0": []
   },
   "packageFolders": {
-    "C:\\Users\\ncm\\.nuget\\packages\\": {}
+    "C:\\Users\\Mohamed\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\مشروع التخرج\\Graduation Project\\Graduation Project\\Graduation Project.csproj",
+      "projectUniqueName": "D:\\MyWork\\GitHub\\Graduation-Project\\Graduation Project\\Graduation Project.csproj",
       "projectName": "Graduation Project",
-      "projectPath": "E:\\مشروع التخرج\\Graduation Project\\Graduation Project\\Graduation Project.csproj",
-      "packagesPath": "C:\\Users\\ncm\\.nuget\\packages\\",
-      "outputPath": "E:\\مشروع التخرج\\Graduation Project\\Graduation Project\\obj\\",
+      "projectPath": "D:\\MyWork\\GitHub\\Graduation-Project\\Graduation Project\\Graduation Project.csproj",
+      "packagesPath": "C:\\Users\\Mohamed\\.nuget\\packages\\",
+      "outputPath": "D:\\MyWork\\GitHub\\Graduation-Project\\Graduation Project\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\ncm\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Mohamed\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -63,7 +63,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
       }
     }
   }
