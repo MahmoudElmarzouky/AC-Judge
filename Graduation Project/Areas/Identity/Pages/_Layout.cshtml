@@ -1,0 +1,8 @@
+﻿@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+<h1 class="text-center">
+    <span class="selected" data-class="user-signin">Sign In</span> | <span data-class="user-signup">Sign Up</span>
+</h1>
+@RenderBody()
+@await RenderSectionAsync("Scripts", required: false)

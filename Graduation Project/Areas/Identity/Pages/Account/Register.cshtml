@@ -1,0 +1,70 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<section class="user-sign-in-up">
+    <div class="layout">
+        <div class="container">
+            
+            
+            <form asp-route-returnUrl="@Model.ReturnUrl" role="form" class="row user-signup" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="col-md-6">
+                    
+                    <div class="form-group">
+                        
+                        <input asp-for="Input.UserName" class="form-control input-lg bg-fill" />
+                        <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        
+                        <input asp-for="Input.Email" class="form-control input-lg bg-fill" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        
+                        <input asp-for="Input.Password" class="form-control input-lg bg-fill" />
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>                    
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        
+                        <input asp-for="Input.FullName" class="form-control input-lg bg-fill" />
+                        <span asp-validation-for="Input.FullName" class="text-danger"></span>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-xs-6">
+                            <select class="form-control input-lg bg-fill" name="birthyear">
+                                <option value="0">Birth Year</option>
+                                @{
+                                    for (int year = 2005; year >= 1990; year--)
+                                    {
+                                        <option value="@year">@year</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-xs-6">
+                            <select class="form-control input-lg bg-fill" name="contry">
+                                <option value="0">Contry</option>
+                                <option value="egypt">Egypt</option>
+                                <option value="Palestine">Palestine</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">Register</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
