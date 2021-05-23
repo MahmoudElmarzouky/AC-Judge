@@ -45,6 +45,7 @@ namespace Graduation_Project
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseAuthentication(); 
             app.UseMvc(route => {
                 route.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
