@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using System.Globalization;
+
 
 namespace Graduation_Project.Areas.Identity.Pages.Account
 {
@@ -24,7 +26,7 @@ namespace Graduation_Project.Areas.Identity.Pages.Account
         private readonly UserManager<User> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-
+        public List<string> Countries { get; set; }
         public RegisterModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
@@ -35,6 +37,25 @@ namespace Graduation_Project.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            AddCountries();
+
+        }
+        void AddCountries()
+        {
+            Countries = new List<string>();
+            CultureInfo[] cultureInfos = CultureInfo.GetCultures(CultureTypes.SpecificCultures);
+            foreach (CultureInfo cultureInfo in cultureInfos)
+            {
+                RegionInfo regionInfo = new(cultureInfo.LCID);
+                if (!Countries.Contains(regionInfo.EnglishName))
+                {
+                    Countries.Add(regionInfo.EnglishName);
+                }
+            }
+            Countries.Remove("Israel");
+            Countries.Add("Palastine");
+            Countries.Sort();
+
         }
 
         [BindProperty]
@@ -46,6 +67,9 @@ namespace Graduation_Project.Areas.Identity.Pages.Account
 
         public class InputModel
         {
+           
+
+            
             [Required]
             [Display(Prompt = "UserName")]
             public string UserName { get; set; }

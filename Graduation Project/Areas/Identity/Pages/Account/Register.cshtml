@@ -46,8 +46,12 @@
                         <div class="col-xs-6">
                             <select class="form-control input-lg bg-fill" name="@Html.NameFor(model=>model.Input.Country)">
                                 <option value="0">Contry</option>
-                                <option value="egypt">Egypt</option>
-                                <option value="Palestine">Palestine</option>
+                                @{
+                                    foreach (string country in Model.Countries)
+                                    {
+                                        <option value="@country">@country</option>
+                                    }
+                                }
                             </select>
                             <span asp-validation-for="Input.Country" class="text-danger"></span>
                         </div>
