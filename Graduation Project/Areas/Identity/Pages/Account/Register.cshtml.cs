@@ -79,12 +79,12 @@ namespace Graduation_Project.Areas.Identity.Pages.Account
             [Display(Prompt = "Email")]
             public string Email { get; set; }
 
-
-            [Required]
+            [Range(1, 9999, ErrorMessage = "You must Set Your Birth Date")]
             [Display(Prompt = "BirthDate")]
             public int BirthDate { get; set; }
-            [Required]
-            [Display(Prompt = "BirthDate")]
+            
+            [Required(ErrorMessage = "You must Select A Country")]
+            [Display(Prompt = "Country")]
             public string Country { get; set; }
 
 
@@ -138,6 +138,7 @@ namespace Graduation_Project.Areas.Identity.Pages.Account
                 }
                 foreach (var error in result.Errors)
                 {
+
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }

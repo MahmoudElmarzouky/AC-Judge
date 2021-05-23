@@ -5,34 +5,36 @@
     ViewData["Title"] = "Register";
 }
 
-            
+<section class="user-sign-in-up">
+    <div class="layout">
+        <div class="container">
             <form asp-route-returnUrl="@Model.ReturnUrl" role="form" class="row user-signup" method="post">
-                
+
                 <div class="col-md-6">
-                    
+
                     <div class="form-group">
-                        
+
                         <input asp-for="Input.UserName" class="form-control input-lg bg-fill" />
                         <span asp-validation-for="Input.UserName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        
+
                         <input asp-for="Input.Email" class="form-control input-lg bg-fill" />
                         <span asp-validation-for="Input.Email" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        
+
                         <input asp-for="Input.Password" class="form-control input-lg bg-fill" />
                         <span asp-validation-for="Input.Password" class="text-danger"></span>
-                    </div>                    
+                    </div>
                 </div>
                 <div class="col-md-6">
-                    
+
                     <div class="row form-group">
                         <div class="col-xs-6">
                             <select class="form-control input-lg bg-fill" name="@Html.NameFor(model=>model.Input.BirthDate)">
-                                <option value="0">Birth Year</option>
-                                
+                                <option value="0">Birth Date</option>
+
                                 @{
                                     int startYear = DateTime.Now.Year;
                                     for (int year = startYear - 10; year >= startYear - 100; year--)
@@ -45,7 +47,7 @@
                         </div>
                         <div class="col-xs-6">
                             <select class="form-control input-lg bg-fill" name="@Html.NameFor(model=>model.Input.Country)">
-                                <option value="0">Contry</option>
+                                <option value="">Contry</option>
                                 @{
                                     foreach (string country in Model.Countries)
                                     {
@@ -61,8 +63,11 @@
                     </div>
                 </div>
             </form>
-        
+
             <div asp-validation-summary="All" class="alert alert-danger"></div>
+        </div>
+    </div>
+</section>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
