@@ -44,9 +44,8 @@ namespace Graduation_Project.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [EmailAddress]
-            [Display(Prompt = "Email")]
-            public string Email { get; set; }
+            [Display(Prompt = "UserName")]
+            public string UserName { get; set; }
           
             [Required]
             [Display(Prompt = "Password")]
@@ -84,18 +83,12 @@ namespace Graduation_Project.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    try
-                    {
-                        _logger.LogInformation("User logged in.");
-                        return LocalRedirect(returnUrl);
-                    }
-                    catch(Exception e)
-                    {
-
-                    }
+                     _logger.LogInformation("User logged in.");
+                     return LocalRedirect(returnUrl);
+                   
                 }
                 if (result.RequiresTwoFactor)
                 {
