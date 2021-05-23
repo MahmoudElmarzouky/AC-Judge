@@ -1,16 +1,10 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using Graduation_Project.Areas.Identity.Data
-
-@inject SignInManager<User> SignInManager
-@inject UserManager<User> UserManager
-@{ 
-    
-    if (SignInManager.IsSignedIn(User))
+﻿@{
+    if (ViewContext.RouteData.Values.ContainsKey("Controller"))
     {
-    <footer class="border-top">
-        <div class="copyright text-center">
-            copyright &copy; 2021 | <span>AC</span> <span>Judge</span>
-        </div>
-    </footer>
+        <footer class="border-top">
+            <div class="copyright text-center">
+                copyright &copy; 2021 | <span>AC</span> <span>Judge</span>
+            </div>
+        </footer>
     }
 }
