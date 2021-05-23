@@ -19,8 +19,8 @@ namespace Graduation_Project.Areas.Identity
                 services.AddDbContext<UserAccountsContext>(options =>
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("UserAccountsContextConnection")));
-
-                services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+                // must Confirm the Email -> set RequireConfirmedAccount = true 
+                services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
                     .AddEntityFrameworkStores<UserAccountsContext>();
             });
         }

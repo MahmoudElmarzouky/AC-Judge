@@ -1,13 +1,10 @@
 ﻿@page
 @model RegisterModel
 @{
+    Layout = "~/Areas/Identity/Pages/_Layout.cshtml";
     ViewData["Title"] = "Register";
 }
 
-<section class="user-sign-in-up">
-    <div class="layout">
-        <div class="container">
-            
             
             <form asp-route-returnUrl="@Model.ReturnUrl" role="form" class="row user-signup" method="post">
                 <div asp-validation-summary="All" class="text-danger"></div>
@@ -32,12 +29,12 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         
-                        <input asp-for="Input.FullName" class="form-control input-lg bg-fill" />
+                        <input asp-for="Input.FullName" class="form-control input-lg bg-fill"/>
                         <span asp-validation-for="Input.FullName" class="text-danger"></span>
                     </div>
                     <div class="row form-group">
                         <div class="col-xs-6">
-                            <select class="form-control input-lg bg-fill" name="birthyear">
+                            <select class="form-control input-lg bg-fill" name="@Html.NameFor(model=>model.Input.BirthDate)">
                                 <option value="0">Birth Year</option>
                                 @{
                                     for (int year = 2005; year >= 1990; year--)
@@ -46,13 +43,15 @@
                                     }
                                 }
                             </select>
+                            <span asp-validation-for="Input.BirthDate" class="text-danger"></span>
                         </div>
                         <div class="col-xs-6">
-                            <select class="form-control input-lg bg-fill" name="contry">
+                            <select class="form-control input-lg bg-fill" name="@Html.NameFor(model=>model.Input.Country)">
                                 <option value="0">Contry</option>
                                 <option value="egypt">Egypt</option>
                                 <option value="Palestine">Palestine</option>
                             </select>
+                            <span asp-validation-for="Input.Country" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -60,9 +59,7 @@
                     </div>
                 </div>
             </form>
-        </div>
-    </div>
-</section>
+        
 
 
 @section Scripts {

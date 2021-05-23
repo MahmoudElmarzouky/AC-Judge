@@ -49,7 +49,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand hvr-wobble-horizontal" href="#">
-                        <img alt="Logo" src="img/twitter.png" class="img-circle">
+                        <img alt="Logo" src="~/img/twitter.png" class="img-circle">
                         <span>Judge</span>
                     </a>
                 </div>
@@ -74,12 +74,8 @@
         @RenderBody()
     </main>
 
-    <footer class="border-top">
-        <div class="copyright text-center">
-            copyright &copy; 2021 | <span>AC</span> <span>Judge</span>
-        </div>
-
-    </footer>
+    <partial name="_footer" />
+    
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

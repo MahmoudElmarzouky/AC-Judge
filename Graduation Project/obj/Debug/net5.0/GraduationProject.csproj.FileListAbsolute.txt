@@ -162,3 +162,4 @@ D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Razor\Ar
 D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Razor\Areas\Identity\Pages\_ViewStart.cshtml.g.cs
 D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Razor\Views\Shared\_LoginPartial.cshtml.g.cs
 D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Razor\Areas\Identity\Pages\_Layout.cshtml.g.cs
+D:\MyWork\GitHub\Graduation-Project\Graduation Project\obj\Debug\net5.0\Razor\Views\Shared\_footer.cshtml.g.cs
