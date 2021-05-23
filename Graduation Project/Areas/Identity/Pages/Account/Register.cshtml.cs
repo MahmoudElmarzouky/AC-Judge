@@ -79,9 +79,6 @@ namespace Graduation_Project.Areas.Identity.Pages.Account
             [Display(Prompt = "Email")]
             public string Email { get; set; }
 
-            [Required]
-            [Display(Prompt = "FullName")]
-            public string FullName { get; set; }
 
             [Required]
             [Display(Prompt = "BirthDate")]
