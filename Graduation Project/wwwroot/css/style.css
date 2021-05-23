@@ -1,0 +1,118 @@
+
+/* Start Main Rules */
+
+body{
+    background-color:#FBFBFB !important;
+    background-color:#FFF !important;
+}
+
+/*
+mark{
+    color:#8C8C8C;
+    color:#1abc9c
+}
+
+*/
+/* End Main Rules */
+
+/* Start Tags Edit */
+
+
+/* End Tags Edit */
+
+
+/* Start Header */
+
+header .navbar{
+    margin-bottom: 0;
+}
+
+header .nav-upper{
+    border-radius: 0;
+}
+header .nav-upper .nav-sign-in-up a{
+    min-width: 100px;
+}
+header .nav-upper .nav-sign-in-up a > i{
+    margin-right: 0.5rem;
+    font-weight: bold;
+}
+
+header .nav-main .navbar-nav > li > a{
+    color: #BBB;
+    outline: none;
+}
+header .nav-main .navbar-brand{
+    color: #BBB;
+    font-size: 3rem;
+    display: flex;
+    align-items: center;
+}
+header .nav-main .navbar-brand img{
+    width: 40px;
+    height: 40px;
+}
+header .nav-main .navbar-brand span{
+    color: #e60024;
+    margin-left: 5px;
+}
+@media (min-width: 768px) and (max-width: 991.98px) {
+    header .nav-main .navbar-collapse{
+        padding-right: 7px;
+        padding-left: 7px;
+    }
+    header .nav-main .navbar-nav > li > a{
+        padding: 15px 13px;
+    }
+}
+
+/* End Header  */
+/* Start User Sign In - Sign Up */
+
+.user-signin,
+.user-signup{
+    padding-top: 3rem;
+    padding-bottom: 5rem;
+}
+.user-signin h1,
+.user-signup h1{
+    font-size: 4.1rem;
+    margin-bottom: 6rem;
+}
+.user-signin form,
+.user-signup form{
+    margin-bottom: 5rem;
+}
+.user-signin .form-group .form-control:focus {
+  border-color: #67b168;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #67b168;
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #67b168;
+    
+}
+
+.user-signin .alert,
+.user-signup .alert{
+    display:none;
+}
+
+/* End User Sign In - Sign Up */
+/* Start Footer */
+
+footer .copyright{
+    text-transform: capitalize;
+    background: #333;
+    color: #AAA;
+    padding: 1.5rem 0;
+    font-size: 1.5rem;
+}
+
+footer .copyright span:first-child{
+    color: #FFF;
+    font-size: 1.6rem;
+}
+footer .copyright span:last-child{
+    color: #e60024;
+    font-size: 1.6rem;
+}
+
+/* End Footer  */
