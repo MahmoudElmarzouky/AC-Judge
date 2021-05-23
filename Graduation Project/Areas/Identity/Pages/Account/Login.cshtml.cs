@@ -45,9 +45,11 @@ namespace Graduation_Project.Areas.Identity.Pages.Account
         {
             [Required]
             [EmailAddress]
+            [Display(Prompt = "Email")]
             public string Email { get; set; }
           
             [Required]
+            [Display(Prompt = "Password")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
