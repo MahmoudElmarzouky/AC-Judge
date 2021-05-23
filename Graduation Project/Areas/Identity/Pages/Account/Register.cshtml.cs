@@ -77,6 +77,7 @@ namespace Graduation_Project.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -87,7 +88,7 @@ namespace Graduation_Project.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = Input.Email, Email = Input.Email, FullName = Input.FullName, Country = Input.Country, BirthDate = Input.BirthDate};
+                var user = new User { UserName = Input.Email, Email = Input.Email, Country = Input.Country, BirthDate = Input.BirthDate};
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

@@ -12,9 +12,6 @@ namespace Graduation_Project.Areas.Identity.Data
     {
 
         [PersonalData]
-        [Column(TypeName ="nvarchar(100)")]
-        public string FullName { get; set; }
-        [PersonalData]
         public int BirthDate { get; set; }
         [PersonalData]
         public string Country { get; set; }

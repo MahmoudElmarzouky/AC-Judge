@@ -7,7 +7,7 @@
 
             
             <form asp-route-returnUrl="@Model.ReturnUrl" role="form" class="row user-signup" method="post">
-                <div asp-validation-summary="All" class="text-danger"></div>
+                
                 <div class="col-md-6">
                     
                     <div class="form-group">
@@ -27,17 +27,15 @@
                     </div>                    
                 </div>
                 <div class="col-md-6">
-                    <div class="form-group">
-                        
-                        <input asp-for="Input.FullName" class="form-control input-lg bg-fill"/>
-                        <span asp-validation-for="Input.FullName" class="text-danger"></span>
-                    </div>
+                    
                     <div class="row form-group">
                         <div class="col-xs-6">
                             <select class="form-control input-lg bg-fill" name="@Html.NameFor(model=>model.Input.BirthDate)">
                                 <option value="0">Birth Year</option>
+                                
                                 @{
-                                    for (int year = 2005; year >= 1990; year--)
+                                    int startYear = DateTime.Now.Year;
+                                    for (int year = startYear - 10; year >= startYear - 100; year--)
                                     {
                                         <option value="@year">@year</option>
                                     }
@@ -60,7 +58,7 @@
                 </div>
             </form>
         
-
+            <div asp-validation-summary="All" class="text-danger"></div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

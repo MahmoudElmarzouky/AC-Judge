@@ -32,10 +32,8 @@
                 <div class="navbar-header">
                     <a class="navbar-brand" href="#">Welcome</a>
                 </div>
-
-                <div class="navbar-form navbar-right text-center nav-log-in-up">
-                    <partial name="_LoginPartial" />
-                </div>
+                <partial name="_LoginPartial" />
+               
             </div>
         </nav>
         <nav class="navbar navbar-inverse nav-main">
@@ -70,7 +68,7 @@
             </div>
         </nav>
     </header>
-    <main role="main" class="pb-3">
+    <main role="main">
         @RenderBody()
     </main>
 
