@@ -23,21 +23,11 @@
                 </div>
             </div>
         </form>
-	<!--
-        <div id="user-error-msg" class="col-sm-4 col-md-offset-8 alert alert-danger fade in">
-            <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <span asp-validation-for="Input.UserName"></span>
-        </div>
-        <div id="user-error-msg" class="col-sm-4 col-md-offset-8 alert alert-danger fade in">
-            <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <span asp-validation-for="Input.Password"></span>
-        </div>
-	-->
 	@foreach (var modeleState in ViewData.ModelState.Values){
 	    foreach (var error in modeleState.Errors){
 		<div id="user-error-msg" class="col-sm-4 col-md-offset-8 alert alert-danger fade in">
 		    <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-		    <span asp-validation-for="Input.UserName">@error.ErrorMessage</span>
+		    <span>@error.ErrorMessage</span>
 		</div>
 	    }
 	}
