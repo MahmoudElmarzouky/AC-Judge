@@ -101,7 +101,7 @@ namespace Graduation_Project.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError("LogInError", "Invalid login attempt.");
                     return Page();
                 }
             }
