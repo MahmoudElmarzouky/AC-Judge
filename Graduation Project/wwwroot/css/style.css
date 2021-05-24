@@ -2,7 +2,6 @@
 /* Start Main Rules */
 
 body{
-    background-color:#FBFBFB !important;
     background-color:#FFF !important;
 }
 
@@ -30,12 +29,14 @@ header .navbar{
 header .nav-upper{
     border-radius: 0;
 }
-header .nav-upper .nav-sign-in-up a{
+header .nav-upper .navbar-form button,
+header .nav-upper .navbar-form a{
     min-width: 100px;
 }
-header .nav-upper .nav-sign-in-up a > i{
+header .nav-upper .navbar-form i{
     margin-right: 0.5rem;
-    font-weight: bold;
+    font-size: 17px;
+    vertical-align: middle;
 }
 
 header .nav-main .navbar-nav > li > a{
