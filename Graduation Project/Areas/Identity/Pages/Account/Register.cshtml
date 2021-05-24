@@ -51,25 +51,25 @@
             </div>
         </form>
         
+		<div id="user-error-msg" class="col-sm-4 col-md-offset-8 alert alert-danger fade in">
+			<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<span asp-validation-for="Input.UserName"></span>
+		</div>
         <div id="user-error-msg" class="col-sm-4 col-md-offset-8 alert alert-danger fade in">
-            <span asp-validation-for="Input.UserName"></span>
-            <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        </div>
-        <div id="user-error-msg" class="col-sm-4 col-md-offset-8 alert alert-danger fade in">
+			<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <span asp-validation-for="Input.Password"></span>
-            <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
         </div>
+		<div id="user-error-msg" class="col-sm-4 col-md-offset-8 alert alert-danger fade in">
+			<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<span asp-validation-for="Input.Email"></span>
+		</div>
+		<div id="user-error-msg" class="col-sm-4 col-md-offset-8 alert alert-danger fade in">
+			<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<span asp-validation-for="Input.BirthDate"></span>
+		</div>
         <div id="user-error-msg" class="col-sm-4 col-md-offset-8 alert alert-danger fade in">
-            <span asp-validation-for="Input.Email"></span>
-            <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        </div>
-        <div id="user-error-msg" class="col-sm-4 col-md-offset-8 alert alert-danger fade in">
-            <span asp-validation-for="Input.BirthDate"></span>
-            <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        </div>
-        <div id="user-error-msg" class="col-sm-4 col-md-offset-8 alert alert-danger fade in">
+			<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <span asp-validation-for="Input.Country"></span>
-            <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
         </div>
     </div>
 </section>
