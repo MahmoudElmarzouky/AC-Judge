@@ -23,7 +23,7 @@
                 </div>
             </div>
         </form>
-
+	<!--
         <div id="user-error-msg" class="col-sm-4 col-md-offset-8 alert alert-danger fade in">
             <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <span asp-validation-for="Input.UserName"></span>
@@ -32,17 +32,15 @@
             <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <span asp-validation-for="Input.Password"></span>
         </div>
-        <div class="col-sm-4 col-md-offset-8 alert alert-danger fade in">
-            @foreach (var modeleState in ViewData.ModelState.Values)
-            {
-                foreach (var error in modeleState.Errors)
-                {
-                    @error.ErrorMessage
-                }
-            }
-            <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        </div>
-
+	-->
+	@foreach (var modeleState in ViewData.ModelState.Values){
+	    foreach (var error in modeleState.Errors){
+		<div class="col-sm-4 col-md-offset-8 alert alert-danger fade in">
+		    <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		    <span asp-validation-for="Input.UserName">@error.ErrorMessage</span>
+		</div>
+	    }
+	}
     </div>
 </section>
 
