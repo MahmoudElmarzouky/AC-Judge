@@ -3,6 +3,7 @@
 
 body{
     background-color:#FBFBFB !important;
+    background-color:#FFF !important;
 }
 
 /*
@@ -29,10 +30,10 @@ header .navbar{
 header .nav-upper{
     border-radius: 0;
 }
-header .nav-upper .nav-log-in-up button{
+header .nav-upper .nav-sign-in-up a{
     min-width: 100px;
 }
-header .nav-upper .nav-log-in-up button > i{
+header .nav-upper .nav-sign-in-up a > i{
     margin-right: 0.5rem;
     font-weight: bold;
 }
@@ -67,38 +68,32 @@ header .nav-main .navbar-brand span{
 
 /* End Header  */
 /* Start User Sign In - Sign Up */
-.user-sign-in-up{
-    background: url('../img/back user sign in-sign up.jpg') no-repeat center center fixed;
-    background-size: cover;
-   
-}
-.user-sign-in-up .layout{  
-    background-color: rgba(9,9,9,0.8);
-    color: #DDD;
+
+.user-signin,
+.user-signup{
     padding-top: 3rem;
     padding-bottom: 5rem;
-    min-height: 100%;
 }
-.user-sign-in-up h1{
+.user-signin h1,
+.user-signup h1{
     font-size: 4.1rem;
     margin-bottom: 6rem;
-    color: #7D7D7D;
 }
-.user-sign-in-up h1 span{
-    cursor: pointer;
+.user-signin form,
+.user-signup form{
+    margin-bottom: 5rem;
 }
-.user-sign-in-up [data-class="user-signin"].selected{
-    color: #5cb85c;
-}
-.user-sign-in-up [data-class="user-signup"].selected{
-    color: #337ab7;
-}
-.user-sign-in-up .bg-fill{
-    background: rgba(82,78,78,0.5);
-    color: #FFF;
-    border: 1px solid rgba(82,78,78,0.7);
+.user-signin .form-group .form-control:focus {
+  border-color: #67b168;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #67b168;
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #67b168;
+    
 }
 
+.user-signin .alert,
+.user-signup .alert{
+    display:none;
+}
 
 /* End User Sign In - Sign Up */
 /* Start Footer */

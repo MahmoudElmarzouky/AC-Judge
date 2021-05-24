@@ -3,50 +3,35 @@
 
 @{
     Layout = "~/Areas/Identity/Pages/_Layout.cshtml";
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "Sign In";
 }
-<section class="user-sign-in-up">
-    <div class="layout">
-        <div class="container">
-            <form role="form" class="row user-signin" action="" method="POST">
-                <div asp-validation-summary="All" class="text-danger"></div>
-                <div class="col-md-6 col-md-offset-3">
-                    <div class="form-group has-success">
-                        <div class="form-group">
-                            <input asp-for="Input.UserName" class="form-control input-lg bg-fill" autocomplete="off" />
-                            <span asp-validation-for="Input.UserName" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="form-group has-success">
-                        <div class="form-group">
-
-                            <input asp-for="Input.Password" class="form-control input-lg bg-fill" autocomplete="new-password" />
-                            <span asp-validation-for="Input.Password" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="form-group has-success">
-                        <div class="form-group">
-                            <div class="checkbox">
-                                <label asp-for="Input.RememberMe">
-                                    <input asp-for="Input.RememberMe" />
-                                    @Html.DisplayNameFor(m => m.Input.RememberMe)
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-success btn-lg btn-block">Log in</button>
-                    </div>
-                </div>
-                <!--
+<section class="user-signin">
+    <div class="container">
+        <h1 class="text-success text-center">Sign In</h1>
+        
+        <form role="form" class="row" action="" method="POST">
+            <div class="col-md-6 col-md-offset-3">
                 <div class="form-group">
-                    <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                    </p>
-
+                    <input asp-for="Input.UserName" class="form-control input-lg" autocomplete="off" />
                 </div>
-                    -->
-            </form>
+                <div class="form-group">
+                    <input asp-for="Input.Password" class="form-control input-lg" autocomplete="new-password" />
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-lg btn-block">Sign in</button>
+                </div>
+                <div class="text-center">
+		    <a class="text-success" id="forgot-password" asp-page="./ForgotPassword">Forgot password?</a>
+		</div>
+            </div>
+        </form>
+        <div id="user-error-msg" class="col-sm-4 col-md-offset-8 alert alert-danger fade in">
+            <span asp-validation-for="Input.UserName"></span>
+            <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        </div>
+        <div id="user-error-msg" class="col-sm-4 col-md-offset-8 alert alert-danger fade in">
+            <span asp-validation-for="Input.Password"></span>
+            <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
         </div>
     </div>
 </section>
