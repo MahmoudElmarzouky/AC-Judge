@@ -1,5 +1,15 @@
 ﻿@{
-    if (ViewContext.RouteData.Values.ContainsKey("Controller"))
+    bool displayFooter = true;
+    string[] notAllowedArray = { "/Account/Login", "/Account/Register" };
+    if (ViewContext.RouteData.Values.ContainsKey("page"))
+    {
+        foreach(string notAllowed in notAllowedArray)
+        {
+            if (ViewContext.RouteData.Values["page"].ToString().Equals(notAllowed))
+                displayFooter = false;
+        }
+    }
+    if (displayFooter)
     {
         <footer class="border-top">
             <div class="copyright text-center">
