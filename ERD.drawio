@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-05-26T21:41:17.812Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36" etag="og4vKbx--oyTAVY3fDDz" version="14.7.1" type="github">
+<mxfile host="app.diagrams.net" modified="2021-05-26T21:44:49.841Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36" etag="98HRS7tnGpqCi7RMd8v9" version="14.7.1" type="github">
   <diagram id="R2lEEEUBdFMjLlhIrx00" name="Page-1">
     <mxGraphModel dx="868" dy="482" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0" extFonts="Permanent Marker^https://fonts.googleapis.com/css?family=Permanent+Marker">
       <root>
@@ -742,8 +742,8 @@
             <mxPoint x="290" y="500" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="vDHl1VpqjvXefagCTIHJ-1" value="we will create a group, and every contest or/and blog inside this group will be public&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry y="420" width="170" height="100" as="geometry" />
+        <mxCell id="vDHl1VpqjvXefagCTIHJ-1" value="we will create a group public any one can access this group , and every contest or/and blog inside this group will be public&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry y="420" width="190" height="100" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
