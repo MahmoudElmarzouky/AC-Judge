@@ -4,6 +4,9 @@
 body{
     background-color:#FFF !important;
 }
+i[data-favorite='IconFav'].active{
+    color: red !important;
+}
 
 /*
 mark{
@@ -93,6 +96,81 @@ header .nav-main .navbar-brand span{
 
 
 /* End User Sign In - Sign Up */
+/* Start Contest Page */
+
+
+/* End Contest Page */
+/* Start Group Page */
+.group-page{
+    margin-bottom: 20px;
+}
+.group-page .nav{
+    font-size: 1.55rem;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+@media (min-width: 768px) {
+    .group-page .nav .creat-group{
+        float: right !important;
+    }
+    .group-page .nav .creat-group a{
+        color: white;
+        background-color: #34495e;
+        margin-right: 0;
+    }
+    .group-page .nav .creat-group a:hover,
+    .group-page .nav .creat-group a:focus{
+        background-color: #415b76;
+        border-color: #415b76;
+    }    
+}
+
+.group-page .groups .panel .panel-heading{
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.group-page .groups .panel .panel-heading i{
+    color: #868686;
+    cursor: pointer;
+}
+.group-page .groups .panel .panel-heading a{
+    text-decoration: none;
+}
+.group-page .groups .panel .panel-body{
+    height: 90px;
+    max-height: 90px;
+}
+.group-page .groups .panel .panel-footer{
+    overflow-y: hidden;
+    border: 0;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+.group-page .groups .panel .panel-footer .footer-cell{
+    margin: 0;
+    padding: 0;
+}
+
+.group-page .groups .panel .panel-footer .breadcrumb{
+    background-color: transparent;
+}
+
+.group-page .groups .panel .breadcrumb > li + li::before{
+    padding: 0 1px;
+}
+.group-page .groups .panel .breadcrumb > li{
+    color: red;
+}
+.group-page .groups .panel .breadcrumb > li:first-child{
+    color: blue;
+}
+.group-page .groups .panel .breadcrumb > li:last-child{
+    color: green;
+}
+/* End Group Page */
 /* Start Footer */
 
 footer .copyright{
