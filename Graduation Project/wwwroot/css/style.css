@@ -153,11 +153,9 @@ header .nav-main .navbar-brand span{
     margin: 0;
     padding: 0;
 }
-
 .group-page .groups .panel .panel-footer .breadcrumb{
     background-color: transparent;
 }
-
 .group-page .groups .panel .breadcrumb > li + li::before{
     padding: 0 1px;
 }
@@ -169,6 +167,10 @@ header .nav-main .navbar-brand span{
 }
 .group-page .groups .panel .breadcrumb > li:last-child{
     color: green;
+}
+.group-page ul.pagination > li > a{
+    background-color: #EEE;
+    margin-top: 10px;
 }
 /* End Group Page */
 /* Start Footer */
