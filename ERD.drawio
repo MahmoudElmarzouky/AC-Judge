@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-05-28T21:27:28.678Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36" etag="DuS3rZjViRHAdcinFo6N" version="14.7.2" type="github">
+<mxfile host="app.diagrams.net" modified="2021-05-28T21:29:28.768Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36" etag="vaBDIly96gNOobuFzPAk" version="14.7.2" type="github">
   <diagram id="R2lEEEUBdFMjLlhIrx00" name="Page-1">
     <mxGraphModel dx="936" dy="383" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0" extFonts="Permanent Marker^https://fonts.googleapis.com/css?family=Permanent+Marker">
       <root>
@@ -867,6 +867,9 @@
             <mxPoint x="610" y="380" as="sourcePoint" />
             <mxPoint x="690" y="480" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="ULFnhbuvsSrbT7CC2HBb-4" value="&lt;span style=&quot;text-align: left&quot;&gt;blogVisibility&lt;br&gt;public:for all&lt;br&gt;protected: for group&lt;br&gt;private : only me&lt;br&gt;&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry y="440" width="120" height="100" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
