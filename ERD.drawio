@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-05-28T21:50:25.204Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36" etag="cVUhw942Ajhn1yQ7W13f" version="14.7.2" type="github">
+<mxfile host="app.diagrams.net" modified="2021-05-28T21:51:21.730Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36" etag="dpR6_mUgKIGM79YU13Y1" version="14.7.2" type="github">
   <diagram id="R2lEEEUBdFMjLlhIrx00" name="Page-1">
     <mxGraphModel dx="936" dy="1483" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0" extFonts="Permanent Marker^https://fonts.googleapis.com/css?family=Permanent+Marker">
       <root>
@@ -962,6 +962,15 @@
           <mxGeometry width="100" height="100" relative="1" as="geometry">
             <mxPoint x="300" y="540" as="sourcePoint" />
             <mxPoint x="400" y="440" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ULFnhbuvsSrbT7CC2HBb-67" value="commentVote" style="whiteSpace=wrap;html=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="600" y="-80" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ULFnhbuvsSrbT7CC2HBb-68" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERoneToMany;" edge="1" parent="1" source="n1Sh8XkkBuxxroc1WlhV-103" target="ULFnhbuvsSrbT7CC2HBb-67">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="280" y="120" as="sourcePoint" />
+            <mxPoint x="380" y="20" as="targetPoint" />
           </mxGeometry>
         </mxCell>
       </root>
