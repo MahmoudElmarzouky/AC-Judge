@@ -15,3 +15,5 @@ https://docs.microsoft.com/en-us/aspnet/core/security/authentication/accconfirm?
 # Dependancy Injection 
 
 https://www.tutorialsteacher.com/ioc/
+
+https://docs.microsoft.com/en-us/dotnet/core/extensions/dependency-injection
