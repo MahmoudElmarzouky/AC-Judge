@@ -11,3 +11,7 @@ https://stackoverflow.com/questions/7050404/create-code-first-many-to-many-with-
 # Account confirmation and password recovery in ASP.NET Core 
 
 https://docs.microsoft.com/en-us/aspnet/core/security/authentication/accconfirm?view=aspnetcore-5.0&tabs=visual-studio
+
+# Dependancy Injection 
+
+https://www.tutorialsteacher.com/ioc/
