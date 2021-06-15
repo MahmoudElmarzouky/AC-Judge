@@ -17,3 +17,9 @@ https://docs.microsoft.com/en-us/aspnet/core/security/authentication/accconfirm?
 https://www.tutorialsteacher.com/ioc/
 
 https://docs.microsoft.com/en-us/dotnet/core/extensions/dependency-injection
+
+# Send Emails To confirm [Free method]
+
+https://stackoverflow.com/questions/32260/sending-email-in-net-through-gmail
+
+https://www.c-sharpcorner.com/blogs/send-email-using-gmail-smtp
