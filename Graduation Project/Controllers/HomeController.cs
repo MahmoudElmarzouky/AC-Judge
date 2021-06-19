@@ -1,4 +1,6 @@
-﻿using Graduation_Project.Models;
+﻿using Graduation_Project.Data.Models;
+using Graduation_Project.Data.Repositories.Interfaces;
+using Graduation_Project.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,10 +14,11 @@ namespace Graduation_Project.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IRepository<User> users; 
+        public HomeController(ILogger<HomeController> logger, IRepository<User> users)
         {
             _logger = logger;
+            this.users = users; 
         }
 
         public IActionResult Index()

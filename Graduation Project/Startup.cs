@@ -1,3 +1,6 @@
+using Graduation_Project.Data.Models;
+using Graduation_Project.Data.Repositories;
+using Graduation_Project.Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -24,6 +27,7 @@ namespace Graduation_Project
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc(options => options.EnableEndpointRouting = false);
+            services.AddScoped<IRepository<User>, UserDbRepository>(); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
