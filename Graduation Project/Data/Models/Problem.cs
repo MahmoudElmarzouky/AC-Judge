@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace Graduation_Project.Data.Models
 {
-    public class problemSource
+    public class Problem
     {
+        public Problem()
+        {
+            ProblemTag = new HashSet<ProblemTag>(); 
+        }
         public int ProblemId { get; set; }
         
         public string ProblemSource { get; set; }
@@ -29,5 +33,6 @@ namespace Graduation_Project.Data.Models
         public string problemText { get; set; }
         
         public int rating { get; set; }
+        public virtual ICollection<ProblemTag> ProblemTag { get; set; }
     }
 }
