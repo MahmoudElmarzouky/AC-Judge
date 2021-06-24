@@ -9,8 +9,8 @@ namespace Graduation_Project.Data.Repositories
 {
     public class UserDbRepository : IRepository<User>
     {
-        readonly private Context dbcontext; 
-        public UserDbRepository(Context dbcontext)
+        readonly private EntitiesContext dbcontext; 
+        public UserDbRepository(EntitiesContext dbcontext)
         {
             this.dbcontext = dbcontext; 
         }
@@ -20,9 +20,6 @@ namespace Graduation_Project.Data.Repositories
             Commit();
             return newUser; 
         }
-
-        
-
         public User Find(int Id)
         {
             var user = dbcontext.Users.FirstOrDefault(user => user.UserId == Id);
