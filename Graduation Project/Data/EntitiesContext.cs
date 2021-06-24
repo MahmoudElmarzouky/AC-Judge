@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using Graduation_Project.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Graduation_Project.Data
 {
-    public class Context : DbContext
+    public class EntitiesContext : DbContext
     {
-        public Context(): base("Server=(localdb)\\mssqllocaldb;Database=GraduationProject;Trusted_Connection=True;MultipleActiveResultSets=true")
+        // 
+        public EntitiesContext(DbContextOptions<EntitiesContext> options) : base(options)
         {
 
         }
