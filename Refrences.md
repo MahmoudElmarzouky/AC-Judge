@@ -23,3 +23,9 @@ https://docs.microsoft.com/en-us/dotnet/core/extensions/dependency-injection
 https://stackoverflow.com/questions/32260/sending-email-in-net-through-gmail
 
 https://www.c-sharpcorner.com/blogs/send-email-using-gmail-smtp
+
+# Use separate DBs for user and entities - Question 
+
+https://stackoverflow.com/questions/32326418/use-the-same-database-for-both-my-custom-entities-and-identity-context
+
+https://stackoverflow.com/questions/43825825/how-to-correctly-implement-other-entitys-reference-to-identity-user
