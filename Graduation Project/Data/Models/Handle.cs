@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Graduation_Project.Areas.Identity.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -13,6 +14,8 @@ namespace Graduation_Project.Data.Models
         public string codeforcesHandle { get; set; }
         
         public string atCoderHandle { get; set; }
-        
+        public int UserId { get; set; }
+        public User user { get; set; }
+
     }
 }
