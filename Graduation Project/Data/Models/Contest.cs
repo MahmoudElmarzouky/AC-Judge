@@ -18,5 +18,9 @@ namespace Graduation_Project.Data.Models
         public DateTime creationTime { get; set; }
         public string contestVisabilty { get; set; }
         public virtual ICollection<UserContest> UserContest { get; set; }
+        public virtual ICollection<Submission> Submissions { get; set; }
+        public int groupId { get; set; }
+        public Group group { get; set; }
+        public virtual ICollection<ContestProblem> ContestProblems { get; set; }
     }
 }

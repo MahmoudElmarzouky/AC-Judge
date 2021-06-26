@@ -13,5 +13,11 @@ namespace Graduation_Project.Data.Models
         public int blogvote { get; set; }
         public DateTime creationTime { get; set; }
         public string blogVisabilty { get; set; }
+        public virtual ICollection<UserBlog> userBlog { get; set; }
+        public virtual ICollection<BlogTag> blogTag { get; set; }
+        public virtual ICollection<Blog> blogs { get; set; }
+        public int groupId { get; set; }
+        public Group group { get; set; }
+
     }
 }

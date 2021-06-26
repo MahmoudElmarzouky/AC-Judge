@@ -17,5 +17,10 @@ namespace Graduation_Project.Data.Models
         public string ProgrammingLanguage { get; set; }
         public int userId { get; set; }
         public User user { get; set; }
+        public int contestId { get; set; }
+        public Contest contest { get; set; }
+        public int ProblemId { get; set; }
+        public Problem problem { get; set; }
+
     }
 }

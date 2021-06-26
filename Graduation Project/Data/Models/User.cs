@@ -20,6 +20,14 @@ namespace Graduation_Project.Data.Models
         public DateTime DateOfJoin { get; set; }
         public virtual ICollection<UserContest> UserContest { get; set; }
         public virtual ICollection<UserGroup> UserGroup { get; set; }
+        public Handle handle { get; set; }
+        public userStatistics userStatistic { get; set; }
+        public CodeforcesStatistics codeforcesStatistic { get; set; }
+        public atcoderStatistics atcoderStatistic { get; set; }
+        public virtual ICollection<Submission> submissions { get; set; }
+        public virtual ICollection<UserBlog> userBlog { get; set; }
+        public virtual ICollection<commentVote> CommentVotes { get; set; }
+
 
     }
 }
