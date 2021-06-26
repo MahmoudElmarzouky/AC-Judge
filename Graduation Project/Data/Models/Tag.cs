@@ -14,5 +14,6 @@ namespace Graduation_Project.Data.Models
         public int tagId { get; set; }
         public string tagName { get; set; }
         public virtual ICollection<ProblemTag> ProblemTag { get; set; }
+        public virtual ICollection<BlogTag> blogTag { get; set; }
     }   
 }

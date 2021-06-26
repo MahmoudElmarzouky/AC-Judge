@@ -14,5 +14,8 @@ namespace Graduation_Project.Data.Models
         public int upvote { get; set; }
         public int downvote { get; set; }
         public DateTime creationTime { get; set; }
+        public int blogId { get; set; }
+        public Blog blog { get; set; }
+        public virtual ICollection<commentVote> CommentVotes { get; set; }
     }
 }

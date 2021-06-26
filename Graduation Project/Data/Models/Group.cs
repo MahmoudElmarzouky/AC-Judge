@@ -17,5 +17,7 @@ namespace Graduation_Project.Data.Models
         public Boolean Visable { get; set; }
         public string Password { get; set; }
         public virtual ICollection<UserGroup> UserGroup { get; set; }
+        public virtual ICollection<Blog> blogs { get; set; }
+        public virtual ICollection<Contest> Contests { get; set; }
     }
 }

@@ -34,5 +34,7 @@ namespace Graduation_Project.Data.Models
         
         public int rating { get; set; }
         public virtual ICollection<ProblemTag> ProblemTag { get; set; }
+        public virtual ICollection<Submission> Submissions { get; set; }
+        public virtual ICollection<ContestProblem> ContestProblems { get; set; }
     }
 }
