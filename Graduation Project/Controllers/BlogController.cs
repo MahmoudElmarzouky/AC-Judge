@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Graduation_Project.Controllers.Blog
+namespace GraduationProject.Controllers.Blog
 {
     public class BlogController : Controller
     {

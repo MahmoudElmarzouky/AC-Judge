@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Graduation_Project.Data.Models
+namespace GraduationProject.Data.Models
 {
     public class ProblemTag
     {

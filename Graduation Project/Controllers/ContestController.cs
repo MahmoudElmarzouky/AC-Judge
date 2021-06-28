@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Graduation_Project.Controllers.Contest
+namespace GraduationProject.Controllers.Contest
 {
     public class ContestController : Controller
     {

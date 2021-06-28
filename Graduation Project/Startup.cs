@@ -1,7 +1,7 @@
-using Graduation_Project.Data;
-using Graduation_Project.Data.Models;
-using Graduation_Project.Data.Repositories;
-using Graduation_Project.Data.Repositories.Interfaces;
+using GraduationProject.Data;
+using GraduationProject.Data.Models;
+using GraduationProject.Data.Repositories;
+using GraduationProject.Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -14,26 +14,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Graduation_Project
+namespace GraduationProject
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IRepository<User>, UserDbRepository>();
             services.AddDbContext<EntitiesContext>(
                options =>
                {
                    options.UseSqlServer(Configuration.GetConnectionString("UserAccountsContextConnection"));
                });
+            services.AddScoped<IRepository<User>, UserDbRepository>();
+            
             services.AddMvc(options => options.EnableEndpointRouting = false);
             
         }

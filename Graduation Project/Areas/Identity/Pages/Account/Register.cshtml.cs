@@ -7,7 +7,7 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Graduation_Project.Areas.Identity.Data;
+using GraduationProject.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +17,7 @@ using Microsoft.Extensions.Logging;
 using System.Globalization;
 
 
-namespace Graduation_Project.Areas.Identity.Pages.Account
+namespace GraduationProject.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class RegisterModel : PageModel

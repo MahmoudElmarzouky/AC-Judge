@@ -6,13 +6,13 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Linq;
 using System.Threading.Tasks;
-using Graduation_Project.Areas.Identity.Data;
+using GraduationProject.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
-namespace Graduation_Project.Areas.Identity.Pages.Account.Manage
+namespace GraduationProject.Areas.Identity.Pages.Account.Manage
 {
     public class EnableAuthenticatorModel : PageModel
     {
@@ -149,7 +149,7 @@ namespace Graduation_Project.Areas.Identity.Pages.Account.Manage
         {
             return string.Format(
                 AuthenticatorUriFormat,
-                _urlEncoder.Encode("Graduation_Project"),
+                _urlEncoder.Encode("GraduationProject"),
                 _urlEncoder.Encode(email),
                 unformattedKey);
         }

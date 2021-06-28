@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Graduation_Project.Data.Repositories.Interfaces
+namespace GraduationProject.Data.Repositories.Interfaces
 {
     public interface IRepository<T>
     {

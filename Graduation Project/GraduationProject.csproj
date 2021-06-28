@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>Graduation_Project</RootNamespace>
+    <RootNamespace>GraduationProject</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Graduation_Project.Data.Models;
-using Graduation_Project.Data.Repositories.Interfaces;
+using GraduationProject.Data.Models;
+using GraduationProject.Data.Repositories.Interfaces;
 
-namespace Graduation_Project.Data.Repositories
+namespace GraduationProject.Data.Repositories
 {
     public class UserDbRepository : IRepository<User>
     {

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Graduation_Project.Controllers.Group
+namespace GraduationProject.Controllers.Group
 {
     public class GroupController : Controller
     {

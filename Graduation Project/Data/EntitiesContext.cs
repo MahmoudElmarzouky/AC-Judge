@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Graduation_Project.Data.Models;
+using GraduationProject.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Graduation_Project.Data
+namespace GraduationProject.Data
 {
     public class EntitiesContext : DbContext
     {
-        // 
-        public EntitiesContext(DbContextOptions<EntitiesContext> options) : base(options)
+        public EntitiesContext(DbContextOptions options) : base(options)
         {
 
         }

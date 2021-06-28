@@ -1,6 +1,6 @@
 ﻿using System;
-using Graduation_Project.Areas.Identity.Data;
-using Graduation_Project.Data;
+using GraduationProject.Areas.Identity.Data;
+using GraduationProject.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-[assembly: HostingStartup(typeof(Graduation_Project.Areas.Identity.IdentityHostingStartup))]
-namespace Graduation_Project.Areas.Identity
+[assembly: HostingStartup(typeof(GraduationProject.Areas.Identity.IdentityHostingStartup))]
+namespace GraduationProject.Areas.Identity
 {
     public class IdentityHostingStartup : IHostingStartup
     {

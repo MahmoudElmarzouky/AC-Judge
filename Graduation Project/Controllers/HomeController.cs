@@ -1,6 +1,6 @@
-﻿using Graduation_Project.Data.Models;
-using Graduation_Project.Data.Repositories.Interfaces;
-using Graduation_Project.Models;
+﻿using GraduationProject.Data.Models;
+using GraduationProject.Data.Repositories.Interfaces;
+using GraduationProject.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -9,7 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Graduation_Project.Controllers
+namespace GraduationProject.Controllers
 {
     public class HomeController : Controller
     {
@@ -23,6 +23,7 @@ namespace Graduation_Project.Controllers
 
         public IActionResult Index()
         {
+            //var list = users.List(); 
             return View();
         }
 

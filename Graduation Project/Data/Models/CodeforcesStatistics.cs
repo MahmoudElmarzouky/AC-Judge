@@ -1,10 +1,10 @@
-﻿using Graduation_Project.Areas.Identity.Data;
+﻿using GraduationProject.Areas.Identity.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Graduation_Project.Data.Models
+namespace GraduationProject.Data.Models
 {
     public class CodeforcesStatistics
     {

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Graduation_Project.Controllers.Problem
+namespace GraduationProject.Controllers.Problem
 {
     public class ProblemController : Controller
     {

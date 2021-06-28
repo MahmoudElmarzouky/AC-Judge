@@ -1,4 +1,4 @@
-using Graduation_Project.Data;
+using GraduationProject.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,22 +9,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Graduation_Project
+namespace GraduationProject
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-            var webHost = CreateHostBuilder(args).Build();
-            //RunMigrations(webHost);
-            webHost.Run(); 
-            
+            CreateHostBuilder(args).Build().Run();
         }
-        private static void RunMigrations(IHost webHost)
-        {
-            using var scope = webHost.Services.CreateScope();
-            var db = scope.ServiceProvider.GetRequiredService<EntitiesContext>();
-        }
+        
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
