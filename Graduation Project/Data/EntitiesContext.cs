@@ -21,5 +21,23 @@ namespace GraduationProject.Data
         public DbSet<UserContest> UserContest { get; set; }
         public DbSet<UserGroup> UserGroup { get; set; }
         public DbSet<ProblemTag> ProblemTag { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ProblemTag>()
+            .HasKey(p => new { p.ProblemId, p.TagId });
+            modelBuilder.Entity<UserContest>()
+            .HasKey(p => new { p.UserId, p.ContestId });
+            modelBuilder.Entity<UserGroup>()
+           .HasKey(p => new { p.UserId, p.GroupId });
+            modelBuilder.Entity<BlogTag>()
+            .HasKey(p => new { p.BlogId, p.TagId });
+            modelBuilder.Entity<ContestProblem>()
+            .HasKey(p => new { p.contestId, p.problemId });
+            modelBuilder.Entity<UserBlog>()
+            .HasKey(p => new { p.userId, p.blogId });
+            modelBuilder.Entity<commentVote>()
+            .HasKey(p => new { p.commentId, p.userId });
+
+        }
     }
 }
