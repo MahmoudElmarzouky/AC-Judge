@@ -20,13 +20,10 @@ add friends realtion
 
 # Mahmoud Magdi
 Create repository class for : 
-- atcoderStatistics
-- Blog
-- BlogTag
-- CodeforcesStatistics
-- Comment
-- commentVote
-- Contest
-- ContestProblem
-- Group done
-- Handle
+- atcoderStatistics - added
+- Blog - added 
+- CodeforcesStatistics - added
+- Comment - added
+- Contest - added
+- Group  - added
+- Handle - added
