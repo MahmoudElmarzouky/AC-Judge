@@ -28,3 +28,7 @@ Create repository class for :
 - Contest - added
 - Group  - added
 - Handle - added
+- 
+Create Controllers for:
+- Blog
+- Comments
