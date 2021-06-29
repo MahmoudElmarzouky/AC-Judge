@@ -18,6 +18,7 @@ namespace GraduationProject.Data
         public DbSet<Problem> Problems { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<Submission> Submissions { get; set; }
         public DbSet<UserContest> UserContest { get; set; }
         public DbSet<UserGroup> UserGroup { get; set; }
         public DbSet<ProblemTag> ProblemTag { get; set; }
