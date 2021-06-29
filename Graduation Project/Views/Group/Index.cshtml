@@ -10,7 +10,6 @@
             <li role="presentation"><a href="#">My Groups</a></li>
             <li role="presentation"><a href="#">Invitations</a></li>
             <li role="presentation" class="creat-group">
-                
                 <a asp-action="Create"><i class="fas fa-plus"></i> Creat Group</a>
             </li>
         </ul>
@@ -20,8 +19,6 @@
             <div class="col-sm-6 col-md-4 col-lg-3">
                 <div class="panel panel-success">
                     <div class="panel-heading">
-                        <a asp-action="Edit" asp-route-id="@item.GroupId">Edit</a>
-
                         <h3 class="panel-title"><a asp-action="Details" asp-route-id="@item.GroupId">@item.GroupTitle</a></h3>
                         <i class="fas fa-heart" data-favorite="IconFav"></i>
                     </div>
@@ -45,29 +42,27 @@
 
                     </div>
                 </div>
-                <a asp-action="Delete" asp-route-id="@item.GroupId">Delete Group</a>
             </div>
-                
             }
         </div>
-            <div aria-label="Page navigation" class="text-center">
-                <ul class="pagination pagination-lg">
-                    <li>
-                        <a href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li>
-                        <a href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+        <div aria-label="Page navigation" class="text-center">
+            <ul class="pagination pagination-lg">
+                <li>
+                    <a href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li>
+                    <a href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
         </div>
+    </div>
 
 </section>
 @section Scripts {
