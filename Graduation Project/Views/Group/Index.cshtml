@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<GraduationProject.Data.Models.Group>
+@{
     ViewData["Title"] = "Group Page";
 }
 
@@ -9,24 +10,29 @@
             <li role="presentation"><a href="#">My Groups</a></li>
             <li role="presentation"><a href="#">Invitations</a></li>
             <li role="presentation" class="creat-group">
-                <a href="#"><i class="fas fa-plus"></i> Creat Group</a>
+                
+                <a asp-action="Create"><i class="fas fa-plus"></i> Creat Group</a>
             </li>
         </ul>
         <div class="row groups">
+            @foreach (var item in Model)
+            {
             <div class="col-sm-6 col-md-4 col-lg-3">
                 <div class="panel panel-success">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><a href="#">Group title</a></h3>
+                        <a asp-action="Edit" asp-route-id="@item.GroupId">Edit</a>
+
+                        <h3 class="panel-title"><a asp-action="Details" asp-route-id="@item.GroupId">@item.GroupTitle</a></h3>
                         <i class="fas fa-heart" data-favorite="IconFav"></i>
                     </div>
                     <div class="panel-body">
-                        Test Group To Show All Items In ICPC Menofia Community Training Juniors phase Two and Test Test
+                        @item.GroupDescription
                     </div>
                     <div class="panel-footer text-center">
                         <div class="col-xs-4 footer-cell">
                             <!-- Number Of User In Group -->
                             <i class="fas fa-users"></i>
-                            1000
+                            @item.NumberOfUsers
                         </div>
                         <div class="col-xs-3 text-info footer-cell">
                             Owner <!-- If User Owner This Contest Put word Owner -->
@@ -36,106 +42,32 @@
                             <li>30</li><!-- Running contest -->
                             <li>90</li><!-- End contest -->
                         </ul>
+
                     </div>
                 </div>
+                <a asp-action="Delete" asp-route-id="@item.GroupId">Delete Group</a>
             </div>
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="panel panel-success">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><a href="#">Group title</a></h3>
-                        <i class="fas fa-heart" data-favorite="IconFav"></i>
-                    </div>
-                    <div class="panel-body">
-                        Test Group To Show All Items In ICPC Menofia Community Training Juniors phase Two and Test Test
-                    </div>
-                    <div class="panel-footer text-center">
-                        <div class="col-xs-4 footer-cell">
-                            <!-- Number Of User In Group -->
-                            <i class="fas fa-users"></i>
-                            1000
-                        </div>
-                        <div class="col-xs-3 text-info footer-cell">
-                            Owner <!-- If User Owner This Contest Put word Owner -->
-                        </div>
-                        <ul class="col-xs-5 breadcrumb footer-cell">
-                            <li>20</li><!-- scheduled contest -->
-                            <li>30</li><!-- Running contest -->
-                            <li>90</li><!-- End contest -->
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="panel panel-danger">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><a href="#">Group title</a></h3>
-                        <i class="fas fa-heart" data-favorite="IconFav"></i>
-                    </div>
-                    <div class="panel-body">
-                        Test Group To Show All Items In ICPC Menofia Community Training Juniors phase Two and Test Test
-                    </div>
-                    <div class="panel-footer text-center">
-                        <div class="col-xs-4 footer-cell">
-                            <!-- Number Of User In Group -->
-                            <i class="fas fa-users"></i>
-                            1000
-                        </div>
-                        <div class="col-xs-3 text-info footer-cell">
-                            Owner <!-- If User Owner This Contest Put word Owner -->
-                        </div>
-                        <ul class="col-xs-5 breadcrumb footer-cell">
-                            <li>20</li><!-- scheduled contest -->
-                            <li>30</li><!-- Running contest -->
-                            <li>90</li><!-- End contest -->
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="panel panel-danger">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><a href="#">Group title</a></h3>
-                        <i class="fas fa-heart" data-favorite="IconFav"></i>
-                    </div>
-                    <div class="panel-body">
-                        Test Group To Show All Items In ICPC Menofia Community Training Juniors phase Two and Test Test
-                    </div>
-                    <div class="panel-footer text-center">
-                        <div class="col-xs-4 footer-cell">
-                            <!-- Number Of User In Group -->
-                            <i class="fas fa-users"></i>
-                            1000
-                        </div>
-                        <div class="col-xs-3 text-info footer-cell">
-                            Owner <!-- If User Owner This Contest Put word Owner -->
-                        </div>
-                        <ul class="col-xs-5 breadcrumb footer-cell">
-                            <li>20</li><!-- scheduled contest -->
-                            <li>30</li><!-- Running contest -->
-                            <li>90</li><!-- End contest -->
-                        </ul>
-                    </div>
-                </div>
+                
+            }
+
+            <div aria-label="Page navigation" class="text-center">
+                <ul class="pagination pagination-lg">
+                    <li>
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li>
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
-        <div aria-label="Page navigation" class="text-center">
-            <ul class="pagination pagination-lg">
-                <li>
-                    <a href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li>
-                    <a href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
 </section>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

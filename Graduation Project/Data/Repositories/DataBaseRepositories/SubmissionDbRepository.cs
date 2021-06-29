@@ -49,8 +49,7 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
 
         public void Update(Submission newSubmission)
         {
-            var Submission = Find(newSubmission.SubmissionId);
-            Submission = newSubmission;
+            dbcontext.Submissions.Update(newSubmission); 
             Commit(); 
         }
     }

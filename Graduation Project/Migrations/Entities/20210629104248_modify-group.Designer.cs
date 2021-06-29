@@ -4,14 +4,16 @@ using GraduationProject.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GraduationProject.Migrations.Entities
 {
     [DbContext(typeof(EntitiesContext))]
-    partial class EntitiesContextModelSnapshot : ModelSnapshot
+    [Migration("20210629104248_modify-group")]
+    partial class modifygroup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,7 +55,7 @@ namespace GraduationProject.Migrations.Entities
 
                     b.HasIndex("groupId");
 
-                    b.ToTable("Blogs");
+                    b.ToTable("Blog");
                 });
 
             modelBuilder.Entity("GraduationProject.Data.Models.BlogTag", b =>
@@ -122,7 +124,7 @@ namespace GraduationProject.Migrations.Entities
 
                     b.HasIndex("blogId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comment");
                 });
 
             modelBuilder.Entity("GraduationProject.Data.Models.Contest", b =>
@@ -226,7 +228,7 @@ namespace GraduationProject.Migrations.Entities
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Handles");
+                    b.ToTable("Handle");
                 });
 
             modelBuilder.Entity("GraduationProject.Data.Models.Problem", b =>

@@ -1,6 +1,7 @@
 using GraduationProject.Data;
 using GraduationProject.Data.Models;
 using GraduationProject.Data.Repositories;
+using GraduationProject.Data.Repositories.DataBaseRepositories;
 using GraduationProject.Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,8 +35,9 @@ namespace GraduationProject
                {
                    options.UseSqlServer(Configuration.GetConnectionString("UserAccountsContextConnection"));
                });
-            services.AddScoped<IRepository<User>, UserDbRepository>();
-            
+            services.AddScoped<IRepository<Group>, GroupDbRepository> ();
+
+
             services.AddMvc(options => options.EnableEndpointRouting = false);
             
         }

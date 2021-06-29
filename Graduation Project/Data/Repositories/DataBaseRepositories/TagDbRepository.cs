@@ -49,8 +49,7 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
 
         public void Update(Tag newTag)
         {
-            var tag = Find(newTag.tagId);
-            tag = newTag;
+            dbcontext.Tags.Update(newTag); 
             Commit(); 
         }
     }

@@ -14,11 +14,9 @@ namespace GraduationProject.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IRepository<User> users; 
-        public HomeController(ILogger<HomeController> logger, IRepository<User> users)
+        public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            this.users = users; 
         }
 
         public IActionResult Index()
