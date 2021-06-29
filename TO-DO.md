@@ -1,9 +1,9 @@
 # Mohamed Sameh 
 Create Repoistories for: 
-- User
-- Prblem 
-- Submission 
-- Tag 
+- User - Added 
+- Prblem - Added 
+- Submission - Added 
+- Tag - Added 
 
  
 # Mohamed Elhabashy 
