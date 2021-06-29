@@ -37,20 +37,6 @@ namespace GraduationProject.Data
             .HasKey(p => new { p.userId, p.blogId });
             modelBuilder.Entity<commentVote>()
             .HasKey(p => new { p.commentId, p.userId });
-
-            modelBuilder.Entity<FriendShip>()
-             .HasKey(fs => new { fs.user1, fs.user2 });
-
-            modelBuilder.Entity<FriendShip>()
-                .HasOne(fs => fs.user1)
-                .WithMany(u => u.FriendShips)
-                .HasForeignKey(fs => fs.user1);
-
-            modelBuilder.Entity<FriendShip>()
-                .HasOne(fs => fs.user2)
-                .WithMany(u => u.FriendShips)
-                .HasForeignKey(fs => fs.user2);
-
         }
     }
 }

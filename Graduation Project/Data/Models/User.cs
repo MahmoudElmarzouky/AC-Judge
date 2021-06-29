@@ -27,9 +27,6 @@ namespace GraduationProject.Data.Models
         public virtual ICollection<Submission> submissions { get; set; }
         public virtual ICollection<UserBlog> userBlog { get; set; }
         public virtual ICollection<commentVote> CommentVotes { get; set; }
-        public virtual List<FriendShip> FriendShips { get; set; }
-
-
 
     }
 }
