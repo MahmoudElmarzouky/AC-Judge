@@ -7,18 +7,19 @@ using System.Threading.Tasks;
 
 namespace GraduationProject.Data.Repositories.DataBaseRepositories
 {
-    public class GroupDbRepository : IRepository<Group>
+    public class CommentDbRepository : IRepository<Comment>
     {
         readonly private EntitiesContext dbcontext;
-        public GroupDbRepository(EntitiesContext dbcontext)
+        public CommentDbRepository(EntitiesContext dbcontext)
         {
             this.dbcontext = dbcontext;
         }
-        public Group Add(Group newGroup)
+
+        public Comment Add(Comment newComment)
         {
-            dbcontext.Add(newGroup);
+            dbcontext.Add(newComment);
             Commit();
-            return newGroup;
+            return newComment;
         }
 
         public void Commit()
@@ -26,30 +27,31 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             dbcontext.SaveChanges();
         }
 
-        public Group Find(int Id)
+        public Comment Find(int Id)
         {
-            var group = dbcontext.Groups.FirstOrDefault(group => group.GroupId == Id);
-            return group;
+            var comment = dbcontext.Comments.FirstOrDefault(comment => comment.commentId == Id);
+            return comment;
         }
 
-        public IList<Group> List()
+        public IList<Comment> List()
         {
-            return dbcontext.Groups.ToList();
+            return dbcontext.Comments.ToList();
         }
 
         public void Remove(int Id)
         {
-            var group = Find(Id);
-            if (group != null)
+            var comment = Find(Id);
+            if (comment != null)
             {
-                dbcontext.Groups.Remove(group);
+                dbcontext.Comments.Remove(comment);
                 Commit();
             }
         }
 
-        public void Update(Group newGroup)
+        public void Update(Comment newComment)
         {
-            dbcontext.Groups.Update(newGroup);
+            dbcontext.Comments.Update(newComment);
             Commit();
         }
     }
+}

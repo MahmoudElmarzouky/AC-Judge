@@ -6,7 +6,7 @@ Create Repoistories for:
 - Tag - Added 
 
 Create Controllers for:
-- Group 
+- Group - Added 
 
  
 # Mohamed Elhabashy 
@@ -20,13 +20,10 @@ add friends realtion
 
 # Mahmoud Magdi
 Create repository class for : 
-- atcoderStatistics
-- Blog
-- BlogTag
-- CodeforcesStatistics
-- Comment
-- commentVote
-- Contest
-- ContestProblem
-- Group
-- Handle
+- atcoderStatistics - added
+- Blog - added 
+- CodeforcesStatistics - added
+- Comment - added
+- Contest - added
+- Group  - added
+- Handle - added

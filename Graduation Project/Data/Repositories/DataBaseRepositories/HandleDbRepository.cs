@@ -7,18 +7,19 @@ using System.Threading.Tasks;
 
 namespace GraduationProject.Data.Repositories.DataBaseRepositories
 {
-    public class GroupDbRepository : IRepository<Group>
+    public class HandleDbRepository : IRepository<Handle>
     {
         readonly private EntitiesContext dbcontext;
-        public GroupDbRepository(EntitiesContext dbcontext)
+        public HandleDbRepository(EntitiesContext dbcontext)
         {
             this.dbcontext = dbcontext;
         }
-        public Group Add(Group newGroup)
+
+        public Handle Add(Handle newHandle)
         {
-            dbcontext.Add(newGroup);
+            dbcontext.Add(newHandle);
             Commit();
-            return newGroup;
+            return newHandle;
         }
 
         public void Commit()
@@ -26,30 +27,31 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             dbcontext.SaveChanges();
         }
 
-        public Group Find(int Id)
+        public Handle Find(int Id)
         {
-            var group = dbcontext.Groups.FirstOrDefault(group => group.GroupId == Id);
-            return group;
+            var handle = dbcontext.Handles.FirstOrDefault(handle => handle.handleId == Id);
+            return handle;
         }
 
-        public IList<Group> List()
+        public IList<Handle> List()
         {
-            return dbcontext.Groups.ToList();
+            return dbcontext.Handles.ToList();
         }
 
         public void Remove(int Id)
         {
-            var group = Find(Id);
-            if (group != null)
+            var handle = Find(Id);
+            if (handle != null)
             {
-                dbcontext.Groups.Remove(group);
+                dbcontext.Handles.Remove(handle);
                 Commit();
             }
         }
 
-        public void Update(Group newGroup)
+        public void Update(Handle newHandle)
         {
-            dbcontext.Groups.Update(newGroup);
+            dbcontext.Handles.Update(newHandle);
             Commit();
         }
     }
+}
