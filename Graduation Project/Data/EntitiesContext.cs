@@ -22,6 +22,11 @@ namespace GraduationProject.Data
         public DbSet<UserContest> UserContest { get; set; }
         public DbSet<UserGroup> UserGroup { get; set; }
         public DbSet<ProblemTag> ProblemTag { get; set; }
+        public DbSet<Comment>Comments  { get; set; }
+        public DbSet<Blog> Blogs { get; set; }
+        public DbSet<Handle> Handles { get; set; }
+        public DbSet<atcoderStatistics> atcoderStatistics { get; set; }
+        public DbSet<CodeforcesStatistics> CodeforcesStatistics { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ProblemTag>()
