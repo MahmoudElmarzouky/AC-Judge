@@ -7,6 +7,7 @@ Create Repoistories for:
 
 Create Controllers for:
 - Group - Added 
+- Contest 
 
  
 # Mohamed Elhabashy 
@@ -27,3 +28,7 @@ Create repository class for :
 - Contest - added
 - Group  - added
 - Handle - added
+- 
+Create Controllers for:
+- Blog
+- Comments
