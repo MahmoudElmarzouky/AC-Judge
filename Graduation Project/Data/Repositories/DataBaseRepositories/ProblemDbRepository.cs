@@ -49,8 +49,7 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
 
         public void Update(Problem newProblem)
         {
-            var problem = Find(newProblem.ProblemId);
-            problem = newProblem;
+            dbcontext.Problems.Update(newProblem); 
             Commit();
         }
     }

@@ -1,0 +1,55 @@
+﻿@model GraduationProject.Data.Models.Group
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Group</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.GroupTitle)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.GroupTitle)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.creationTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.creationTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.GroupDescription)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.GroupDescription)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NumberOfUsers)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NumberOfUsers)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Visable)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Visable)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Password)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Password)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.GroupId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
