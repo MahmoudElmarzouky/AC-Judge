@@ -29,3 +29,7 @@ https://www.c-sharpcorner.com/blogs/send-email-using-gmail-smtp
 https://stackoverflow.com/questions/32326418/use-the-same-database-for-both-my-custom-entities-and-identity-context
 
 https://stackoverflow.com/questions/43825825/how-to-correctly-implement-other-entitys-reference-to-identity-user
+
+# User Managment
+
+https://www.youtube.com/playlist?list=PL62tSREI9C-fnwdLjHVP9K9GSHg-r7dzR
