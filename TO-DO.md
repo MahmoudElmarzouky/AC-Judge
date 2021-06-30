@@ -30,5 +30,5 @@ Create repository class for :
 - Handle - added
 - 
 Create Controllers for:
-- Blog
+- Blog - added
 - Comments
