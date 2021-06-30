@@ -29,7 +29,7 @@ namespace GraduationProject.Controllers.Group
         }
         // GET: HomeController
 
-        private void AddData()
+        private void AddGroupData()
         {
             var newGroup = new GraduationProject.Data.Models.Group { GroupTitle = "The Best Group Ever", GroupDescription = "This Group is For Solving Problems And Also Solving Puzzles"};
             groups.Add(newGroup);
@@ -43,19 +43,37 @@ namespace GraduationProject.Controllers.Group
             groups.Add(newGroup);
 
         }
+        private void AddContestData()
+        {
+            var newGroup = new GraduationProject.Data.Models.Group { GroupTitle = "The Best Group Ever", GroupDescription = "This Group is For Solving Problems And Also Solving Puzzles" };
+            var newContest = new GraduationProject.Data.Models.Contest { contestDuration = 300, contestTitle = "The Red Hat Contest", contestStartTime = DateTime.Now };
+            newGroup.Contests.Add(newContest);
+            newContest = new GraduationProject.Data.Models.Contest { contestDuration = 150, contestTitle = "The Red Hat Contest2", contestStartTime = DateTime.Now };
+            newGroup.Contests.Add(newContest);
+            newContest = new GraduationProject.Data.Models.Contest { contestDuration = 300, contestTitle = "The White Hat Contest", contestStartTime = DateTime.Now };
+            newGroup.Contests.Add(newContest);
+            newContest = new GraduationProject.Data.Models.Contest { contestDuration = 300, contestTitle = "The black Hat Contest", contestStartTime = DateTime.Now };
+            newGroup.Contests.Add(newContest);
+            groups.Add(newGroup);
+            newGroup.UserGroup.Add(CreateRelation(user.UserId, newGroup.GroupId));
+            groups.Update(newGroup); 
+        }
         public ActionResult Index()
         {
+           // AddContestData(); 
             var list = new List<ViewGroupModel>();
             foreach (var item in groups.List())
                 list.Add(getViewModelFromGroup(item)); 
+           
             return View(list);
         }
 
         // GET: HomeController/Details/5
         public ActionResult Details(int id)
         {
-            var group = groups.Find(id); 
-            return View(group);
+            var group = groups.Find(id);
+            var model = getViewModelFromGroup(group); 
+            return View(model);
         }
 
         // GET: HomeController/Create
@@ -160,20 +178,30 @@ namespace GraduationProject.Controllers.Group
         }
         private ViewGroupModel getViewModelFromGroup(GraduationProject.Data.Models.Group group)
         {
-            string OwnerName = user.FirstName;
             int NumberofUpcommingContest = 0;
             int NumberofRunningContest = 0;
             int NumberofEndedContest = 0;
-            int NumberOfMembers = 1; 
+            int NumberOfMembers = group.UserGroup.Count;
+            var query = group.UserGroup.FirstOrDefault(u => u.UserId == user.UserId);
+            var role = query != null? query.UserRole: "Not Set";
+            
+            var userGroupRel = group.UserGroup.Where(u => u.GroupId == group.GroupId).ToList();
+            
+
             var model = new ViewGroupModel {
-                GroupId = group.GroupId, 
-                GroupTitle = group.GroupTitle, 
-                GroupDescription = group.GroupDescription, 
-                OwnerName = OwnerName, 
-                NumberOfUpCommingContests = NumberofUpcommingContest, 
-                NumberOfRunningContests = NumberofRunningContest, 
-                NumberOfEndedContests = NumberofEndedContest, 
-                NumberOfMembers = NumberOfMembers 
+                GroupId = group.GroupId,
+                GroupTitle = group.GroupTitle,
+                GroupDescription = group.GroupDescription,
+                UserRole = role,
+                NumberOfUpCommingContests = NumberofUpcommingContest,
+                NumberOfRunningContests = NumberofRunningContest,
+                NumberOfEndedContests = NumberofEndedContest,
+                NumberOfMembers = NumberOfMembers,
+                GroupStatus = group.Visable ? "Public" : "Private",
+                creationTime = group.creationTime,
+                UserGroup = userGroupRel,
+                Contests = group.Contests.ToList()
+
             };
             return model;
         }

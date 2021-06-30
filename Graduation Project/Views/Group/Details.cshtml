@@ -1,10 +1,9 @@
-﻿@model GraduationProject.Data.Models.Group
+﻿@model GraduationProject.ViewModels.ViewGroupModel
 
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 
 <section class="details-group-page">
     <div class="container">
@@ -12,11 +11,11 @@
             <div class="col-md-3">
                 <section class="panel panel-info text-center">
                     <div class="panel-heading">
-                        Group Name
+                        @Model.GroupTitle
                     </div>
                     <ul class="list-group">
-                        <li class="list-group-item">Private Or Public</li>
-                        <li class="list-group-item">Leader OR Participant OR ..</li>
+                        <li class="list-group-item">@Model.GroupStatus</li>
+                        <li class="list-group-item">@Model.UserRole</li>
                     </ul>
                     <div class="panel-footer">
                         <i class="fas fa-heart" data-favorite="IconFav"></i> <!-- add class active if this faviorte group -->
@@ -24,13 +23,13 @@
                 </section>
                 <section class="panel panel-info text-center">
                     <div class="panel-heading">
-                        About Group
+                         About Group
                     </div>
                     <div class="panel-body">
-                      Test Group To Show All Items In ICPC Menofia Community Training Juniors phase Two and Test Test
+                        @Model.GroupDescription
                     </div>
                     <div class="panel-footer">
-                        Create Time : 21-10-2021
+                        Create Time : @Model.creationTime.ToString("MM/dd/yyyy HH:mm")
                     </div>
                 </section>
                 <section class="panel panel-info text-center statistics">
@@ -40,13 +39,13 @@
                     <ul class="list-group">
                         <li class="list-group-item"> <!-- Number of users in group -->
                             <i class="fas fa-users"></i>
-                            1000
+                            @Model.NumberOfMembers
                         </li>
                         <li class="list-group-item"> <!-- Number of contests in group -->
                             <ul class="breadcrumb text-center">
-                                <li>20</li><!-- scheduled contest -->
-                                <li>30</li><!-- Running contest -->
-                                <li>90</li><!-- End contest -->
+                                <li>@Model.NumberOfUpCommingContests</li><!-- scheduled contest -->
+                                <li>@Model.NumberOfRunningContests</li><!-- Running contest -->
+                                <li>@Model.NumberOfEndedContests</li><!-- End contest -->
                             </ul>
                         </li>
                         <li class="list-group-item"> <!-- User Top Rate -->
@@ -57,10 +56,11 @@
             </div>
             <div class="col-md-9">
                 <div class="well well-sm header-group"> <!-- Heade Group[Name - drop down for actions -->
-                    <div class="group-name"> 
-                        Group Name
+                    <div class="group-name">
+                        @Model.GroupTitle
                     </div>
-                    
+                    @if (Model.UserRole == "Admin")
+                    {
                     <div class="dropdown"> <!-- visible if user leader or manger -->
                           <a href="#" class="btn btn-info dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
                           <ul class="dropdown-menu">
@@ -71,11 +71,14 @@
                             <li><a href="#">Exit Group</a></li> <!-- visble if user is Leader -->
                           </ul>
                     </div>
-                    <!--
+                    }
+                    else
+                    {
                     <div class=""> 
                         <a href="#" class="btn btn-danger">Leave Group</a>
-                    </div> <!-- visible if user participant -->
-                    
+                    </div> 
+                    <!-- visible if user participant -->
+                    }
                 </div>
                 <section class="group-contest">
                     <div class="panel panel-primary">
@@ -91,24 +94,32 @@
                                     <td>Length</td>
                                     <td>Prepeard By</td>
                                 </tr>
-                                <tr>
-                                    <td><a href="#">Test Contest</a></td>
-                                    <td class="starte-time"> <!-- contest start time -->
-                                        <div>21-1-2021</div>
-                                        <div>21:40</div>
-                                    </td>
-                                    <td>10:50</td>
-                                    <td><a href="#">Super_Mari000</a></td>
-                                </tr>
-                                <tr>
-                                    <td><a href="#">Test Contest Mari000</a></td>
-                                    <td class="starte-time">
-                                        <div>21-1-2021</div>
-                                        <div>21:40</div>
-                                    </td>
-                                    <td>10:50</td>
-                                    <td><a href="#">Super_Mari000</a></td>
-                                </tr>
+                                @{
+                                    foreach (var contest in Model.Contests)
+                                    {
+                                        <tr>
+                                            <td><a href="#">@contest.contestTitle</a></td>
+                                            <td class="starte-time">
+                                                <!-- contest start time -->
+                                                <div>@contest.contestStartTime.ToString("MM/dd/yyyy")</div>
+                                                <div>@contest.contestStartTime.ToString("HH:mm")</div>
+                                            </td>
+                                            <td>@contest.contestDuration.ToString("HH:mm")</td>
+                                            <td><a href="#">Super_Mari000</a></td>
+                                        </tr>
+                                    }
+                                }
+                                <!--
+     <tr>
+        <td><a href="#">Test Contest Mari000</a></td>
+        <td class="starte-time">
+            <div>21-1-2021</div>
+            <div>21:40</div>
+        </td>
+        <td>10:50</td>
+        <td><a href="#">Super_Mari000</a></td>
+    </tr>
+        -->
                             </tbody>
                         </table>
                     </div>
@@ -127,18 +138,19 @@
                                     <td>Role</td>
                                     <td>Join Time</td>
                                 </tr>
-                                <tr>
-                                    <td>Mostafa Shehab</td>
-                                    <td><a href="#">Super_Mari000</a></td>
-                                    <td>Leader</td>
-                                    <td>21-1-2021</td>
-                                </tr>
-                                <tr>
-                                    <td>Mostafa Shehab</td>
-                                    <td><a href="#">Super_Mari000</a></td>
-                                    <td>Participant</td>
-                                    <td>21-1-2021</td>
-                                </tr>
+                                @{
+                                    foreach (var rel in Model.UserGroup)
+                                    {
+                                        <tr>
+                                            <td>@rel.User.FirstName</td>
+                                            <td><a href="#">@rel.User.UserName</a></td>
+                                            <td>@rel.UserRole</td>
+                                            <td>@rel.MemberSince.ToString("MM/dd/yyyy")</td>
+                                        </tr>
+
+                                    }
+                                }
+                                
                             </tbody>
                         </table>
                     </div>
