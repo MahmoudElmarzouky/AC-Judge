@@ -48,6 +48,11 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             }
         }
 
+        public IList<Handle> search(int x, IList<string> list)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Update(Handle newHandle)
         {
             dbcontext.Handles.Update(newHandle);

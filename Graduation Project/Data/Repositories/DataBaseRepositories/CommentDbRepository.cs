@@ -48,6 +48,11 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             }
         }
 
+        public IList<Comment> search(int x, IList<string> list)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Update(Comment newComment)
         {
             dbcontext.Comments.Update(newComment);

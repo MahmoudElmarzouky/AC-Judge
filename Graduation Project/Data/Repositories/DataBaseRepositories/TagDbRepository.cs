@@ -47,6 +47,11 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             }
         }
 
+        public IList<Tag> search(int x, IList<string> list)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Update(Tag newTag)
         {
             dbcontext.Tags.Update(newTag); 
