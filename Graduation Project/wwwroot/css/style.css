@@ -212,22 +212,26 @@ header .nav-main .navbar-brand span{
     left: auto;
 }
 .details-group-page .group-contest .panel .panel-heading,
-.details-group-page .group-member .panel .panel-heading{
+.details-group-page .group-member .panel .panel-heading,
+.details-group-page .group-blog .panel .panel-heading{
     display: flex;
     align-items: center;
     justify-content: space-between;
     font-size: 1.9rem !important;
 }
 .details-group-page .group-contest .panel .panel-heading i,
-.details-group-page .group-member .panel .panel-heading i{
+.details-group-page .group-member .panel .panel-heading i,
+.details-group-page .group-blog .panel .panel-heading i{
     cursor: pointer;
 }
 .details-group-page .group-contest .panel table,
-.details-group-page .group-member .panel table{
+.details-group-page .group-member .panel table,
+.details-group-page .group-blog .panel table{
     font-size: 1.6rem;
 }
 .details-group-page .group-contest .panel table td,
-.details-group-page .group-member .panel table td{
+.details-group-page .group-member .panel table td,
+.details-group-page .group-blog .panel table td{
     vertical-align:middle !important;
 }
 .details-group-page .group-contest .panel table td.starte-time{
@@ -240,7 +244,8 @@ header .nav-main .navbar-brand span{
     line-height: 1.7rem;
 }
 .details-group-page .group-contest .panel table tr:first-child td,
-.details-group-page .group-member .panel table tr:first-child td{
+.details-group-page .group-member .panel table tr:first-child td,
+.details-group-page .group-blog .panel table tr:first-child td{
     background-color: #CCC;
     color: #333;
     font-size: 1.7rem;
