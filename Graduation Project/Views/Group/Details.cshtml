@@ -5,46 +5,149 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
 
-<div>
-    <h4>Group</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.GroupTitle)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GroupTitle)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.creationTime)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.creationTime)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GroupDescription)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GroupDescription)
-        </dd>
-        
-        <dt>
-            @Html.DisplayNameFor(model => model.Visable)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Visable)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Password)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Password)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.GroupId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<section class="details-group-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <section class="panel panel-info text-center">
+                    <div class="panel-heading">
+                        Group Name
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item">Private Or Public</li>
+                        <li class="list-group-item">Leader OR Participant OR ..</li>
+                    </ul>
+                    <div class="panel-footer">
+                        <i class="fas fa-heart" data-favorite="IconFav"></i> <!-- add class active if this faviorte group -->
+                    </div>
+                </section>
+                <section class="panel panel-info text-center">
+                    <div class="panel-heading">
+                        About Group
+                    </div>
+                    <div class="panel-body">
+                      Test Group To Show All Items In ICPC Menofia Community Training Juniors phase Two and Test Test
+                    </div>
+                    <div class="panel-footer">
+                        Create Time : 21-10-2021
+                    </div>
+                </section>
+                <section class="panel panel-info text-center statistics">
+                    <div class="panel-heading">
+                        Statistics
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item"> <!-- Number of users in group -->
+                            <i class="fas fa-users"></i>
+                            1000
+                        </li>
+                        <li class="list-group-item"> <!-- Number of contests in group -->
+                            <ul class="breadcrumb text-center">
+                                <li>20</li><!-- scheduled contest -->
+                                <li>30</li><!-- Running contest -->
+                                <li>90</li><!-- End contest -->
+                            </ul>
+                        </li>
+                        <li class="list-group-item"> <!-- User Top Rate -->
+                            Top User : <a href="#">Super_Mari000</a>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+            <div class="col-md-9">
+                <div class="well well-sm header-group"> <!-- Heade Group[Name - drop down for actions -->
+                    <div class="group-name"> 
+                        Group Name
+                    </div>
+                    
+                    <div class="dropdown"> <!-- visible if user leader or manger -->
+                          <a href="#" class="btn btn-info dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                          <ul class="dropdown-menu">
+                            <li><a href="#">New Member</a></li>
+                            <li><a href="#">New Contest</a></li>
+                            <li><a href="#">Edit Group</a></li>
+                            <li><a href="#">Leave Group</a></li>
+                            <li><a href="#">Exit Group</a></li> <!-- visble if user is Leader -->
+                          </ul>
+                    </div>
+                    <!--
+                    <div class=""> 
+                        <a href="#" class="btn btn-danger">Leave Group</a>
+                    </div> <!-- visible if user participant -->
+                    
+                </div>
+                <section class="group-contest">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                          <h2 class="panel-title">Contestes</h2>
+                          <i class="fas fa-plus" data-toggle="OpenClosePanel"></i>
+                        </div>
+                        <table class="table table-bordered text-center">
+                            <tbody>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Start Time</td>
+                                    <td>Length</td>
+                                    <td>Prepeard By</td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#">Test Contest</a></td>
+                                    <td class="starte-time"> <!-- contest start time -->
+                                        <div>21-1-2021</div>
+                                        <div>21:40</div>
+                                    </td>
+                                    <td>10:50</td>
+                                    <td><a href="#">Super_Mari000</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#">Test Contest Mari000</a></td>
+                                    <td class="starte-time">
+                                        <div>21-1-2021</div>
+                                        <div>21:40</div>
+                                    </td>
+                                    <td>10:50</td>
+                                    <td><a href="#">Super_Mari000</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                <section class="group-member">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                          <h2 class="panel-title">Members</h2>
+                          <i class="fas fa-plus" data-toggle="OpenClosePanel"></i>
+                        </div>
+                        <table class="table table-bordered text-center">
+                            <tbody>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>User Name</td>
+                                    <td>Role</td>
+                                    <td>Join Time</td>
+                                </tr>
+                                <tr>
+                                    <td>Mostafa Shehab</td>
+                                    <td><a href="#">Super_Mari000</a></td>
+                                    <td>Leader</td>
+                                    <td>21-1-2021</td>
+                                </tr>
+                                <tr>
+                                    <td>Mostafa Shehab</td>
+                                    <td><a href="#">Super_Mari000</a></td>
+                                    <td>Participant</td>
+                                    <td>21-1-2021</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

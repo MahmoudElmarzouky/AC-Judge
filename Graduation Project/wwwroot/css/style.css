@@ -4,8 +4,14 @@
 body{
     background-color:#FFF !important;
 }
+i[data-favorite='IconFav']{
+    cursor: pointer !important;
+}
 i[data-favorite='IconFav'].active{
     color: red !important;
+}
+a{
+    text-decoration: none !important;
 }
 
 /*
@@ -134,10 +140,6 @@ header .nav-main .navbar-brand span{
 }
 .group-page .groups .panel .panel-heading i{
     color: #868686;
-    cursor: pointer;
-}
-.group-page .groups .panel .panel-heading a{
-    text-decoration: none;
 }
 .group-page .groups .panel .panel-body{
     height: 90px;
@@ -173,6 +175,78 @@ header .nav-main .navbar-brand span{
     margin-top: 10px;
 }
 /* End Group Page */
+/* Start Group Details Page */
+.details-group-page{
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+.details-group-page .statistics .breadcrumb{
+    padding: 0px;
+    margin: 0px;
+    background-color: transparent;
+}
+.details-group-page .statistics .breadcrumb > li{
+    color: red;
+}
+.details-group-page .statistics .breadcrumb > li:first-child{
+    color: blue;
+}
+.details-group-page .statistics .breadcrumb > li:last-child{
+    color: green;
+}
+
+.details-group-page .header-group{
+    padding: 0px !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.details-group-page .header-group > div{
+    padding: 10px 12px;
+}
+.details-group-page .header-group .group-name{
+    font-size: 1.9rem;
+}
+.details-group-page .header-group .dropdown .dropdown-menu{
+    right: 0;
+    left: auto;
+}
+.details-group-page .group-contest .panel .panel-heading,
+.details-group-page .group-member .panel .panel-heading{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.9rem !important;
+}
+.details-group-page .group-contest .panel .panel-heading i,
+.details-group-page .group-member .panel .panel-heading i{
+    cursor: pointer;
+}
+.details-group-page .group-contest .panel table,
+.details-group-page .group-member .panel table{
+    font-size: 1.6rem;
+}
+.details-group-page .group-contest .panel table td,
+.details-group-page .group-member .panel table td{
+    vertical-align:middle !important;
+}
+.details-group-page .group-contest .panel table td.starte-time{
+    font-size: 1.5rem !important;
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+}
+.details-group-page .group-contest .panel table td.starte-time > div{
+    text-decoration: underline;
+    line-height: 1.7rem;
+}
+.details-group-page .group-contest .panel table tr:first-child td,
+.details-group-page .group-member .panel table tr:first-child td{
+    background-color: #CCC;
+    color: #333;
+    font-size: 1.7rem;
+}
+
+/* Start Group Details Page */
 /* Start Footer */
 
 footer .copyright{

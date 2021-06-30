@@ -5,11 +5,28 @@ $(document).ready(function(){
 });
 
 function Main_Rule(){
+    /*
+     Favorite Item [ select and unselect favorite items]
+    */
     var IconFav = $('i[data-favorite="IconFav"]');
     IconFav.click(function(){
         $(this).toggleClass('active');
     });
     
+    /*
+     Open and Close Panel contain plus icon
+    */
+    var IconOpenClose = $('.panel .panel-heading i[data-toggle="OpenClosePanel"]');
+    IconOpenClose.click(function(){
+       $(this).parent().next().fadeToggle(150);
+       if($(this).hasClass('fa-plus')){
+        $(this).removeClass('fa-plus');
+        $(this).addClass('fa-minus');
+       }else{
+        $(this).removeClass('fa-minus');
+        $(this).addClass('fa-plus');
+       }
+    });
 }
 
 function Show_User_Error_Message(element){
