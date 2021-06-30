@@ -113,7 +113,6 @@ namespace GraduationProject.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = new User { UserName = Input.UserName, Email = Input.Email, Country = Input.Country, BirthDate = Input.BirthDate};
-                string CreatedUserId = user.Id; 
                 var isEmail = await _userManager.FindByEmailAsync(Input.Email);
                 if (isEmail == null)
                 {
