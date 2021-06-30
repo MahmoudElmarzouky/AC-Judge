@@ -16,7 +16,7 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
         }
         public Problem Add(Problem newProblem)
         {
-            dbcontext.Problems.Add(newProblem);
+            dbcontext.Add(newProblem);
             Commit(); 
             return newProblem; 
         }
@@ -45,6 +45,36 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
                 dbcontext.Problems.Remove(problem);
                 Commit(); 
             }
+        }
+
+        public IList<Problem> search(int x, IList<string> list)
+        {
+            var items = new List<Problem>();
+            if (x == 1)
+            {
+                int type = int.Parse(list[0]);
+                items = dbcontext.Problems.Where(item => item.problemType == type).ToList();
+            }
+            else if (x == 2)
+            {
+                int type = int.Parse(list[0]);
+                var Name_Source = list[1];
+                items = dbcontext.Problems.Where(item => item.problemType == type && item.ProblemSource == Name_Source).ToList();
+            }
+            else if (x == 3)
+            {
+                int type = int.Parse(list[0]);
+                var NameProblem = list[1];
+                items = dbcontext.Problems.Where(item => item.problemType == type && item.problemTitle == NameProblem).ToList();
+            }
+            else if (x == 4)
+            {
+                int type = int.Parse(list[0]);
+                var Name_Source = list[1];
+                var NameProblem = list[2];
+                items = dbcontext.Problems.Where(item => item.problemType == type && item.ProblemSource == Name_Source &&  item.problemTitle==NameProblem).ToList();
+            }
+            return items;
         }
 
         public void Update(Problem newProblem)

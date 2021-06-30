@@ -48,6 +48,11 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             }
         }
 
+        public IList<Blog> search(int x, IList<string> list)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Update(Blog newBlod)
         {
             dbcontext.Blogs.Update(newBlod);

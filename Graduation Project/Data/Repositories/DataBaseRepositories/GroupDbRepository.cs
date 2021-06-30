@@ -47,6 +47,11 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             }
         }
 
+        public IList<Group> search(int x, IList<string> list)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Update(Group newGroup)
         {
             dbcontext.Groups.Update(newGroup);

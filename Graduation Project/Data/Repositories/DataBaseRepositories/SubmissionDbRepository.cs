@@ -47,6 +47,11 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             }
         }
 
+        public IList<Submission> search(int x, IList<string> list)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Update(Submission newSubmission)
         {
             dbcontext.Submissions.Update(newSubmission); 

@@ -13,5 +13,6 @@ namespace GraduationProject.Data.Repositories.Interfaces
         void Remove(int Id);
         void Commit();
         T Find(int Id);
+        IList<T> search(int x,IList<string>list);
     }
 }

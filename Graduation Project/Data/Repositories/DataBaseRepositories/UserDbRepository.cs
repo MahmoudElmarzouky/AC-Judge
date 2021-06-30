@@ -50,5 +50,10 @@ namespace GraduationProject.Data.Repositories
         {
             dbcontext.SaveChanges();
         }
+
+        public IList<User> search(int x, IList<string> list)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
