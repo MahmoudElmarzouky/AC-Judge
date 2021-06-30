@@ -33,3 +33,7 @@ https://stackoverflow.com/questions/43825825/how-to-correctly-implement-other-en
 # User Managment
 
 https://www.youtube.com/playlist?list=PL62tSREI9C-fnwdLjHVP9K9GSHg-r7dzR
+
+# Get The Login User Id 
+
+https://www.koskila.net/how-to-get-current-user-in-asp-net-core/
