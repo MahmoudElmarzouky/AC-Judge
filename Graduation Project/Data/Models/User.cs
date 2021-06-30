@@ -12,12 +12,14 @@ namespace GraduationProject.Data.Models
             UserContest = new HashSet<UserContest>();
             UserGroup = new HashSet<UserGroup>();
         }
+        public string UserIdentityId { get; set; }
         public int UserId { get; set; }
         public string PhotoUrl { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public Boolean Gender { get; set; }
         public DateTime DateOfJoin { get; set; }
+       // public virtual GraduationProject.Areas.Identity.Data.User UserIdentity { get; set; }
         public virtual ICollection<UserContest> UserContest { get; set; }
         public virtual ICollection<UserGroup> UserGroup { get; set; }
         public Handle handle { get; set; }

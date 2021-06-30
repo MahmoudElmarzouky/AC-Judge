@@ -9,13 +9,14 @@ namespace GraduationProject.Data.Models
     {
         public Group()
         {
-            UserGroup = new HashSet<UserGroup>(); 
+            UserGroup = new HashSet<UserGroup>();
+            blogs = new HashSet<Blog>();
+            Contests = new HashSet<Contest>(); 
         }
         public int GroupId { get; set; }
         public String GroupTitle { get; set; }
         public DateTime creationTime { get; set; }
         public string GroupDescription { get; set; }
-        public int NumberOfUsers { get; set; }
         public Boolean Visable { get; set; }
         public string Password { get; set; }
         public virtual ICollection<UserGroup> UserGroup { get; set; }

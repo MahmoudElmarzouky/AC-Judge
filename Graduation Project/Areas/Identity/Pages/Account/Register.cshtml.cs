@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using System.Globalization;
-
+using GraduationProject.Data.Repositories.Interfaces;
 
 namespace GraduationProject.Areas.Identity.Pages.Account
 {
@@ -26,17 +26,20 @@ namespace GraduationProject.Areas.Identity.Pages.Account
         private readonly UserManager<User> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IUserRepository<GraduationProject.Data.Models.User> _userrepository; 
         public List<string> Countries { get; set; }
         public RegisterModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IUserRepository<GraduationProject.Data.Models.User> userrepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _userrepository = userrepository;
             AddCountries();
 
         }
@@ -110,12 +113,14 @@ namespace GraduationProject.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = new User { UserName = Input.UserName, Email = Input.Email, Country = Input.Country, BirthDate = Input.BirthDate};
+                string CreatedUserId = user.Id; 
                 var isEmail = await _userManager.FindByEmailAsync(Input.Email);
                 if (isEmail == null)
                 {
                     var result = await _userManager.CreateAsync(user, Input.Password);
                     if (result.Succeeded)
                     {
+                        AddUserToEntity(user);
                         _logger.LogInformation("User created a new account with password.");
 
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -152,6 +157,11 @@ namespace GraduationProject.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+        private void AddUserToEntity(User user)
+        {
+            var newUser = new GraduationProject.Data.Models.User { UserIdentityId = user.Id, FirstName = user.UserName }; 
+            _userrepository.Add(newUser);
         }
     }
 }

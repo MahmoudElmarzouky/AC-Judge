@@ -7,37 +7,47 @@ using GraduationProject.Data.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using GraduationProject.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace GraduationProject.Controllers.Group
 {
+    [Authorize]
     public class GroupController : Controller
     {
         private readonly IRepository<GraduationProject.Data.Models.Group> groups;
-        public GroupController(IRepository<GraduationProject.Data.Models.Group> groups)
-        {
-            this.groups = groups;
+        private readonly User user;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
+        public GroupController(IRepository<GraduationProject.Data.Models.Group> groups, IUserRepository<User> Userrepository, IHttpContextAccessor httpContextAccessor)
+        {
+            _httpContextAccessor = httpContextAccessor;
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value; 
+            this.groups = groups;
+            user = Userrepository.Find(userId);
         }
         // GET: HomeController
 
         private void AddData()
         {
-            var newGroup = new GraduationProject.Data.Models.Group { GroupTitle = "The Best Group Ever", GroupDescription = "This Group is For Solving Problems And Also Solving Puzzles", NumberOfUsers = 103 };
+            var newGroup = new GraduationProject.Data.Models.Group { GroupTitle = "The Best Group Ever", GroupDescription = "This Group is For Solving Problems And Also Solving Puzzles"};
             groups.Add(newGroup);
-            newGroup = new GraduationProject.Data.Models.Group { GroupTitle = "The Ghots", GroupDescription = "This Group is For Solving Problems And Also Solving Puzzles", NumberOfUsers = 35 };
+            newGroup = new GraduationProject.Data.Models.Group { GroupTitle = "The Ghots", GroupDescription = "This Group is For Solving Problems And Also Solving Puzzles"};
             groups.Add(newGroup);
-            newGroup = new GraduationProject.Data.Models.Group { GroupTitle = "LOL is LOL", GroupDescription = "This Group is For Solving Problems And Also Solving Puzzles", NumberOfUsers = 50 };
+            newGroup = new GraduationProject.Data.Models.Group { GroupTitle = "LOL is LOL", GroupDescription = "This Group is For Solving Problems And Also Solving Puzzles"};
             groups.Add(newGroup);
-            newGroup = new GraduationProject.Data.Models.Group { GroupTitle = "Bad semicolon", GroupDescription = "This Group is For Solving Problems And Also Solving Puzzles", NumberOfUsers = 3 };
+            newGroup = new GraduationProject.Data.Models.Group { GroupTitle = "Bad semicolon", GroupDescription = "This Group is For Solving Problems And Also Solving Puzzles"};
             groups.Add(newGroup);
-            newGroup = new GraduationProject.Data.Models.Group { GroupTitle = "Train Hard And Smart", GroupDescription = "This Group is For Solving Problems And Also Solving Puzzles", NumberOfUsers = 120 };
+            newGroup = new GraduationProject.Data.Models.Group { GroupTitle = "Train Hard And Smart", GroupDescription = "This Group is For Solving Problems And Also Solving Puzzles"};
             groups.Add(newGroup);
 
         }
         public ActionResult Index()
-        {   
-            var list = groups.List(); 
-
+        {
+            var list = new List<ViewGroupModel>();
+            foreach (var item in groups.List())
+                list.Add(getViewModelFromGroup(item)); 
             return View(list);
         }
 
@@ -61,8 +71,14 @@ namespace GraduationProject.Controllers.Group
         {
             try
             {
-                var newGroup = new GraduationProject.Data.Models.Group{ GroupTitle = model.GroupTitle, GroupDescription = model.GroupDescription, Password = model.Password, creationTime = DateTime.Now };
-                groups.Add(newGroup); 
+                var newGroup = getGroupFromCreateModel(model); 
+                groups.Add(newGroup);
+                int userId = user.UserId;
+                int groupId = newGroup.GroupId;
+                var userGroup = CreateRelation(userId, groupId);
+                newGroup.UserGroup.Add(userGroup);
+                groups.Update(newGroup); 
+
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -71,11 +87,17 @@ namespace GraduationProject.Controllers.Group
             }
         }
 
+        private UserGroup CreateRelation(int userId, int groupId)
+        {
+            var usergroup = new UserGroup { UserId = userId, GroupId = groupId, UserRole = "Admin", MemberSince = DateTime.Now, isFavourite = false };
+            return usergroup; 
+        }
+
         // GET: HomeController/Edit/5
         public ActionResult Edit(int id)
         {
             var group = groups.Find(id);
-            var model = getModelFromGroup(group);
+            var model = getCreateModelFromGroup(group);
             return View(model);
         }
 
@@ -86,7 +108,7 @@ namespace GraduationProject.Controllers.Group
         {
             try
             {
-                var newGroup = getGroupFromModel(model);
+                var newGroup = getGroupFromCreateModel(model);
                 groups.Update(newGroup); 
                 return RedirectToAction(nameof(Index));
             }
@@ -100,7 +122,7 @@ namespace GraduationProject.Controllers.Group
         public ActionResult Delete(int id)
         {
             var group = groups.Find(id);
-            var model = getModelFromGroup(group);
+            var model = getCreateModelFromGroup(group);
             return View(model);
         }
 
@@ -119,14 +141,40 @@ namespace GraduationProject.Controllers.Group
                 return View();
             }
         }
-        private GraduationProject.Data.Models.Group getGroupFromModel(CreateGroupModel model)
+        private GraduationProject.Data.Models.Group getGroupFromCreateModel(CreateGroupModel model)
         {
-            var newGroup = new GraduationProject.Data.Models.Group { GroupId = model.GroupId, GroupTitle = model.GroupTitle, GroupDescription = model.GroupDescription, Password = model.Password , Visable = model.Visable};
+            var newGroup = new GraduationProject.Data.Models.Group { 
+                GroupId = model.GroupId, 
+                GroupTitle = model.GroupTitle, 
+                GroupDescription = model.GroupDescription, 
+                Password = model.Password, 
+                Visable = model.Visable, 
+                creationTime = DateTime.Now,
+            };
             return newGroup; 
         }
-        private CreateGroupModel getModelFromGroup(GraduationProject.Data.Models.Group group)
+        private CreateGroupModel getCreateModelFromGroup(GraduationProject.Data.Models.Group group)
         {
             var model = new CreateGroupModel { GroupId = group.GroupId, GroupTitle = group.GroupTitle, GroupDescription = group.GroupDescription, Password = group.Password , Visable = group.Visable};
+            return model;
+        }
+        private ViewGroupModel getViewModelFromGroup(GraduationProject.Data.Models.Group group)
+        {
+            string OwnerName = user.FirstName;
+            int NumberofUpcommingContest = 0;
+            int NumberofRunningContest = 0;
+            int NumberofEndedContest = 0;
+            int NumberOfMembers = 1; 
+            var model = new ViewGroupModel {
+                GroupId = group.GroupId, 
+                GroupTitle = group.GroupTitle, 
+                GroupDescription = group.GroupDescription, 
+                OwnerName = OwnerName, 
+                NumberOfUpCommingContests = NumberofUpcommingContest, 
+                NumberOfRunningContests = NumberofRunningContest, 
+                NumberOfEndedContests = NumberofEndedContest, 
+                NumberOfMembers = NumberOfMembers 
+            };
             return model;
         }
     }

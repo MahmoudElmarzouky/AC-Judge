@@ -20,7 +20,6 @@ namespace GraduationProject.Data
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Submission> Submissions { get; set; }
         public DbSet<UserContest> UserContest { get; set; }
-        public DbSet<UserGroup> UserGroup { get; set; }
         public DbSet<ProblemTag> ProblemTag { get; set; }
         public DbSet<Comment>Comments  { get; set; }
         public DbSet<Blog> Blogs { get; set; }
