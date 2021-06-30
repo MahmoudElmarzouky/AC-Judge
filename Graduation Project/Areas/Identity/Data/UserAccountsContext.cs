@@ -22,6 +22,12 @@ namespace GraduationProject.Data
             builder.Entity<User>()
              .HasIndex(u => u.Email)
               .IsUnique();
+            /*
+            builder.Entity<User>()
+                .HasOne(u => u.UserEntity)
+                .WithOne(u => u.UserIdentity)
+                .HasForeignKey<User>(u => u.Id); 
+        */
         }
     }
 }

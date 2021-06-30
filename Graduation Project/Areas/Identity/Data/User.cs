@@ -14,5 +14,7 @@ namespace GraduationProject.Areas.Identity.Data
         public int BirthDate { get; set; } // birth year 
         [PersonalData]
         public string Country { get; set; }
+       // public virtual GraduationProject.Data.Models.User UserEntity { get; set; }
+
     }
 }

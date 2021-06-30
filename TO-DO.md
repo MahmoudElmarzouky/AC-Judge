@@ -6,18 +6,14 @@ Create Repoistories for:
 - Tag - Added 
 
 Create Controllers for:
-- Group - Added 
+- Group 
 - Contest 
 
  
-# Mohamed Elhabashy 
-ابو الاحباش بيعمل friends
-
-محدش يلعب فى classes
-
-اللهم بلغت 
-
-add friends realtion  
+# Mohamed Elhabashy  
+Create Controllers for:
+- problem 
+- interview 
 
 # Mahmoud Magdi
 Create repository class for : 
@@ -30,5 +26,5 @@ Create repository class for :
 - Handle - added
 - 
 Create Controllers for:
-- Blog
+- Blog - added
 - Comments

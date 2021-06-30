@@ -5,10 +5,12 @@ using GraduationProject.Data.Repositories.DataBaseRepositories;
 using GraduationProject.Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
@@ -30,14 +32,19 @@ namespace GraduationProject
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddDbContext<EntitiesContext>(
                options =>
                {
                    options.UseSqlServer(Configuration.GetConnectionString("UserAccountsContextConnection"));
                });
             services.AddScoped<IRepository<Group>, GroupDbRepository> ();
+ 
             services.AddScoped<IRepository<Problem>, ProblemDbRepository> ();
 
+
+            services.AddScoped<IUserRepository<User>, UserDbRepository>(); 
+ 
 
             services.AddMvc(options => options.EnableEndpointRouting = false);
             
@@ -58,11 +65,10 @@ namespace GraduationProject
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
-            app.UseAuthentication(); 
+
             app.UseMvc(route => {
                 route.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });

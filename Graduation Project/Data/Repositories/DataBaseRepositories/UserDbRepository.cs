@@ -7,7 +7,7 @@ using GraduationProject.Data.Repositories.Interfaces;
 
 namespace GraduationProject.Data.Repositories
 {
-    public class UserDbRepository : IRepository<User>
+    public class UserDbRepository : IUserRepository<User>
     {
         readonly private EntitiesContext dbcontext; 
         public UserDbRepository(EntitiesContext dbcontext)
@@ -25,7 +25,11 @@ namespace GraduationProject.Data.Repositories
             var user = dbcontext.Users.FirstOrDefault(user => user.UserId == Id);
             return user; 
         }
-
+        public User Find(string Id)
+        {
+            var user = dbcontext.Users.FirstOrDefault(user => user.UserIdentityId == Id);
+            return user;
+        }
         public IList<User> List()
         {
             return dbcontext.Users.ToList(); 

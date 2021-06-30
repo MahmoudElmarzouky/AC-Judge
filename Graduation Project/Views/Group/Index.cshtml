@@ -1,4 +1,4 @@
-﻿@model IEnumerable<GraduationProject.Data.Models.Group>
+﻿@model IEnumerable<GraduationProject.ViewModels.ViewGroupModel>
 @{
     ViewData["Title"] = "Group Page";
 }
@@ -29,15 +29,15 @@
                         <div class="col-xs-4 footer-cell">
                             <!-- Number Of User In Group -->
                             <i class="fas fa-users"></i>
-                            @item.NumberOfUsers
+                            @item.NumberOfMembers
                         </div>
                         <div class="col-xs-3 text-info footer-cell">
-                            Owner <!-- If User Owner This Contest Put word Owner -->
+                            @item.OwnerName <!-- If User Owner This Contest Put word Owner -->
                         </div>
                         <ul class="col-xs-5 breadcrumb footer-cell">
-                            <li>20</li><!-- scheduled contest -->
-                            <li>30</li><!-- Running contest -->
-                            <li>90</li><!-- End contest -->
+                            <li>@item.NumberOfUpCommingContests</li><!-- scheduled contest -->
+                            <li>@item.NumberOfRunningContests</li><!-- Running contest -->
+                            <li>@item.NumberOfEndedContests</li><!-- End contest -->
                         </ul>
 
                     </div>
