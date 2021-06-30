@@ -27,6 +27,15 @@ function Main_Rule(){
         $(this).addClass('fa-plus');
        }
     });
+    
+    /*
+     Confirm Message on Click button
+    */
+    var ConfirmMsg = $('.confirm');
+    ConfirmMsg.click(function(){
+       return confirm('Are You Sure ?'); 
+    });
+    
 }
 
 function Show_User_Error_Message(element){
