@@ -29,11 +29,15 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
         public Group Find(int Id)
         {
             var group = dbcontext.Groups.FirstOrDefault(group => group.GroupId == Id);
+            LoadCurrentGroup(group);
             return group;
         }
 
         public IList<Group> List()
         {
+            var list = dbcontext.Groups;
+            foreach (var item in list)
+                LoadCurrentGroup(item);
             return dbcontext.Groups.ToList();
         }
 
@@ -47,10 +51,20 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             }
         }
 
+        
+
         public void Update(Group newGroup)
         {
             dbcontext.Groups.Update(newGroup);
             Commit();
+        }
+        private void LoadCurrentGroup(Group group)
+        {
+           dbcontext.Entry(group).Collection(c => c.UserGroup).Load();
+           dbcontext.Entry(group).Collection(c => c.Contests).Load();
+           dbcontext.Entry(group).Collection(c => c.blogs).Load();
+            foreach (var real in group.UserGroup)
+                dbcontext.Entry(real).Reference(c => c.User).Load();
         }
     }
 }

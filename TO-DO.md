@@ -10,14 +10,10 @@ Create Controllers for:
 - Contest 
 
  
-# Mohamed Elhabashy 
-ابو الاحباش بيعمل friends
-
-محدش يلعب فى classes
-
-اللهم بلغت 
-
-add friends realtion  
+# Mohamed Elhabashy  
+Create Controllers for:
+- problem 
+- interview 
 
 # Mahmoud Magdi
 Create repository class for : 

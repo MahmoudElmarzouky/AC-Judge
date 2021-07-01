@@ -48,6 +48,7 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             }
         }
 
+
         public void Update(Contest newContest)
         {
             dbcontext.Contests.Update(newContest);

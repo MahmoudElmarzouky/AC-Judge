@@ -48,6 +48,7 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             }
         }
 
+
         public void Update(CodeforcesStatistics newCodeforcesStatistics)
         {
             dbcontext.CodeforcesStatistics.Update(newCodeforcesStatistics);

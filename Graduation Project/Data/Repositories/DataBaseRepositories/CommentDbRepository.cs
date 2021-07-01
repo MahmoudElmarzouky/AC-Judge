@@ -56,6 +56,8 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             }
         }
 
+        
+
         public void Update(Comment newComment)
         {
             dbcontext.Comments.Update(newComment);

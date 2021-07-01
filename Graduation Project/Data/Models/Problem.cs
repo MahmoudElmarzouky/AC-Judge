@@ -11,6 +11,8 @@ namespace GraduationProject.Data.Models
         public Problem()
         {
             ProblemTag = new HashSet<ProblemTag>(); 
+            Submissions = new HashSet<Submission>();
+            ContestProblems = new HashSet<ContestProblem>(); 
         }
         public int ProblemId { get; set; }
         
@@ -20,7 +22,7 @@ namespace GraduationProject.Data.Models
         
         public string problemTitle { get; set; }
         
-        public int problemType { get; set; } //interview or contest
+        public int problemType { get; set; } //interview ==1 or contest==2
         
         public int timelimit { get; set; }
         

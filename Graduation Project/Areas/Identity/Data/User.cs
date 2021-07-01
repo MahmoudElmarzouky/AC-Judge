@@ -10,11 +10,6 @@ namespace GraduationProject.Areas.Identity.Data
     // Add profile data for application users by adding properties to the User class
     public class User : IdentityUser
     {
-        [PersonalData]
-        public int BirthDate { get; set; } // birth year 
-        [PersonalData]
-        public string Country { get; set; }
-       // public virtual GraduationProject.Data.Models.User UserEntity { get; set; }
-
+       
     }
 }

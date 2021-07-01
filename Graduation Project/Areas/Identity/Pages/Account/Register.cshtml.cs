@@ -112,14 +112,15 @@ namespace GraduationProject.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = Input.UserName, Email = Input.Email, Country = Input.Country, BirthDate = Input.BirthDate};
+                var user = new User { UserName = Input.UserName, Email = Input.Email};
                 var isEmail = await _userManager.FindByEmailAsync(Input.Email);
                 if (isEmail == null)
                 {
                     var result = await _userManager.CreateAsync(user, Input.Password);
                     if (result.Succeeded)
                     {
-                        AddUserToEntity(user);
+                        
+                        AddUserToEntity(user.Id, Input);
                         _logger.LogInformation("User created a new account with password.");
 
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -157,9 +158,9 @@ namespace GraduationProject.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
-        private void AddUserToEntity(User user)
+        private void AddUserToEntity(string Id, InputModel Input)
         {
-            var newUser = new GraduationProject.Data.Models.User { UserIdentityId = user.Id, FirstName = user.UserName }; 
+            var newUser = new GraduationProject.Data.Models.User { UserIdentityId = Id, UserName = Input.UserName, Country = Input.Country, BirthDate = Input.BirthDate, FirstName = Input.UserName }; 
             _userrepository.Add(newUser);
         }
     }

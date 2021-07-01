@@ -4,6 +4,10 @@ https://www.entityframeworktutorial.net/
 
 https://www.youtube.com/watch?v=I9eMtI_RnUQ&list=PL62tSREI9C-cHV28v-EqWinveTTAos8Pp&ab_channel=DevCreedDevCreed
 
+# Loading 
+
+https://www.codeproject.com/Articles/788559/Loading-Related-Entities-with-Entity-Framework-A-B
+
 # many to many with additional fields 
 
 https://stackoverflow.com/questions/7050404/create-code-first-many-to-many-with-additional-fields-in-association-table
