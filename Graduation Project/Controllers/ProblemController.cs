@@ -1,24 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GraduationProject.Data.Repositories.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using GraduationProject.Data.Models;
+using GraduationProject.Data.Repositories.IProblemRepository;
+
 namespace GraduationProject.Controllers.problems
 {
     public class ProblemController : Controller
     {
-        private readonly IRepository<Problem> problemRepository;
-        public ProblemController(IRepository<Problem> problemRepository)
+        private readonly IProblemRepository<Problem> problemRepository;
+        public ProblemController(IProblemRepository<Problem> problemRepository)
         {
             this.problemRepository = problemRepository;
         }
         public ActionResult Index()
         {
-            
-            var list = problemRepository.search(1,new List<string>() { "1" });
+
+            var list = problemRepository.Search(1, new List<string>() { "1" });
             return View(list);
         }
         public ActionResult Filter()
@@ -28,19 +26,19 @@ namespace GraduationProject.Controllers.problems
             var list=new List<Problem>();
             if (ProblemSource != "" && NameProblem != "")
             {
-                list = (List<Problem>)problemRepository.search(4, new List<string>() { "1", ProblemSource, NameProblem });
+                list = (List<Problem>)problemRepository.Search(4, new List<string>() { "1", ProblemSource, NameProblem });
             }
             else if (NameProblem != "")
             {
-                list = (List<Problem>)problemRepository.search(3, new List<string>() { "1", NameProblem });
+                list = (List<Problem>)problemRepository.Search(3, new List<string>() { "1", NameProblem });
             }
             else if (ProblemSource != "")
             {
-                list = (List<Problem>)problemRepository.search(2, new List<string>() { "1", ProblemSource });
+                list = (List<Problem>)problemRepository.Search(2, new List<string>() { "1", ProblemSource });
             }
             else
             {
-                list = (List<Problem>)problemRepository.search(1, new List<string>() { "1" });
+                list = (List<Problem>)problemRepository.Search(1, new List<string>() { "1" });
 
             }
             return View("Index", list);
@@ -65,6 +63,7 @@ namespace GraduationProject.Controllers.problems
         {
             try
             {
+                problem.problemType = 1;
                 problemRepository.Add(problem);
                 return RedirectToAction(nameof(Index));
             }

@@ -1,0 +1,78 @@
+﻿@model GraduationProject.Data.Models.Problem
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Problem</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ProblemSource)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProblemSource)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.problemSourceId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.problemSourceId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.problemTitle)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.problemTitle)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.problemType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.problemType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.timelimit)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.timelimit)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.memorylimit)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.memorylimit)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.inputType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.inputType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.outputType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.outputType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.problemText)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.problemText)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.rating)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.rating)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ProblemId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
