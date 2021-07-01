@@ -10,9 +10,6 @@ i[data-favorite='IconFav']{
 i[data-favorite='IconFav'].active{
     color: red !important;
 }
-a{
-    text-decoration: none !important;
-}
 
 /*
 mark{
@@ -24,10 +21,23 @@ mark{
 /* End Main Rules */
 
 /* Start Tags Edit */
-
+a{
+    text-decoration: none !important;
+}
 
 /* End Tags Edit */
 
+/* Start Edit BootStarp */
+.modal .modal-header .model-header-flex{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.modal .modal-header .close{
+    margin: 0;
+}
+
+/* End Edit BootStarp */
 
 /* Start Header */
 
@@ -250,8 +260,25 @@ header .nav-main .navbar-brand span{
     color: #333;
     font-size: 1.7rem;
 }
+/* Modals */
+.details-group-page .invite-modal .modal-body textarea{
+    width: 100%;
+    height: 150px;
+    resize: none;
+}
+.details-group-page .edit-group-modal .modal-body .table td{
+    vertical-align:middle !important;
+    background-color: #EEE;
+}
+.details-group-page .edit-group-modal .modal-body .table tr:first-child td{
+    color:#FFF;
+    background-color:#333;
+}
+.details-group-page .edit-group-modal .modal-body .table .btn{
+    padding:3px 10px;
+}
 
-/* Start Group Details Page */
+/* End Group Details Page */
 /* Start Footer */
 
 footer .copyright{

@@ -18,14 +18,7 @@
                         <li class="list-group-item">@Model.UserRole</li>
                     </ul>
                     <div class="panel-footer">
-                        @{ 
-                            var className = "fas fa-heart";
-                            if (Model.IsFavourite)
-                                className += " active";
-                        }
-                        <a asp-action="FlipFavourite" asp-route-id="@Model.GroupId"><i class="@className" data-favorite="IconFav"></i></a>
-                        
-                        <!-- add class active if this faviorte group -->
+                        <i class="fas fa-heart" data-favorite="IconFav"></i> <!-- add class active if this faviorte group -->
                     </div>
                 </section>
                 <section class="panel panel-info text-center">
@@ -71,22 +64,23 @@
                     <div class="dropdown"> <!-- visible if user leader or manger -->
                           <a href="#" class="btn btn-info dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
                           <ul class="dropdown-menu">
-                              <li><a href="#">Control Member</a></li>
-                              <li><a href="#">Control Contest</a></li>
-                              <li><a href="#">Control Blog</a></li>
+                              <li><a href="javascript:void(0)" data-toggle="modal" data-target="#CreateMemberGroupModal">New Member</a></li>
+                              <li><a href="#">New Contest</a></li>
+                              <li><a href="#">New Blog</a></li>
+                              <li><a href="#">Edit Group</a></li>
                               <li><a asp-action="Leave" asp-route-id="@Model.GroupId" class="confirm">Leave Group</a></li>
                                   @if (Model.UserRole == "Admin")
                                   {
-                                    <li><a asp-action="Delete" asp-route-id="@Model.GroupId" class="confirm" >Exit Group</a></li>
+                                  <li><a asp-action="Delete" asp-route-id="@Model.GroupId" class="confirm" >Exit Group</a></li>
                                   }
                           </ul>
                     </div>
                     }
                     else
                     {
-                    <div class=""> 
-
+                    <div class="">
                         <a asp-action="Leave" asp-route-id="@Model.GroupId"  class="btn btn-danger">Leave Group</a>
+                        <!-- <a href="#" class="btn btn-info">Join Group</a> <!-- if user not in group -->
                     </div> 
                     <!-- visible if user participant -->
                     }
@@ -109,8 +103,8 @@
                                         <td>Prepeard By</td>
                                     </tr>
                                    @{
-                                       foreach (var contest in Model.Contests)
-                                       {
+                                    foreach (var contest in Model.Contests)
+                                    {
                                         <tr>
                                             <td><a href="#">@contest.contestTitle</a></td>
                                             <td class="starte-time">
@@ -118,11 +112,7 @@
                                                 <div>@contest.contestStartTime.ToString("MM/dd/yyyy")</div>
                                                 <div>@contest.contestStartTime.ToString("HH:mm")</div>
                                             </td>
-                                            @{ 
-                                                var hours = contest.contestDuration / 60;
-                                                var minutes = contest.contestDuration % 60; 
-                                            }
-                                            <td> @hours.ToString("00"):@minutes.ToString("00") </td>
+                                            <td> @contest.contestDuration </td>
                                             <!-- Prepeard by-->
                                             <!--contest.UserContest.FirstOrDefault(u => u.isOwner == true).User.FirstName -->
                                             <td><a href="#"> ME  </a></td>
@@ -155,7 +145,8 @@
                                     foreach (var rel in Model.UserGroup)
                                     {
                                         <tr>
-                                            <td>@rel.User.FirstName</td>
+                                            <td>@rel.User.FirstName</td> <!-- if user member or user is curent user-->
+                                            <!--<td><a href="javascript:void(0)" data-toggle="modal" data-target="#EditMemberGroupModal">Mostafa Shehab</a></td> <!-- if other -->
                                             <td><a href="#">@rel.User.UserName</a></td>
                                             <td>@rel.UserRole</td>
                                             <td>@rel.MemberSince.ToString("MM/dd/yyyy")</td>
@@ -202,6 +193,68 @@
                 </section>
             </div>
         </div>
+        <!-- View Page Modal -->
+        <div class="modal fade bd-example-modal-sm invite-modal" id="CreateMemberGroupModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="model-header-flex">
+                            <h3 class="modal-title">Invite Member</h3>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                          <textarea class="form-control" placeholder="Input User name to invite, Separate by white spaces."></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- To Invite New Member -->
+        
+        <div class="modal fade bd-example-modal-sm edit-group-modal" id="EditMemberGroupModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="model-header-flex">
+                            <h3 class="modal-title">Edit Member</h3>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center">
+                                <tbody>
+                                    <tr>
+                                        <td>Name</td>
+                                        <td>User Name</td>
+                                        <td>Control</td>
+                                    </tr>
+                                    </tr>
+                                    <tr>
+                                        <td>Mostafa Shehab</td>
+                                        <td>Super_Mari000</td>
+                                        <td>
+                                            <a href="#" class="btn btn-success"><i class="fas fa-edit"></i> Set Manager</a> <!-- if user is member -->
+                                            <!--<a href="#" class="btn btn-success"><i class="fas fa-edit"></i> Set Member</a> <!-- if user is manager -->
+                                            <a href="#" class="btn btn-danger"><i class="fas fa-times-circle"></i> Delete</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- To Edit Member -->
     </div>
 </section>
 
