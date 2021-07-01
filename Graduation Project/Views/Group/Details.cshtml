@@ -97,16 +97,18 @@
                                 @{
                                     foreach (var contest in Model.Contests)
                                     {
-                                        <tr>
-                                            <td><a href="#">@contest.contestTitle</a></td>
-                                            <td class="starte-time">
-                                                <!-- contest start time -->
-                                                <div>@contest.contestStartTime.ToString("MM/dd/yyyy")</div>
-                                                <div>@contest.contestStartTime.ToString("HH:mm")</div>
-                                            </td>
-                                            <td>@contest.contestDuration.ToString("HH:mm")</td>
-                                            <td><a href="#">Super_Mari000</a></td>
-                                        </tr>
+                                                                <tr>
+                                                                    <td><a href="#">@contest.contestTitle</a></td>
+                                                                    <td class="starte-time">
+                                                                        <!-- contest start time -->
+                                                                        <div>@contest.contestStartTime.ToString("MM/dd/yyyy")</div>
+                                                                        <div>@contest.contestStartTime.ToString("HH:mm")</div>
+                                                                    </td>
+                                                                    <td> @contest.contestDuration </td>
+                                                                    <!-- Prepeard by-->
+                                                                    <!--contest.UserContest.FirstOrDefault(u => u.isOwner == true).User.FirstName -->
+                                                                    <td><a href="#"> ME  </a></td>
+                                                                </tr>
                                     }
                                 }
                                 <!--

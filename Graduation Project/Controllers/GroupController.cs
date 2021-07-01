@@ -178,30 +178,21 @@ namespace GraduationProject.Controllers.Group
         }
         private ViewGroupModel getViewModelFromGroup(GraduationProject.Data.Models.Group group)
         {
-            int NumberofUpcommingContest = 0;
-            int NumberofRunningContest = 0;
-            int NumberofEndedContest = 0;
+            
             int NumberOfMembers = group.UserGroup.Count;
             var query = group.UserGroup.FirstOrDefault(u => u.UserId == user.UserId);
             var role = query != null? query.UserRole: "Not Set";
-            
             var userGroupRel = group.UserGroup.Where(u => u.GroupId == group.GroupId).ToList();
-            
-
             var model = new ViewGroupModel {
                 GroupId = group.GroupId,
                 GroupTitle = group.GroupTitle,
                 GroupDescription = group.GroupDescription,
                 UserRole = role,
-                NumberOfUpCommingContests = NumberofUpcommingContest,
-                NumberOfRunningContests = NumberofRunningContest,
-                NumberOfEndedContests = NumberofEndedContest,
                 NumberOfMembers = NumberOfMembers,
                 GroupStatus = group.Visable ? "Public" : "Private",
                 creationTime = group.creationTime,
                 UserGroup = userGroupRel,
                 Contests = group.Contests.ToList()
-
             };
             return model;
         }
