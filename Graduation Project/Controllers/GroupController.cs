@@ -176,7 +176,13 @@ namespace GraduationProject.Controllers.Group
                 var group = groups.Find(groupId);
                 var GroupUserReal = group.UserGroup.FirstOrDefault(u => u.UserId == userId && u.GroupId == groupId);
                 group.UserGroup.Remove(GroupUserReal);
-                groups.Update(group); 
+                groups.Update(group);
+                if (group.UserGroup.Count == 0)
+                {
+                    // if the only member in the group leaves 
+                    // then delete the group 
+                    return Delete(model);
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch
