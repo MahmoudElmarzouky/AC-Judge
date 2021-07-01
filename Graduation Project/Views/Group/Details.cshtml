@@ -67,10 +67,10 @@
                               <li><a href="#">Control Member</a></li>
                               <li><a href="#">Control Contest</a></li>
                               <li><a href="#">Control Blog</a></li>
-                              <li><a href="#" class="confirm">Leave Group</a></li>
+                              <li><a asp-action="Leave" asp-route-id="@Model.GroupId" class="confirm">Leave Group</a></li>
                                   @if (Model.UserRole == "Admin")
                                   {
-                                  <li><a href="#" class="confirm">Exit Group</a></li>
+                                  <li><a asp-action="Delete" asp-route-id="@Model.GroupId" class="confirm" >Exit Group</a></li>
                                   }
                           </ul>
                     </div>
@@ -79,7 +79,7 @@
                     {
                     <div class=""> 
 
-                        <a href="#" class="btn btn-danger">Leave Group</a>
+                        <a asp-action="Leave" asp-route-id="@Model.GroupId"  class="btn btn-danger">Leave Group</a>
                     </div> 
                     <!-- visible if user participant -->
                     }
