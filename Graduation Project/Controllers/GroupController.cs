@@ -141,7 +141,7 @@ namespace GraduationProject.Controllers.Group
         {
             var group = groups.Find(id);
             var model = getCreateModelFromGroup(group);
-            return View(model);
+            return Delete(model);
         }
 
         // POST: HomeController/Delete/5
