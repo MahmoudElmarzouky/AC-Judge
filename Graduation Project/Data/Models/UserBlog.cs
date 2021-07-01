@@ -14,7 +14,7 @@ namespace GraduationProject.Data.Models
         [Key, Column(Order = 1)]
         public int blogId { get; set; }
         public Boolean isFavourite { get; set; }
-        public int blogOwenr { get; set; } // ID for user owner 
+        public Boolean blogOwenr { get; set; } // ID for user owner 
 
         public virtual User User { get; set; }
         public virtual Blog blog { get; set; }

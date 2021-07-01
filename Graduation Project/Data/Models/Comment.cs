@@ -8,6 +8,10 @@ namespace GraduationProject.Data.Models
 {
     public class Comment
     {
+        public Comment()
+        {
+            CommentVotes = new HashSet<commentVote>();
+        }
         public int commentId { get; set; }
         [MaxLength(50)]
         public string content { get; set; }
