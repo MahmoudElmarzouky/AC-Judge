@@ -1,24 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using GraduationProject.Data.Models;
+using GraduationProject.Data.Repositories.IProblemRepository;
 
-namespace GraduationProject.Controllers.Problem
+namespace GraduationProject.Controllers.problems
 {
     public class ProblemController : Controller
     {
-        // GET: HomeController
+        private readonly IProblemRepository<Problem> problemRepository;
+        public ProblemController(IProblemRepository<Problem> problemRepository)
+        {
+            this.problemRepository = problemRepository;
+        }
         public ActionResult Index()
         {
-            return View();
-        }
 
+            var list = problemRepository.Search(1, new List<string>() { "1" });
+            return View(list);
+        }
+        public ActionResult Filter()
+        {
+            var ProblemSource = Request.Form["ProblemSource"];
+            var NameProblem = Request.Form["NameProblem"];
+            var list=new List<Problem>();
+            if (ProblemSource != "" && NameProblem != "")
+            {
+                list = (List<Problem>)problemRepository.Search(4, new List<string>() { "1", ProblemSource, NameProblem });
+            }
+            else if (NameProblem != "")
+            {
+                list = (List<Problem>)problemRepository.Search(3, new List<string>() { "1", NameProblem });
+            }
+            else if (ProblemSource != "")
+            {
+                list = (List<Problem>)problemRepository.Search(2, new List<string>() { "1", ProblemSource });
+            }
+            else
+            {
+                list = (List<Problem>)problemRepository.Search(1, new List<string>() { "1" });
+
+            }
+            return View("Index", list);
+        }
         // GET: HomeController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var problem = problemRepository.Find(id);
+            return View(problem);
         }
 
         // GET: HomeController/Create
@@ -30,10 +59,12 @@ namespace GraduationProject.Controllers.Problem
         // POST: HomeController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Problem problem)
         {
             try
             {
+                problem.problemType = 1;
+                problemRepository.Add(problem);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -42,46 +73,46 @@ namespace GraduationProject.Controllers.Problem
             }
         }
 
-        // GET: HomeController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+        //// GET: HomeController/Edit/5
+        //public ActionResult Edit(int id)
+        //{
+        //    return View();
+        //}
 
-        // POST: HomeController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        //// POST: HomeController/Edit/5
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Edit(int id, IFormCollection collection)
+        //{
+        //    try
+        //    {
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
 
-        // GET: HomeController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+        //// GET: HomeController/Delete/5
+        //public ActionResult Delete(int id)
+        //{
+        //    return View();
+        //}
 
-        // POST: HomeController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        //// POST: HomeController/Delete/5
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Delete(int id, IFormCollection collection)
+        //{
+        //    try
+        //    {
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
     }
 }

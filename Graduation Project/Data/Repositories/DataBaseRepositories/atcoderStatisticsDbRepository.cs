@@ -48,6 +48,8 @@ namespace GraduationProject.Data.Repositories
             }
         }
 
+       
+
         public void Update(atcoderStatistics newAtcoderStatistics)
         {
             dbcontext.atcoderStatistics.Update(newAtcoderStatistics);

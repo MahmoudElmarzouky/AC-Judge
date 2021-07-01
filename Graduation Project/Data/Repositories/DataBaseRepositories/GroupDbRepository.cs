@@ -51,6 +51,8 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             }
         }
 
+        
+
         public void Update(Group newGroup)
         {
             dbcontext.Groups.Update(newGroup);

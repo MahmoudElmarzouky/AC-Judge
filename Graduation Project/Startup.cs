@@ -3,6 +3,7 @@ using GraduationProject.Data.Models;
 using GraduationProject.Data.Repositories;
 using GraduationProject.Data.Repositories.DataBaseRepositories;
 using GraduationProject.Data.Repositories.Interfaces;
+using GraduationProject.Data.Repositories.IProblemRepository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -39,7 +40,12 @@ namespace GraduationProject
                    options.UseSqlServer(Configuration.GetConnectionString("UserAccountsContextConnection"));
                });
             services.AddScoped<IRepository<Group>, GroupDbRepository> ();
+
+            services.AddScoped<IProblemRepository<Problem>, ProblemDbRepository > ();
+
+
             services.AddScoped<IUserRepository<User>, UserDbRepository>(); 
+ 
 
             services.AddMvc(options => options.EnableEndpointRouting = false);
             

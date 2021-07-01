@@ -48,6 +48,8 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             }
         }
 
+        
+
         public void Update(Blog newBlod)
         {
             dbcontext.Blogs.Update(newBlod);
