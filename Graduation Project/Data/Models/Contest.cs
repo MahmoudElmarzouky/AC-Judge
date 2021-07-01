@@ -9,7 +9,9 @@ namespace GraduationProject.Data.Models
     {
         public Contest()
         {
-            UserContest = new HashSet<UserContest>(); 
+            UserContest = new HashSet<UserContest>();
+            Submissions = new HashSet<Submission>();
+            ContestProblems = new HashSet<ContestProblem>(); 
         }
         public int contestId { get; set; }
         public string contestTitle { get; set; }
@@ -32,8 +34,9 @@ namespace GraduationProject.Data.Models
         }
         public virtual ICollection<UserContest> UserContest { get; set; }
         public virtual ICollection<Submission> Submissions { get; set; }
+        public virtual ICollection<ContestProblem> ContestProblems { get; set; }
         public int groupId { get; set; }
         public Group group { get; set; }
-        public virtual ICollection<ContestProblem> ContestProblems { get; set; }
+        
     }
 }

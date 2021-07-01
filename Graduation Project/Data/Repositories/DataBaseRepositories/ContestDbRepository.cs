@@ -13,6 +13,7 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
         public ContestDbRepository(EntitiesContext dbcontext)
         {
             this.dbcontext = dbcontext;
+            
         }
     
         public Contest Add(Contest newContest)
@@ -54,6 +55,12 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             dbcontext.Contests.Update(newContest);
             Commit();
           
+        }
+        private void LoadCurrentContest(Contest contest)
+        {
+            dbcontext.Entry(contest).Collection(c => c.ContestProblems).Load();
+            dbcontext.Entry(contest).Collection(c => c.UserContest).Load();
+            dbcontext.Entry(contest).Collection(c => c.Submissions).Load();
         }
     }
 }

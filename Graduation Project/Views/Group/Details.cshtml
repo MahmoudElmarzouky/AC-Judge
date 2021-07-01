@@ -72,7 +72,7 @@
                           <a href="#" class="btn btn-info dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
                           <ul class="dropdown-menu">
                               <li><a href="#">Control Member</a></li>
-                              <li><a href="#">Control Contest</a></li>
+                              <li><a asp-controller="Contest" asp-action="Create" asp-route-id="@Model.GroupId">Control Contest</a></li>
                               <li><a href="#">Control Blog</a></li>
                               <li><a asp-action="Leave" asp-route-id="@Model.GroupId" class="confirm">Leave Group</a></li>
                                   @if (Model.UserRole == "Admin")
