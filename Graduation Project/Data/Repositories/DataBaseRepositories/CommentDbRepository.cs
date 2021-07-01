@@ -1,5 +1,6 @@
 ﻿using GraduationProject.Data.Models;
 using GraduationProject.Data.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,13 +30,20 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
 
         public Comment Find(int Id)
         {
-            var comment = dbcontext.Comments.FirstOrDefault(comment => comment.commentId == Id);
+            var comment = dbcontext.Comments
+                .Include(commentVote => commentVote.CommentVotes)
+                .ThenInclude(user => user.User)
+                .FirstOrDefault(comment => comment.commentId == Id);
             return comment;
         }
 
         public IList<Comment> List()
         {
-            return dbcontext.Comments.ToList();
+            return dbcontext.Comments
+                .Include(commentVote => commentVote.CommentVotes)
+                .ThenInclude(user => user.User)
+                .Include(b=>b.blog)
+                .ToList();
         }
 
         public void Remove(int Id)
