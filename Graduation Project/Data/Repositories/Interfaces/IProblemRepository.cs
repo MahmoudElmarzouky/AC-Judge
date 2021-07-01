@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace GraduationProject.Data.Repositories.Interfaces
+namespace GraduationProject.Data.Repositories.IProblemRepository
 {
-    public interface IRepository<T>
+    public interface IProblemRepository<T>
     {
         IList<T> List();
         T Add(T Entity);
@@ -13,5 +11,6 @@ namespace GraduationProject.Data.Repositories.Interfaces
         void Remove(int Id);
         void Commit();
         T Find(int Id);
+        IList<T> Search(int x, IList<string> list);
     }
 }

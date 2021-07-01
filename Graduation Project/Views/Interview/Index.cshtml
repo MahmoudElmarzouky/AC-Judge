@@ -1,16 +1,72 @@
-﻿@{
-    ViewData["Title"] = "Interview Page";
+﻿@model IEnumerable<GraduationProject.Data.Models.Problem>
+
+@{
+    ViewData["Title"] = "Index";
 }
-<center>
-    @{
-        for (int i = 0; i < 5; i++)
-        {
-            <div class="alert-success">
-                <h1>Ya Welcome Ya Welcome You Are In @ViewData["Title"]</h1>
+
+<h2>Index</h2>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Filter">
+            <div class="form-group">
+                <select name="ProblemSource">
+                    <option value=""></option>
+                    <option value="Codeforces">Codeforces</option>
+                    <option value="Atcoder">Atcoder</option>
+                </select>
             </div>
+            <div class="form-group">
+                <label class="control-label">Problem Name</label>
+                <input name="NameProblem" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Filter" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProblemSource)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.problemSourceId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.problemTitle)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.rating)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProblemSource)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.problemSourceId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.problemTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.rating)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.ProblemId">Details</a> |
+                </td>
+            </tr>
         }
-    }
-</center>
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+    </tbody>
+</table>

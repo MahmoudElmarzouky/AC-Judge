@@ -48,10 +48,7 @@ namespace GraduationProject.Data.Repositories
             }
         }
 
-        public IList<atcoderStatistics> search(int x, IList<string> list)
-        {
-            throw new NotImplementedException();
-        }
+       
 
         public void Update(atcoderStatistics newAtcoderStatistics)
         {

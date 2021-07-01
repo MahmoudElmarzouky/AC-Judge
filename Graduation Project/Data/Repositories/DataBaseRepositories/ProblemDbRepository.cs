@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using GraduationProject.Data.Models;
-using GraduationProject.Data.Repositories.Interfaces;
+using GraduationProject.Data.Repositories.IProblemRepository;
 
 namespace GraduationProject.Data.Repositories.DataBaseRepositories
 {
-    public class ProblemDbRepository : IRepository<Problem>
+    public class ProblemDbRepository : IProblemRepository<Problem>
     {
         readonly private EntitiesContext dbcontext;
         public ProblemDbRepository(EntitiesContext dbcontext)
@@ -47,7 +46,7 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             }
         }
 
-        public IList<Problem> search(int x, IList<string> list)
+        public IList<Problem> Search(int x, IList<string> list)
         {
             var items = new List<Problem>();
             if (x == 1)

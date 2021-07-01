@@ -48,10 +48,6 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             }
         }
 
-        public IList<Contest> search(int x, IList<string> list)
-        {
-            throw new NotImplementedException();
-        }
 
         public void Update(Contest newContest)
         {
