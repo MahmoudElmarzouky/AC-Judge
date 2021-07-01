@@ -11,13 +11,13 @@ namespace GraduationProject.ViewModels
         public ViewGroupModel()
         {
             Contests = new HashSet<Contest>();
-            UserGroup = new HashSet<UserGroup>(); 
+            UserGroup = new HashSet<UserGroup>();
         }
         public int GroupId { get; set; }
         public string GroupTitle { get; set; }
         public string GroupDescription { get; set; }
         public int NumberOfMembers { get; set; }
-        public string UserRole { get; set; }
+       
         public DateTime creationTime { get; set; }
         public int NumberOfUpCommingContests {
             get {
@@ -36,9 +36,10 @@ namespace GraduationProject.ViewModels
             } 
             set { } 
         }
-        public string GroupStatus { get; set; }
+        public string GroupStatus { get; set; } // Public / Private 
+        public string UserRole { get; set; }
+        public Boolean IsFavourite { get; set; }
         public virtual ICollection<Contest> Contests { get; set; }
         public virtual ICollection<UserGroup> UserGroup { get; set; }
-
     }
 }

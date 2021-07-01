@@ -160,7 +160,7 @@ namespace GraduationProject.Areas.Identity.Pages.Account
         }
         private void AddUserToEntity(string Id, InputModel Input)
         {
-            var newUser = new GraduationProject.Data.Models.User { UserIdentityId = Id, UserName = Input.UserName, Country = Input.Country, BirthDate = Input.BirthDate }; 
+            var newUser = new GraduationProject.Data.Models.User { UserIdentityId = Id, UserName = Input.UserName, Country = Input.Country, BirthDate = Input.BirthDate, FirstName = Input.UserName }; 
             _userrepository.Add(newUser);
         }
     }
