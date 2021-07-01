@@ -159,6 +159,61 @@ namespace GraduationProject.Controllers.Group
                 return View();
             }
         }
+        public ActionResult Leave(int id)
+        {
+            var group = groups.Find(id);
+            var model = getCreateModelFromGroup(group);
+            return Leave(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Leave(CreateGroupModel model)
+        {
+            try
+            {
+                int userId = user.UserId;
+                int groupId = model.GroupId;
+                var group = groups.Find(groupId);
+                var GroupUserReal = group.UserGroup.FirstOrDefault(u => u.UserId == userId && u.GroupId == groupId);
+                group.UserGroup.Remove(GroupUserReal);
+                groups.Update(group); 
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+        public ActionResult FlipFavourite(int id)
+        {
+            var group = groups.Find(id);
+            var model = getCreateModelFromGroup(group);
+            return FlipFavourite(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult FlipFavourite(CreateGroupModel model)
+        {
+            try
+            {
+                int userId = user.UserId;
+                int groupId = model.GroupId;
+                var group = groups.Find(groupId);
+                var GroupUserReal = group.UserGroup.FirstOrDefault(u => u.UserId == userId && u.GroupId == groupId);
+                if (GroupUserReal == null)
+                {
+                    return RedirectToAction("Details", new { id = model.GroupId });
+                }
+                GroupUserReal.isFavourite ^= true;
+                groups.Update(group);
+                return RedirectToAction("Details", new { id = model.GroupId });
+            }
+            catch
+            {
+                // there is no view for this method so, if you come here you will see exception 
+                return View();
+            }
+        }
         private GraduationProject.Data.Models.Group getGroupFromCreateModel(CreateGroupModel model)
         {
             var newGroup = new GraduationProject.Data.Models.Group { 
@@ -181,6 +236,7 @@ namespace GraduationProject.Controllers.Group
             
             int NumberOfMembers = group.UserGroup.Count;
             var query = group.UserGroup.FirstOrDefault(u => u.UserId == user.UserId);
+            var IsFavourite = query != null? query.isFavourite: false; 
             var role = query != null? query.UserRole: "Not Set";
             var userGroupRel = group.UserGroup.Where(u => u.GroupId == group.GroupId).ToList();
             var model = new ViewGroupModel {
@@ -192,7 +248,8 @@ namespace GraduationProject.Controllers.Group
                 GroupStatus = group.Visable ? "Public" : "Private",
                 creationTime = group.creationTime,
                 UserGroup = userGroupRel,
-                Contests = group.Contests.ToList()
+                Contests = group.Contests.ToList(), 
+                IsFavourite = IsFavourite
             };
             return model;
         }

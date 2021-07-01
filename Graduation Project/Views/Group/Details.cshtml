@@ -18,7 +18,14 @@
                         <li class="list-group-item">@Model.UserRole</li>
                     </ul>
                     <div class="panel-footer">
-                        <i class="fas fa-heart" data-favorite="IconFav"></i> <!-- add class active if this faviorte group -->
+                        @{ 
+                            var className = "fas fa-heart";
+                            if (Model.IsFavourite)
+                                className += " active";
+                        }
+                        <a asp-action="FlipFavourite" asp-route-id="@Model.GroupId"><i class="@className" data-favorite="IconFav"></i></a>
+                        
+                        <!-- add class active if this faviorte group -->
                     </div>
                 </section>
                 <section class="panel panel-info text-center">
@@ -70,7 +77,7 @@
                               <li><a asp-action="Leave" asp-route-id="@Model.GroupId" class="confirm">Leave Group</a></li>
                                   @if (Model.UserRole == "Admin")
                                   {
-                                  <li><a asp-action="Delete" asp-route-id="@Model.GroupId" class="confirm" >Exit Group</a></li>
+                                    <li><a asp-action="Delete" asp-route-id="@Model.GroupId" class="confirm" >Exit Group</a></li>
                                   }
                           </ul>
                     </div>
