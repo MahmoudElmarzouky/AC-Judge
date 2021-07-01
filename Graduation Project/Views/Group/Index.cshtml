@@ -32,7 +32,9 @@
                             @item.NumberOfMembers
                         </div>
                         <div class="col-xs-3 text-info footer-cell">
-                            @item.OwnerName <!-- If User Owner This Contest Put word Owner -->
+                              @if(item.UserRole == "Admin")
+                                    @item.UserRole 
+                              <!-- If User Owner This Contest Put word Owner -->
                         </div>
                         <ul class="col-xs-5 breadcrumb footer-cell">
                             <li>@item.NumberOfUpCommingContests</li><!-- scheduled contest -->
