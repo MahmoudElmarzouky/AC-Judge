@@ -109,8 +109,8 @@
                                         <td>Prepeard By</td>
                                     </tr>
                                    @{
-                                    foreach (var contest in Model.Contests)
-                                    {
+                                       foreach (var contest in Model.Contests)
+                                       {
                                         <tr>
                                             <td><a href="#">@contest.contestTitle</a></td>
                                             <td class="starte-time">
@@ -118,7 +118,11 @@
                                                 <div>@contest.contestStartTime.ToString("MM/dd/yyyy")</div>
                                                 <div>@contest.contestStartTime.ToString("HH:mm")</div>
                                             </td>
-                                            <td> @contest.contestDuration </td>
+                                            @{ 
+                                                var hours = contest.contestDuration / 60;
+                                                var minutes = contest.contestDuration % 60; 
+                                            }
+                                            <td> @hours.ToString("00"):@minutes.ToString("00") </td>
                                             <!-- Prepeard by-->
                                             <!--contest.UserContest.FirstOrDefault(u => u.isOwner == true).User.FirstName -->
                                             <td><a href="#"> ME  </a></td>
