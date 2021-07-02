@@ -1,4 +1,4 @@
-﻿@model GraduationProject.Data.Models.Contest
+﻿@model GraduationProject.ViewModels.ContestViewsModel.ViewContestModel
 
 @{
     ViewData["Title"] = "Details";
@@ -53,7 +53,40 @@
         <dd>
             @Html.DisplayFor(model => model.group.GroupId)
         </dd>
+
     </dl>
+    <!-- This table for print registered users in the contest -->
+    <table class="table">
+        <tr>
+            <th>
+                UserName
+            </th>
+        </tr>
+        @{
+            foreach (var user in Model.UserContest)
+            {
+                <tr>
+                    <td> @user.User.UserName </td>
+                </tr>
+            }
+        }
+    </table>
+    <!-- This table is for print the problems in the contest -->
+    <table class="table">
+        <tr>
+            <th>
+                Problem Name
+            </th>
+        </tr>
+        @{
+            foreach (var problem in Model.Problems)
+            {
+                <tr>
+                    <td> @problem.problemTitle </td>
+                </tr>
+            }
+        }
+    </table>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.contestId">Edit</a> |

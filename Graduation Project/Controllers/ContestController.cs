@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using GraduationProject.Data.Models;
 using GraduationProject.Data.Repositories.Interfaces;
+using GraduationProject.ViewModels.ContestViewsModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,7 +32,29 @@ namespace GraduationProject.Controllers.Contest
         public ActionResult Details(int Id)
         {
             var contest = contests.Find(Id);
-            return View(contest);
+            var model = getContestViewModelFromContest(contest); 
+            return View(model);
+        }
+
+        private ViewContestModel getContestViewModelFromContest(Data.Models.Contest contest)
+        {
+            string contestStatus = "";
+            switch(contest.contestStatus)
+            {
+                case -1:
+                    contestStatus = "Upcoming";
+                    break;
+                case 0:
+                    contestStatus = "Running";
+                    break;
+                case 1:
+                    contestStatus = "Ended";
+                    break;
+            }
+            ICollection<Problem> Problems = new HashSet<Problem>();
+            foreach (var item in contest.ContestProblems.Where(c => c.contestId == contest.contestId).ToList())
+                Problems.Add(item.problem); 
+            return new ViewContestModel { contestId = contest.contestId, contestDuration = contest.contestDuration, contestStartTime = contest.contestStartTime, contestStatus = contestStatus, contestTitle = contest.contestTitle, contestVisabilty = contest.contestVisabilty, UserContest = contest.UserContest, creationTime = contest.creationTime, groupId = contest.groupId, Problems = Problems, Submissions = contest.Submissions.Where(c=>c.contestId == contest.contestId).ToList(), group = contest.group};
         }
 
         // GET: HomeController/Create
