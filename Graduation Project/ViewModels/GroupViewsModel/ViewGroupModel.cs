@@ -39,7 +39,7 @@ namespace GraduationProject.ViewModels
         public string GroupStatus { get; set; } // Public / Private 
         public string UserRole { get; set; }
         public Boolean IsFavourite { get; set; }
-        public virtual ICollection<Contest> Contests { get; set; }
-        public virtual ICollection<UserGroup> UserGroup { get; set; }
+        public ICollection<Contest> Contests { get; set; }
+        public ICollection<UserGroup> UserGroup { get; set; }
     }
 }
