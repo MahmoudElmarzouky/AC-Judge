@@ -36,6 +36,14 @@ function Main_Rule(){
        return confirm('Are You Sure ?'); 
     });
     
+    /*
+     Switch radio button when click
+    */
+    var RadioBtnChange = $('.radio-btn-change .btn');
+    RadioBtnChange.click(function(){
+       $(this).addClass('active').siblings().removeClass('active');
+    });
+    
 }
 
 function Show_User_Error_Message(element){
@@ -60,10 +68,16 @@ $(function(){
     
     /* End Main Rule */
     
-    /* Start User Sign In, Sign Up */;
+    /* Start User Sign In, Sign Up */
     Show_User_Error_Message('.user-signin');
     Show_User_Error_Message('.user-signup');
     
     /* End User Sign In, Sign Up */
-     
+    
+    /* Start Group Page */
+    Show_User_Error_Message('.create-group-page');
+    
+    /* End Group Page */
+    
+    
 });
