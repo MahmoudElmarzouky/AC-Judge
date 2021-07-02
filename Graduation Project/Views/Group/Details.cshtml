@@ -112,7 +112,7 @@
                                        foreach (var contest in Model.Contests)
                                        {
                                         <tr>
-                                            <td><a href="#">@contest.contestTitle</a></td>
+                                            <td><a asp-controller="Contest" asp-action="Details" asp-route-id="@contest.contestId">@contest.contestTitle</a></td>
                                             <td class="starte-time">
                                                 <!-- contest start time -->
                                                 <div>@contest.contestStartTime.ToString("MM/dd/yyyy")</div>
