@@ -18,7 +18,13 @@
                         <li class="list-group-item">@Model.UserRole</li>
                     </ul>
                     <div class="panel-footer">
-                        <i class="fas fa-heart" data-favorite="IconFav"></i> <!-- add class active if this faviorte group -->
+                        @{ 
+                            var className = "fas fa-heart";
+                            if (Model.IsFavourite)
+                                className += " active";
+                         }
+                        <a asp-action="FlipFavourite" asp-route-id="@Model.GroupId"> <i class="@className" data-favorite="IconFav"></i></a>
+                        <!-- add class active if this faviorte group -->
                     </div>
                 </section>
                 <section class="panel panel-info text-center">
@@ -55,37 +61,45 @@
                 </section>
             </div>
             <div class="col-md-9">
-                <div class="well well-sm header-group"> <!-- Heade Group[Name - drop down for actions -->
+                <div class="well well-sm header-group">
+                    <!-- Heade Group[Name - drop down for actions -->
                     <div class="group-name">
                         @Model.GroupTitle
                     </div>
+
                     @if (Model.UserRole == "Admin")
                     {
-                    <div class="dropdown"> <!-- visible if user leader or manger -->
-                          <a href="#" class="btn btn-info dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-                          <ul class="dropdown-menu">
-                              <li><a href="javascript:void(0)" data-toggle="modal" data-target="#CreateMemberGroupModal">New Member</a></li>
-                              <li><a asp-controller="Contest" asp-action="Create" asp-route-id="@Model.GroupId">New Contest</a></li>
-                              <li><a href="#">New Blog</a></li>
+                        <div class="dropdown">
+                            <!-- visible if user leader or manger -->
+                            <a href="#" class="btn btn-info dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="javascript:void(0)" data-toggle="modal" data-target="#CreateMemberGroupModal">New Member</a></li>
 
-                              <li><a asp-action="Leave" asp-route-id="@Model.GroupId" class="confirm">Leave Group</a></li>
-                                  @if (Model.UserRole == "Admin")
-                                  {
-                                  <li><a asp-action="Delete" asp-route-id="@Model.GroupId" class="confirm" >Exit Group</a></li>
-                                  }
-                          </ul>
-                    </div>
+                                <li><a asp-controller="Contest" asp-action="Create" asp-route-id="@Model.GroupId">New Contest</a></li>
+
+                                <li><a href="#">New Blog</a></li>
+
+                                <li><a asp-action="Leave" asp-route-id="@Model.GroupId" class="confirm">Leave Group</a></li>
+                                @if (Model.UserRole == "Admin")
+                                {
+                                    <li><a asp-action="Delete" asp-route-id="@Model.GroupId" class="confirm">Exit Group</a></li>
+                                }
+                            </ul>
+                        </div>
                     }
                     else
                     {
-                    <div class="">
-                        <a asp-action="Leave" asp-route-id="@Model.GroupId"  class="btn btn-danger">Leave Group</a>
-                        <!-- <a href="#" class="btn btn-info">Join Group</a> <!-- if user not in group -->
-                    </div> 
-                    <!-- visible if user participant -->
-                    }
+                        <div class="">
+                            <a asp-action="Leave" asp-route-id="@Model.GroupId" class="btn btn-danger">Leave Group</a>
+                        </div>
 
-               </div>
+                        <!-- visible if user participant -->
+                    }
+                    <!-- <a href="#" class="btn btn-info">Join Group</a> <!-- if user not in group -->
+
+
+
+                </div>
                 <section class="group-contest">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
@@ -147,19 +161,20 @@
                                         <td>Role</td>
                                         <td>Join Time</td>
                                     </tr>
-                                     @{
-                                    foreach (var rel in Model.UserGroup)
-                                    {
-                                        <tr>
-                                            <td>@rel.User.FirstName</td> <!-- if user member or user is curent user-->
-                                            <!--<td><a href="javascript:void(0)" data-toggle="modal" data-target="#EditMemberGroupModal">Mostafa Shehab</a></td> <!-- if other -->
-                                            <td><a href="#">@rel.User.UserName</a></td>
-                                            <td>@rel.UserRole</td>
-                                            <td>@rel.MemberSince.ToString("MM/dd/yyyy")</td>
-                                        </tr>
+                                    <!--<td><a href="javascript:void(0)" data-toggle="modal" data-target="#EditMemberGroupModal">Mostafa Shehab</a></td> <!-- if other -->
 
+                                    @{
+                                        foreach (var rel in Model.UserGroup)
+                                        {
+                                            <tr>
+                                                <td>@rel.User.FirstName</td> <!-- if user member or user is curent user-->
+                                                <td><a href="#">@rel.User.UserName</a></td>
+                                                <td>@rel.UserRole</td>
+                                                <td>@rel.MemberSince.ToString("MM/dd/yyyy")</td>
+                                            </tr>
+
+                                        }
                                     }
-                                }
                                 </tbody>
                             </table>
                         </div>
