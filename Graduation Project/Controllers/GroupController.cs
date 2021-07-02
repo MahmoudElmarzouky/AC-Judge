@@ -18,14 +18,13 @@ namespace GraduationProject.Controllers.Group
     {
         private readonly IRepository<GraduationProject.Data.Models.Group> groups;
         private readonly User user;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+       
 
         public GroupController(IRepository<GraduationProject.Data.Models.Group> groups, IUserRepository<User> Userrepository, IHttpContextAccessor httpContextAccessor)
         {
-            _httpContextAccessor = httpContextAccessor;
-            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value; 
-            this.groups = groups;
+            var userId = httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value; 
             user = Userrepository.Find(userId);
+            this.groups = groups;
         }
         // GET: HomeController
 

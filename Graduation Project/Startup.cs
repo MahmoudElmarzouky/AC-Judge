@@ -43,13 +43,8 @@ namespace GraduationProject
             services.AddScoped<IUserRepository<User>, UserDbRepository>();
             services.AddScoped<IRepository<Blog>, BlogDbRepository>();
             services.AddScoped<IRepository<Comment>, CommentDbRepository>();
-
-
             services.AddScoped<IProblemRepository<Problem>, ProblemDbRepository > ();
-
-
- 
-
+            services.AddScoped<IRepository<Contest>, ContestDbRepository>(); 
             services.AddMvc(options => options.EnableEndpointRouting = false);
             
         }
