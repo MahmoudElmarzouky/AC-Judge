@@ -25,7 +25,7 @@ namespace GraduationProject.Controllers.Blog
             )
         {
             this.blogs = blogs;
-        
+
             _httpContextAccessor = httpContextAccessor;
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
@@ -43,21 +43,21 @@ namespace GraduationProject.Controllers.Blog
         }
         private ViewBlogModel getViewModelFromBlog(GraduationProject.Data.Models.Blog blog)
         {
-            var userBlog = blog.userBlog.FirstOrDefault(b=> b.blogId == blog.blogId);
+            var userBlog = blog.userBlog.FirstOrDefault(b => b.blogId == blog.blogId);
             bool IsOwner = false;
             if (userBlog.User.UserIdentityId == user.UserIdentityId) {
                 IsOwner = true;
             }
             var model = new ViewBlogModel
             {
-               blogId = blog.blogId,
-               blogtitle= blog.blogtitle,
-               blogOwner= userBlog.User.FirstName,
-               blogcontent=blog.blogcontent,
-                blogvote=blog.blogvote
-                ,creationTime=blog.creationTime
-                ,Comments=blog.Comments
-                ,isOwner=IsOwner
+                blogId = blog.blogId,
+                blogtitle = blog.blogtitle,
+                blogOwner = userBlog.User.FirstName,
+                blogcontent = blog.blogcontent,
+                blogvote = blog.blogvote
+                , creationTime = blog.creationTime
+                , Comments = blog.Comments
+                , isOwner = IsOwner
             };
             return model;
         }
@@ -65,6 +65,12 @@ namespace GraduationProject.Controllers.Blog
 
         // GET: HomeController/Details/5
         public ActionResult Details(int id)
+        {
+            var blog = blogs.Find(id);
+            return View(blog);
+        }
+
+        public ActionResult Comments (int id)
         {
             TempData["mydata"] = id;
             return RedirectToAction("Create", "Comment");
@@ -86,9 +92,8 @@ namespace GraduationProject.Controllers.Blog
                 var newBlog = new GraduationProject.Data.Models.Blog
                 {
                     blogtitle = model.blogtitle,
-                    blogcontent = model.blogcontent
-                                                               ,
-                    groupId = 1,
+                    blogcontent = model.blogcontent,
+                    groupId = 2,
                     blogVisabilty = false,
                     blogvote = 0,
                     creationTime = DateTime.Now
@@ -111,7 +116,8 @@ namespace GraduationProject.Controllers.Blog
             var usergroup = new UserBlog { userId = userId,
                 blogId = blogId,
                 blogOwenr = true,
-                isFavourite = false
+                isFavourite = false,
+                VoteValue=0
             ,User=user};
             return usergroup;
         }
@@ -136,9 +142,9 @@ namespace GraduationProject.Controllers.Blog
                     blogtitle = model.blogtitle,
                     blogcontent = model.blogcontent,
                     groupId = 1,
-                    blogVisabilty = false,
+                    blogVisabilty = model.blogVisabilty,
                     blogvote = model.blogvote,
-                    creationTime = DateTime.Now
+                    creationTime =model.creationTime
                 };
                 blogs.Update(newBlog);
                 return RedirectToAction(nameof(Index));
@@ -171,13 +177,22 @@ namespace GraduationProject.Controllers.Blog
                 return View();
             }
         }
+        //------------------------
+        public ActionResult UpVote(int id)
+        {
+            var blog = blogs.Find(id);
+            return UpVote(blog);
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddVote(int id, ViewBlogModel model)
+        public ActionResult UpVote(GraduationProject.Data.Models.Blog model )
         {
             try
             {
                 var newVote = blogs.Find(model.blogId);
+                var userBlog = newVote.userBlog.FirstOrDefault(UserBlog => UserBlog.blogId == model.blogId);
+                userBlog.VoteValue = 1;
+                
                 var newBlog = new GraduationProject.Data.Models.Blog
                 {
 
@@ -185,18 +200,20 @@ namespace GraduationProject.Controllers.Blog
                     blogtitle = newVote.blogtitle,
                     blogcontent = newVote.blogcontent,
                     groupId = 1,
-                    blogVisabilty = false,
+                    blogVisabilty = newVote.blogVisabilty,
                     blogvote = ++newVote.blogvote,
-                    creationTime = DateTime.Now
+                    creationTime = newVote.creationTime,
+                    
                 };
                 blogs.Update(newBlog);
-
+                
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return RedirectToAction(nameof(Index));
             }
         }
+        //------------
     }
 }

@@ -134,7 +134,7 @@ namespace GraduationProject.Controllers
                     upvote = 0
                   ,
                     downvote = 0,
-                    creationTime = DateTime.Now,
+                    creationTime = model.creationTime,
                     blogId = model.blogId
                 };
                 comments.Update(newComment);
