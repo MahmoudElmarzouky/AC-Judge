@@ -254,6 +254,7 @@ namespace GraduationProject.Controllers.Group
                 creationTime = group.creationTime,
                 UserGroup = userGroupRel,
                 Contests = group.Contests.ToList(), 
+                BlogGroup=group.blogs.ToList(),
                 IsFavourite = IsFavourite
             };
             return model;

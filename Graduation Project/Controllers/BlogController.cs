@@ -67,7 +67,7 @@ namespace GraduationProject.Controllers.Blog
         public ActionResult Details(int id)
         {
             var blog = blogs.Find(id);
-            return View(blog);
+            return View(getViewModelFromBlog(blog));
         }
 
         public ActionResult Comments (int id)
@@ -77,8 +77,9 @@ namespace GraduationProject.Controllers.Blog
         }
 
         // GET: HomeController/Create
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
+            TempData["GroupID"] = id;
             return View();
         }
 
@@ -88,12 +89,13 @@ namespace GraduationProject.Controllers.Blog
         public ActionResult Create(GraduationProject.Data.Models.Blog model)
         {
             try
-            {              
+            {
+                int GrpupID = (int)TempData["GroupID"];
                 var newBlog = new GraduationProject.Data.Models.Blog
                 {
                     blogtitle = model.blogtitle,
                     blogcontent = model.blogcontent,
-                    groupId = 2,
+                    groupId = GrpupID,
                     blogVisabilty = false,
                     blogvote = 0,
                     creationTime = DateTime.Now
@@ -104,7 +106,10 @@ namespace GraduationProject.Controllers.Blog
                 var userBlog= CreateRelation(userId, blogId);
                 newBlog.userBlog.Add(userBlog);
                 blogs.Update(newBlog);
+                if(GrpupID==3)
                 return RedirectToAction(nameof(Index));
+                else
+                return RedirectToAction("Details", "Group", new { id = GrpupID });
             }
             catch
             {
@@ -135,13 +140,14 @@ namespace GraduationProject.Controllers.Blog
         {
             try
             {
+                
                 var newBlog = new GraduationProject.Data.Models.Blog
                 {
 
                     blogId = model.blogId,
                     blogtitle = model.blogtitle,
                     blogcontent = model.blogcontent,
-                    groupId = 1,
+                    groupId = model.groupId,
                     blogVisabilty = model.blogVisabilty,
                     blogvote = model.blogvote,
                     creationTime =model.creationTime

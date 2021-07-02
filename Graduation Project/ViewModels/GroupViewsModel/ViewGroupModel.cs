@@ -12,6 +12,7 @@ namespace GraduationProject.ViewModels
         {
             Contests = new HashSet<Contest>();
             UserGroup = new HashSet<UserGroup>();
+            BlogGroup = new HashSet<Blog>();
         }
         public int GroupId { get; set; }
         public string GroupTitle { get; set; }
@@ -41,5 +42,6 @@ namespace GraduationProject.ViewModels
         public Boolean IsFavourite { get; set; }
         public ICollection<Contest> Contests { get; set; }
         public ICollection<UserGroup> UserGroup { get; set; }
+        public ICollection<Blog> BlogGroup { get; set; }
     }
 }
