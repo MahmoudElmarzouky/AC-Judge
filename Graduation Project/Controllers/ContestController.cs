@@ -48,13 +48,12 @@ namespace GraduationProject.Controllers.Contest
         {
             try
             {
-                contest.groupId = ViewBag.ID;
                 contest.creationTime = DateTime.Now; 
                 contests.Add(contest);
                 var userContest = new UserContest { UserId = user.UserId, ContestId = contest.contestId, isFavourite = false, isOwner = true, isRegistered = true };
                 contest.UserContest.Add(userContest);
                 contests.Update(contest); 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Group", new { id = contest.groupId });
             }
             catch
             {

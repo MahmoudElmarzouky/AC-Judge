@@ -13,7 +13,8 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
         public ContestDbRepository(EntitiesContext dbcontext)
         {
             this.dbcontext = dbcontext;
-            
+            foreach(var item in dbcontext.Contests.ToList())
+                LoadCurrentContest(item);
         }
     
         public Contest Add(Contest newContest)
@@ -61,6 +62,7 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             dbcontext.Entry(contest).Collection(c => c.ContestProblems).Load();
             dbcontext.Entry(contest).Collection(c => c.UserContest).Load();
             dbcontext.Entry(contest).Collection(c => c.Submissions).Load();
+            dbcontext.Entry(contest).Reference(c => c.group).Load(); 
         }
     }
 }

@@ -38,7 +38,8 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model)
+{
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.contestTitle)
@@ -56,10 +57,19 @@
                 @Html.DisplayFor(modelItem => item.contestVisabilty)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.contestStatus)
+                @{ 
+                    var contestStatus = "";
+                    if (item.contestStatus == -1)
+                        contestStatus = "UpComming";
+                    else if (item.contestStatus == 0)
+                        contestStatus = "Running";
+                    else
+                        contestStatus = "Ended"; 
+                }
+               @contestStatus
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.group.GroupId)
+                @Html.DisplayFor(modelItem => item.group.GroupTitle)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.contestId">Edit</a> |
