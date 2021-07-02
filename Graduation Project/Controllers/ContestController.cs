@@ -87,18 +87,20 @@ namespace GraduationProject.Controllers.Contest
         // GET: HomeController/Edit/5
         public ActionResult Edit(int id)
         {
+            var contest = contests.Find(id); 
 
-            return View();
+            return View(contest);
         }
 
         // POST: HomeController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(GraduationProject.Data.Models.Contest contest)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                contests.Update(contest);
+                return RedirectToAction("Details", "Group", new { id = contest.groupId });
             }
             catch
             {
@@ -109,17 +111,20 @@ namespace GraduationProject.Controllers.Contest
         // GET: HomeController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var contest = contests.Find(id);
+            return View(contest);
         }
 
         // POST: HomeController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(GraduationProject.Data.Models.Contest contest)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                int groupId = contest.groupId;
+                contests.Remove(contest.contestId); 
+                return RedirectToAction("Details", "Group", new { id = groupId });
             }
             catch
             {
