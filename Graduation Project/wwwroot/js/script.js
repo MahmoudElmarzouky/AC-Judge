@@ -76,7 +76,7 @@ $(function(){
     
     /* Start Group Page */
     Show_User_Error_Message('.create-group-page');
-    
+    Show_User_Error_Message('.edit-group-page');
     /* End Group Page */
     
     

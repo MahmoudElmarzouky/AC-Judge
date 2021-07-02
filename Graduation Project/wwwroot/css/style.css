@@ -291,21 +291,24 @@ header .nav-main .navbar-brand span{
 }
 
 /* End Group Details Page */
-/* Start Create Group Page */
-.create-group-page{
+/* Start Create & Edit Group Page */
+.create-group-page,
+.edit-group-page{
     margin-top: 20px;
     margin-bottom: 30px;  
 }
-.create-group-page input[type='radio']{
+.create-group-page input[type='radio'],
+.edit-group-page input[type='radio']{
     position: absolute;
     clip: rect(0,0,0,0);
     pointer-events: none;
 }
-.create-group-page .form-horizontal .form-group:last-child{
+.create-group-page .form-horizontal .form-group:last-child,
+.edit-group-page .form-horizontal .form-group:last-child{
     margin-top: 30px;
 }
 
-/* End Create Group Page */
+/* End Create & Edit Group Page */
 /* Start Footer */
 
 footer .copyright{
