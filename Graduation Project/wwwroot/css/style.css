@@ -4,6 +4,24 @@
 body{
     background-color:#FFF !important;
 }
+.password-eye{
+    position: relative !important;
+}
+.password-eye .show-pass,
+.password-eye .show-pass-lg{
+    position: absolute;
+    cursor: pointer
+}
+.password-eye .show-pass{
+    right: 12px;
+    top: 8px;
+    font-size: 17px;
+}
+.password-eye .show-pass-lg{
+    right: 16px;
+    top: 14px;
+    font-size: 18px;
+}
 i[data-favorite='IconFav']{
     cursor: pointer !important;
 }

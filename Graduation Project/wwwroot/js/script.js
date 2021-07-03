@@ -63,6 +63,21 @@ function Main_Rule(){
        $(this).addClass('active').siblings().removeClass('active');
     });
     
+    /*
+     Eye To Show Password
+    */
+    var PassFiled = $('.password-eye input[type="password"]');
+    $('.password-eye .show-pass-lg').hover(function(){
+        PassFiled.attr('type','text');
+    }, function(){
+        PassFiled.attr('type','password');
+    });
+    
+    $('.password-eye .show-pass').hover(function(){
+        PassFiled.attr('type','text');
+    }, function(){
+        PassFiled.attr('type','password');
+    });
 }
 
 function Show_User_Error_Message(element){
