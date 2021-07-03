@@ -276,9 +276,9 @@ header .nav-main .navbar-brand span{
     text-decoration: underline;
     line-height: 1.7rem;
 }
-.details-group-page .group-contest .panel table tr:first-child td,
-.details-group-page .group-member .panel table tr:first-child td,
-.details-group-page .group-blog .panel table tr:first-child td{
+.details-group-page .group-contest .panel table thead tr td,
+.details-group-page .group-member .panel table thead tr td,
+.details-group-page .group-blog .panel table thead tr td{
     background-color: #CCC;
     color: #333;
     font-size: 1.7rem;
@@ -292,7 +292,7 @@ header .nav-main .navbar-brand span{
     vertical-align:middle !important;
     background-color: #EEE;
 }
-.details-group-page .edit-group-modal .modal-body .table tr:first-child td{
+.details-group-page .edit-group-modal .modal-body .table thead tr td{
     color:#FFF;
     background-color:#333;
 }
