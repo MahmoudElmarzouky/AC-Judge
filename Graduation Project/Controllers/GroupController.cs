@@ -18,6 +18,7 @@ namespace GraduationProject.Controllers.Group
     public class GroupController : Controller
     {
         private readonly IRepository<GraduationProject.Data.Models.Group> groups;
+        private readonly IUserRepository<User> users;
         private readonly User user;
        
 
@@ -26,6 +27,7 @@ namespace GraduationProject.Controllers.Group
             var userId = httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value; 
             user = Userrepository.Find(userId);
             this.groups = groups;
+            users = Userrepository; 
         }
         // GET: HomeController
 
@@ -159,22 +161,38 @@ namespace GraduationProject.Controllers.Group
                 return View();
             }
         }
-        public ActionResult AddUsers(int id)
-        {
-            return View(); 
-        }
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddUsers(string text)
+        public ActionResult AddUsers(int groupId, string textareaUsers)
         {
             try
             {
-               
-                return RedirectToAction(nameof(Index));
+                var allNames = textareaUsers.Split(" ");
+                var currentGroup = groups.Find(groupId); 
+                foreach(var name in allNames)
+                {
+                    var currentUser = users.FindByUserName(name); 
+                    if(currentUser != null)
+                    {
+                        var oldUserGroup = currentGroup.UserGroup.FirstOrDefault(ug => ug.GroupId == groupId && ug.UserId == currentUser.UserId); 
+                        if (oldUserGroup == null)
+                        {
+                            var newUserGroup = new UserGroup { GroupId = groupId, UserId = currentUser.UserId, isFavourite = false, MemberSince = DateTime.Now, UserRole = "Participant" };
+                            currentGroup.UserGroup.Add(newUserGroup);
+                             
+                        }else
+                        {
+                            // he is here no need to do any thnig
+                        }
+                    }
+                }
+                groups.Update(currentGroup);
+                return RedirectToAction("Details", new { id = groupId});
             }
             catch
             {
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", new { id = groupId });
             }
 
         }
