@@ -10,6 +10,16 @@ i[data-favorite='IconFav']{
 i[data-favorite='IconFav'].active{
     color: red !important;
 }
+a[data-favorite='IconFav'],
+a[data-favorite='IconFav']:hover,
+a[data-favorite='IconFav']:active{
+    cursor: pointer !important;
+    color: inherit;
+    background-color: inherit;
+}
+a[data-favorite='IconFav'].active{
+    color: red !important;
+}
 h1.static-main-title{
     color: #2c3e50;
     font-size: 4.3rem;
@@ -309,6 +319,44 @@ header .nav-main .navbar-brand span{
 }
 
 /* End Create & Edit Group Page */
+/* Start Problem Page */
+.problem-page{
+    margin: 20px 0;
+}
+.problem-page .page-header{
+    padding: 8px 0px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.problem-page .page-header h2{
+    margin: 0;
+}
+.problem-page .page-header span{
+    font-size: 1.7rem;
+    font-weight: 300;
+}
+.problem-page .problem-table .panel .panel-heading{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 2rem !important;
+}
+.problem-page .problem-table .panel .panel-heading .panel-title{
+    font-size: inherit;
+}
+.problem-page .problem-table .panel .panel-heading i[data-toggle='OpenFilterPanel']{
+    cursor: pointer;
+}
+.problem-page .problem-table .panel .panel-body{
+    border-bottom: 1px solid #999;
+    display: none;
+}
+.problem-page .problem-table .table{
+    font-size: 1.5rem;
+}
+/* End Problem Page */
 /* Start Footer */
 
 footer .copyright{

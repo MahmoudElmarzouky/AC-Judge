@@ -8,8 +8,12 @@ function Main_Rule(){
     /*
      Favorite Item [ select and unselect favorite items]
     */
-    var IconFav = $('i[data-favorite="IconFav"]');
-    IconFav.click(function(){
+    var IconFavI = $('i[data-favorite="IconFav"]');
+    var IconFavA = $('a[data-favorite="IconFav"]');
+    IconFavA.click(function(){
+        $(this).toggleClass('active');
+    });
+    IconFavI.click(function(){
         $(this).toggleClass('active');
     });
     
@@ -25,6 +29,21 @@ function Main_Rule(){
        }else{
         $(this).removeClass('fa-minus');
         $(this).addClass('fa-plus');
+       }
+    });
+    
+    /*
+     Open and Close Filter Panel In Icon
+    */
+    var IconOpenClose = $('.panel .panel-heading i[data-toggle="OpenFilterPanel"]');
+    IconOpenClose.click(function(){
+       $(this).parent().next('.panel-body').slideToggle(150);
+       if($(this).hasClass('fa-angle-down')){
+        $(this).removeClass('fa-angle-down');
+        $(this).addClass('fa-angle-up');
+       }else{
+        $(this).removeClass('fa-angle-up');
+        $(this).addClass('fa-angle-down');
        }
     });
     

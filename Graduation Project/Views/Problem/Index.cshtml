@@ -4,68 +4,127 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Filter">
-            <div class="form-group">
-                <select name="ProblemSource">
-                    <option value=""></option>
-                    <option value="Codeforces">Codeforces</option>
-                    <option value="Atcoder">Atcoder</option>
-                </select>
+<section class="problem-page">
+    <div class="container">
+        <div class="page-header">
+            <h2>Problemset <span class="text-muted">All Problems</span></h2>
+            <a href="#" class="btn btn-info"><i class="far fa-lightbulb"></i> Status</a>
+        </div>
+        <section class="problem-table">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                  <div class="panel-title">
+                    <i class="fas fa-filter"></i> Filter
+                  </div>
+                  <i class="fas fa-angle-down" data-toggle="OpenFilterPanel"></i>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal" asp-action="Filter" method="POST">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="control-label col-md-4">Problem</label>
+                                    <div class="col-md-8">
+                                        <input type="text" name="problemID"class="form-control" placeholder="EX: cf/123A , Spoj/GSS1" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="control-label col-md-4">Title</label>
+                                    <div class="col-md-8">
+                                        <input type="text" name="problemName" class="form-control" placeholder="Problem Title Show In Website" />
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Select Box -->
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="control-label col-md-4">Online Judge</label>
+                                    <div class="col-md-8">
+                                        <select class="form-control" name="ProblemSource">
+                                        <option value="All">All</option>
+                                        <option value="Codeforces">Codeforces</option>
+                                        <option value="Atcoder">Atcoder</option>
+                                    </select>
+                                    </div>
+                                </div>   
+                            </div>
+                            <div class="col-md-6">
+                                <div class="text-right">
+                                    <input type="reset" value="Reset" class="btn btn-secondary" />
+                                    <input type="submit" value="Search" class="btn btn-primary" />
+                                </div> 
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped text-center">
+                        <thead>
+                            <tr class="table-active">
+                                <th class="text-center">Status</th>
+                                <th class="text-center">Favorite</th>
+                                <th class="text-center">Online Judge</th>
+                                <th class="text-center">Problem</th>
+                                <th class="text-center">Title</th>
+                                <th class="text-center">Rating</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-success">Solved</td>
+                                <td><i class="fas fa-heart active" data-favorite="IconFav"></i></td>
+                                <td>HackerRank</td>
+                                <td><a href="#">ORDERSET</a></td>
+                                <td><a href="#">Order Statistic Set</a></td>
+                                <td>Null</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><a class="fas fa-heart" data-favorite="IconFav"></a></td>
+                                <td>HackerRank</td>
+                                <td><a href="#">ORDERSET</a></td>
+                                <td><a href="#">Minimum Spanning Tree For Each Edge</a></td>
+                                <td>1245</td>
+                            </tr>
+                            <tr>
+                                <td class="text-danger">Attempted</td>
+                                <td><i class="fas fa-heart" data-favorite="IconFav"></i></td>
+                                <td>HackerRank</td>
+                                <td><a href="#">ORDERSET</a></td>
+                                <td><a href="#">Order Statistic Set</a></td>
+                                <td>1245</td>
+                            </tr>
+                            <tr> <!-- if Not Result -->
+                                <td colspan="6">No Matching Records</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="form-group">
-                <label class="control-label">Problem Name</label>
-                <input name="NameProblem" class="form-control" />
+            <div aria-label="Page navigation" class="text-center">
+                <ul class="pagination pagination-lg">
+                  <li>
+                    <a href="#" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                  <li><a href="#">1</a></li>
+                  <li><a href="#">2</a></li>
+                  <li><a href="#">3</a></li>
+                  <li>
+                    <a href="#" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                </ul>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Filter" class="btn btn-default" />
-            </div>
-        </form>
+        </section>
     </div>
-</div>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ProblemSource)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.problemSourceId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.problemTitle)
-            </th>
-            
-            <th>
-                @Html.DisplayNameFor(model => model.rating)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProblemSource)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.problemSourceId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.problemTitle)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.rating)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.ProblemId">Details</a> |
-            </td>
-        </tr>
+</section>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }
-    </tbody>
-</table>
