@@ -1,8 +1,26 @@
-﻿@model IEnumerable<GraduationProject.Data.Models.Problem>
+@model IEnumerable<GraduationProject.Data.Models.Problem>
 
 @{
     ViewData["Title"] = "Index";
 }
+<div class="container">
+    <h2>Index</h2>
+    
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProblemSource)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.problemSourceId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.problemTitle)
+                </th>
 
 <section class="problem-page">
     <div class="container">
@@ -128,3 +146,4 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
