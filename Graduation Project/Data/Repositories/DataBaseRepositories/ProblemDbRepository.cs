@@ -30,14 +30,15 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
         {
             var problem = dbcontext.Problems
                 .Include(ProblemUser => ProblemUser.ProblemUsers)
-                .Include(Submission => Submission.Submissions)
                 .FirstOrDefault(problem => problem.ProblemId == Id);
             return problem; 
         }
 
         public IList<Problem> List()
         {
-            return dbcontext.Problems.ToList();
+            return dbcontext.Problems
+                .Include(ProblemUser => ProblemUser.ProblemUsers)
+                .ToList();
         }
 
         public void Remove(int Id)

@@ -7,6 +7,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using GraduationProject.Data.Repositories.Interfaces;
 using GraduationProject.ViewModels.ProblemViewsModel;
+using System.Linq;
 
 namespace GraduationProject.Controllers.problems
 {
@@ -15,29 +16,55 @@ namespace GraduationProject.Controllers.problems
         private readonly IProblemRepository<Problem> problemRepository;
         private readonly IRepository<Submission> submissonRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public ProblemController(IProblemRepository<Problem> problemRepository, IRepository<Submission> submissonRepository, IHttpContextAccessor httpContextAccessor)
+        private readonly User user;
+        public ProblemController(IUserRepository<User> Userrepository,IProblemRepository<Problem> problemRepository, IRepository<Submission> submissonRepository, IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             this.problemRepository = problemRepository;
             this.submissonRepository = submissonRepository;
-            
+            user = Userrepository.Find(userId);
+
         }
         public ActionResult Index()
         {
-            var list = problemRepository.Search(1, new List<string>() { "1" });
-            List<ViewProblemModel> ViewsProblems=null;
-            foreach(var item in list)
+            var ListMysubmission = user.submissions;
+            var ListMyfavorite = user.ProblemUsers;
+            var ListProblems = problemRepository.List();
+            List<ViewProblemModel> model=null;
+            foreach (var p in ListProblems)
             {
-                ViewProblemModel element=null;
-                element.OnlineJudge = item.ProblemSource;
-                element.ProblemSourceId = item.problemSourceId;
-                element.Title = item.problemTitle;
-                element.rating = item.rating;
-                ViewsProblems.Add(element);
+                ViewProblemModel item = new ViewProblemModel()
+                {
+                    OnlineJudge = p.ProblemSource,
+                    ProblemSourceId = p.problemSourceId,
+                    Title = p.problemTitle,
+                    rating = p.rating
+                };
+                var acsubmission = ListMysubmission.FirstOrDefault(s => s.ProblemId == p.ProblemId && s.Verdict == "Accept");
+                if (acsubmission != null)
+                {
+                    item.Status = "Accept";
+                }
+                else
+                {
+                    var wrsubmission = ListMysubmission.FirstOrDefault(s => s.ProblemId == p.ProblemId && s.Verdict == "Accept");
+                    if (wrsubmission != null)
+                        item.Status = "Attemp";
+                    else
+                        item.Status = "";
+                }
+                var Is_Favorite = ListMyfavorite.FirstOrDefault(f=>f.IsFavourite==true && f.ProblemId==p.ProblemId);
+                if (Is_Favorite != null)
+                    item.Favorite = true;
+                else
+                    item.Favorite = false;
+
+                model.Add(item);
 
             }
-            return View(list);
+            
+            return View(model);
         }
         public ActionResult Filter()
         {
@@ -62,11 +89,7 @@ namespace GraduationProject.Controllers.problems
             }
             return View("Index", list);
         }
-        public ActionResult MySolvedProblem()
-        {
-            var list = sumbissopnRepository.List();
-            return View("Index");
-        }
+        
         // GET: HomeController/Details/5
         public ActionResult Details(int id)
         {

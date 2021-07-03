@@ -13,5 +13,6 @@ namespace GraduationProject.ViewModels.ProblemViewsModel
         public int ProblemSourceId { get; set; }
         public string Title { get; set; }
         public int rating { get; set; }
+        
     }
 }
