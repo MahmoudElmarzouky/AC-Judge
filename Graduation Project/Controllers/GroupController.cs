@@ -10,6 +10,7 @@ using GraduationProject.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using GraduationProject.ViewModels.GroupViewsModel;
 
 namespace GraduationProject.Controllers.Group
 {
@@ -157,6 +158,25 @@ namespace GraduationProject.Controllers.Group
             {
                 return View();
             }
+        }
+        public ActionResult AddUsers(ViewGroupModel model)
+        {
+            return View(AddUsers(model.UsersToAdd)); 
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddUsers(string text)
+        {
+            try
+            {
+               
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
         }
         public ActionResult Leave(int id)
         {

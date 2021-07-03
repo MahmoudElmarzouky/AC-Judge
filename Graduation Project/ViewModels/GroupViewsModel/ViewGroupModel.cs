@@ -43,5 +43,6 @@ namespace GraduationProject.ViewModels
         public ICollection<Contest> Contests { get; set; }
         public ICollection<UserGroup> UserGroup { get; set; }
         public ICollection<Blog> BlogGroup { get; set; }
+        public string UsersToAdd { get; set; }
     }
 }

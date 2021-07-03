@@ -1,8 +1,7 @@
 ﻿@model GraduationProject.ViewModels.ViewGroupModel
-
 @{
-	ViewData["Title"] = "Details";
-	Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <section class="details-group-page">
@@ -18,18 +17,18 @@
                         <li class="list-group-item">@Model.UserRole</li>
                     </ul>
                     <div class="panel-footer">
-                        @{ 
-							var className = "fas fa-heart";
-							if (Model.IsFavourite)
-								className += " active";
-                         }
+                        @{
+                            var className = "fas fa-heart";
+                            if (Model.IsFavourite)
+                                className += " active";
+                        }
                         <a asp-action="FlipFavourite" asp-route-id="@Model.GroupId"> <i class="@className" data-favorite="IconFav"></i></a>
                         <!-- add class active if this faviorte group -->
                     </div>
                 </section>
                 <section class="panel panel-info text-center">
                     <div class="panel-heading">
-                         About Group
+                        About Group
                     </div>
                     <div class="panel-body">
                         @Model.GroupDescription
@@ -43,18 +42,21 @@
                         Statistics
                     </div>
                     <ul class="list-group">
-                        <li class="list-group-item"> <!-- Number of users in group -->
+                        <li class="list-group-item">
+                            <!-- Number of users in group -->
                             <i class="fas fa-users"></i>
                             @Model.NumberOfMembers
                         </li>
-                        <li class="list-group-item"> <!-- Number of contests in group -->
+                        <li class="list-group-item">
+                            <!-- Number of contests in group -->
                             <ul class="breadcrumb text-center">
                                 <li>@Model.NumberOfUpCommingContests</li><!-- scheduled contest -->
                                 <li>@Model.NumberOfRunningContests</li><!-- Running contest -->
                                 <li>@Model.NumberOfEndedContests</li><!-- End contest -->
                             </ul>
                         </li>
-                        <li class="list-group-item"> <!-- User Top Rate -->
+                        <li class="list-group-item">
+                            <!-- User Top Rate -->
                             Top User : <a href="#">Super_Mari000</a>
                         </li>
                     </ul>
@@ -68,7 +70,7 @@
                     </div>
 
                     @if (Model.UserRole == "Admin")
-					{
+                    {
                         <div class="dropdown">
                             <!-- visible if user leader or manger -->
                             <a href="#" class="btn btn-info dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
@@ -81,30 +83,32 @@
 
                                 <li><a asp-action="Leave" asp-route-id="@Model.GroupId" class="confirm">Leave Group</a></li>
                                 @if (Model.UserRole == "Admin")
-								{
+                                {
                                     <li><a asp-action="Delete" asp-route-id="@Model.GroupId" class="confirm">Exit Group</a></li>
-								}
+                                }
                             </ul>
                         </div>
-					}
-					else
-					{
+                    }
+                    else if (Model.UserRole == "Participate")
+                    {
                         <div class="">
                             <a asp-action="Leave" asp-route-id="@Model.GroupId" class="btn btn-danger">Leave Group</a>
                         </div>
 
                         <!-- visible if user participant -->
-					}
-                    <!-- <a href="#" class="btn btn-info">Join Group</a> <!-- if user not in group -->
-
+                    }
+                    else
+                    {
+                        <a href="#" class="btn btn-info">Join Group</a> <!-- if user not in group -->
+                    }
 
 
                 </div>
                 <section class="group-contest">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                          <h2 class="panel-title">Contestes</h2>
-                          <i class="fas fa-plus" data-toggle="OpenClosePanel"></i>
+                            <h2 class="panel-title">Contestes</h2>
+                            <i class="fas fa-plus" data-toggle="OpenClosePanel"></i>
                         </div>
 
                         <div class="table-responsive">
@@ -116,30 +120,30 @@
                                         <td>Length</td>
                                         <td>Prepeard By</td>
                                     </tr>
-                                   @{
-									   foreach (var contest in Model.Contests)
-									   {
-                                        <tr>
-                                            <td><a asp-controller="Contest" asp-action="Details" asp-route-id="@contest.contestId">@contest.contestTitle</a></td>
-                                            <td class="starte-time">
-                                                <!-- contest start time -->
-                                                <div>@contest.contestStartTime.ToString("MM/dd/yyyy")</div>
-                                                <div>@contest.contestStartTime.ToString("HH:mm")</div>
-                                            </td>
-                                            @{ 
-												var hours = contest.contestDuration / 60;
-												var minutes = contest.contestDuration % 60;
-                                            }
-                                            <td> @hours.ToString("00"):@minutes.ToString("00") </td>
-                                            
+                                    @{
+                                        foreach (var contest in Model.Contests)
+                                        {
+                                            <tr>
+                                                <td><a asp-controller="Contest" asp-action="Details" asp-route-id="@contest.contestId">@contest.contestTitle</a></td>
+                                                <td class="starte-time">
+                                                    <!-- contest start time -->
+                                                    <div>@contest.contestStartTime.ToString("MM/dd/yyyy")</div>
+                                                    <div>@contest.contestStartTime.ToString("HH:mm")</div>
+                                                </td>
+                                                @{
+                                                    var hours = contest.contestDuration / 60;
+                                                    var minutes = contest.contestDuration % 60;
+                                                }
+                                                <td> @hours.ToString("00"):@minutes.ToString("00") </td>
 
-                                            <!-- Prepeard by-->
-                                            <!--contest.UserContest.FirstOrDefault(u => u.isOwner == true).User.FirstName -->
-                                            <td><a href="#">  Not Set Yet </a></td>
-                                        </tr>
-												}
-                                }
-                                   
+
+                                                <!-- Prepeard by-->
+                                                <!--contest.UserContest.FirstOrDefault(u => u.isOwner == true).User.FirstName -->
+                                                <td><a href="#">  Not Set Yet </a></td>
+                                            </tr>
+                                        }
+                                    }
+
                                 </tbody>
                             </table>
                         </div>
@@ -148,8 +152,8 @@
                 <section class="group-member">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                          <h2 class="panel-title">Members</h2>
-                          <i class="fas fa-plus" data-toggle="OpenClosePanel"></i>
+                            <h2 class="panel-title">Members</h2>
+                            <i class="fas fa-plus" data-toggle="OpenClosePanel"></i>
                         </div>
 
                         <div class="table-responsive">
@@ -164,8 +168,8 @@
                                     <!--<td><a href="javascript:void(0)" data-toggle="modal" data-target="#EditMemberGroupModal">Mostafa Shehab</a></td> <!-- if other -->
 
                                     @{
-										foreach (var rel in Model.UserGroup)
-										{
+                                        foreach (var rel in Model.UserGroup)
+                                        {
                                             <tr>
                                                 <td>@rel.User.FirstName</td> <!-- if user member or user is curent user-->
                                                 <td><a href="#">@rel.User.UserName</a></td>
@@ -173,7 +177,7 @@
                                                 <td>@rel.MemberSince.ToString("MM/dd/yyyy")</td>
                                             </tr>
 
-										}
+                                        }
                                     }
                                 </tbody>
                             </table>
@@ -183,32 +187,32 @@
                 <section class="group-blog">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                          <h2 class="panel-title">Blogs</h2>
-                          <i class="fas fa-plus" data-toggle="OpenClosePanel"></i>
+                            <h2 class="panel-title">Blogs</h2>
+                            <i class="fas fa-plus" data-toggle="OpenClosePanel"></i>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-bordered text-center">
-								<tbody>
-									<tr>
-										<td>Title</td>
-										<td>Author</td>
-										<td>Create Time</td>
-										<td>Vote</td>
-									</tr>
-									@{
-										foreach (var blog in Model.BlogGroup)
-										{
-											<tr>
-												<td><a a asp-controller="Blog" asp-action="Details" asp-route-id="@blog.blogId">@blog.blogtitle</a></td>
-												<!--Blog Owner-->
-                                            <!--blog.UserBlog.FirstOrDefault(u => u.isOwner == true).User.FirstName -->
-                                            <td><a href="#">  Not Set Yet </a></td>
-												<td>@blog.creationTime.ToString("MM/dd/yyyy")</td>
-												<td>@blog.blogvote</td>
-											</tr>
-											}
+                                <tbody>
+                                    <tr>
+                                        <td>Title</td>
+                                        <td>Author</td>
+                                        <td>Create Time</td>
+                                        <td>Vote</td>
+                                    </tr>
+                                    @{
+                                        foreach (var blog in Model.BlogGroup)
+                                        {
+                                            <tr>
+                                                <td><a asp-controller="Blog" asp-action="Details" asp-route-id="@blog.blogId">@blog.blogtitle</a></td>
+                                                <!--Blog Owner-->
+                                                <!--blog.UserBlog.FirstOrDefault(u => u.isOwner == true).User.FirstName -->
+                                                <td><a href="#">  Not Set Yet </a></td>
+                                                <td>@blog.creationTime.ToString("MM/dd/yyyy")</td>
+                                                <td>@blog.blogvote</td>
+                                            </tr>
                                         }
-										</tbody>
+                                    }
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -216,70 +220,14 @@
             </div>
         </div>
         <!-- View Page Modal -->
-        <div class="modal fade bd-example-modal-sm invite-modal" id="CreateMemberGroupModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="model-header-flex">
-                            <h3 class="modal-title">Invite Member</h3>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                          <textarea class="form-control" placeholder="Input User name to invite, Separate by white spaces."></textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save</button>
-                    </div>
-                </div>
-            </div>
-        </div> <!-- To Invite New Member -->
-        
-        <div class="modal fade bd-example-modal-sm edit-group-modal" id="EditMemberGroupModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="model-header-flex">
-                            <h3 class="modal-title">Edit Member</h3>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="modal-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered text-center">
-                                <tbody>
-                                    <tr>
-                                        <td>Name</td>
-                                        <td>User Name</td>
-                                        <td>Control</td>
-                                    </tr>
-                                    </tr>
-                                    <tr>
-                                        <td>Mostafa Shehab</td>
-                                        <td>Super_Mari000</td>
-                                        <td>
-                                            <a href="#" class="btn btn-success"><i class="fas fa-edit"></i> Set Manager</a> <!-- if user is member -->
-                                            <!--<a href="#" class="btn btn-success"><i class="fas fa-edit"></i> Set Member</a> <!-- if user is manager -->
-                                            <a href="#" class="btn btn-danger"><i class="fas fa-times-circle"></i> Delete</a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> <!-- To Edit Member -->
+        <!-- You will see the source in Shared Folder-->
+        <partial name="AddMemberView" />
+        <partial name="EditMemberView" />
     </div>
 </section>
 
 @section Scripts {
+    
     <partial name="_ValidationScriptsPartial" />
+    
 }
