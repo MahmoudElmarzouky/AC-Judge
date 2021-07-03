@@ -8,8 +8,12 @@ function Main_Rule(){
     /*
      Favorite Item [ select and unselect favorite items]
     */
-    var IconFav = $('i[data-favorite="IconFav"]');
-    IconFav.click(function(){
+    var IconFavI = $('i[data-favorite="IconFav"]');
+    var IconFavA = $('a[data-favorite="IconFav"]');
+    IconFavA.click(function(){
+        $(this).toggleClass('active');
+    });
+    IconFavI.click(function(){
         $(this).toggleClass('active');
     });
     
@@ -29,11 +33,34 @@ function Main_Rule(){
     });
     
     /*
+     Open and Close Filter Panel In Icon
+    */
+    var IconOpenClose = $('.panel .panel-heading i[data-toggle="OpenFilterPanel"]');
+    IconOpenClose.click(function(){
+       $(this).parent().next('.panel-body').slideToggle(150);
+       if($(this).hasClass('fa-angle-down')){
+        $(this).removeClass('fa-angle-down');
+        $(this).addClass('fa-angle-up');
+       }else{
+        $(this).removeClass('fa-angle-up');
+        $(this).addClass('fa-angle-down');
+       }
+    });
+    
+    /*
      Confirm Message on Click button
     */
     var ConfirmMsg = $('.confirm');
     ConfirmMsg.click(function(){
        return confirm('Are You Sure ?'); 
+    });
+    
+    /*
+     Switch radio button when click
+    */
+    var RadioBtnChange = $('.radio-btn-change .btn');
+    RadioBtnChange.click(function(){
+       $(this).addClass('active').siblings().removeClass('active');
     });
     
 }
@@ -60,10 +87,16 @@ $(function(){
     
     /* End Main Rule */
     
-    /* Start User Sign In, Sign Up */;
+    /* Start User Sign In, Sign Up */
     Show_User_Error_Message('.user-signin');
     Show_User_Error_Message('.user-signup');
     
     /* End User Sign In, Sign Up */
-     
+    
+    /* Start Group Page */
+    Show_User_Error_Message('.create-group-page');
+    Show_User_Error_Message('.edit-group-page');
+    /* End Group Page */
+    
+    
 });

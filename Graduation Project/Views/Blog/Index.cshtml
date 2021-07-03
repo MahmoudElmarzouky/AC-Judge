@@ -1,16 +1,77 @@
-﻿@{
-    ViewData["Title"] = "Blog Page";
+﻿@model IEnumerable<GraduationProject.ViewModels.ViewBlogModel>
+
+@{
+	ViewData["Title"] = "Blog Page";
 }
-<center>
-    @{
-        for (int i = 0; i < 5; i++)
-        {
-            <div class="alert-success">
-                <h1>Ya Welcome Ya Welcome You Are In @ViewData["Title"]</h1>
-            </div>
-        }
-    }
-</center>
+
+<br>
+<br>
+<div class="container">
+	<h2>Index</h2>
+
+	<p>
+		<a asp-action="Create" asp-route-id="3">Create New</a>
+	</p>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>
+					@Html.DisplayNameFor(model => model.blogtitle)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.blogcontent)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.blogOwner)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.blogvote)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.creationTime)
+				</th>
+				
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.blogtitle)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.blogcontent)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.blogOwner)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.blogvote)
+					<a asp-action="UpVote" asp-route-id="@item.blogId">Up</a>
+				</td>
+				
+				<td>
+					@Html.DisplayFor(modelItem => item.creationTime)
+				</td>
+
+				<td>
+					@if (item.isOwner)
+					{
+						@Html.ActionLink("Delete", "Delete", new { id = item.blogId })
+						@Html.ActionLink("Edit", "Edit", new { id = item.blogId })
+					}
+				 	| @Html.ActionLink("Details", "Details", new { id = item.blogId }) |
+					  @Html.ActionLink("Comments", "Comments", new { id = item.blogId })
+
+				</td>
+			</tr>
+			}
+		</tbody>
+	</table>
+</div>
+
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+	<partial name="_ValidationScriptsPartial" />
 }

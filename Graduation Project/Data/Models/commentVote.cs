@@ -15,7 +15,7 @@ namespace GraduationProject.Data.Models
         public int userId { get; set; }
         public int value { get; set; }
         public Boolean isFavourite { get; set; }
-        public User user { get; set; }
-        public Comment comment { get; set; }
+        public User User { get; set; }
+        public Comment Comment { get; set; }
     }
 }

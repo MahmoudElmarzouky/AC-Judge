@@ -12,6 +12,7 @@ namespace GraduationProject.ViewModels
         public string GroupTitle { get; set; }
         public string GroupDescription { get; set; }
         public Boolean Visable { get; set; }
+
         public string Password { get; set; }
 
     }

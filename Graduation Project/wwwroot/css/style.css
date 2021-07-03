@@ -10,10 +10,23 @@ i[data-favorite='IconFav']{
 i[data-favorite='IconFav'].active{
     color: red !important;
 }
-a{
-    text-decoration: none !important;
+a[data-favorite='IconFav'],
+a[data-favorite='IconFav']:hover,
+a[data-favorite='IconFav']:active{
+    cursor: pointer !important;
+    color: inherit;
+    background-color: inherit;
 }
-
+a[data-favorite='IconFav'].active{
+    color: red !important;
+}
+h1.static-main-title{
+    color: #2c3e50;
+    font-size: 4.3rem;
+    font-weight: 500;
+    text-align: center;
+    padding: 30px 0px 20px 0px;
+}
 /*
 mark{
     color:#8C8C8C;
@@ -24,10 +37,26 @@ mark{
 /* End Main Rules */
 
 /* Start Tags Edit */
-
+a{
+    text-decoration: none !important;
+}
+textarea{
+    resize: none;
+}
 
 /* End Tags Edit */
 
+/* Start Edit BootStarp */
+.modal .modal-header .model-header-flex{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.modal .modal-header .close{
+    margin: 0;
+}
+
+/* End Edit BootStarp */
 
 /* Start Header */
 
@@ -144,6 +173,10 @@ header .nav-main .navbar-brand span{
 .group-page .groups .panel .panel-body{
     height: 90px;
     max-height: 90px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    text-overflow: ellipsis;
+    overflow-y: hidden;
 }
 .group-page .groups .panel .panel-footer{
     overflow-y: hidden;
@@ -250,8 +283,99 @@ header .nav-main .navbar-brand span{
     color: #333;
     font-size: 1.7rem;
 }
+/* Modals */
+.details-group-page .invite-modal .modal-body textarea{
+    width: 100%;
+    height: 150px;
+}
+.details-group-page .edit-group-modal .modal-body .table td{
+    vertical-align:middle !important;
+    background-color: #EEE;
+}
+.details-group-page .edit-group-modal .modal-body .table tr:first-child td{
+    color:#FFF;
+    background-color:#333;
+}
+.details-group-page .edit-group-modal .modal-body .table .btn{
+    padding:3px 10px;
+}
 
-/* Start Group Details Page */
+/* End Group Details Page */
+/* Start Create & Edit Group Page */
+.create-group-page,
+.edit-group-page{
+    margin-top: 20px;
+    margin-bottom: 30px;  
+}
+.create-group-page input[type='radio'],
+.edit-group-page input[type='radio']{
+    position: absolute;
+    clip: rect(0,0,0,0);
+    pointer-events: none;
+}
+.create-group-page .form-horizontal .form-group:last-child,
+.edit-group-page .form-horizontal .form-group:last-child{
+    margin-top: 30px;
+}
+
+/* End Create & Edit Group Page */
+/* Start Problem Page */
+.problem-page{
+    margin: 20px 0;
+}
+.problem-page .page-header{
+    padding: 8px 0px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.problem-page .page-header h2{
+    margin: 0;
+}
+.problem-page .page-header span{
+    font-size: 1.7rem;
+    font-weight: 300;
+}
+.problem-page .problem-table .panel .panel-heading{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 2rem !important;
+}
+.problem-page .problem-table .panel .panel-heading .panel-title{
+    font-size: inherit;
+}
+.problem-page .problem-table .panel .panel-heading i[data-toggle='OpenFilterPanel']{
+    cursor: pointer;
+}
+.problem-page .problem-table .panel .panel-body{
+    border-bottom: 1px solid #999;
+    display: none;
+}
+.problem-page .problem-table .table{
+    font-size: 1.5rem;
+}
+/* End Problem Page */
+/* Start Status Page */
+.status-page{
+    margin: 20px 0;
+}
+.status-page .page-header{
+    padding: 8px 0px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.status-page .page-header h2{
+    margin: 0;
+}
+.status-page .page-header span{
+    font-size: 1.7rem;
+    font-weight: 300;
+}
+/* End Status Page */
 /* Start Footer */
 
 footer .copyright{

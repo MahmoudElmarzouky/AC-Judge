@@ -62,6 +62,10 @@ namespace GraduationProject.Data.Repositories
             dbcontext.SaveChanges();
         }
 
-        
+        public User FindByUserName(string name)
+        {
+            var user = dbcontext.Users.FirstOrDefault(u => u.UserName == name);
+            return user; 
+        }
     }
 }

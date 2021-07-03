@@ -13,6 +13,8 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
         public GroupDbRepository(EntitiesContext dbcontext)
         {
             this.dbcontext = dbcontext;
+            foreach(var item in this.dbcontext.Groups.ToList())
+                LoadCurrentGroup(item);
         }
         public Group Add(Group newGroup)
         {
@@ -29,15 +31,14 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
         public Group Find(int Id)
         {
             var group = dbcontext.Groups.FirstOrDefault(group => group.GroupId == Id);
-            LoadCurrentGroup(group);
+           
             return group;
         }
 
         public IList<Group> List()
         {
             var list = dbcontext.Groups;
-            foreach (var item in list)
-                LoadCurrentGroup(item);
+            
             return dbcontext.Groups.ToList();
         }
 
@@ -65,6 +66,9 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
            dbcontext.Entry(group).Collection(c => c.blogs).Load();
             foreach (var real in group.UserGroup)
                 dbcontext.Entry(real).Reference(c => c.User).Load();
+            foreach (var contest in group.Contests)
+                foreach(var real in contest.UserContest)
+                    dbcontext.Entry(real).Reference(c => c.User).Load();
         }
     }
 }

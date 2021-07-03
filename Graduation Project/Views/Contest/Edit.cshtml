@@ -1,0 +1,61 @@
+﻿@model GraduationProject.Data.Models.Contest
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit</h2>
+
+<h4>Contest</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="contestId" />
+            <div class="form-group">
+                <label asp-for="contestTitle" class="control-label"></label>
+                <input asp-for="contestTitle" class="form-control" />
+                <span asp-validation-for="contestTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="contestStartTime" class="control-label"></label>
+                <input asp-for="contestStartTime" class="form-control" />
+                <span asp-validation-for="contestStartTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="contestDuration" class="control-label"></label>
+                <input asp-for="contestDuration" class="form-control" />
+                <span asp-validation-for="contestDuration" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="creationTime" class="control-label"></label>
+                <input asp-for="creationTime" class="form-control" />
+                <span asp-validation-for="creationTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="contestVisabilty" class="control-label"></label>
+                <input asp-for="contestVisabilty" class="form-control" />
+                <span asp-validation-for="contestVisabilty" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="contestStatus" class="control-label"></label>
+                <input asp-for="contestStatus" class="form-control" />
+                <span asp-validation-for="contestStatus" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-controller="Group" asp-action="Details" asp-route-id="@Model.groupId">Back to Group</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,98 @@
+﻿@model GraduationProject.ViewModels.ContestViewsModel.ViewContestModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Contest</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.contestTitle)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.contestTitle)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.contestStartTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.contestStartTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.contestDuration)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.contestDuration)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.creationTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.creationTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.contestVisabilty)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.contestVisabilty)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.contestStatus)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.contestStatus)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.group.GroupTitle)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.group.GroupId)
+        </dd>
+
+    </dl>
+    <!-- This table for print registered users in the contest -->
+    <table class="table">
+        <tr>
+            <th>
+                UserName
+            </th>
+        </tr>
+        @{
+            foreach (var user in Model.UserContest)
+            {
+                <tr>
+                    <td> @user.User.UserName </td>
+                </tr>
+            }
+        }
+    </table>
+    <!-- This table is for print the problems in the contest -->
+    <table class="table">
+        <tr>
+            <th>
+                Problem Name
+            </th>
+        </tr>
+        @{
+            foreach (var problem in Model.Problems)
+            {
+                <tr>
+                    <td> @problem.problemTitle </td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.contestId">Edit</a> |
+
+    <a asp-action="RegisterInContest" asp-route-id="@Model.contestId"> Register in the contest</a>|
+    <a asp-controller="Group" asp-action="Details" asp-route-id="@Model.groupId">Back to Group</a>
+    <a href=""> Add Problem To contest</a>
+
+</div>

@@ -66,6 +66,11 @@ namespace GraduationProject.Controllers.problems
             
             return View(model);
         }
+        public ActionResult Status()
+        {
+
+            return View();
+        }
         public ActionResult Filter()
         {
             var ProblemSource = Request.Form["ProblemSource"];

@@ -1,16 +1,82 @@
-﻿@{
-    ViewData["Title"] = "Contest Page";
+﻿@model IEnumerable<GraduationProject.Data.Models.Contest>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<center>
-    @{
-        for (int i = 0; i < 5; i++)
-        {
-            <div class="alert-success">
-                <h1>Ya Welcome Ya Welcome You Are In @ViewData["Title"]</h1>
-            </div>
-        }
-    }
-</center>
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.contestTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.contestStartTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.contestDuration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.creationTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.contestVisabilty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.contestStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.group)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model)
+{
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.contestTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.contestStartTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.contestDuration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.creationTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.contestVisabilty)
+            </td>
+            <td>
+                @{ 
+                    var contestStatus = "";
+                    if (item.contestStatus == -1)
+                        contestStatus = "UpComming";
+                    else if (item.contestStatus == 0)
+                        contestStatus = "Running";
+                    else
+                        contestStatus = "Ended"; 
+                }
+               @contestStatus
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.group.GroupTitle)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.contestId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.contestId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.contestId">Delete</a>
+            </td>
+        </tr>
 }
+    </tbody>
+</table>
