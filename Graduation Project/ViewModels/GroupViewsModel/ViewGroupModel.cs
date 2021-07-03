@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GraduationProject.Data.Models;
+using GraduationProject.ViewModels.GroupViewsModel;
 
 namespace GraduationProject.ViewModels
 {
@@ -43,5 +44,6 @@ namespace GraduationProject.ViewModels
         public ICollection<Contest> Contests { get; set; }
         public ICollection<UserGroup> UserGroup { get; set; }
         public ICollection<Blog> BlogGroup { get; set; }
+        public AddUsersModel AddUsers { get; set; }
     }
 }
