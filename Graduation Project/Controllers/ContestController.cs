@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using GraduationProject.Data.Models;
 using GraduationProject.Data.Repositories.Interfaces;
+using GraduationProject.Data.Repositories.IProblemRepository;
 using GraduationProject.ViewModels.ContestViewsModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,12 +15,17 @@ namespace GraduationProject.Controllers.Contest
     public class ContestController : Controller
     {
         readonly private IRepository<GraduationProject.Data.Models.Contest> contests;
+        readonly private IProblemRepository<Problem> problems; 
         readonly private User user; 
-        public ContestController(IRepository<GraduationProject.Data.Models.Contest> contests, IUserRepository<User> Userrepository, IHttpContextAccessor httpContextAccessor)
+        public ContestController(IRepository<GraduationProject.Data.Models.Contest> contests
+            , IUserRepository<User> Userrepository
+            , IHttpContextAccessor httpContextAccessor
+            , IProblemRepository<Problem> problems)
         {
             var userId = httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             user = Userrepository.Find(userId);
-            this.contests = contests; 
+            this.contests = contests;
+            this.problems = problems; 
         }
         // GET: HomeController
         public ActionResult Index()
@@ -158,7 +164,38 @@ namespace GraduationProject.Controllers.Contest
             }
             catch
             {
-                return View();
+                return RedirectToAction("Details", new { id = contest.contestId });
+            }
+        }
+        public ActionResult AddProblemToContest(int contestId, string problemName)
+        {
+            var contest = contests.Find(contestId);
+            //var problem = problems.FindByName(ProblemName);
+            var problem = new Problem();
+            return AddProblemToContest(contest, problem);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddProblemToContest(GraduationProject.Data.Models.Contest contest, Problem problem)
+        {
+            if (problem == null)
+                return RedirectToAction("Details", new { id = contest.contestId });
+            try
+            {
+                int numberOfProblems = contest.ContestProblems.Count();
+                int order = numberOfProblems + 1; 
+                var contestProblems = contest.ContestProblems.FirstOrDefault(u => u.contestId == contest.contestId && u.problemId == problem.ProblemId);
+                if (contestProblems == null)
+                {
+                    contestProblems = new ContestProblem { contestId = contest.contestId, problemId = problem.ProblemId, order = order };
+                    contest.ContestProblems.Add(contestProblems);
+                    contests.Update(contest); 
+                }
+                return RedirectToAction("Details", new { id = contest.contestId });
+            }
+            catch
+            {
+                return RedirectToAction("Details", new { id = contest.contestId });
             }
         }
     }
