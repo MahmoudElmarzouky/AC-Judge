@@ -196,6 +196,8 @@ namespace GraduationProject.Controllers.Group
             }
 
         }
+
+        
         public ActionResult Leave(int id)
         {
             var group = groups.Find(id);
