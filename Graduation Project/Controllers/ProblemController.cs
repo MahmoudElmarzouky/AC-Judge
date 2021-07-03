@@ -6,6 +6,7 @@ using GraduationProject.Data.Repositories.IProblemRepository;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using GraduationProject.Data.Repositories.Interfaces;
+using GraduationProject.ViewModels.ProblemViewsModel;
 
 namespace GraduationProject.Controllers.problems
 {
@@ -13,19 +14,29 @@ namespace GraduationProject.Controllers.problems
     {
         private readonly IProblemRepository<Problem> problemRepository;
         private readonly IRepository<Submission> submissonRepository;
-        private readonly IRepository<User> UserRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public ProblemController(IRepository<User> UserRepository,IProblemRepository<Problem> problemRepository, IRepository<Submission> submissonRepository, IHttpContextAccessor httpContextAccessor)
+        public ProblemController(IProblemRepository<Problem> problemRepository, IRepository<Submission> submissonRepository, IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             this.problemRepository = problemRepository;
             this.submissonRepository = submissonRepository;
-            this.UserRepository = UserRepository;
+            
         }
         public ActionResult Index()
         {
             var list = problemRepository.Search(1, new List<string>() { "1" });
+            List<ViewProblemModel> ViewsProblems=null;
+            foreach(var item in list)
+            {
+                ViewProblemModel element=null;
+                element.OnlineJudge = item.ProblemSource;
+                element.ProblemSourceId = item.problemSourceId;
+                element.Title = item.problemTitle;
+                element.rating = item.rating;
+                ViewsProblems.Add(element);
+
+            }
             return View(list);
         }
         public ActionResult Filter()
