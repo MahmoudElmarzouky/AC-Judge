@@ -11,6 +11,8 @@ namespace GraduationProject.Data.Models
         {
             UserContest = new HashSet<UserContest>();
             UserGroup = new HashSet<UserGroup>();
+            submissions = new HashSet<Submission>();
+            ProblemUsers = new HashSet<ProblemUser>();
         }
         public string UserIdentityId { get; set; }
         public int UserId { get; set; }
@@ -32,6 +34,7 @@ namespace GraduationProject.Data.Models
         public virtual ICollection<Submission> submissions { get; set; }
         public virtual ICollection<UserBlog> userBlog { get; set; }
         public virtual ICollection<commentVote> CommentVotes { get; set; }
+        public virtual ICollection<ProblemUser> ProblemUsers { get; set; }
 
     }
 }

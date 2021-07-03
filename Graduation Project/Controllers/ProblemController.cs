@@ -3,19 +3,28 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using GraduationProject.Data.Models;
 using GraduationProject.Data.Repositories.IProblemRepository;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
+using GraduationProject.Data.Repositories.Interfaces;
 
 namespace GraduationProject.Controllers.problems
 {
     public class ProblemController : Controller
     {
         private readonly IProblemRepository<Problem> problemRepository;
-        public ProblemController(IProblemRepository<Problem> problemRepository)
+        private readonly IRepository<Submission> submissonRepository;
+        private readonly IRepository<User> UserRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public ProblemController(IRepository<User> UserRepository,IProblemRepository<Problem> problemRepository, IRepository<Submission> submissonRepository, IHttpContextAccessor httpContextAccessor)
         {
+            _httpContextAccessor = httpContextAccessor;
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             this.problemRepository = problemRepository;
+            this.submissonRepository = submissonRepository;
+            this.UserRepository = UserRepository;
         }
         public ActionResult Index()
         {
-
             var list = problemRepository.Search(1, new List<string>() { "1" });
             return View(list);
         }
@@ -39,9 +48,13 @@ namespace GraduationProject.Controllers.problems
             else
             {
                 list = (List<Problem>)problemRepository.Search(1, new List<string>() { "1" });
-
             }
             return View("Index", list);
+        }
+        public ActionResult MySolvedProblem()
+        {
+            var list = sumbissopnRepository.List();
+            return View("Index");
         }
         // GET: HomeController/Details/5
         public ActionResult Details(int id)

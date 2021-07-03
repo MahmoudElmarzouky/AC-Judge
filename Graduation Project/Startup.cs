@@ -40,10 +40,8 @@ namespace GraduationProject
                    options.UseSqlServer(Configuration.GetConnectionString("UserAccountsContextConnection"));
                });
             services.AddScoped<IRepository<Group>, GroupDbRepository> ();
-
+            services.AddScoped<IRepository<Submission>, SubmissionDbRepository> ();
             services.AddScoped<IProblemRepository<Problem>, ProblemDbRepository > ();
-
-
             services.AddScoped<IUserRepository<User>, UserDbRepository>(); 
  
 
