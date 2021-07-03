@@ -22,7 +22,6 @@ namespace GraduationProject.Controllers.problems
         public ActionResult Status()
         {
 
-            
             return View();
         }
         public ActionResult Filter()
