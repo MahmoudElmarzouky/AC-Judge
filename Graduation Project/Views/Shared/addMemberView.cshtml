@@ -1,0 +1,23 @@
+﻿<div class="modal fade bd-example-modal-sm invite-modal" id="CreateMemberGroupModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="model-header-flex">
+                    <h3 class="modal-title">Invite Member</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <textarea name="textareaUsers" class="form-control" placeholder="Input User name to invite, Separate by white spaces."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a type="button" class="btn btn-primary" asp-action="AddUsers">Save</a>
+            </div>
+        </div>
+    </div>
+</div> <!-- To Invite New Member -->
