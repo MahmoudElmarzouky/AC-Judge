@@ -19,6 +19,12 @@ namespace GraduationProject.Controllers.problems
             var list = problemRepository.Search(1, new List<string>() { "1" });
             return View(list);
         }
+        public ActionResult Status()
+        {
+
+            
+            return View();
+        }
         public ActionResult Filter()
         {
             var ProblemSource = Request.Form["ProblemSource"];
