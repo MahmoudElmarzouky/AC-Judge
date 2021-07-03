@@ -1,5 +1,18 @@
 ﻿@{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Status";
 }
 
-<h1>Hello</h1>
+<section class="status-page">
+    <div class="container">
+        <div class="page-header">
+            <h2>Status <span class="text-muted">All Submissions</span></h2>
+            <a asp-action="Index" class="btn btn-info"><i class="fas fa-lightbulb"></i> Problems</a>
+        </div>
+        
+    </div>
+</section>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

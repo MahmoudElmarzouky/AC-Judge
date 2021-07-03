@@ -357,6 +357,25 @@ header .nav-main .navbar-brand span{
     font-size: 1.5rem;
 }
 /* End Problem Page */
+/* Start Status Page */
+.status-page{
+    margin: 20px 0;
+}
+.status-page .page-header{
+    padding: 8px 0px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.status-page .page-header h2{
+    margin: 0;
+}
+.status-page .page-header span{
+    font-size: 1.7rem;
+    font-weight: 300;
+}
+/* End Status Page */
 /* Start Footer */
 
 footer .copyright{
