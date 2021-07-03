@@ -131,5 +131,35 @@ namespace GraduationProject.Controllers.Contest
                 return View();
             }
         }
+        public ActionResult RegisterInContest(int id)
+        {
+            var contest = contests.Find(id);
+            return RegisterInContest(contest); 
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RegisterInContest(GraduationProject.Data.Models.Contest contest)
+        {
+            try
+            {
+                int contestId = contest.contestId; 
+                var currentContest = contests.Find(contestId);
+                var userContest = currentContest.UserContest.FirstOrDefault(u => u.ContestId == contestId && u.UserId == user.UserId); 
+                if (userContest == null)
+                {
+                    userContest = new UserContest { ContestId = contestId, UserId = user.UserId, isFavourite = false, isOwner = false, isRegistered = true };
+                    currentContest.UserContest.Add(userContest); 
+                }else
+                {
+                    userContest.isRegistered = true;
+                }
+                contests.Update(currentContest); 
+                return RedirectToAction("Details", new { id = contestId });
+            }
+            catch
+            {
+                return View();
+            }
+        }
     }
 }

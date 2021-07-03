@@ -139,9 +139,18 @@
 
                                                 <!-- Prepeard by-->
                                                 <!--contest.UserContest.FirstOrDefault(u => u.isOwner == true).User.FirstName -->
-                                                <td><a href="#">  Not Set Yet </a></td>
-                                            </tr>
+                                                @{ 
+                                                    var CreatorName = "NULL";
+                                                    if (contest.UserContest.FirstOrDefault(u => u.isOwner == true) != null)
+                                                    {
+                                                        CreatorName = contest.UserContest.FirstOrDefault(u => u.isOwner == true).User.FirstName;
+                                                        if (CreatorName == null)
+                                                            CreatorName = contest.UserContest.FirstOrDefault(u => u.isOwner == true).User.UserName;
                                                     }
+                                                }
+                                                <td><a href="#"> @CreatorName </a></td>
+                                            </tr>
+                                        }
                                     }
 
                                 </tbody>
@@ -175,7 +184,7 @@
 
                                                 <td>@rel.UserRole</td>
                                                 <td>@rel.MemberSince.ToString("MM/dd/yyyy")</td>
-                                                
+
                                             </tr>
 
                                         }
@@ -223,8 +232,13 @@
         <!-- View Page Modal -->
         <!-- You will see the source in Shared Folder-->
         <partial name="AddMemberView" for="@Model.GroupId" />
-        <partial name="EditMemberView" for="@Model.GroupId"  />
-          
+        @{
+            // this is not finshed yet 
+            var x = Model.UserGroup.FirstOrDefault(u => u.UserId == 4);
+          //  <partial name="EditMemberView" for="@x" />
+
+        }
+
     </div>
 </section>
 

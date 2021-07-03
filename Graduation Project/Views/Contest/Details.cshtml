@@ -90,5 +90,8 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.contestId">Edit</a> |
-    <a asp-controller="Group" asp-action="Details" asp-route-id="@Model.groupId">Back to Group</a>
+    
+        <a asp-action="RegisterInContest" asp-route-id="@Model.contestId"> Register in the contest</a>|
+    
+        <a asp-controller="Group" asp-action="Details" asp-route-id="@Model.groupId">Back to Group</a>
 </div>
