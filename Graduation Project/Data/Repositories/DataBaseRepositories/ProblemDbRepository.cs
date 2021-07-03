@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GraduationProject.Data.Models;
 using GraduationProject.Data.Repositories.IProblemRepository;
+using Microsoft.EntityFrameworkCore;
 
 namespace GraduationProject.Data.Repositories.DataBaseRepositories
 {
@@ -27,13 +28,17 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
 
         public Problem Find(int Id)
         {
-            var problem = dbcontext.Problems.FirstOrDefault(problem => problem.ProblemId == Id);
+            var problem = dbcontext.Problems
+                .Include(ProblemUser => ProblemUser.ProblemUsers)
+                .FirstOrDefault(problem => problem.ProblemId == Id);
             return problem; 
         }
 
         public IList<Problem> List()
         {
-            return dbcontext.Problems.ToList();
+            return dbcontext.Problems
+                .Include(ProblemUser => ProblemUser.ProblemUsers)
+                .ToList();
         }
 
         public void Remove(int Id)

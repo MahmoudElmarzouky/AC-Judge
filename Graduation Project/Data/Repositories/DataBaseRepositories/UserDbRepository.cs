@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GraduationProject.Data.Models;
 using GraduationProject.Data.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace GraduationProject.Data.Repositories
 {
@@ -27,12 +28,18 @@ namespace GraduationProject.Data.Repositories
         }
         public User Find(string Id)
         {
-            var user = dbcontext.Users.FirstOrDefault(user => user.UserIdentityId == Id);
+            var user = dbcontext.Users
+                .Include(s => s.submissions)
+                .Include(pu => pu.ProblemUsers)
+                .FirstOrDefault(user => user.UserIdentityId == Id);
             return user;
         }
         public IList<User> List()
         {
-            return dbcontext.Users.ToList(); 
+            return dbcontext.Users
+                .Include(s => s.submissions)
+                .Include(pu => pu.ProblemUsers)
+                .ToList(); 
         }
 
         public void Remove(int Id)
