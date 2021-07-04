@@ -27,4 +27,5 @@ Create repository class for :
 - 
 Create Controllers for:
 - Blog - added
-- Comments
+- Comments - added
+- User 
