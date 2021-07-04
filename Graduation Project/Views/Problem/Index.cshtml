@@ -54,8 +54,11 @@
                     <table class="table table-bordered table-striped text-center">
                         <thead>
                             <tr class="table-active">
-                                <th class="text-center">Status</th>
-                                <th class="text-center">Favorite</th>
+                                 @if (User.Identity.IsAuthenticated)
+                                 {
+                                        <th class="text-center">Status</th>
+                                        <th class="text-center">Favorite</th>
+                                 }
                                 <th class="text-center">Online Judge</th>
                                 <th class="text-center">Problem</th>
                                 <th class="text-center">Title</th>
