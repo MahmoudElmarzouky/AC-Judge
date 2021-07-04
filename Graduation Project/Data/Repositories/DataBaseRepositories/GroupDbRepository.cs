@@ -56,7 +56,11 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
 
         public void Update(Group newGroup)
         {
-            dbcontext.Groups.Update(newGroup);
+            var group = Find(newGroup.GroupId);
+            group.GroupTitle = newGroup.GroupTitle;
+            group.GroupDescription = newGroup.GroupDescription;
+            group.Password = newGroup.Password;
+            group.Visable = newGroup.Visable; 
             Commit();
         }
 
@@ -131,6 +135,15 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
                 return;
             currentUserGroup.UserRole = newRole;
             Commit(); 
+        }
+
+        public IList<Group> MyGroups(int userId)
+        {
+            IList<Group> list = new List<Group>();
+            foreach (var g in dbcontext.Groups)
+                if (g.UserGroup.FirstOrDefault(u => u.GroupId == g.GroupId && u.UserId == userId) != null)
+                    list.Add(g);
+            return list; 
         }
     }
 }

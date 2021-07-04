@@ -6,9 +6,36 @@
 <section class="group-page">
     <div class="container">
         <ul class="nav nav-tabs text-capitalize">
-            <li role="presentation" class="active"><a href="#">All Groups</a></li>
-            <li role="presentation"><a href="#">My Groups</a></li>
-            <li role="presentation"><a href="#">Invitations</a></li>
+            @{
+                string currentAction = ViewContext.RouteData.Values.ContainsKey("Action") ? ViewContext.RouteData.Values["Action"].ToString() : "NULL";
+
+            }
+            @if (currentAction == "Index")
+            {
+                <li role="presentation" class="active"><a asp-action="Index">All Groups</a></li>
+            }
+            else
+            {
+                <li role="presentation"><a asp-action="Index">All Groups</a></li>
+            }
+            @if (currentAction == "MyGroups")
+            {
+                <li role="presentation" class="active"><a asp-action="MyGroups">My Groups</a></li>
+            }
+            else
+            {
+                <li role="presentation"><a asp-action="MyGroups">My Groups</a></li>
+            }
+            @if (currentAction == "Invitations")
+            {
+                <li role="presentation" class="active"><a href="#">Invitations</a></li>
+            }
+            else
+            {
+                <li role="presentation"><a href="#">Invitations</a></li>
+            }
+
+
             <li role="presentation" class="creat-group">
                 <a asp-action="Create"><i class="fas fa-plus"></i> Creat Group</a>
             </li>

@@ -39,14 +39,23 @@
                 <label class="control-label col-md-2">Visibility</label>
                 <div class="radio-btn-change col-md-9">
                     <div class="btn-group">
-                        <label class="btn btn-default active">
-                            <input type="radio" asp-for="@Model.Visable" value="1" checked />
-                            Public
-                        </label>
-                        <label class="btn btn-default">
-                            <input type="radio" asp-for="@Model.Visable" value="0" />
-                            Private
-                        </label>
+                    @{ 
+                        var radioClass1 = "btn btn-default";
+                        var radioClass2 = "btn btn-default";
+                        if (Model.Visable) 
+                            radioClass1 += " active";
+                        else
+                            radioClass2 += " active";
+                    }
+                    <label class="@radioClass1">
+                        <input type="radio" asp-for="@Model.visable" value="1"/>
+                        Public
+                    </label>
+                    <label class="@radioClass2">
+                        <input type="radio" asp-for="@Model.visable" value="0" />
+                        Private
+                    </label>
+                        
                     </div>
                 </div>
             </div>

@@ -53,7 +53,10 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
 
         public void Update(Contest newContest)
         {
-            dbcontext.Contests.Update(newContest);
+            var contest = Find(newContest.contestId);
+            contest.contestDuration = newContest.contestDuration;
+            contest.contestTitle = newContest.contestTitle;
+            contest.contestVisabilty = newContest.contestVisabilty;
             Commit();
           
         }

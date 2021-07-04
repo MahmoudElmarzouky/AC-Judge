@@ -60,7 +60,7 @@
                     <ul class="nav navbar-nav">
                         @{
                             string currentController = ViewContext.RouteData.Values.ContainsKey("Controller") ? ViewContext.RouteData.Values["Controller"].ToString() : "NULL";
-
+                            
                             List<string> navElements = new List<string> { "Home", "Blog", "Rank", "Interview", "Problem", "Contest", "Group", "About" };
                             foreach (string navelement in navElements)
                             {

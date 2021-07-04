@@ -13,5 +13,6 @@ namespace GraduationProject.ViewModels.GroupViewsModel
         public string oldPassword { get; set; }
         public string newPassword { get; set; }
         public Boolean Visable { get; set; }
+        public string visable { get; set; }
     }
 }
