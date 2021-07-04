@@ -29,16 +29,13 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
         public Problem Find(int Id)
         {
             var problem = dbcontext.Problems
-                .Include(ProblemUser => ProblemUser.ProblemUsers)
                 .FirstOrDefault(problem => problem.ProblemId == Id);
             return problem; 
         }
 
         public IList<Problem> List()
         {
-            return dbcontext.Problems
-                .Include(ProblemUser => ProblemUser.ProblemUsers)
-                .ToList();
+            return dbcontext.Problems.ToList();
         }
 
         public void Remove(int Id)
@@ -62,22 +59,77 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             else if (x == 2)
             {
                 int type = int.Parse(list[0]);
-                var Name_Source = list[1];
-                items = dbcontext.Problems.Where(item => item.problemType == type && item.ProblemSource == Name_Source).ToList();
+                string problemID = list[1];
+                string problemName = list[2];
+                string ProblemSource = list[3];
+                items = dbcontext.Problems.Where(item =>
+                    item.problemType == type
+                    && item.problemSourceId.Contains(problemID)
+                    && item.problemTitle.Contains(problemName)
+                    && item.ProblemSource.Contains(ProblemSource)
+                ).ToList();
             }
             else if (x == 3)
             {
                 int type = int.Parse(list[0]);
-                var NameProblem = list[1];
-                items = dbcontext.Problems.Where(item => item.problemType == type && item.problemTitle == NameProblem).ToList();
+                string problemID = list[1];
+                string problemName = list[2];
+                items = dbcontext.Problems.Where(item =>
+                    item.problemType == type
+                    && item.problemSourceId.Contains(problemID)
+                    && item.problemTitle.Contains(problemName)
+                ).ToList();
             }
-            else if (x == 4)
+            else if(x==4)
             {
                 int type = int.Parse(list[0]);
-                var Name_Source = list[1];
-                var NameProblem = list[2];
-                items = dbcontext.Problems.Where(item => item.problemType == type && item.ProblemSource == Name_Source &&  item.problemTitle==NameProblem).ToList();
+                string problemID = list[1];
+                string ProblemSource = list[2];
+                items = dbcontext.Problems.Where(item =>
+                    item.problemType == type
+                    && item.problemSourceId.Contains(problemID)
+                    && item.ProblemSource.Contains(ProblemSource)
+                ).ToList();
             }
+            else if (x == 5)
+            {
+                int type = int.Parse(list[0]);
+                string problemName = list[1];
+                string ProblemSource = list[2];
+                items = dbcontext.Problems.Where(item =>
+                    item.problemType == type
+                    && item.problemTitle.Contains(problemName)
+                    && item.ProblemSource.Contains(ProblemSource)
+                ).ToList();
+            }
+            else if (x == 6)
+            {
+                int type = int.Parse(list[0]);
+                string problemID = list[1];
+                items = dbcontext.Problems.Where(item =>
+                    item.problemType == type
+                    && item.problemSourceId.Contains(problemID)
+                ).ToList();
+            }
+            else if (x == 7)
+            {
+                int type = int.Parse(list[0]);
+                string problemName = list[1];
+                items = dbcontext.Problems.Where(item =>
+                    item.problemType == type
+                    && item.problemTitle.Contains(problemName)
+                ).ToList();
+            }
+            else if (x == 8)
+            {
+                int type = int.Parse(list[0]);
+                string ProblemSource = list[1];
+                items = dbcontext.Problems.Where(item =>
+                    item.problemType == type
+                    && item.ProblemSource.Contains(ProblemSource)
+                ).ToList();
+            }
+
             return items;
         }
 
