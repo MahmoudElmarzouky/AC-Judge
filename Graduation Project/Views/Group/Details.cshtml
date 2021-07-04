@@ -91,16 +91,25 @@
                     }
                     else if (Model.UserRole == "Participant")
                     {
-                        <div class="">
-                            <a asp-action="Leave" asp-route-id="@Model.GroupId" class="btn btn-danger">Leave Group</a>
+                        <div class="dropdown">
+                            <a href="#" class="btn btn-info dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a asp-controller="Contest" asp-action="Create" asp-route-id="@Model.GroupId">New Contest</a></li>
+
+                                <li><a asp-controller="Blog" asp-action="Create" asp-route-id="@Model.GroupId">New Blog</a></li>
+
+                                <li><a asp-action="Leave" asp-route-id="@Model.GroupId" class="confirm">Leave Group</a></li>
+                                
+                            </ul>
                         </div>
+
 
                         <!-- visible if user participant -->
                     }
                     else
                     {
                         <a asp-action="JoinToGroup" asp-route-id="@Model.GroupId" class="btn btn-info">Join Group</a>
-                     }
+                    }
 
 
                 </div>
