@@ -269,7 +269,7 @@ namespace GraduationProject.Controllers.Group
                 creationTime = group.creationTime,
                 UserGroup = group.UserGroup,
                 Contests = group.Contests.ToList(), 
-                Blogs=group.blogs.ToList(),
+                Blogs= group.blogs.ToList(),
                 IsFavourite = IsFavourite,
                 CurrentUserId = user.UserId,
             };

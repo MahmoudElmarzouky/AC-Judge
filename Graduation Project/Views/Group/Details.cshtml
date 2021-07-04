@@ -237,7 +237,7 @@
                                                 <td><a asp-controller="Blog" asp-action="Details" asp-route-id="@blog.blogId">@blog.blogtitle</a></td>
                                                 <!--Blog Owner-->
                                                 <!--blog.UserBlog.FirstOrDefault(u => u.isOwner == true).User.FirstName -->
-                                                <td><a href="#">  Not Set Yet </a></td>
+                                                <td><a href="#">  @blog.userBlog.FirstOrDefault(u => u.blogOwenr == true).User.UserName </a></td>
                                                 <td>@blog.creationTime.ToString("MM/dd/yyyy")</td>
                                                 <td>@blog.blogvote</td>
                                             </tr>
