@@ -75,8 +75,18 @@
                             @foreach (var item in Model)
                             {
                                 <tr>
-                                    <td class="text-@(item.Status == "Solved"?"success":"danger")">@item.Status</td>
-                                    <td><a asp-action="FlipFavourite" asp-route-id="@item.ProblemId" class="fas fa-heart @(item.Favorite==true?"active":"")" data-favorite="IconFav"></a></td>
+                                    @{
+                                        if (User.Identity.IsAuthenticated)
+                                        {
+                                            <td class="text-@(item.Status == "Solved" ? "success" : "danger")">@item.Status</td>
+                                            <td><a asp-action="FlipFavourite" asp-route-id="@item.ProblemId" class="fas fa-heart @(item.Favorite == true ? "active" : "")" data-favorite="IconFav"></a></td>
+                                        }
+                                        else
+                                        {
+                                            <td></td>
+                                            <td></td>
+                                        }
+                                     }
                                     <td>@item.OnlineJudge</td>
                                     <td><a href="#">@item.ProblemSourceId</a></td>
                                     <td><a href="#">@item.Title</a></td>

@@ -16,16 +16,26 @@ namespace GraduationProject.Controllers.problems
         private readonly IProblemRepository<Problem> problemRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly User user;
+        private readonly Boolean login;
         private readonly IEnumerable<Submission> ListMysubmission;
         private readonly IEnumerable<ProblemUser> ListMyfavorite;
         public ProblemController(IUserRepository<User> Userrepository,IProblemRepository<Problem> problemRepository, IHttpContextAccessor httpContextAccessor)
         {
-            _httpContextAccessor = httpContextAccessor;
-            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             this.problemRepository = problemRepository;
-            user = Userrepository.Find(userId);
-            ListMysubmission = user.submissions;
-            ListMyfavorite = user.ProblemUsers;
+            _httpContextAccessor = httpContextAccessor;
+            var flag = _httpContextAccessor.HttpContext.User.Identity.IsAuthenticated;
+            if (flag == true)
+            {
+                login = true;
+                var userId = _httpContextAccessor.HttpContext.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
+                user = Userrepository.Find(userId);
+                ListMysubmission = user.submissions;
+                ListMyfavorite = user.ProblemUsers;
+            }
+            else
+            {
+                login = false;
+            }
 
         }
         public ActionResult Index()
@@ -42,24 +52,32 @@ namespace GraduationProject.Controllers.problems
                     Title = p.problemTitle,
                     rating = p.rating
                 };
-                var acsubmission = ListMysubmission.FirstOrDefault(s => s.ProblemId == p.ProblemId && s.Verdict == "Accept");
-                if (acsubmission != null)
+                if (login)
                 {
-                    item.Status = "Solved";
-                }
-                else
-                {
-                    var wrsubmission = ListMysubmission.FirstOrDefault(s => s.ProblemId == p.ProblemId && s.Verdict == "Wrong");
-                    if (wrsubmission != null)
-                        item.Status = "Attempted";
+                    var acsubmission = ListMysubmission.FirstOrDefault(s => s.ProblemId == p.ProblemId && s.Verdict == "Accept");
+                    if (acsubmission != null)
+                    {
+                        item.Status = "Solved";
+                    }
                     else
-                        item.Status = "";
+                    {
+                        var wrsubmission = ListMysubmission.FirstOrDefault(s => s.ProblemId == p.ProblemId && s.Verdict == "Wrong");
+                        if (wrsubmission != null)
+                            item.Status = "Attempted";
+                        else
+                            item.Status = "";
+                    }
+                    var Is_Favorite = ListMyfavorite.FirstOrDefault(f => f.IsFavourite == true && f.ProblemId == p.ProblemId);
+                    if (Is_Favorite != null)
+                        item.Favorite = true;
+                    else
+                        item.Favorite = false;
                 }
-                var Is_Favorite = ListMyfavorite.FirstOrDefault(f => f.IsFavourite == true && f.ProblemId == p.ProblemId);
-                if (Is_Favorite != null)
-                    item.Favorite = true;
                 else
+                {
                     item.Favorite = false;
+                    item.Status = "";
+                }
 
                 model.Add(item);
 
