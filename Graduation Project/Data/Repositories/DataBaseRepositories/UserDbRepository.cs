@@ -23,7 +23,10 @@ namespace GraduationProject.Data.Repositories
         }
         public User Find(int Id)
         {
-            var user = dbcontext.Users.FirstOrDefault(user => user.UserId == Id);
+            var user = dbcontext.Users
+                .Include(s => s.submissions)
+                .Include(pu => pu.ProblemUsers)
+                .FirstOrDefault(user => user.UserId == Id);
             return user; 
         }
         public User Find(string Id)
