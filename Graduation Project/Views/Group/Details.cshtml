@@ -195,8 +195,7 @@
                                         }        
                                     <tr>
                                         <!--  userid, username, name, userrole   -->
-                                        
-                                        @if(@Model.CurrentUserId == @rel.User.UserId)
+                                        @if(@Model.CurrentUserId == @rel.User.UserId || @rel.UserRole == "Creator" || ((@Model.UserRole != "Creator")&&(@Model.UserRole != "Manager")) )
                                         {
                                         <td>@rel.User.UserName</td>
                                         }else
