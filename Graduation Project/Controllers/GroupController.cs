@@ -103,13 +103,12 @@ namespace GraduationProject.Controllers.Group
 
         private GraduationProject.Data.Models.Group getGroupFromEditModel(EditGroupModel model)
         {
-            // check old password = password in group 
             return new GraduationProject.Data.Models.Group
             {
                 GroupId = model.groupId,
                 GroupTitle = model.groupTitle,
                 GroupDescription = model.groupDescription,
-                Visable = model.Visable,
+                Visable = model.visable == "1"? true: false,
                 Password = model.newPassword
             };
         }
@@ -120,7 +119,8 @@ namespace GraduationProject.Controllers.Group
                 groupId = group.GroupId,
                 groupTitle = group.GroupTitle,
                 groupDescription = group.GroupDescription,
-                Visable = group.Visable
+                Visable = group.Visable,
+                visable = group.Visable ? "1" : "0"
             };
         }
         // GET: HomeController/Delete/5
@@ -260,7 +260,7 @@ namespace GraduationProject.Controllers.Group
                 GroupTitle = model.GroupTitle, 
                 GroupDescription = model.GroupDescription, 
                 Password = model.Password, 
-                Visable = model.Visable, 
+                Visable = model.visable == "1"? true: false, 
             };
             return newGroup; 
         }
@@ -274,7 +274,8 @@ namespace GraduationProject.Controllers.Group
                 GroupTitle = group.GroupTitle, 
                 GroupDescription = group.GroupDescription, 
                 Password = group.Password, 
-                Visable = group.Visable, 
+                Visable = group.Visable,
+                visable = group.Visable? "1": "0",
                 OwnerId = ID
             };
             return model;

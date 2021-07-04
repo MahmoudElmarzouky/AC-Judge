@@ -37,11 +37,11 @@
                         
                         <label class="btn btn-default active">
                             
-                            <input asp-for="Visable" type="radio" value="1"  checked />
+                            <input asp-for="@Model.visable" type="radio" value="1"  checked />
                             Public
                         </label>
                         <label class="btn btn-default">
-                            <input asp-for="Visable" type="radio" value="0" />
+                            <input asp-for="@Model.visable" type="radio" value="0" />
                             Private
                         </label>
                     </div>
