@@ -13,35 +13,36 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="contestId" />
+            <input type="hidden" asp-for="@Model.contestId" />
+            <input type="hidden" asp-for="@Model.groupId"/>
             <div class="form-group">
                 <label asp-for="contestTitle" class="control-label"></label>
-                <input asp-for="contestTitle" class="form-control" />
+                <input asp-for="@Model.contestTitle" class="form-control" />
                 <span asp-validation-for="contestTitle" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="contestStartTime" class="control-label"></label>
-                <input asp-for="contestStartTime" class="form-control" />
+                <input asp-for="@Model.contestStartTime" class="form-control" />
                 <span asp-validation-for="contestStartTime" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="contestDuration" class="control-label"></label>
-                <input asp-for="contestDuration" class="form-control" />
+                <input asp-for="@Model.contestDuration" class="form-control" />
                 <span asp-validation-for="contestDuration" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="creationTime" class="control-label"></label>
-                <input asp-for="creationTime" class="form-control" />
+                <input asp-for="@Model.creationTime" class="form-control" />
                 <span asp-validation-for="creationTime" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="contestVisabilty" class="control-label"></label>
-                <input asp-for="contestVisabilty" class="form-control" />
+                <input asp-for="@Model.contestVisabilty" class="form-control" />
                 <span asp-validation-for="contestVisabilty" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="contestStatus" class="control-label"></label>
-                <input asp-for="contestStatus" class="form-control" />
+                <input asp-for="@Model.contestStatus" class="form-control" />
                 <span asp-validation-for="contestStatus" class="text-danger"></span>
             </div>
             
