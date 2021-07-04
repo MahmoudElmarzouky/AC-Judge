@@ -63,6 +63,21 @@ function Main_Rule(){
        $(this).addClass('active').siblings().removeClass('active');
     });
     
+    /*
+     Eye To Show Password
+    */
+    var PassFiled = $('.password-eye input[type="password"]');
+    $('.password-eye .show-pass-lg').hover(function(){
+        PassFiled.attr('type','text');
+    }, function(){
+        PassFiled.attr('type','password');
+    });
+    
+    $('.password-eye .show-pass').hover(function(){
+        PassFiled.attr('type','text');
+    }, function(){
+        PassFiled.attr('type','password');
+    });
 }
 
 function Show_User_Error_Message(element){
@@ -74,6 +89,31 @@ function Show_User_Error_Message(element){
         }else{
             $(this).css('display','block');
         }
+    });
+}
+
+function Modal_Edit_Member_Group(){
+    var Element = $('.details-group-page .group-member a[data-call="x-modal"]');
+    var RowTable = '.details-group-page #EditMemberGroupModal';
+    Element.click(function(){
+        var UserId = $(this).data('id');
+        var UserName = $(this).data('username');
+        var FullName = $(this).data('name');
+        var Role = $(this).data('role');
+        
+        $(RowTable + ' [data-id="UserId"]').val(UserId);
+        $(RowTable + ' [data-id="UserName"]').text(UserName);
+        $(RowTable + ' [data-id="FullName"]').text(FullName);
+        
+        var btnStatus = $(RowTable + ' [data-id="UserStatus"]');
+        if(Role == '-1'){
+            btnStatus.val('0');
+            btnStatus.html('<i class="fas fa-edit"></i> Set Manager');
+        }else if(Role == '0'){
+            btnStatus.val('-1');
+            btnStatus.html('<i class="fas fa-edit"></i> Set Participant');
+        }
+  
     });
 }
 
@@ -96,6 +136,7 @@ $(function(){
     /* Start Group Page */
     Show_User_Error_Message('.create-group-page');
     Show_User_Error_Message('.edit-group-page');
+    Modal_Edit_Member_Group();
     /* End Group Page */
     
     

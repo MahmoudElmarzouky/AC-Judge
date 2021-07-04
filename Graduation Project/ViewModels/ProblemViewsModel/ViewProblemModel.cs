@@ -7,12 +7,13 @@ namespace GraduationProject.ViewModels.ProblemViewsModel
 {
     public class ViewProblemModel
     {
+        public int ProblemId { get; set; }
         public string Status { get; set; }
         public Boolean Favorite { get; set; }
         public string OnlineJudge { get; set; }
-        public int ProblemSourceId { get; set; }
+        public string ProblemSourceId { get; set; }
         public string Title { get; set; }
-        public int rating { get; set; }
+        public int? rating { get; set; }
         
     }
 }

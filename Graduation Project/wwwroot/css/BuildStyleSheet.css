@@ -1,9 +1,31 @@
 /* My StyleSheet SuperMari000 */
 
+.text-lowercase {
+  text-transform: lowercase !important;
+}
+
+.text-uppercase {
+  text-transform: uppercase !important;
+}
+
+.text-capitalize {
+  text-transform: capitalize !important;
+}
+
 .table-active,
 .table-active > th,
 .table-active > td {
   background-color: rgba(0, 0, 0, 0.075);
 }
 
+.table .thead-light th {
+  color: #495057;
+  background-color: #e9ecef;
+  border-color: #dee2e6;
+}
 
+.table .thead-dark th {
+  color: #fff;
+  background-color: #212529;
+  border-color: #32383e;
+}

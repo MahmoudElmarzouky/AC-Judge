@@ -113,13 +113,15 @@
 
                         <div class="table-responsive">
                             <table class="table table-bordered text-center">
-                                <tbody>
+                                <thead>
                                     <tr>
                                         <td>Title</td>
                                         <td>Start Time</td>
                                         <td>Length</td>
                                         <td>Prepeard By</td>
                                     </tr>
+                                </thead>
+                                <tbody>
                                     @{
                                         foreach (var contest in Model.Contests)
                                         {
@@ -167,29 +169,25 @@
 
                         <div class="table-responsive">
                             <table class="table table-bordered text-center">
-                                <tbody>
+                                <thead>
                                     <tr>
                                         <td>Name</td>
                                         <td>User Name</td>
                                         <td>Role</td>
                                         <td>Join Time</td>
                                     </tr>
-
+                                </thead>
+                                <tbody>
                                     @{
                                         foreach (var rel in Model.UserGroup)
                                         {
-
-                                            
                                                 <tr>
                                                     <!--  userid, username, name, userrole   -->
-                                                    <td>@rel.User.FirstName</td> <!-- if user member or user is curent user-->
-                                                    <td><a value="@rel.User.UserId" href="javascript:void(0)" data-toggle="modal" data-target="#EditMemberGroupModal">@rel.User.UserName</a></td>
-
+                                                    <td><a href="" data-call="x-modal" data-toggle="modal" data-target="#EditMemberGroupModal" data-id="@rel.User.UserId" data-name="@rel.User.FirstName" data-role="-1" data-username="@rel.User.UserName">@rel.User.FirstName</a></td>
+                                                    <td><a href="">@rel.User.UserName</a></td>
                                                     <td>@rel.UserRole</td>
                                                     <td>@rel.MemberSince.ToString("MM/dd/yyyy")</td>
-
                                                 </tr>
-
                                         }
                                     }
                                 </tbody>
@@ -205,13 +203,15 @@
                         </div>
                         <div class="table-responsive">
                             <table class="table table-bordered text-center">
-                                <tbody>
+                                <thead>
                                     <tr>
                                         <td>Title</td>
                                         <td>Author</td>
                                         <td>Create Time</td>
                                         <td>Vote</td>
                                     </tr>
+                                </thead>
+                                <tbody>
                                     @{
                                         foreach (var blog in Model.BlogGroup)
                                         {
@@ -236,46 +236,45 @@
         <!-- You will see the source in Shared Folder-->
         <partial name="AddMemberView" for="@Model.GroupId" />
         
-        <form asp-action="EditMember">
-            <div class="modal fade bd-example-modal-sm edit-group-modal" id="EditMemberGroupModal" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <div class="model-header-flex">
-                                <h3 class="modal-title">Edit Member</h3>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="modal-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered text-center">
-                                    <tbody>
-                                        <tr>
-                                            <td>Name</td>
-                                            <td>User Name</td>
-                                            <td>Control</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Mohamed </td>
-                                            <td> SAmeh</td>
-                                            <td>
-                                                <input name = "userId" hidden value="123"/>
-                                                <input name = "role" hidden value="rold"/>
-                                                <button value ="Manger" name ="buttonName" type="submit" href="#" class="btn btn-success"><i class="fas fa-edit"></i> Set Manager</button><!-- if user is member -->
-                                                <!--<a href="#" class="btn btn-success"><i class="fas fa-edit"></i> Set Member</a> <!-- if user is manager -->
-                                                <button value="Dle" name="buttonName" type="submit" href="#" class="btn btn-danger"><i class="fas fa-times-circle"></i> Delete</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+        <div class="modal fade bd-example-modal-sm edit-group-modal" id="EditMemberGroupModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="model-header-flex">
+                            <h3 class="modal-title">Edit Member</h3>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                     </div>
+                    <form asp-action="EditMember" class="modal-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center">
+                                <thead>
+                                    <tr>
+                                        <td>Name</td>
+                                        <td>User Name</td>
+                                        <td>Control</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="dataset text-capitalize">
+                                        
+                                        <td data-id="FullName"></td>
+                                        <td data-id="UserName"></td>
+                                        <td>
+                                            <input name="userId" hidden value data-id="UserId" />
+                                            <button type="submit" name="userRole" value="" class="btn btn-success" data-id="UserStatus"></button>
+                                            <button type="submit" name="userDelete" value="delete" class="btn btn-danger"><i class="fas fa-times-circle"></i> Delete</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
                 </div>
-            </div> <!-- To Edit Member -->
-        </form>
+            </div>
+        </div> <!-- To Edit Member -->
 
     </div>
 </section>
