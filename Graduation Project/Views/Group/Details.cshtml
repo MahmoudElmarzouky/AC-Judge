@@ -231,7 +231,7 @@
                                 </thead>
                                 <tbody>
                                     @{
-                                        foreach (var blog in Model.BlogGroup)
+                                        foreach (var blog in Model.Blogs)
                                         {
                                             <tr>
                                                 <td><a asp-controller="Blog" asp-action="Details" asp-route-id="@blog.blogId">@blog.blogtitle</a></td>
