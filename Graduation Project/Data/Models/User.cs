@@ -24,7 +24,6 @@ namespace GraduationProject.Data.Models
         public string LastName { get; set; }
         public Boolean Gender { get; set; }
         public DateTime DateOfJoin { get; set; }
-       // public virtual GraduationProject.Areas.Identity.Data.User UserIdentity { get; set; }
         public virtual ICollection<UserContest> UserContest { get; set; }
         public virtual ICollection<UserGroup> UserGroup { get; set; }
         public Handle handle { get; set; }

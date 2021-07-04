@@ -67,8 +67,7 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             foreach (var real in group.UserGroup)
                 dbcontext.Entry(real).Reference(c => c.User).Load();
             foreach (var contest in group.Contests)
-                foreach(var real in contest.UserContest)
-                    dbcontext.Entry(real).Reference(c => c.User).Load();
+                    dbcontext.Entry(contest).Collection(c => c.UserContest).Load();
         }
     }
 }
