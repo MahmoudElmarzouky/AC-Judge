@@ -1,4 +1,4 @@
-﻿@model GraduationProject.ViewModels.CreateGroupModel
+﻿@model GraduationProject.ViewModels.GroupViewsModel.EditGroupModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -10,29 +10,29 @@
         <h1 class="static-main-title">Edit Group</h1>
 
         <form class="form-horizontal" asp-action="Edit" method="POST">
-            <input type="hidden" asp-for="GroupId" />
+            <input type="hidden" asp-for="@Model.groupId" />
             <div class="form-group row">
                 <label class="control-label col-md-2">Group Title</label>
                 <div class="col-md-9">
-                    <input type="text" class="form-control" placeholder="Group Title Show Pepole" />
+                    <input type="text" asp-for="@Model.groupTitle" value="@Model.groupTitle" class="form-control" placeholder="Group Title Show Pepole" />
                 </div>
             </div>
             <div class="form-group row">
                 <label class="control-label col-md-2">Old Password</label>
                 <div class="col-md-9">
-                    <input type="password" name="password" class="form-control" placeholder="Old Password To Member Join" />
+                    <input asp-for="@Model.oldPassword"  type="password" class="form-control" placeholder="Old Password To Member Join" />
                 </div>
             </div>
             <div class="form-group row">
                 <label class="control-label col-md-2">New Password</label>
                 <div class="col-md-9">
-                    <input type="password" name="password" class="form-control" placeholder="New Password To Member Join" />
+                    <input asp-for="@Model.newPassword" type="password" class="form-control" placeholder="New Password To Member Join" />
                 </div>
             </div>
             <div class="form-group row">
                 <label class="control-label col-md-2">Description</label>
                 <div class="col-md-9">
-                    <textarea rows="5" class="form-control" placeholder="Less Than 100 Characters" ></textarea>
+                    <textarea asp-for="@Model.groupDescription" value="@Model.groupDescription" rows="5" class="form-control" placeholder="Less Than 100 Characters" ></textarea>
                 </div>
             </div>
             <div class="form-group row">
@@ -40,11 +40,11 @@
                 <div class="radio-btn-change col-md-9">
                     <div class="btn-group">
                         <label class="btn btn-default active">
-                            <input type="radio" name="visible" value="1" checked />
+                            <input type="radio" asp-for="@Model.Visable" value="1" checked />
                             Public
                         </label>
                         <label class="btn btn-default">
-                            <input type="radio" name="visible" value="0" />
+                            <input type="radio" asp-for="@Model.Visable" value="0" />
                             Private
                         </label>
                     </div>
@@ -57,15 +57,15 @@
             </div>
         </form>
         <div id="user-error-msg" class="col-sm-4 col-md-offset-8 alert alert-danger fade in">
-            <span asp-validation-for="GroupTitle"></span>
+            <span asp-validation-for="@Model.groupTitle"></span>
             <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
         </div>
         <div id="user-error-msg" class="col-sm-4 col-md-offset-8 alert alert-danger fade in">
-            <span asp-validation-for="Password"></span>
+            <span asp-validation-for="@Model.newPassword"></span>
             <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
         </div>
         <div id="user-error-msg" class="col-sm-4 col-md-offset-8 alert alert-danger fade in">
-            <span asp-validation-for="GroupDescription"></span>
+            <span asp-validation-for="@Model.groupDescription"></span>
             <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
         </div>
     </div>

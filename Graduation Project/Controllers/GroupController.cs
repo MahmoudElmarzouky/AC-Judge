@@ -75,18 +75,21 @@ namespace GraduationProject.Controllers.Group
         public ActionResult Edit(int id)
         {
             var group = groups.Find(id);
-            var model = getCreateModelFromGroup(group);
+            var model = getEditModelFromGroup(group);
             return View(model);
         }
+
+        
 
         // POST: HomeController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(CreateGroupModel model)
+        public ActionResult Edit(EditGroupModel model)
         {
             try
             {
-                var newGroup = getGroupFromCreateModel(model);
+                var newGroup = getGroupFromEditModel(model);
+                // need some change 
                 groups.Update(newGroup); 
                 return RedirectToAction(nameof(Index));
             }
@@ -96,6 +99,28 @@ namespace GraduationProject.Controllers.Group
             }
         }
 
+        private GraduationProject.Data.Models.Group getGroupFromEditModel(EditGroupModel model)
+        {
+            // check old password = password in group 
+            return new GraduationProject.Data.Models.Group
+            {
+                GroupId = model.groupId,
+                GroupTitle = model.groupTitle,
+                GroupDescription = model.groupDescription,
+                Visable = model.Visable,
+                Password = model.newPassword
+            };
+        }
+        private EditGroupModel getEditModelFromGroup(Data.Models.Group group)
+        {
+            return new EditGroupModel
+            {
+                groupId = group.GroupId,
+                groupTitle = group.GroupTitle,
+                groupDescription = group.GroupDescription,
+                Visable = group.Visable
+            };
+        }
         // GET: HomeController/Delete/5
         public ActionResult Delete(int id)
         {

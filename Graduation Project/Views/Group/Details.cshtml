@@ -84,6 +84,7 @@
                                 <li><a asp-action="Leave" asp-route-id="@Model.GroupId" class="confirm">Leave Group</a></li>
                                 @if (Model.UserRole == "Creator")
                                 {
+                                    <li><a asp-action="Edit" asp-route-id="@Model.GroupId">Edit Group</a></li>
                                     <li><a asp-action="Delete" asp-route-id="@Model.GroupId" class="confirm">Exit Group</a></li>
                                 }
                             </ul>
@@ -291,7 +292,7 @@
                                         <td data-id="UserName"></td>
                                         <td>
                                             <input name="groupId" hidden value="@Model.GroupId"/>
-                                            <input name="userId" hidden value data-id="UserId" />
+                                            <input name="userId" hidden value = "" data-id="UserId" />
                                             <button type="submit" name="buttonName" value="" class="btn btn-success" data-id="UserStatus"></button>
                                             <button type="submit" name="buttonName" value="delete" class="btn btn-danger"><i class="fas fa-times-circle"></i> Delete</button>
                                         </td>
