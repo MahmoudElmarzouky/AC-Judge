@@ -88,8 +88,10 @@ namespace GraduationProject.Controllers.Group
         {
             try
             {
+                var oldPassword = groups.Find(model.groupId).Password;
+                if (oldPassword != model.oldPassword)
+                    return View(model);
                 var newGroup = getGroupFromEditModel(model);
-                // need some change 
                 groups.Update(newGroup); 
                 return RedirectToAction(nameof(Index));
             }

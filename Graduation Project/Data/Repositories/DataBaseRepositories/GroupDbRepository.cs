@@ -56,7 +56,11 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
 
         public void Update(Group newGroup)
         {
-            dbcontext.Groups.Update(newGroup);
+            var group = Find(newGroup.GroupId);
+            group.GroupTitle = newGroup.GroupTitle;
+            group.GroupDescription = newGroup.GroupDescription;
+            group.Password = newGroup.Password;
+            group.Visable = newGroup.Visable; 
             Commit();
         }
 
