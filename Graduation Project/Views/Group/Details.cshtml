@@ -240,13 +240,19 @@
                                 </thead>
                                 <tbody>
                                     @{
-                                        foreach (var blog in Model.Blogs)
-                                        {
+										foreach (var blog in Model.Blogs)
+										{
                                             <tr>
                                                 <td><a asp-controller="Blog" asp-action="Details" asp-route-id="@blog.blogId">@blog.blogtitle</a></td>
-                                                <!--Blog Owner-->
-                                                <!--blog.UserBlog.FirstOrDefault(u => u.isOwner == true).User.FirstName -->
-                                                <td><a href="#">  @blog.userBlog.FirstOrDefault(u => u.blogOwenr == true).User.UserName </a></td>
+
+                                                @{
+													var userName = blog.userBlog.FirstOrDefault(u => u.blogOwenr == true).User.UserName;
+													var userId = blog.userBlog.FirstOrDefault(u => u.blogOwenr == true).User.UserId;
+
+													<td><a asp-controller="User" asp-action="Details" asp-route-id="@userId">@userName </a></td>
+                                                    }
+
+                                               
                                                 <td>@blog.creationTime.ToString("MM/dd/yyyy")</td>
                                                 <td>@blog.blogvote</td>
                                             </tr>
