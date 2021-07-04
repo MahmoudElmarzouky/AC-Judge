@@ -146,21 +146,43 @@ namespace GraduationProject.Controllers.problems
             }
             return View("Index", model);
         }
+        
+        public ActionResult FlipFavourite(int id)
+        {
+            var newproblem = problemRepository.Find(id);
+            ProblemUser pu = new ProblemUser();
+            var problemuser= newproblem.ProblemUsers.FirstOrDefault(u => u.UserId == user.UserId);
+            if(problemuser == null)
+            {
+                pu.ProblemId = id;
+                pu.UserId = user.UserId;
+                pu.IsFavourite = true;
+                newproblem.ProblemUsers.Add(pu);
+            }
+            else
+            {
+                problemuser.IsFavourite ^= true;
+            }
+            
+            problemRepository.Update(newproblem);
+            
+            return RedirectToAction(nameof(Index));
+        }
 
-        // GET: HomeController/Details/5
+
         public ActionResult Details(int id)
         {
             var problem = problemRepository.Find(id);
             return View(problem);
         }
 
-        // GET: HomeController/Create
+        
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: HomeController/Create
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Problem problem)
