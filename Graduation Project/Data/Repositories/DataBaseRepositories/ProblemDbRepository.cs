@@ -29,13 +29,18 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
         public Problem Find(int Id)
         {
             var problem = dbcontext.Problems
+                .Include(p => p.Submissions)
+                .Include(pu => pu.ProblemUsers)
                 .FirstOrDefault(problem => problem.ProblemId == Id);
             return problem; 
         }
 
         public IList<Problem> List()
         {
-            return dbcontext.Problems.ToList();
+            return dbcontext.Problems
+                .Include(p => p.Submissions)
+                .Include(pu => pu.ProblemUsers)
+                .ToList();
         }
 
         public void Remove(int Id)
