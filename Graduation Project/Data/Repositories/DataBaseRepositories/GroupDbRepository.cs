@@ -136,5 +136,14 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             currentUserGroup.UserRole = newRole;
             Commit(); 
         }
+
+        public IList<Group> MyGroups(int userId)
+        {
+            IList<Group> list = new List<Group>();
+            foreach (var g in dbcontext.Groups)
+                if (g.UserGroup.FirstOrDefault(u => u.GroupId == g.GroupId && u.UserId == userId) != null)
+                    list.Add(g);
+            return list; 
+        }
     }
 }

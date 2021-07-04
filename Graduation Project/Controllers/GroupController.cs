@@ -36,8 +36,19 @@ namespace GraduationProject.Controllers.Group
         {
             var list = new List<ViewGroupModel>();
             foreach (var item in groups.List())
-                list.Add(getViewModelFromGroup(item)); 
+                list.Add(getViewModelFromGroup(item));
+
             return View(list);
+        }
+        public ActionResult MyGroups()
+        {
+            int id = user.UserId;
+            var myGroups = groups.MyGroups(id);
+            var list = new List<ViewGroupModel>();
+            foreach (var item in myGroups)
+                list.Add(getViewModelFromGroup(item));
+
+            return View("Index", list);
         }
 
         // GET: HomeController/Details/5

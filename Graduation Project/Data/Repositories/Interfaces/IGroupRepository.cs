@@ -19,5 +19,6 @@ namespace GraduationProject.Data.Repositories.Interfaces
         void RemoveUser(int userId, int groupId);
         void FlipFavourite(int groupId, int userId);
         void ChangeUserRole(int groupId, int userId, string v);
+        IList<T> MyGroups(int id);
     }
 }
