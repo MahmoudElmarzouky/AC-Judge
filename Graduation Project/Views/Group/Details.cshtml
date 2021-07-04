@@ -89,7 +89,7 @@
                             </ul>
                         </div>
                     }
-                    else if (Model.UserRole == "Participate")
+                    else if (Model.UserRole == "Participant")
                     {
                         <div class="">
                             <a asp-action="Leave" asp-route-id="@Model.GroupId" class="btn btn-danger">Leave Group</a>
@@ -99,8 +99,8 @@
                     }
                     else
                     {
-                        <a href="#" class="btn btn-info">Join Group</a> <!-- if user not in group -->
-                    }
+                        <a asp-action="JoinToGroup" asp-route-id="@Model.GroupId" class="btn btn-info">Join Group</a>
+                     }
 
 
                 </div>

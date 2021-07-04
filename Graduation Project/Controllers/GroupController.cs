@@ -272,32 +272,68 @@ namespace GraduationProject.Controllers.Group
                 return View();
             }
         }
+        public ActionResult JoinToGroup(int Id)
+        {
+            var group = groups.Find(Id);
+            return JoinToGroup(group); 
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult JoinToGroup(GraduationProject.Data.Models.Group currentGroup)
+        {
+            
+            try
+            {
+                int groupId = currentGroup.GroupId;
+                int userId = user.UserId;
+                var rel = currentGroup.UserGroup.FirstOrDefault(u => u.GroupId == groupId && u.UserId == userId);
+                if (rel == null)
+                {
+                    rel = CreateRelation(userId, groupId, "Participant");
+                    currentGroup.UserGroup.Add(rel); 
+                }
+                groups.Update(currentGroup); 
+                return RedirectToAction("Details", new { id = currentGroup.GroupId });
+            }
+            catch
+            {
+                return RedirectToAction("Details", new { id = currentGroup.GroupId });
+            }
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult EditMember(int groupId, int userId, string buttonName)
         {
-            var currentGroup = groups.Find(groupId);
-            var rel = currentGroup.UserGroup.FirstOrDefault(r => r.GroupId == groupId && r.UserId == userId);
-            if (rel == null)
-                return RedirectToAction("Details", new { id = groupId });
-            currentGroup.UserGroup.Remove(rel); 
-            switch (buttonName)
+            try
             {
-                case "0":
-                    rel.UserRole = "Manager";
-                    break;
-                case "-1":
-                    rel.UserRole = "Participant";
-                    break;
-                case "delete":
-                    rel = null; 
-                    break; 
+                var currentGroup = groups.Find(groupId);
+                var rel = currentGroup.UserGroup.FirstOrDefault(r => r.GroupId == groupId && r.UserId == userId);
+                if (rel == null)
+                    return RedirectToAction("Details", new { id = groupId });
+                currentGroup.UserGroup.Remove(rel);
+                switch (buttonName)
+                {
+                    case "0":
+                        rel.UserRole = "Manager";
+                        break;
+                    case "-1":
+                        rel.UserRole = "Participant";
+                        break;
+                    case "delete":
+                        rel = null;
+                        break;
+                }
+                if (rel != null)
+                    currentGroup.UserGroup.Add(rel);
+                groups.Update(currentGroup);
+                return RedirectToAction("Details", new { id = groupId });
+
             }
-            if (rel != null)
-                currentGroup.UserGroup.Add(rel);
-            groups.Update(currentGroup); 
-            return RedirectToAction("Details", new { id = groupId });
-        }
+            catch
+            {
+                return RedirectToAction("Details", new { id = groupId });
+            }
+         }
 
         private GraduationProject.Data.Models.Group getGroupFromCreateModel(CreateGroupModel model)
         {
