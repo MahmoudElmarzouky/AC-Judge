@@ -89,6 +89,8 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
            dbcontext.Entry(group).Collection(c => c.UserGroup).Load();
            dbcontext.Entry(group).Collection(c => c.Contests).Load();
            dbcontext.Entry(group).Collection(c => c.blogs).Load();
+            foreach (var blog in group.blogs)
+                dbcontext.Entry(blog).Collection(c => c.userBlog).Load(); 
             foreach (var real in group.UserGroup)
                 dbcontext.Entry(real).Reference(c => c.User).Load();
             foreach (var contest in group.Contests)
