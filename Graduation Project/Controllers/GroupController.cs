@@ -261,7 +261,7 @@ namespace GraduationProject.Controllers.Group
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditMember(int userId, string role, string setMan, string setWon)
+        public ActionResult EditMember(int userId, string role, string buttonName)
         {
             return View(); 
         }
