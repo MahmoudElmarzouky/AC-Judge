@@ -13,7 +13,8 @@ namespace GraduationProject.Data.Models
         public int UserId { get; set; }
         [Key, Column(Order = 1)]
         public int GroupId { get; set; }
-        public string UserRole { get; set; }
+        public string UserRole { get; set; } //Creator, Manager, Participant
+        
         public DateTime MemberSince { get; set; }
         public Boolean isFavourite { get; set; }
         public virtual User User { get; set; }

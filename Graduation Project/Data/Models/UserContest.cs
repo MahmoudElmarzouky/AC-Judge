@@ -9,7 +9,9 @@ namespace GraduationProject.Data.Models
 {
     public class UserContest
     {
+        [Key, Column(Order = 0)]
         public int UserId { get; set; }
+        [Key, Column(Order = 1)]
         public int ContestId { get; set; }
         public Boolean isFavourite { get; set; }
         public Boolean isOwner { get; set; }

@@ -57,7 +57,7 @@ namespace GraduationProject.Controllers.Group
             newContest = new GraduationProject.Data.Models.Contest { contestDuration = 300, contestTitle = "The black Hat Contest", contestStartTime = DateTime.Now };
             newGroup.Contests.Add(newContest);
             groups.Add(newGroup);
-            newGroup.UserGroup.Add(CreateRelation(user.UserId, newGroup.GroupId));
+            newGroup.UserGroup.Add(CreateRelation(user.UserId, newGroup.GroupId, "Participant"));
             groups.Update(newGroup); 
         }
         public ActionResult Index()
@@ -95,10 +95,9 @@ namespace GraduationProject.Controllers.Group
                 groups.Add(newGroup);
                 int userId = user.UserId;
                 int groupId = newGroup.GroupId;
-                var userGroup = CreateRelation(userId, groupId);
+                var userGroup = CreateRelation(userId, groupId, "Creator");
                 newGroup.UserGroup.Add(userGroup);
                 groups.Update(newGroup); 
-
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -106,10 +105,24 @@ namespace GraduationProject.Controllers.Group
                 return View();
             }
         }
-
-        private UserGroup CreateRelation(int userId, int groupId)
+        // For Testing 
+        private void AddAllUserToGroup(GraduationProject.Data.Models.Group newGroup)
         {
-            var usergroup = new UserGroup { UserId = userId, GroupId = groupId, UserRole = "Admin", MemberSince = DateTime.Now, isFavourite = false };
+            int groupId = newGroup.GroupId; 
+            foreach (var currentUser in users.List())
+            {
+                if (newGroup.UserGroup.FirstOrDefault(u => u.GroupId == groupId && u.UserId == currentUser.UserId) == null)
+                {
+                    var userGroupTemp = CreateRelation(currentUser.UserId, groupId, "Participant");
+                    newGroup.UserGroup.Add(userGroupTemp);
+
+                }
+            }
+            groups.Update(newGroup);
+        }
+        private UserGroup CreateRelation(int userId, int groupId, string role)
+        {
+            var usergroup = new UserGroup { UserId = userId, GroupId = groupId, UserRole = role, MemberSince = DateTime.Now, isFavourite = false };
             return usergroup; 
         }
 
@@ -261,10 +274,31 @@ namespace GraduationProject.Controllers.Group
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditMember(int userId, string role, string buttonName)
+        public ActionResult EditMember(int groupId, int userId, string buttonName)
         {
-            return View(); 
+            var currentGroup = groups.Find(groupId);
+            var rel = currentGroup.UserGroup.FirstOrDefault(r => r.GroupId == groupId && r.UserId == userId);
+            if (rel == null)
+                return RedirectToAction("Details", new { id = groupId });
+            currentGroup.UserGroup.Remove(rel); 
+            switch (buttonName)
+            {
+                case "0":
+                    rel.UserRole = "Manager";
+                    break;
+                case "-1":
+                    rel.UserRole = "Participant";
+                    break;
+                case "delete":
+                    rel = null; 
+                    break; 
+            }
+            if (rel != null)
+                currentGroup.UserGroup.Add(rel);
+            groups.Update(currentGroup); 
+            return RedirectToAction("Details", new { id = groupId });
         }
+
         private GraduationProject.Data.Models.Group getGroupFromCreateModel(CreateGroupModel model)
         {
             var newGroup = new GraduationProject.Data.Models.Group { 
@@ -287,21 +321,22 @@ namespace GraduationProject.Controllers.Group
             
             int NumberOfMembers = group.UserGroup.Count;
             var query = group.UserGroup.FirstOrDefault(u => u.UserId == user.UserId);
-            var IsFavourite = query != null? query.isFavourite: false; 
-            var role = query != null? query.UserRole: "Not Set";
-            var userGroupRel = group.UserGroup.Where(u => u.GroupId == group.GroupId).ToList();
+            var IsFavourite = query != null? query.isFavourite: false;
+            var role = query != null ? query.UserRole : "not Set"; 
             var model = new ViewGroupModel {
+                UserRole = role,
                 GroupId = group.GroupId,
                 GroupTitle = group.GroupTitle,
                 GroupDescription = group.GroupDescription,
-                UserRole = role,
                 NumberOfMembers = NumberOfMembers,
                 GroupStatus = group.Visable ? "Public" : "Private",
                 creationTime = group.creationTime,
-                UserGroup = userGroupRel,
+                UserGroup = group.UserGroup,
                 Contests = group.Contests.ToList(), 
                 BlogGroup=group.blogs.ToList(),
-                IsFavourite = IsFavourite
+                IsFavourite = IsFavourite,
+                CurrentUserId = user.UserId,
+                
             };
             return model;
         }

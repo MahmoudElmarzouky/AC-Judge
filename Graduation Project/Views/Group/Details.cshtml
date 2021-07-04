@@ -69,7 +69,7 @@
                         @Model.GroupTitle
                     </div>
 
-                    @if (Model.UserRole == "Admin")
+                    @if (Model.UserRole == "Admin" || Model.UserRole == "Creator")
                     {
                         <div class="dropdown">
                             <!-- visible if user leader or manger -->
@@ -82,7 +82,7 @@
                                 <li><a asp-controller="Blog" asp-action="Create" asp-route-id="@Model.GroupId">New Blog</a></li>
 
                                 <li><a asp-action="Leave" asp-route-id="@Model.GroupId" class="confirm">Leave Group</a></li>
-                                @if (Model.UserRole == "Admin")
+                                @if (Model.UserRole == "Creator")
                                 {
                                     <li><a asp-action="Delete" asp-route-id="@Model.GroupId" class="confirm">Exit Group</a></li>
                                 }
@@ -179,15 +179,34 @@
                                 </thead>
                                 <tbody>
                                     @{
+                                       
                                         foreach (var rel in Model.UserGroup)
                                         {
-                                                <tr>
-                                                    <!--  userid, username, name, userrole   -->
-                                                    <td><a href="" data-call="x-modal" data-toggle="modal" data-target="#EditMemberGroupModal" data-id="@rel.User.UserId" data-name="@rel.User.FirstName" data-role="-1" data-username="@rel.User.UserName">@rel.User.FirstName</a></td>
-                                                    <td><a href="">@rel.User.UserName</a></td>
-                                                    <td>@rel.UserRole</td>
-                                                    <td>@rel.MemberSince.ToString("MM/dd/yyyy")</td>
-                                                </tr>
+                                        var roldInNumber = 0;
+                                        if(rel.UserRole == "Creator")
+                                        {
+                                            roldInNumber = 1;
+                                        }else if(rel.UserRole == "Manager")
+                                        {
+                                        roldInNumber = 0;
+                                        }else
+                                        {
+                                        roldInNumber = -1;
+                                        }        
+                                    <tr>
+                                        <!--  userid, username, name, userrole   -->
+                                        
+                                        @if(@Model.CurrentUserId == @rel.User.UserId)
+                                        {
+                                        <td>@rel.User.UserName</td>
+                                        }else
+                                        {
+                                        <td><a href="" data-call="x-modal" data-toggle="modal" data-target="#EditMemberGroupModal" data-id="@rel.User.UserId" data-name="@rel.User.FirstName" data-role="@roldInNumber" data-username="@rel.User.UserName">@rel.User.UserName</a></td>
+                                        }
+                                        <td><a href="">@rel.User.UserName</a></td>
+                                        <td>@rel.UserRole</td>
+                                        <td>@rel.MemberSince.ToString("MM/dd/yyyy")</td>
+                                    </tr>
                                         }
                                     }
                                 </tbody>
@@ -263,9 +282,10 @@
                                         <td data-id="FullName"></td>
                                         <td data-id="UserName"></td>
                                         <td>
+                                            <input name="groupId" hidden value="@Model.GroupId"/>
                                             <input name="userId" hidden value data-id="UserId" />
-                                            <button type="submit" name="userRole" value="" class="btn btn-success" data-id="UserStatus"></button>
-                                            <button type="submit" name="userDelete" value="delete" class="btn btn-danger"><i class="fas fa-times-circle"></i> Delete</button>
+                                            <button type="submit" name="buttonName" value="" class="btn btn-success" data-id="UserStatus"></button>
+                                            <button type="submit" name="buttonName" value="delete" class="btn btn-danger"><i class="fas fa-times-circle"></i> Delete</button>
                                         </td>
                                     </tr>
                                 </tbody>

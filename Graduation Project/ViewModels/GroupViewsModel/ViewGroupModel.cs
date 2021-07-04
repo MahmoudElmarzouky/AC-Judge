@@ -44,5 +44,13 @@ namespace GraduationProject.ViewModels
         public ICollection<Contest> Contests { get; set; }
         public ICollection<UserGroup> UserGroup { get; set; }
         public ICollection<Blog> BlogGroup { get; set; }
+        public int CurrentUserId { get; set; }
+        public string UserStatus { get 
+            {
+                if (UserRole == "Creator")
+                    return "Owner";
+                return ""; 
+            } set { } }
+
     }
 }
