@@ -8,7 +8,153 @@
             <h2>Status <span class="text-muted">All Submissions</span></h2>
             <a asp-action="Index" class="btn btn-info"><i class="fas fa-lightbulb"></i> Problems</a>
         </div>
-        
+        <section class="status-table">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                  <div class="panel-title">
+                    <i class="fas fa-filter"></i> Filter
+                  </div>
+                  <i class="fas fa-angle-down" data-toggle="OpenFilterPanel"></i>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal">
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">User Name</label>
+                            <div class="col-md-8">
+                                <input type="text" name="UserName"class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Problem</label>
+                            <div class="col-md-8">
+                                <input type="text" name="ProblemName" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Online Judge</label>
+                            <div class="col-md-8">
+                                <select class="form-control" name="ProblemSource">
+                                <option value="All">All</option>
+                                <option value="Codeforces">Codeforces</option>
+                                <option value="Atcoder">Atcoder</option>
+                                <option value="SPOJ">SPOJ</option>
+                                <option value="UVA">UVA</option>
+                            </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Verdict</label>
+                            <div class="col-md-8">
+                                <select class="form-control" name="ProblemResult">
+                                <option value="All">All</option>
+                                <option value="Accepted">Accepted</option>
+                                <option value="Time limit exceeded">Time limit exceeded</option>
+                            </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Language</label>
+                            <div class="col-md-8">
+                                <select class="form-control" name="ProblemLang">
+                                <option value="All">All</option>
+                                <option value="C++">C++</option>
+                                <option value="Java">Java</option>
+                                <option value="C#">C#</option>
+                                <option value="Python">Python</option>
+                            </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-offset-2 col-md-8">
+                                <input type="reset" value="Reset" class="btn btn-secondary" />
+                                <input type="submit" value="Search" class="btn btn-success" />
+                            </div> 
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center">
+                        <thead class="thead-light">
+                            <tr>
+                                <th class="text-center">Run ID</th>
+                                <th class="text-center">User Name</th>
+                                <th class="text-center">Online Judge</th>
+                                <th class="text-center">Problem</th>
+                                <th class="text-center">Verdict</th>
+                                <th class="text-center">Time</th>
+                                <th class="text-center">Memory</th>
+                                <th class="text-center">Language</th>
+                                <th class="text-center">When</th>
+                            </tr>
+                        </thead>
+                       <tbody>
+                            <tr>
+                                <td><a href="">121274212</a></td>
+                                <td><a href="">SuperMari000</a></td>
+                                <td>HackerRank</td>
+                                <td><a href="#">ORDERSET</a></td>
+                                <td class="text-danger">Time limit exceeded on test 122</td>
+                                <td>2550 ms</td>
+                                <td>11800 KB</td>
+                                <td>Microsoft Visual C++ 2017</td>
+                                <td>
+                                    <div>21/1/2021</div>
+                                    <div>21:40</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><a href="">121274212</a></td>
+                                <td><a href="">SuperMari000</a></td>
+                                <td>HackerRank</td>
+                                <td><a href="#">ORDERSET</a></td>
+                                <td class="text-danger">Time limit exceeded on test 122</td>
+                                <td>2550 ms</td>
+                                <td>11800 KB</td>
+                                <td>Microsoft Visual C++ 2017</td>
+                                <td>
+                                    <div>21/1/2021</div>
+                                    <div>21:40</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><a href="">121274212</a></td>
+                                <td><a href="">SuperMari000</a></td>
+                                <td>Codeforces</td>
+                                <td><a href="#">ORDERSET</a></td>
+                                <td class="text-success">Accepted</td>
+                                <td>2550 ms</td>
+                                <td>11800 KB</td>
+                                <td>C++ 2017</td>
+                                <td>
+                                    <div>21/1/2021</div>
+                                    <div>21:40</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="9">No Matching Records</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div aria-label="Page navigation" class="text-center">
+                <ul class="pagination pagination-lg">
+                  <li>
+                    <a href="#" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                  <li><a href="#">1</a></li>
+                  <li><a href="#">2</a></li>
+                  <li><a href="#">3</a></li>
+                  <li>
+                    <a href="#" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                </ul>
+            </div>
+        </section>
     </div>
 </section>
 
