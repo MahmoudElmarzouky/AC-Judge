@@ -227,6 +227,7 @@ namespace GraduationProject.Controllers.Group
                 int groupId = model.GroupId;
                 var group = groups.Find(groupId);
                 var GroupUserReal = group.UserGroup.FirstOrDefault(u => u.UserId == userId && u.GroupId == groupId);
+                var role = GroupUserReal.UserRole;
                 group.UserGroup.Remove(GroupUserReal);
                 groups.Update(group);
                 if (group.UserGroup.Count == 0)
@@ -234,6 +235,14 @@ namespace GraduationProject.Controllers.Group
                     // if the only member in the group leaves 
                     // then delete the group 
                     return Delete(model);
+                }
+                if(role == "Creator")
+                {
+                    var anyManger = group.UserGroup.FirstOrDefault(u => u.UserRole == "Manager"); 
+                    if (anyManger == null)
+                        anyManger = group.UserGroup.FirstOrDefault(u => u.GroupId == groupId);
+                    anyManger.UserRole = "Creator";
+                    groups.Update(group);
                 }
                 return RedirectToAction(nameof(Index));
             }
