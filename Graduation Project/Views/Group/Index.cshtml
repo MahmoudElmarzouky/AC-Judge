@@ -25,7 +25,17 @@
                 <div class="@classNamebox">
                     <div class="panel-heading">
                         <h3 class="panel-title"><a asp-action="Details" asp-route-id="@item.GroupId">@item.GroupTitle</a></h3>
-                        <i class="fas fa-heart" data-favorite="IconFav"></i>
+                        
+                            @{
+                                var className = "fas fa-heart";
+                                if (item.IsFavourite)
+                                    className += " active";
+                            }
+                            <!-- make this unchangeable just show class active if this group is fav-->
+                            <a class="@className" data-favorite="IconFav"></a>
+                            <!-- add class active if this faviorte group -->
+
+
                     </div>
                     <div class="panel-body">
                         @item.GroupDescription

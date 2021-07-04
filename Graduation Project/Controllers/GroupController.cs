@@ -267,9 +267,11 @@ namespace GraduationProject.Controllers.Group
                 int groupId = model.GroupId;
                 var group = groups.Find(groupId);
                 var GroupUserReal = group.UserGroup.FirstOrDefault(u => u.UserId == userId && u.GroupId == groupId);
+
                 if (GroupUserReal == null)
                 {
                     return RedirectToAction("Details", new { id = model.GroupId });
+                    
                 }
                 GroupUserReal.isFavourite ^= true;
                 groups.Update(group);
@@ -299,8 +301,13 @@ namespace GraduationProject.Controllers.Group
                 if (rel == null)
                 {
                     rel = CreateRelation(userId, groupId, "Participant");
-                    currentGroup.UserGroup.Add(rel); 
+                    
+                }else
+                {
+                    rel.UserRole = "Participant";
+                    rel.MemberSince = DateTime.Now; 
                 }
+                currentGroup.UserGroup.Add(rel);
                 groups.Update(currentGroup); 
                 return RedirectToAction("Details", new { id = currentGroup.GroupId });
             }
