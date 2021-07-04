@@ -4,6 +4,24 @@
 body{
     background-color:#FFF !important;
 }
+.password-eye{
+    position: relative !important;
+}
+.password-eye .show-pass,
+.password-eye .show-pass-lg{
+    position: absolute;
+    cursor: pointer
+}
+.password-eye .show-pass{
+    right: 12px;
+    top: 8px;
+    font-size: 17px;
+}
+.password-eye .show-pass-lg{
+    right: 16px;
+    top: 14px;
+    font-size: 18px;
+}
 i[data-favorite='IconFav']{
     cursor: pointer !important;
 }
@@ -276,9 +294,9 @@ header .nav-main .navbar-brand span{
     text-decoration: underline;
     line-height: 1.7rem;
 }
-.details-group-page .group-contest .panel table tr:first-child td,
-.details-group-page .group-member .panel table tr:first-child td,
-.details-group-page .group-blog .panel table tr:first-child td{
+.details-group-page .group-contest .panel table thead tr td,
+.details-group-page .group-member .panel table thead tr td,
+.details-group-page .group-blog .panel table thead tr td{
     background-color: #CCC;
     color: #333;
     font-size: 1.7rem;
@@ -292,7 +310,7 @@ header .nav-main .navbar-brand span{
     vertical-align:middle !important;
     background-color: #EEE;
 }
-.details-group-page .edit-group-modal .modal-body .table tr:first-child td{
+.details-group-page .edit-group-modal .modal-body .table thead tr td{
     color:#FFF;
     background-color:#333;
 }

@@ -259,6 +259,12 @@ namespace GraduationProject.Controllers.Group
                 return View();
             }
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditMember(int userId, string role, string setMan, string setWon)
+        {
+            return View(); 
+        }
         private GraduationProject.Data.Models.Group getGroupFromCreateModel(CreateGroupModel model)
         {
             var newGroup = new GraduationProject.Data.Models.Group { 
