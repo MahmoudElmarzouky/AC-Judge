@@ -52,7 +52,7 @@ namespace GraduationProject.Controllers.Blog
             {
                 blogId = blog.blogId,
                 blogtitle = blog.blogtitle,
-                blogOwner = userBlog.User.FirstName,
+                blogOwner = userBlog.User.UserName,
                 blogcontent = blog.blogcontent,
                 blogvote = blog.blogvote
                 , creationTime = blog.creationTime
