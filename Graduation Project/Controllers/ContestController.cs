@@ -115,6 +115,7 @@ namespace GraduationProject.Controllers.Contest
         [ValidateAntiForgeryToken]
         public ActionResult Delete(GraduationProject.Data.Models.Contest contest)
         {
+            // just test branch 
             try
             {
                 int? groupId = contests.Find(contest.contestId).groupId; 
