@@ -142,7 +142,7 @@ function Get_Submision(URL, SubID, ElementShow){
         }
     });
     
-    return result;
+    //return result;
 }
 
 function Submision_Status_Page(){
