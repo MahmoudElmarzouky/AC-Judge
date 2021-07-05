@@ -102,12 +102,13 @@
                             <tr>
                                 @if (item.Visiable == true)
                                 {
-                                    <td><a href="" data-user="@item.UserName" data-id="@item.RunID" data-toggle="modal" data-target="#ShowSubmisionStatusModal">@item.RunID</a></td>
+                                    <td><a href="" data-link="@Url.Action("GetTextSubmission")" data-user="@item.UserName" data-id="@item.RunID" data-toggle="modal" data-target="#ShowSubmisionStatusModal">@item.RunID</a></td>  
                                 }
                                 else
                                 {
                                     <td>@item.RunID</td>
                                 }
+
                                 <td><a asp-controller="User" asp-action="Details" asp-route-id="@item.UserId">@item.UserName</a></td>
                                 <td>@item.OnlineJudge</td>
                                 <td><a href="#">@item.ProblemSourcesId</a></td>
@@ -179,6 +180,7 @@
                                             <td></td>
                                             <td></td>
                                             <td>
+
                                                 <form>
                                                     <input hidden name="SubmisionID" value="" />
                                                     <input type="submit" value="Share" href="" class="btn btn-info" />

@@ -8,6 +8,7 @@ Create Repoistories for:
 Create Controllers for:
 - Group 
 - Contest 
+- Contest Standing 
 
  
 # Mohamed Elhabashy  
