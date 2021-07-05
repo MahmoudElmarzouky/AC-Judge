@@ -122,17 +122,18 @@ function Get_Submision(URL, SubID){
     $.ajax({
        method: "POST",
        cache: false,
-       url: URL,
-       data: {SubmisionId: SubID},
-       success: function(data, status){
-        $.each(data, function(){
-            if(this[0] === '<')
-                result += '&lt;';
-            else if(this[0] === '>')
-                result += '&gt;';
-            else
-                result += this[0];
-        });
+        url: URL ,
+        data: { SubmisionId: SubID },
+        success: function (data, status) {
+            console.log(data)
+        //$.each(data, function(){
+        //    if(this[0] === '<')
+        //        result += '&lt;';
+        //    else if(this[0] === '>')
+        //        result += '&gt;';
+        //    else
+        //        result += this[0];
+        //});
        },
        error: function(xhr, status, error){
         console.log(error);
@@ -166,7 +167,7 @@ function Submision_Status_Page(){
         var SetID =  modal.find('.modal-body .table tbody tr input[name="SubmisionID"]');
         SetID.val(SubID);
         
-        var URL = "x";
+        var URL = "/Problem/GetTextSubmission";
         var SetCode = modal.find('.modal-body .submision pre');
         SetCode.text(Get_Submision(URL, SubID));
     });
