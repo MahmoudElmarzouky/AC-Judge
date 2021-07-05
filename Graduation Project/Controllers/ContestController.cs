@@ -134,7 +134,7 @@ namespace GraduationProject.Controllers.Contest
         [ValidateAntiForgeryToken]
         public ActionResult AddProblemToContest(int contestId, string problemName)
         {
-            var problem = problems.FindByName(problemName); 
+            var problem = problems.FindByName("CodeForces", problemName); 
             if (problem == null)
                 return RedirectToAction("Details", new { id = contestId });
             try
