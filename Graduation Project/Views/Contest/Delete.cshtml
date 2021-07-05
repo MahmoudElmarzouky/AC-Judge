@@ -48,17 +48,15 @@
         <dd>
             @Html.DisplayFor(model => model.contestStatus)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.group)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.group.GroupId)
-        </dd>
+        
     </dl>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="contestId" />
         <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-controller="Group" asp-action="Details" asp-route-id="@Model.groupId">Back to Group</a>
+        @if (Model.groupId != null)
+        {
+            <a asp-controller="Group" asp-action="Details" asp-route-id="@Model.groupId">Back to Group</a>
+        }
     </form>
 </div>
