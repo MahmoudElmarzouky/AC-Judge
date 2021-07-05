@@ -225,6 +225,15 @@ header .nav-main .navbar-brand span{
     background-color: #EEE;
     margin-top: 10px;
 }
+.group-page .groups .panel .invition{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.group-page .groups .panel .invition .btn{
+    padding: 2px 10px;
+    font-size: 1.3rem;
+}
 /* End Group Page */
 /* Start Group Details Page */
 .details-group-page{
