@@ -10,6 +10,13 @@
 <div>
     <h4>Contest</h4>
     <hr />
+    <div>
+        <a hidden asp-action="RegisterInContest" asp-route-id="@Model.contestId"> Register in the contest</a>|
+        <a asp-action="Edit" asp-route-id="@Model.contestId">Edit</a> |
+        <a asp-controller="Group" asp-action="Details" asp-route-id="@Model.groupId">Back to Group</a>
+    </div>
+
+
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.contestTitle)
@@ -72,6 +79,11 @@
         }
     </table>
     <!-- This table is for print the problems in the contest -->
+    <form asp-action="AddProblemToContest">
+        <input hidden name="contestId" value="@Model.contestId" />
+        <input placeholder="Type The Name of The problem" name="problemName" type="text" />
+        <button type="submit"> Add Problem To contest</button>
+    </form>
     <table class="table">
         <thead>
             <tr>
@@ -99,14 +111,4 @@
         </tbody>
     </table>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.contestId">Edit</a> |
 
-    <a asp-action="RegisterInContest" asp-route-id="@Model.contestId"> Register in the contest</a>|
-    <a asp-controller="Group" asp-action="Details" asp-route-id="@Model.groupId">Back to Group</a>
-    <form asp-action="AddProblemToContest">
-        <input hidden name="contestId" value="@Model.contestId" />
-        <input name="problemName" type="text" />
-        <button type="submit"> Add Problem To contest</button>
-    </form>
-</div>
