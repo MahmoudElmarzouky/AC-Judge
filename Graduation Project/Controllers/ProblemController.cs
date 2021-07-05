@@ -1,26 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
-using GraduationProject.Data.Models;
-using GraduationProject.Data.Repositories.IProblemRepository;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
+﻿using GraduationProject.Data.Models;
 using GraduationProject.Data.Repositories.Interfaces;
+using GraduationProject.Data.Repositories.IProblemRepository;
 using GraduationProject.ViewModels.ProblemViewsModel;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 
 namespace GraduationProject.Controllers.problems
 {
     public class ProblemController : Controller
     {
         private readonly IProblemRepository<Problem> problemRepository;
+        private readonly ISubmissionRepository<Submission> SubmissionRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly User user;
         private readonly Boolean login;
         private readonly IEnumerable<Submission> ListMysubmission;
         private readonly IEnumerable<ProblemUser> ListMyfavorite;
-        public ProblemController(IUserRepository<User> Userrepository,IProblemRepository<Problem> problemRepository, IHttpContextAccessor httpContextAccessor)
+        public ProblemController(ISubmissionRepository<Submission> _SubmissionRepository, IUserRepository<User> Userrepository, IProblemRepository<Problem> problemRepository, IHttpContextAccessor httpContextAccessor)
         {
+            SubmissionRepository = _SubmissionRepository;
             this.problemRepository = problemRepository;
             _httpContextAccessor = httpContextAccessor;
             var flag = _httpContextAccessor.HttpContext.User.Identity.IsAuthenticated;
@@ -40,13 +42,74 @@ namespace GraduationProject.Controllers.problems
         }
         public ActionResult Index()
         {
-            var ListProblems = problemRepository.Search(1,new List<string> { "1" });
+            IList<Problem> ListProblems = problemRepository.Search(1, new List<string> { "1" });
+            var model = getAllmodel(ListProblems);
+            return View(model);
+        }
+        public ActionResult Status()
+        {
+            var submissions = SubmissionRepository.GetSubmissionSpecific(false);
+            var list = GetAllStatus(submissions);
+            return View(list);
+        }
+        public ActionResult Filter()
+        {
+            var problemID = Request.Form["problemID"];
+            var problemName = Request.Form["problemName"];
+            var ProblemSource = Request.Form["ProblemSource"];
+            var list = problemRepository.Search(2, new List<string> { "1" , problemID,problemName,ProblemSource});
+            var model = getAllmodel(list);
+            return View("Index", model);
+        }
+        public ActionResult FilterStatus()
+        {
+            var User_Name = Request.Form["UserName"];
+            var ProblemName = Request.Form["ProblemName"];
+            var ProblemSource = Request.Form["ProblemSource"]=="All"?"":(string)Request.Form["ProblemSource"];
+            var ProblemResult = Request.Form["ProblemResult"]=="All"?"":(string)Request.Form["ProblemResult"];
+            var ProblemLang = Request.Form["ProblemLang"]=="All"?"":(string)Request.Form["ProblemLang"];
+            var submissions = SubmissionRepository.GetSubmissionSpecific(false);
+            IEnumerable<ViewStatusModel> list = GetAllStatus(submissions);
+            IEnumerable<ViewStatusModel> model = list.Where(
+                s => 
+                s.UserName.Contains(User_Name)  && 
+                s.ProblemSourcesId.Contains(ProblemName) &&
+                s.OnlineJudge.Contains(ProblemSource) &&
+                s.Verdict.Contains(ProblemResult) &&
+                s.Language.Contains(ProblemLang)
+                );
+            return View("Status", model);
+        }
+        public ActionResult FlipFavourite(int id)
+        {
+            var newproblem = problemRepository.Find(id);
+            ProblemUser pu = new ProblemUser();
+            var problemuser = newproblem.ProblemUsers.FirstOrDefault(u => u.UserId == user.UserId);
+            if (problemuser == null)
+            {
+                pu.ProblemId = id;
+                pu.UserId = user.UserId;
+                pu.IsFavourite = true;
+                newproblem.ProblemUsers.Add(pu);
+            }
+            else
+            {
+                problemuser.IsFavourite ^= true;
+            }
+
+            problemRepository.Update(newproblem);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public List<ViewProblemModel> getAllmodel(IList<Problem> ListProblems)
+        {
             List<ViewProblemModel> model = new List<ViewProblemModel>();
             foreach (var p in ListProblems)
             {
                 ViewProblemModel item = new ViewProblemModel()
                 {
-                    ProblemId=p.ProblemId,
+                    ProblemId = p.ProblemId,
                     OnlineJudge = p.ProblemSource,
                     ProblemSourceId = p.problemSourceId,
                     Title = p.problemTitle,
@@ -54,7 +117,7 @@ namespace GraduationProject.Controllers.problems
                 };
                 if (login)
                 {
-                    var acsubmission = ListMysubmission.FirstOrDefault(s => s.ProblemId == p.ProblemId && s.Verdict == "Accept");
+                    var acsubmission = ListMysubmission.FirstOrDefault(s => s.ProblemId == p.ProblemId && s.Verdict == "Accepted");
                     if (acsubmission != null)
                     {
                         item.Status = "Solved";
@@ -82,125 +145,45 @@ namespace GraduationProject.Controllers.problems
                 model.Add(item);
 
             }
-
-            return View(model);
+            return model;
         }
-        public ActionResult Status()
+        public IList<ViewStatusModel> GetAllStatus(IList<Submission> submissions)
         {
-            return View();
+            IList<ViewStatusModel> list = new List<ViewStatusModel>();
+            foreach (var item in submissions)
+            {
+                list.Add(
+                        new ViewStatusModel
+                        {
+                            RunID = item.SubmissionId,
+                            UserId = item.user.UserId,
+                            UserName = item.user.FirstName,
+                            ProblemId = item.problem.ProblemId,
+                            OnlineJudge = item.problem.ProblemSource,
+                            ProblemSourcesId = item.problem.problemSourceId,
+                            Verdict = item.Verdict,
+                            TimeConsumed = item.TimeConsumeMillis,
+                            MemoryConsumed = item.MemoryConsumeBytes,
+                            Language = item.ProgrammingLanguage,
+                            SubmitTime = item.CreationTime
+                        }
+                    );
+            }
+            return list;
         }
-        public ActionResult Filter()
-        {
-            var problemID = Request.Form["problemID"];
-            var problemName = Request.Form["problemName"];
-            var ProblemSource = Request.Form["ProblemSource"];
-            var list = new List<Problem>();
-            if (problemID != "" && problemName != "" && ProblemSource != "All")
-            {
-                list = (List<Problem>)problemRepository.Search(2, new List<string> { "1", problemID, problemName, ProblemSource });
-            }
-            else if (problemID != "" && problemName != "")
-            {
-                list = (List<Problem>)problemRepository.Search(3, new List<string> { "1", problemID, problemName });
-            }
-            else if (problemID != "" && ProblemSource != "All")
-            {
-                list = (List<Problem>)problemRepository.Search(4, new List<string> { "1", problemID, ProblemSource });
-            }
-            else if (problemName != "" && ProblemSource != "All")
-            {
-                list = (List<Problem>)problemRepository.Search(5, new List<string> { "1", problemName, ProblemSource });
-            }
-            else if (problemID != "")
-            {
-                list = (List<Problem>)problemRepository.Search(6, new List<string> { "1", problemID });
-            }
-            else if (problemName != "")
-            {
-                list = (List<Problem>)problemRepository.Search(7, new List<string> { "1", problemName });
-            }
-            else if (ProblemSource != "All")
-            {
-                list = (List<Problem>)problemRepository.Search(8, new List<string> { "1", ProblemSource });
-            }
-            else
-            {
-                list = (List<Problem>)problemRepository.Search(1, new List<string> { "1" });
-            }
-
-            
-            List<ViewProblemModel> model = new List<ViewProblemModel>();
-            foreach (var p in list)
-            {
-                ViewProblemModel item = new ViewProblemModel()
-                {
-                    ProblemId = p.ProblemId,
-                    OnlineJudge = p.ProblemSource,
-                    ProblemSourceId = p.problemSourceId,
-                    Title = p.problemTitle,
-                    rating = p.rating
-                };
-                var acsubmission = ListMysubmission.FirstOrDefault(s => s.ProblemId == p.ProblemId && s.Verdict == "Accept");
-                if (acsubmission != null)
-                {
-                    item.Status = "Solved";
-                }
-                else
-                {
-                    var wrsubmission = ListMysubmission.FirstOrDefault(s => s.ProblemId == p.ProblemId && s.Verdict == "Wrong");
-                    if (wrsubmission != null)
-                        item.Status = "Attempted";
-                    else
-                        item.Status = "";
-                }
-                var Is_Favorite = ListMyfavorite.FirstOrDefault(f => f.IsFavourite == true && f.ProblemId == p.ProblemId);
-                if (Is_Favorite != null)
-                    item.Favorite = true;
-                else
-                    item.Favorite = false;
-
-                model.Add(item);
-
-            }
-            return View("Index", model);
-        }
-        
-        public ActionResult FlipFavourite(int id)
-        {
-            var newproblem = problemRepository.Find(id);
-            ProblemUser pu = new ProblemUser();
-            var problemuser= newproblem.ProblemUsers.FirstOrDefault(u => u.UserId == user.UserId);
-            if(problemuser == null)
-            {
-                pu.ProblemId = id;
-                pu.UserId = user.UserId;
-                pu.IsFavourite = true;
-                newproblem.ProblemUsers.Add(pu);
-            }
-            else
-            {
-                problemuser.IsFavourite ^= true;
-            }
-            
-            problemRepository.Update(newproblem);
-            
-            return RedirectToAction(nameof(Index));
-        }
-
-
         public ActionResult Details(int id)
         {
             var problem = problemRepository.Find(id);
             return View(problem);
         }
 
-        
+
         public ActionResult Create()
         {
             return View();
         }
 
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Problem problem)
