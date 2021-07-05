@@ -13,7 +13,11 @@
     <div>
         <a hidden asp-action="RegisterInContest" asp-route-id="@Model.contestId"> Register in the contest</a>|
         <a asp-action="Edit" asp-route-id="@Model.contestId">Edit</a> |
-        <a asp-controller="Group" asp-action="Details" asp-route-id="@Model.groupId">Back to Group</a>
+        <a asp-action="Delete" asp-route-id="@Model.contestId">Delete</a>
+        @if (Model.groupId != null)
+        {
+            <a asp-controller="Group" asp-action="Details" asp-route-id="@Model.groupId">Back to Group</a>
+        }
     </div>
 
 
@@ -54,12 +58,7 @@
         <dd>
             @Html.DisplayFor(model => model.contestStatus)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.group.GroupTitle)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.group.GroupId)
-        </dd>
+        
 
     </dl>
     <!-- This table for print registered users in the contest -->
