@@ -46,6 +46,15 @@ namespace GraduationProject.Controllers.problems
             var model = getAllmodel(ListProblems);
             return View(model);
         }
+        public Boolean CanSeeSubmission(int SubmissionId)
+        {
+            var submssion = SubmissionRepository.Find(SubmissionId);
+            if (submssion.Visable == true)
+                return true;
+            if (login && submssion.userId == user.UserId)
+                return true;
+            return false;
+        }
         public ActionResult Status()
         {
             var submissions = SubmissionRepository.GetSubmissionSpecific(false);
