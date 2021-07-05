@@ -97,10 +97,18 @@
                                 }
                                 @foreach (var item in Model)
                                 {
-                            <tr>
-                                <!--<td>@item.RunID</td>-->
 
-                                <td><a href="" data-link="@Url.Action("GetTextSubmission")" data-user="@item.UserName" data-id="@item.RunID" data-toggle="modal" data-target="#ShowSubmisionStatusModal">@item.RunID</a></td>
+
+                            <tr>
+                                @if (item.Visiable == true)
+                                {
+                                    <td><a href="" data-link="@Url.Action("GetTextSubmission")" data-user="@item.UserName" data-id="@item.RunID" data-toggle="modal" data-target="#ShowSubmisionStatusModal">@item.RunID</a></td>  
+                                }
+                                else
+                                {
+                                    <td>@item.RunID</td>
+                                }
+
                                 <td><a asp-controller="User" asp-action="Details" asp-route-id="@item.UserId">@item.UserName</a></td>
                                 <td>@item.OnlineJudge</td>
                                 <td><a href="#">@item.ProblemSourcesId</a></td>

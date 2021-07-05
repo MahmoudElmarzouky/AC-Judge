@@ -9,6 +9,7 @@ namespace GraduationProject.ViewModels.ProblemViewsModel
     public class ViewStatusModel
     {
         public int RunID { get; set; }
+        public Boolean Visiable { get; set; }
         public int UserId { get; set; }
         public String UserName { get; set; }
         public int ProblemId { get; set; }

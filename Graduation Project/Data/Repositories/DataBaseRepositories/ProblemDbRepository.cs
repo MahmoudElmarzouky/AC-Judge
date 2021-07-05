@@ -82,10 +82,11 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             Commit();
         }
 
-        public Problem FindByName(string name)
+        public Problem FindByName(string OnlineJudge, string ProblemSourceId)
         {
             // need to change -> Mohamed Sameh Add this -- 
-            return dbcontext.Problems.FirstOrDefault(u=>u.problemTitle.Contains(name));
+            // Example : Codeforces 123A
+            return dbcontext.Problems.FirstOrDefault(u=> u.problemSourceId==ProblemSourceId && u.ProblemSource==OnlineJudge);
         }
     }
 }
