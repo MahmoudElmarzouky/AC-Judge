@@ -81,5 +81,11 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             dbcontext.Problems.Update(newProblem); 
             Commit();
         }
+
+        public Problem FindByName(string name)
+        {
+            // need to change -> Mohamed Sameh Add this -- 
+            return dbcontext.Problems.FirstOrDefault(u=>u.problemTitle.Contains(name));
+        }
     }
 }
