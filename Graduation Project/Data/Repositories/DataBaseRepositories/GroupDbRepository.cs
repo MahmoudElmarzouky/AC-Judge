@@ -113,9 +113,33 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
 
         public void RemoveUser(int userId, int groupId)
         {
-            RemoveUserRole(userId, groupId); 
+            var oldRol = Find(groupId).UserGroup.FirstOrDefault(u => u.GroupId == groupId && u.UserId == userId);
+            if (oldRol != null)
+            {
+                RemoveUserRole(userId, groupId);
+                var role = oldRol.UserRole;
+                if (role == "Creator")
+                {
+                    SetNewCreator(groupId); 
+                }
+            }
             // Assign New Use As a creator if the deleted user is the creator 
         }
+
+        private void SetNewCreator(int groupId)
+        {
+            var group = Find(groupId);
+            if(group.UserGroup.Count == 0)
+            {
+                Remove(groupId);
+                return;
+            }
+            var anyCreator = group.UserGroup.FirstOrDefault(u => u.UserRole == "Manager");
+            if (anyCreator == null)
+                anyCreator = group.UserGroup.FirstOrDefault(u => u.UserRole == "Participant");
+            ChangeUserRole(groupId, anyCreator.UserId, "Creator"); 
+        }
+
         private UserGroup getUserGroupRole(int groupId, int userId)
         {
             return Find(groupId).UserGroup.FirstOrDefault(u => u.GroupId == groupId && u.UserId == userId);
