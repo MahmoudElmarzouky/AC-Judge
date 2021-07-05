@@ -30,7 +30,7 @@ namespace GraduationProject.Controllers.Contest
         // GET: HomeController
         public ActionResult Index()
         {
-            var list = contests.List(); 
+            var list = contests.List().Where(u=>u.InGroup ==  false); 
             return View(list);
         }
 
@@ -40,27 +40,6 @@ namespace GraduationProject.Controllers.Contest
             var contest = contests.Find(Id);
             var model = getContestViewModelFromContest(contest); 
             return View(model);
-        }
-
-        private ViewContestModel getContestViewModelFromContest(Data.Models.Contest contest)
-        {
-            string contestStatus = "";
-            switch(contest.contestStatus)
-            {
-                case -1:
-                    contestStatus = "Upcoming";
-                    break;
-                case 0:
-                    contestStatus = "Running";
-                    break;
-                case 1:
-                    contestStatus = "Ended";
-                    break;
-            }
-            ICollection<Problem> Problems = new HashSet<Problem>();
-            foreach (var item in contest.ContestProblems.Where(c => c.contestId == contest.contestId).ToList())
-                Problems.Add(item.problem); 
-            return new ViewContestModel { contestId = contest.contestId, contestDuration = contest.contestDuration, contestStartTime = contest.contestStartTime, contestStatus = contestStatus, contestTitle = contest.contestTitle, contestVisabilty = contest.contestVisabilty, UserContest = contest.UserContest, creationTime = contest.creationTime, groupId = contest.groupId, Problems = Problems, Submissions = contest.Submissions.Where(c=>c.contestId == contest.contestId).ToList(), group = contest.group};
         }
 
         // GET: HomeController/Create
@@ -77,12 +56,19 @@ namespace GraduationProject.Controllers.Contest
         {
             try
             {
-                contest.creationTime = DateTime.Now; 
+                Boolean PublicContest = (contest.groupId == 0 ? true : false);
+                contest.InGroup = !PublicContest;  
+                contest.creationTime = DateTime.Now;
+                if (PublicContest)
+                    contest.groupId = null; 
                 contests.Add(contest);
                 var userContest = new UserContest { UserId = user.UserId, ContestId = contest.contestId, isFavourite = false, isOwner = true, isRegistered = true };
                 contest.UserContest.Add(userContest);
-                contests.Update(contest); 
-                return RedirectToAction("Details", "Group", new { id = contest.groupId });
+                contests.Update(contest);
+                if (PublicContest)
+                    return RedirectToAction("Index");
+                else 
+                    return RedirectToAction("Details", "Group", new { id = contest.groupId });
             }
             catch
             {
@@ -106,7 +92,10 @@ namespace GraduationProject.Controllers.Contest
             try
             {
                 contests.Update(contest);
-                return RedirectToAction("Details", "Group", new { id = contest.groupId });
+                if (contest.groupId != null)
+                    return RedirectToAction("Details", "Group", new { id = contest.groupId });
+                else
+                    return RedirectToAction("Index"); 
             }
             catch
             {
@@ -128,9 +117,12 @@ namespace GraduationProject.Controllers.Contest
         {
             try
             {
-                int groupId = contest.groupId;
-                contests.Remove(contest.contestId); 
-                return RedirectToAction("Details", "Group", new { id = groupId });
+                int? groupId = contests.Find(contest.contestId).groupId; 
+                contests.Remove(contest.contestId);
+                if (groupId != null)
+                    return RedirectToAction("Details", "Group", new { id = groupId });
+                else
+                    return RedirectToAction("Index"); 
             }
             catch
             {
@@ -184,6 +176,26 @@ namespace GraduationProject.Controllers.Contest
             {
                 return RedirectToAction("Details", new { id = contestId });
             }
+        }
+        private ViewContestModel getContestViewModelFromContest(Data.Models.Contest contest)
+        {
+            string contestStatus = "";
+            switch (contest.contestStatus)
+            {
+                case -1:
+                    contestStatus = "Upcoming";
+                    break;
+                case 0:
+                    contestStatus = "Running";
+                    break;
+                case 1:
+                    contestStatus = "Ended";
+                    break;
+            }
+            ICollection<Problem> Problems = new HashSet<Problem>();
+            foreach (var item in contest.ContestProblems.Where(c => c.contestId == contest.contestId).ToList())
+                Problems.Add(item.problem);
+            return new ViewContestModel { contestId = contest.contestId, contestDuration = contest.contestDuration, contestStartTime = contest.contestStartTime, contestStatus = contestStatus, contestTitle = contest.contestTitle, contestVisabilty = contest.contestVisabilty, UserContest = contest.UserContest, creationTime = contest.creationTime, groupId = contest.groupId, Problems = Problems, Submissions = contest.Submissions.Where(c => c.contestId == contest.contestId).ToList()};
         }
     }
 }

@@ -35,8 +35,8 @@ namespace GraduationProject.Data.Models
         public virtual ICollection<UserContest> UserContest { get; set; }
         public virtual ICollection<Submission> Submissions { get; set; }
         public virtual ICollection<ContestProblem> ContestProblems { get; set; }
-        public int groupId { get; set; }
-        public Group group { get; set; }
-        
+        public int? groupId { get; set; }
+        public Boolean InGroup { get; set; }
+
     }
 }

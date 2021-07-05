@@ -31,9 +31,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.contestStatus)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.group)
-            </th>
+           
             <th></th>
         </tr>
     </thead>
@@ -68,9 +66,7 @@
                 }
                @contestStatus
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.group.GroupTitle)
-            </td>
+            
             <td>
                 <a asp-action="Edit" asp-route-id="@item.contestId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.contestId">Details</a> |

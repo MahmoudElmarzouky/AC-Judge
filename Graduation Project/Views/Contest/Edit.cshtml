@@ -52,10 +52,12 @@
         </form>
     </div>
 </div>
-
+@if (Model.groupId != null)
+{
 <div>
     <a asp-controller="Group" asp-action="Details" asp-route-id="@Model.groupId">Back to Group</a>
 </div>
+}
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

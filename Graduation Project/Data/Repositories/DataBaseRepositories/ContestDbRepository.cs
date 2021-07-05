@@ -84,7 +84,6 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             dbcontext.Entry(contest).Collection(c => c.ContestProblems).Load();
             dbcontext.Entry(contest).Collection(c => c.UserContest).Load();
             dbcontext.Entry(contest).Collection(c => c.Submissions).Load();
-            dbcontext.Entry(contest).Reference(c => c.group).Load();
             foreach (var cp in contest.ContestProblems)
                 dbcontext.Entry(cp).Reference(c => c.problem).Load();
         }
