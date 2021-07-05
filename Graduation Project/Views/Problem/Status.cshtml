@@ -7,7 +7,7 @@
         <div class="container">
             <div class="page-header">
                 <h2>Status <span class="text-muted">All Submissions</span></h2>
-                <a asp-action="Index" class="btn btn-info"><i class="fas fa-lightbulb"></i> Problems</a>
+                <a asp-action="Index" class="btn btn-info"><i class="far fa-lightbulb"></i> Problems</a>
             </div>
             <section class="status-table">
                 <div class="panel panel-default">
@@ -98,7 +98,7 @@
                                 @foreach (var item in Model)
                                 {
                                     <tr>
-                                        <td><a href="">@item.RunID</a></td>
+                                        <td><a href="" data-user="@item.UserName" data-id="@item.RunID" data-toggle="modal" data-target="#ShowSubmisionStatusModal">@item.RunID</a></td>
                                         <td><a asp-controller="User" asp-action="Details" asp-route-id="@item.UserId">@item.UserName</a></td>
                                         <td>@item.OnlineJudge</td>
                                         <td><a href="#">@item.ProblemSourcesId</a></td>
@@ -135,10 +135,62 @@
                     </ul>
                 </div>
             </section>
+            <!-- View Page Modal -->
+            <section class="modal fade submision-modal" id="ShowSubmisionStatusModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="model-header-flex">
+                                <h4 class="modal-title">
+                                    Solution By <span>SuperMari000</span>
+                                </h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered text-center">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th class="text-center">Problem</th>
+                                            <th class="text-center">Verdict</th>
+                                            <th class="text-center">Time</th>
+                                            <th class="text-center">Memory</th>
+                                            <th class="text-center">Language</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td class=""></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>
+                                                <form>
+                                                    <input hidden name="SubmisionID" value="" />
+                                                    <input type="submit" value="Share" href="" class="btn btn-info" />
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="submision">
+                                <button class="btn btn-secondary">Copy</button>
+                                <pre class="prettyprint"></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     </section>
 
 
-    @section Scripts {
-        <partial name="_ValidationScriptsPartial" />
-    }
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
