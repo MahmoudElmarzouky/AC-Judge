@@ -14,10 +14,10 @@ namespace GraduationProject.Controllers.Contest
 {
     public class ContestController : Controller
     {
-        readonly private IRepository<GraduationProject.Data.Models.Contest> contests;
+        readonly private IContestRepository<GraduationProject.Data.Models.Contest> contests;
         readonly private IProblemRepository<Problem> problems; 
         readonly private User user; 
-        public ContestController(IRepository<GraduationProject.Data.Models.Contest> contests
+        public ContestController(IContestRepository<GraduationProject.Data.Models.Contest> contests
             , IUserRepository<User> Userrepository
             , IHttpContextAccessor httpContextAccessor
             , IProblemRepository<Problem> problems)
@@ -167,35 +167,22 @@ namespace GraduationProject.Controllers.Contest
                 return RedirectToAction("Details", new { id = contest.contestId });
             }
         }
-        public ActionResult AddProblemToContest(int contestId, string problemName)
-        {
-            var contest = contests.Find(contestId);
-            //var problem = problems.FindByName(ProblemName);
-            var problem = new Problem();
-            return AddProblemToContest(contest, problem);
-        }
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddProblemToContest(GraduationProject.Data.Models.Contest contest, Problem problem)
+        public ActionResult AddProblemToContest(int contestId, string problemName)
         {
+            var problem = problems.FindByName(problemName); 
             if (problem == null)
-                return RedirectToAction("Details", new { id = contest.contestId });
+                return RedirectToAction("Details", new { id = contestId });
             try
             {
-                int numberOfProblems = contest.ContestProblems.Count();
-                int order = numberOfProblems + 1; 
-                var contestProblems = contest.ContestProblems.FirstOrDefault(u => u.contestId == contest.contestId && u.problemId == problem.ProblemId);
-                if (contestProblems == null)
-                {
-                    contestProblems = new ContestProblem { contestId = contest.contestId, problemId = problem.ProblemId, order = order };
-                    contest.ContestProblems.Add(contestProblems);
-                    contests.Update(contest); 
-                }
-                return RedirectToAction("Details", new { id = contest.contestId });
+                contests.AddProblemToContest(problem.ProblemId, contestId); 
+                return RedirectToAction("Details", new { id = contestId });
             }
             catch
             {
-                return RedirectToAction("Details", new { id = contest.contestId });
+                return RedirectToAction("Details", new { id = contestId });
             }
         }
     }

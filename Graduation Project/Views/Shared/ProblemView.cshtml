@@ -1,0 +1,18 @@
+﻿@model GraduationProject.Data.Models.Problem 
+<tr>
+    <td>
+        @Model.ProblemSource
+    </td>
+    <td>
+        @Model.problemSourceId
+    </td>
+    <td>
+        @Model.problemTitle
+    </td>
+    <td>
+       @Model.rating
+    </td>
+    <td>
+        <a asp-action="Details" asp-route-id="@Model.ProblemId">Details</a> |
+    </td>
+</tr>
