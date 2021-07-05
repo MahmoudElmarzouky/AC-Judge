@@ -117,27 +117,29 @@ function Modal_Edit_Member_Group(){
     });
 }
 
-function Get_Submision(URL, SubID){
-    var result = '';
+function Get_Submision(URL, SubID, ElementShow){
+    
     $.ajax({
-       method: "POST",
-       cache: false,
+        method: "POST",
+        cache: false,
         url: URL ,
         data: { SubmisionId: SubID },
         success: function (data, status) {
-            console.log(data)
-        //$.each(data, function(){
-        //    if(this[0] === '<')
-        //        result += '&lt;';
-        //    else if(this[0] === '>')
-        //        result += '&gt;';
-        //    else
-        //        result += this[0];
-        //});
-       },
-       error: function(xhr, status, error){
-        console.log(error);
-       }
+            var result = '';
+            for(var i=0;i < data.length; ++i){
+                if(data[i] === '<')
+                    result += '&lt;';
+                else if(data[i] === '>')
+                    result += '&gt;';
+                else
+                    result += data[i];
+            }
+            
+            ElementShow.html(PR.prettyPrintOne(result));
+        },
+        error: function(xhr, status, error){
+            console.log(error);
+        }
     });
     
     return result;
@@ -146,11 +148,11 @@ function Get_Submision(URL, SubID){
 function Submision_Status_Page(){
     var OpenModal = $('.status-page #ShowSubmisionStatusModal');
     OpenModal.on('show.bs.modal', function (event) {        
-        var button = $(event.relatedTarget); // Button that triggered the modal
-        var UserName = button.data('user'); // Extract info from data-* attributes
+        var button = $(event.relatedTarget);
+        var UserName = button.data('user');
         var SubID = button.data('id');
-        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        
+        
         var modal = $(this);
         modal.find('.modal-title span').text(UserName);
         
@@ -167,9 +169,9 @@ function Submision_Status_Page(){
         var SetID =  modal.find('.modal-body .table tbody tr input[name="SubmisionID"]');
         SetID.val(SubID);
         
-        var URL = "/Problem/GetTextSubmission";
+        var URL = button.data('link');
         var SetCode = modal.find('.modal-body .submision pre');
-        SetCode.text(Get_Submision(URL, SubID));
+        Get_Submision(URL, SubID, SetCode);
     });
     
     var Copied = $('.status-page .submision-modal .submision .btn');
