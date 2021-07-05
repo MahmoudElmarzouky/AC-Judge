@@ -117,9 +117,85 @@ function Modal_Edit_Member_Group(){
     });
 }
 
+function Get_Submision(URL, SubID){
+    var result = '';
+    $.ajax({
+       method: "POST",
+       cache: false,
+       url: URL,
+       data: {SubmisionId: SubID},
+       success: function(data, status){
+        $.each(data, function(){
+            if(this[0] === '<')
+                result += '&lt;';
+            else if(this[0] === '>')
+                result += '&gt;';
+            else
+                result += this[0];
+        });
+       },
+       error: function(xhr, status, error){
+        console.log(error);
+       }
+    });
+    
+    return result;
+}
+
+function Submision_Status_Page(){
+    var OpenModal = $('.status-page #ShowSubmisionStatusModal');
+    OpenModal.on('show.bs.modal', function (event) {        
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var UserName = button.data('user'); // Extract info from data-* attributes
+        var SubID = button.data('id');
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this);
+        modal.find('.modal-title span').text(UserName);
+        
+        var AllSiblingsButton = button.parent().nextAll();
+        var TableRowSet = modal.find('.modal-body .table tbody tr td');
+        
+        for(var i=2,j=0;i<AllSiblingsButton.length-1 && j<TableRowSet.length;++i,++j){
+            var From = $(AllSiblingsButton[i]);
+            var To = $(TableRowSet[j]);
+            To.text(From.text());
+            To.attr('class',From.attr('class'));
+        }
+        
+        var SetID =  modal.find('.modal-body .table tbody tr input[name="SubmisionID"]');
+        SetID.val(SubID);
+        
+        var URL = "x";
+        var SetCode = modal.find('.modal-body .submision pre');
+        SetCode.text(Get_Submision(URL, SubID));
+    });
+    
+    var Copied = $('.status-page .submision-modal .submision .btn');
+    Copied.click(function(){
+        var PreCode = $(this).next('pre');
+        let Txt = PreCode.text();
+        
+        var TextareaTemp = $('<textarea />');
+        $(this).append(TextareaTemp);
+        
+        TextareaTemp.val(Txt).select();
+        
+        document.execCommand("copy");
+        TextareaTemp.remove();
+
+    });
+}
+
 $(function(){
     
     'use strict';
+    
+    /* Start Call All Libarary */
+    
+    PR.prettyPrint();
+    
+    /* End Call All Libarary */
     
     /* Start Main Rule */
     
@@ -138,6 +214,10 @@ $(function(){
     Show_User_Error_Message('.edit-group-page');
     Modal_Edit_Member_Group();
     /* End Group Page */
+    
+    /* Start Status Submision */
+    Submision_Status_Page();
+    /* End Status Submision */
     
     
 });

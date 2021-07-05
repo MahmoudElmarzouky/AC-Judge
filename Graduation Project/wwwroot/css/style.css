@@ -407,7 +407,28 @@ header .nav-main .navbar-brand span{
     vertical-align: middle !important;
     line-height: 1.22222222;
 }
-
+/* Modal Submision */
+.status-page .submision-modal .modal-title span{
+    font-size: 1.5rem;
+    color: #342fe0;
+}
+.status-page .submision-modal .table th,
+.status-page .submision-modal .table td{
+    vertical-align: middle !important;
+}
+.status-page .submision-modal .table .btn{
+    padding: 3px 10px;
+}
+.status-page .submision-modal .submision{
+    position: relative;
+}
+.status-page .submision-modal .submision .btn{
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    padding: 3px 8px;
+    border-radius: 0px 4px 0px 4px;
+}
 /* End Problem & Status Page */
 
 /* Start Footer */

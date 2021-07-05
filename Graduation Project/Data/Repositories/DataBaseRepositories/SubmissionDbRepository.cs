@@ -4,10 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using GraduationProject.Data.Models;
 using GraduationProject.Data.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace GraduationProject.Data.Repositories.DataBaseRepositories
 {
-    public class SubmissionDbRepository : IRepository<Submission>
+    public class SubmissionDbRepository : ISubmissionRepository<Submission>
     {
         readonly private EntitiesContext dbcontext;
         public SubmissionDbRepository(EntitiesContext dbcontext)
@@ -28,13 +29,19 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
 
         public Submission Find(int Id)
         {
-            var Submission = dbcontext.Submissions.FirstOrDefault(Submission => Submission.SubmissionId == Id);
+            var Submission = dbcontext.Submissions
+                .Include(p => p.problem)
+                .Include(p => p.user)
+                .FirstOrDefault(Submission => Submission.SubmissionId == Id);
             return Submission; 
         }
 
         public IList<Submission> List()
         {
-            return dbcontext.Submissions.ToList(); 
+            return dbcontext.Submissions
+                .Include(p => p.problem)
+                .Include(p => p.user)
+                .ToList(); 
         }
 
         public void Remove(int Id)
@@ -52,6 +59,14 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
         {
             dbcontext.Submissions.Update(newSubmission); 
             Commit(); 
+        }
+
+        public IList<Submission> GetSubmissionSpecific(bool IsPublic)
+        {
+            return dbcontext.Submissions
+               .Include(p => p.problem)
+               .Include(p => p.user)
+               .Where(s => s.InContest==IsPublic).ToList();
         }
     }
 }
