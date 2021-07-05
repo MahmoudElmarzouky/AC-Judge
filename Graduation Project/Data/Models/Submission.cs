@@ -15,6 +15,7 @@ namespace GraduationProject.Data.Models
         public DateTime CreationTime { get; set; }
         public string Verdict { get; set; }
         public string ProgrammingLanguage { get; set; }
+        public string SubmissionText { get; set; }
         public int userId { get; set; }
         public User user { get; set; }
         public int? contestId { get; set; }

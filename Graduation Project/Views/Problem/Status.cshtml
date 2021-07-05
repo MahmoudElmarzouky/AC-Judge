@@ -97,20 +97,22 @@
                                 }
                                 @foreach (var item in Model)
                                 {
-                                    <tr>
-                                        <td><a href="" data-user="@item.UserName" data-id="@item.RunID" data-toggle="modal" data-target="#ShowSubmisionStatusModal">@item.RunID</a></td>
-                                        <td><a asp-controller="User" asp-action="Details" asp-route-id="@item.UserId">@item.UserName</a></td>
-                                        <td>@item.OnlineJudge</td>
-                                        <td><a href="#">@item.ProblemSourcesId</a></td>
-                                        <td class="text-@(@item.Verdict=="Accepted"?"success":"danger")">@item.Verdict</td>
-                                        <td>@item.TimeConsumed ms</td>
-                                        <td>@item.MemoryConsumed KB</td>
-                                        <td>@item.Language</td>
-                                        <td>
-                                            <div>@item.SubmitTime.ToShortDateString()</div>
-                                            <div>@item.SubmitTime.ToShortTimeString()</div>
-                                        </td>
-                                    </tr>
+                            <tr>
+                                <!--<td>@item.RunID</td>-->
+
+                                <td><a href="" data-link="@Url.Action("GetTextSubmission")" data-user="@item.UserName" data-id="@item.RunID" data-toggle="modal" data-target="#ShowSubmisionStatusModal">@item.RunID</a></td>
+                                <td><a asp-controller="User" asp-action="Details" asp-route-id="@item.UserId">@item.UserName</a></td>
+                                <td>@item.OnlineJudge</td>
+                                <td><a href="#">@item.ProblemSourcesId</a></td>
+                                <td class="text-@(@item.Verdict=="Accepted"?"success":"danger")">@item.Verdict</td>
+                                <td>@item.TimeConsumed ms</td>
+                                <td>@item.MemoryConsumed KB</td>
+                                <td>@item.Language</td>
+                                <td>
+                                    <div>@item.SubmitTime.ToShortDateString()</div>
+                                    <div>@item.SubmitTime.ToShortTimeString()</div>
+                                </td>
+                            </tr>
                                 }
 
                             </tbody>
@@ -170,6 +172,7 @@
                                             <td></td>
                                             <td></td>
                                             <td>
+
                                                 <form>
                                                     <input hidden name="SubmisionID" value="" />
                                                     <input type="submit" value="Share" href="" class="btn btn-info" />

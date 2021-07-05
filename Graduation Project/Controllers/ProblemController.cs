@@ -61,6 +61,12 @@ namespace GraduationProject.Controllers.problems
             var list = GetAllStatus(submissions);
             return View(list);
         }
+        [HttpPost]
+        public ActionResult GetTextSubmission(int SubmisionId)
+        {
+            var Result = SubmissionRepository.Find(SubmisionId).SubmissionText;
+            return Content(Result, "text/plain");
+        }
         public ActionResult Filter()
         {
             var problemID = Request.Form["problemID"];
