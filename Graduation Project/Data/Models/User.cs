@@ -34,6 +34,12 @@ namespace GraduationProject.Data.Models
         public virtual ICollection<UserBlog> userBlog { get; set; }
         public virtual ICollection<commentVote> CommentVotes { get; set; }
         public virtual ICollection<ProblemUser> ProblemUsers { get; set; }
+        public int TotalNumberOfSolvedProblems { get {
+                int userCount = userStatistic == null? 0 :userStatistic.SolvedCount;
+                int cfCount = codeforcesStatistic == null? 0 :codeforcesStatistic.SolvedCount;
+                int atcoderCount = atcoderStatistic == null? 0: atcoderStatistic.SolvedCount;
+                return userCount + cfCount + atcoderCount; 
+            } set { } }
 
     }
 }
