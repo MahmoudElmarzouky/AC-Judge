@@ -161,22 +161,23 @@ namespace GraduationProject.Controllers.problems
             IList<ViewStatusModel> list = new List<ViewStatusModel>();
             foreach (var item in submissions)
             {
-                list.Add(
-                        new ViewStatusModel
-                        {
-                            RunID = item.SubmissionId,
-                            UserId = item.user.UserId,
-                            UserName = item.user.FirstName,
-                            ProblemId = item.problem.ProblemId,
-                            OnlineJudge = item.problem.ProblemSource,
-                            ProblemSourcesId = item.problem.problemSourceId,
-                            Verdict = item.Verdict,
-                            TimeConsumed = item.TimeConsumeMillis,
-                            MemoryConsumed = item.MemoryConsumeBytes,
-                            Language = item.ProgrammingLanguage,
-                            SubmitTime = item.CreationTime
-                        }
-                    );
+                var tmp = new ViewStatusModel
+                {
+                    RunID = item.SubmissionId,
+                    UserId = item.user.UserId,
+                    UserName = item.user.FirstName,
+                    ProblemId = item.problem.ProblemId,
+                    OnlineJudge = item.problem.ProblemSource,
+                    ProblemSourcesId = item.problem.problemSourceId,
+                    Verdict = item.Verdict,
+                    TimeConsumed = item.TimeConsumeMillis,
+                    MemoryConsumed = item.MemoryConsumeBytes,
+                    Language = item.ProgrammingLanguage,
+                    SubmitTime = item.CreationTime
+                };
+                if (item.Visable == true || (login && item.user.UserId == user.UserId)) tmp.Visiable = true;
+                else item.Visable = false;
+                list.Add(tmp);
             }
             return list;
         }
