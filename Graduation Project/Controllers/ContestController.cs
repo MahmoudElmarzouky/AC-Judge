@@ -30,7 +30,7 @@ namespace GraduationProject.Controllers.Contest
         // GET: HomeController
         public ActionResult Index()
         {
-            var list = contests.List().Where(u=>u.InGroup ==  false); 
+            var list = contests.PublicContests(); 
             return View(list);
         }
 
@@ -58,13 +58,9 @@ namespace GraduationProject.Controllers.Contest
             {
                 Boolean PublicContest = (contest.groupId == 0 ? true : false);
                 contest.InGroup = !PublicContest;  
-                contest.creationTime = DateTime.Now;
                 if (PublicContest)
-                    contest.groupId = null; 
-                contests.Add(contest);
-                var userContest = new UserContest { UserId = user.UserId, ContestId = contest.contestId, isFavourite = false, isOwner = true, isRegistered = true };
-                contest.UserContest.Add(userContest);
-                contests.Update(contest);
+                    contest.groupId = null;
+                contests.CreateNewContest(user.UserId, contest); 
                 if (PublicContest)
                     return RedirectToAction("Index");
                 else 
@@ -80,7 +76,6 @@ namespace GraduationProject.Controllers.Contest
         public ActionResult Edit(int id)
         {
             var contest = contests.Find(id); 
-
             return View(contest);
         }
 
@@ -115,7 +110,6 @@ namespace GraduationProject.Controllers.Contest
         [ValidateAntiForgeryToken]
         public ActionResult Delete(GraduationProject.Data.Models.Contest contest)
         {
-            // just test branch 
             try
             {
                 int? groupId = contests.Find(contest.contestId).groupId; 
@@ -132,33 +126,8 @@ namespace GraduationProject.Controllers.Contest
         }
         public ActionResult RegisterInContest(int id)
         {
-            var contest = contests.Find(id);
-            return RegisterInContest(contest); 
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult RegisterInContest(GraduationProject.Data.Models.Contest contest)
-        {
-            try
-            {
-                int contestId = contest.contestId; 
-                var currentContest = contests.Find(contestId);
-                var userContest = currentContest.UserContest.FirstOrDefault(u => u.ContestId == contestId && u.UserId == user.UserId); 
-                if (userContest == null)
-                {
-                    userContest = new UserContest { ContestId = contestId, UserId = user.UserId, isFavourite = false, isOwner = false, isRegistered = true };
-                    currentContest.UserContest.Add(userContest); 
-                }else
-                {
-                    userContest.isRegistered = true;
-                }
-                contests.Update(currentContest); 
-                return RedirectToAction("Details", new { id = contestId });
-            }
-            catch
-            {
-                return RedirectToAction("Details", new { id = contest.contestId });
-            }
+            contests.RegisterInContest(user.UserId, id);
+            return RedirectToAction("Details", new { id });
         }
         
         [HttpPost]
@@ -194,9 +163,22 @@ namespace GraduationProject.Controllers.Contest
                     break;
             }
             ICollection<Problem> Problems = new HashSet<Problem>();
-            foreach (var item in contest.ContestProblems.Where(c => c.contestId == contest.contestId).ToList())
+            foreach (var item in contest.ContestProblems.ToList())
                 Problems.Add(item.problem);
-            return new ViewContestModel { contestId = contest.contestId, contestDuration = contest.contestDuration, contestStartTime = contest.contestStartTime, contestStatus = contestStatus, contestTitle = contest.contestTitle, contestVisabilty = contest.contestVisabilty, UserContest = contest.UserContest, creationTime = contest.creationTime, groupId = contest.groupId, Problems = Problems, Submissions = contest.Submissions.Where(c => c.contestId == contest.contestId).ToList()};
+            return new ViewContestModel 
+            { 
+                contestId = contest.contestId, 
+                contestDuration = contest.contestDuration, 
+                contestStartTime = contest.contestStartTime, 
+                contestStatus = contestStatus, 
+                contestTitle = contest.contestTitle, 
+                contestVisabilty = contest.contestVisabilty, 
+                UserContest = contest.UserContest, 
+                creationTime = contest.creationTime, 
+                groupId = contest.groupId, 
+                Problems = Problems, 
+                Submissions = contest.Submissions.ToList()
+            };
         }
     }
 }
