@@ -134,6 +134,8 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             dbcontext.Entry(contest).Collection(c => c.Submissions).Load();
             foreach (var cp in contest.ContestProblems)
                 dbcontext.Entry(cp).Reference(c => c.problem).Load();
+            foreach (var uc in contest.UserContest)
+                dbcontext.Entry(uc).Reference(u => u.User).Load(); 
         }
     }
 }
