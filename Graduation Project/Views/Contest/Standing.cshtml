@@ -1,0 +1,31 @@
+﻿@model GraduationProject.ViewModels.ContestViewsModel.StandingViewModel
+    <div class="center-block">
+        <table class="table table-bordered text-center">
+            <thead class="thead-dark">
+                <tr>
+                    <th>UserName</th>
+                    @for(int i = 1; i < Model.NumberOfProblems; i++)
+                    {
+                        <th> i </th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var currentUser in Model.users)
+                {
+                    <tr>
+                        <td>@currentUser.userName</td>
+                        @foreach (var problem in currentUser.UserPoblemsRaw)
+                        {
+                         <td class="@problem.td_className">
+                             @if (problem.Solved) 
+                             {
+                               @problem.NumberOfSubmissions
+                             }
+                         </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
