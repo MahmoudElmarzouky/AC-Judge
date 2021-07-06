@@ -111,7 +111,7 @@
     
                                     <td><a asp-controller="User" asp-action="Details" asp-route-id="@item.UserId">@item.UserName</a></td>
                                     <td>@item.OnlineJudge</td>
-                                    <td><a href="#">@item.ProblemSourcesId</a></td>
+                                    <td><a href="#" data-toggle="tooltip" data-placement="top" title="@item.Title">@item.ProblemSourcesId</a></td>
                                     <td class="text-@(@item.Verdict=="Accepted"?"success":"danger")">@item.Verdict</td>
                                     <td>@item.TimeConsumed ms</td>
                                     <td>@item.MemoryConsumed KB</td>
