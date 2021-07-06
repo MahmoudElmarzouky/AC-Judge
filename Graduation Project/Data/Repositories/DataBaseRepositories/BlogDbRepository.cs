@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GraduationProject.Data.Repositories.DataBaseRepositories
 {
-    public class BlogDbRepository : IRepository<Blog>
+    public class BlogDbRepository : IBlogRepository<Blog>
     {
         readonly private EntitiesContext dbcontext;
     public BlogDbRepository(EntitiesContext dbcontext)
@@ -62,7 +62,25 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
         public void Update(Blog newBlod)
         {
             dbcontext.Blogs.Update(newBlod);
+            var blog = Find(newBlod.blogId);
+            blog.blogtitle = newBlod.blogtitle;
+            blog.blogcontent = newBlod.blogcontent;
+            blog.blogvote = newBlod.blogvote;
+            blog.Comments = newBlod.Comments;
+            blog.userBlog = newBlod.userBlog;
+            blog.blogcontent = newBlod.blogcontent;
+            blog.groupId = newBlod.groupId;
             Commit();
+        }
+        public void UpdateVote(int blogId,int userId,int typeVote)
+        {
+            var blog = Find(blogId);
+            var userBlog = blog.userBlog.FirstOrDefault(User => User.userId == userId);
+            userBlog.VoteValue = typeVote;
+            blog.userBlog.Remove(blog.userBlog.FirstOrDefault(User => User.userId == userId));
+            blog.userBlog.Add(userBlog);
+            Commit();
+
         }
     }
 }

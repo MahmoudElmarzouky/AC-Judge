@@ -16,10 +16,10 @@ namespace GraduationProject.Controllers.Blog
     [Authorize]
     public class BlogController : Controller
     {
-        private readonly IRepository<Data.Models.Blog> blogs;
+        private readonly IBlogRepository<Data.Models.Blog> blogs;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private User user;
-        public BlogController(IRepository<GraduationProject.Data.Models.Blog> blogs
+        public BlogController(IBlogRepository<GraduationProject.Data.Models.Blog> blogs
             , IUserRepository<User> Userrepository
             , IHttpContextAccessor httpContextAccessor
             )
@@ -195,23 +195,8 @@ namespace GraduationProject.Controllers.Blog
         {
             try
             {
-                var newVote = blogs.Find(model.blogId);
-                var userBlog = newVote.userBlog.FirstOrDefault(UserBlog => UserBlog.blogId == model.blogId);
-                userBlog.VoteValue = 1;
-                
-                var newBlog = new GraduationProject.Data.Models.Blog
-                {
 
-                    blogId = newVote.blogId,
-                    blogtitle = newVote.blogtitle,
-                    blogcontent = newVote.blogcontent,
-                    groupId = 1,
-                    blogVisabilty = newVote.blogVisabilty,
-                    blogvote = ++newVote.blogvote,
-                    creationTime = newVote.creationTime,
-                    
-                };
-                blogs.Update(newBlog);
+                blogs.UpdateVote(model.blogId,user.UserId,1);
                 
                 return RedirectToAction(nameof(Index));
             }
