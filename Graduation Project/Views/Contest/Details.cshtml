@@ -10,6 +10,18 @@
 <div>
     <h4>Contest</h4>
     <hr />
+    <div>
+        <a hidden asp-action="RegisterInContest" asp-route-id="@Model.contestId"> Register in the contest</a>|
+        <a asp-action="Edit" asp-route-id="@Model.contestId">Edit</a> |
+        <a asp-action="Delete" asp-route-id="@Model.contestId">Delete</a>
+        <a asp-action="Standing" asp-route-id="@Model.contestId">Standing</a>
+        @if (Model.groupId != null)
+        {
+            <a asp-controller="Group" asp-action="Details" asp-route-id="@Model.groupId">Back to Group</a>
+        }
+    </div>
+
+
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.contestTitle)
@@ -47,12 +59,7 @@
         <dd>
             @Html.DisplayFor(model => model.contestStatus)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.group.GroupTitle)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.group.GroupId)
-        </dd>
+        
 
     </dl>
     <!-- This table for print registered users in the contest -->
@@ -72,27 +79,36 @@
         }
     </table>
     <!-- This table is for print the problems in the contest -->
+    <form asp-action="AddProblemToContest">
+        <input hidden name="contestId" value="@Model.contestId" />
+        <input placeholder="Type The Name of The problem" name="problemName" type="text" />
+        <button type="submit"> Add Problem To contest</button>
+    </form>
     <table class="table">
-        <tr>
-            <th>
-                Problem Name
-            </th>
-        </tr>
-        @{
-            foreach (var problem in Model.Problems)
+        <thead>
+            <tr>
+                <th>
+                    ProblemSource
+                </th>
+                <th>
+                    problemSourceId
+                </th>
+                <th>
+                    problemTitle
+                </th>
+
+                <th>
+                    rating
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Problems)
             {
-                <tr>
-                    <td> @problem.problemTitle </td>
-                </tr>
+                <partial name="ProblemView" for="@item" />
             }
-        }
+        </tbody>
     </table>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.contestId">Edit</a> |
 
-    <a asp-action="RegisterInContest" asp-route-id="@Model.contestId"> Register in the contest</a>|
-    <a asp-controller="Group" asp-action="Details" asp-route-id="@Model.groupId">Back to Group</a>
-    <a href=""> Add Problem To contest</a>
-
-</div>

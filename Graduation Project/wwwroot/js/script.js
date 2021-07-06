@@ -117,9 +117,163 @@ function Modal_Edit_Member_Group(){
     });
 }
 
+function Get_Submision(URL, SubID, ElementShow){
+    
+    $.ajax({
+        method: "POST",
+        cache: false,
+        url: URL ,
+        data: { SubmisionId: SubID },
+        success: function (data, status) {
+            var result = '';
+            for(var i=0;i < data.length; ++i){
+                if(data[i] === '<')
+                    result += '&lt;';
+                else if(data[i] === '>')
+                    result += '&gt;';
+                else
+                    result += data[i];
+            }
+            
+            ElementShow.html(PR.prettyPrintOne(result));
+        },
+        error: function(xhr, status, error){
+            console.log(error);
+        }
+    });
+    
+}
+
+function Submision_Status_Page(){
+    var OpenModal = $('.status-page #ShowSubmisionStatusModal');
+    OpenModal.on('show.bs.modal', function (event) {        
+        var button = $(event.relatedTarget);
+        var UserName = button.data('user');
+        var SubID = button.data('id');
+        
+        
+        var modal = $(this);
+        modal.find('.modal-title span').text(UserName);
+        
+        var AllSiblingsButton = button.parent().nextAll();
+        var TableRowSet = modal.find('.modal-body .table tbody tr td');
+        
+        for(var i=2,j=0;i<AllSiblingsButton.length-1 && j<TableRowSet.length;++i,++j){
+            var From = $(AllSiblingsButton[i]);
+            var To = $(TableRowSet[j]);
+            To.text(From.text());
+            To.attr('class',From.attr('class'));
+        }
+        
+        var SetID =  modal.find('.modal-body .table tbody tr input[name="SubmisionID"]');
+        SetID.val(SubID);
+        
+        var URL = button.data('link');
+        var SetCode = modal.find('.modal-body .submision pre');
+        Get_Submision(URL, SubID, SetCode);
+    });
+    
+    var Copied = $('.status-page .submision-modal .submision .btn');
+    Copied.click(function(){
+        var PreCode = $(this).next('pre');
+        let Txt = PreCode.text();
+        
+        var TextareaTemp = $('<textarea />');
+        $(this).append(TextareaTemp);
+        
+        TextareaTemp.val(Txt).select();
+        
+        document.execCommand("copy");
+        TextareaTemp.remove();
+
+    });
+}
+
+function Create_Contest_Page(){
+    
+    var ButtonTogle = $('.create-contest-page #CreateContesteGeneric .toogle-button button');
+    ButtonTogle.click(function(){
+        var Temp = 'btn-default';
+        
+        if($(this).hasClass(Temp)){
+            $(this).removeClass(Temp);
+            $(this).addClass($(this).data('toggle'));
+        }
+
+        var NxtElements = $(this).siblings('button');
+        NxtElements.each(function(){
+            var Cur = $(this).data('toggle');
+            if($(this).hasClass(Cur)){
+                $(this).removeClass(Cur);
+                $(this).addClass(Temp);
+            }
+        });
+
+    });
+    
+    var AlertVisible = $('.create-contest-page .alert');
+    AlertVisible.each(function(){
+        if($(this).is(':empty')){
+            $(this).css('display','none');
+        }else{
+            $(this).css('display','block');
+        }
+    });
+    
+    
+    var AddProblem = '.create-contest-page .table i.fa-plus';
+    var DoneProblem = '.create-contest-page .table i.fa-check';
+    var RemProblem = '.create-contest-page .table i.fa-times';
+    
+    $(document).on('click', DoneProblem, function () {
+        var CurRow = $(this).parent().parent();
+        var ParCurRow = CurRow.parent();
+        
+        var ID = CurRow.find('td:first-child').text();
+        ID = String.fromCharCode(ID.charCodeAt(0) + 1);
+        
+        var NewRow = CurRow.clone();
+        NewRow.find('td:first-child').text(ID);
+        
+        $(AddProblem).click(function(){
+           NewRow.appendTo(ParCurRow); 
+        });
+        
+        // Work In Clicked Element
+        $(this).removeClass('fa-check text-success').addClass('fa-times text-danger');
+     
+        var AllInputFiled = CurRow.find("input, select");
+        AllInputFiled.each(function(){
+           $(this).attr('disabled', 'disabled');
+        });
+        
+    });
+    
+    $(document).on('click', RemProblem, function () {
+        var CurRow = $(this).parent().parent();
+        var AllNextRow = CurRow.nextAll();
+        AllNextRow.each(function(){
+            var Temp = $(this).find('td:first-child');
+            //console.log(Temp.text());
+            Temp.text(String.fromCharCode(Temp.text().charCodeAt(0) - 1));
+            
+        });
+
+        if(CurRow.siblings().length != 0)
+            CurRow.remove();
+    });
+    
+}
+
 $(function(){
     
     'use strict';
+    
+    /* Start Call All Libarary */
+    
+    PR.prettyPrint();
+    
+    /* End Call All Libarary */
     
     /* Start Main Rule */
     
@@ -139,5 +293,12 @@ $(function(){
     Modal_Edit_Member_Group();
     /* End Group Page */
     
+    /* Start Status Submision */
+    Submision_Status_Page();
+    /* End Status Submision */
+    
+    /* Start Create Contest */
+    Create_Contest_Page();
+    /* End Create Contest*/
     
 });

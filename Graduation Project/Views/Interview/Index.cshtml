@@ -50,23 +50,7 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProblemSource)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.problemSourceId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.problemTitle)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.rating)
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.ProblemId">Details</a> |
-                </td>
-            </tr>
+            <partial name="ProblemView" for="@item"/>
         }
     </tbody>
 </table>

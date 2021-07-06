@@ -57,7 +57,7 @@
                         </li>
                         <li class="list-group-item">
                             <!-- User Top Rate -->
-                            Top User : <a href="#">Super_Mari000</a>
+                            Top User : <a asp-controller="User" asp-action="Details" asp-route-id="@Model.TopUserId">@Model.TopUserName</a>
                         </li>
                     </ul>
                 </section>
@@ -153,14 +153,16 @@
                                                 <!--contest.UserContest.FirstOrDefault(u => u.isOwner == true).User.FirstName -->
                                                 @{ 
                                                     var CreatorName = "NULL";
+                                                    var ownerId = -1;
                                                     if (contest.UserContest.FirstOrDefault(u => u.isOwner == true) != null)
                                                     {
                                                         CreatorName = contest.UserContest.FirstOrDefault(u => u.isOwner == true).User.FirstName;
+                                                        ownerId = contest.UserContest.FirstOrDefault(u => u.isOwner == true).User.UserId; 
                                                         if (CreatorName == null)
                                                             CreatorName = contest.UserContest.FirstOrDefault(u => u.isOwner == true).User.UserName;
                                                     }
                                                 }
-                                                <td><a href="#"> @CreatorName </a></td>
+                                                <td><a asp-controller="User" asp-action="Details" asp-route-id="@ownerId"> @CreatorName </a></td>
                                             </tr>
                                         }
                                     }
@@ -212,7 +214,7 @@
                                         {
                                         <td><a href="" data-call="x-modal" data-toggle="modal" data-target="#EditMemberGroupModal" data-id="@rel.User.UserId" data-name="@rel.User.FirstName" data-role="@roldInNumber" data-username="@rel.User.UserName">@rel.User.UserName</a></td>
                                         }
-                                        <td><a href="">@rel.User.UserName</a></td>
+                                        <td><a asp-controller="User" asp-action="Details" asp-route-id="@rel.UserId">@rel.User.UserName</a></td>
                                         <td>@rel.UserRole</td>
                                         <td>@rel.MemberSince.ToString("MM/dd/yyyy")</td>
                                     </tr>

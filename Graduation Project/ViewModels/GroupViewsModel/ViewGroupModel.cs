@@ -51,6 +51,14 @@ namespace GraduationProject.ViewModels
                     return "Owner";
                 return ""; 
             } set { } }
+        public int TopUserId { get {
+                int mx = UserGroup.Select(u => u.User.TotalNumberOfSolvedProblems).Max();
+                return UserGroup.FirstOrDefault(u => u.User.TotalNumberOfSolvedProblems == mx).UserId;
+            } set { } }
+        public string TopUserName { get {
+                int mx = UserGroup.Select(u => u.User.TotalNumberOfSolvedProblems).Max();
+                return UserGroup.FirstOrDefault(u => u.User.TotalNumberOfSolvedProblems == mx).User.FirstName;
+            } set { } }
 
     }
 }

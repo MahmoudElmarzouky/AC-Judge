@@ -12,7 +12,6 @@ namespace GraduationProject.Data.Models
         {
             ProblemTag = new HashSet<ProblemTag>();
             Submissions = new HashSet<Submission>();
-            ContestProblems = new HashSet<ContestProblem>();
             ProblemUsers = new HashSet<ProblemUser>();
         }
         public int ProblemId { get; set; }
@@ -38,7 +37,6 @@ namespace GraduationProject.Data.Models
         public int? rating { get; set; }
         public virtual ICollection<ProblemTag> ProblemTag { get; set; }
         public virtual ICollection<Submission> Submissions { get; set; }
-        public virtual ICollection<ContestProblem> ContestProblems { get; set; }
         public virtual ICollection<ProblemUser> ProblemUsers { get; set; }
     }
 }

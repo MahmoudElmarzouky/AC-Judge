@@ -41,12 +41,12 @@ namespace GraduationProject
                });
             services.AddScoped<IGroupRepository<Group>, GroupDbRepository> ();
 
-            services.AddScoped<IRepository<Submission>, SubmissionDbRepository> ();
+            services.AddScoped<ISubmissionRepository<Submission>, SubmissionDbRepository> ();
             services.AddScoped<IUserRepository<User>, UserDbRepository>(); 
             services.AddScoped<IBlogRepository<Blog>, BlogDbRepository>();
             services.AddScoped<IRepository<Comment>, CommentDbRepository>();
             services.AddScoped<IProblemRepository<Problem>, ProblemDbRepository > ();
-            services.AddScoped<IRepository<Contest>, ContestDbRepository>(); 
+            services.AddScoped<IContestRepository<Contest>, ContestDbRepository>(); 
           
             services.AddMvc(options => options.EnableEndpointRouting = false);
             

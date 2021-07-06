@@ -15,10 +15,12 @@ namespace GraduationProject.Data.Models
         public DateTime CreationTime { get; set; }
         public string Verdict { get; set; }
         public string ProgrammingLanguage { get; set; }
+        public string SubmissionText { get; set; }
         public int userId { get; set; }
         public User user { get; set; }
-        public int contestId { get; set; }
-        public Contest contest { get; set; }
+        public int? contestId { get; set; }
+        public Contest? contest { get; set; }
+        public Boolean InContest { get; set; } // True -> submission in contest
         public int ProblemId { get; set; }
         public Problem problem { get; set; }
 

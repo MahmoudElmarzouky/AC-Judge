@@ -11,6 +11,8 @@ namespace GraduationProject.Data.Repositories.IProblemRepository
         void Remove(int Id);
         void Commit();
         T Find(int Id);
+        T FindByName(string OnlineJudge,string ProblemSourceId); 
         IList<T> Search(int x, IList<string> list);
+        
     }
 }

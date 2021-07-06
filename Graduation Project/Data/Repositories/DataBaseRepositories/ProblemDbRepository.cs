@@ -61,12 +61,11 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
                 int type = int.Parse(list[0]);
                 items = dbcontext.Problems.Where(item => item.problemType == type).ToList();
             }
-            else if (x == 2)
-            {
+            else if(x==2){
                 int type = int.Parse(list[0]);
                 string problemID = list[1];
                 string problemName = list[2];
-                string ProblemSource = list[3];
+                string ProblemSource = (list[3] == "All" ? "" : list[3]);
                 items = dbcontext.Problems.Where(item =>
                     item.problemType == type
                     && item.problemSourceId.Contains(problemID)
@@ -74,67 +73,6 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
                     && item.ProblemSource.Contains(ProblemSource)
                 ).ToList();
             }
-            else if (x == 3)
-            {
-                int type = int.Parse(list[0]);
-                string problemID = list[1];
-                string problemName = list[2];
-                items = dbcontext.Problems.Where(item =>
-                    item.problemType == type
-                    && item.problemSourceId.Contains(problemID)
-                    && item.problemTitle.Contains(problemName)
-                ).ToList();
-            }
-            else if(x==4)
-            {
-                int type = int.Parse(list[0]);
-                string problemID = list[1];
-                string ProblemSource = list[2];
-                items = dbcontext.Problems.Where(item =>
-                    item.problemType == type
-                    && item.problemSourceId.Contains(problemID)
-                    && item.ProblemSource.Contains(ProblemSource)
-                ).ToList();
-            }
-            else if (x == 5)
-            {
-                int type = int.Parse(list[0]);
-                string problemName = list[1];
-                string ProblemSource = list[2];
-                items = dbcontext.Problems.Where(item =>
-                    item.problemType == type
-                    && item.problemTitle.Contains(problemName)
-                    && item.ProblemSource.Contains(ProblemSource)
-                ).ToList();
-            }
-            else if (x == 6)
-            {
-                int type = int.Parse(list[0]);
-                string problemID = list[1];
-                items = dbcontext.Problems.Where(item =>
-                    item.problemType == type
-                    && item.problemSourceId.Contains(problemID)
-                ).ToList();
-            }
-            else if (x == 7)
-            {
-                int type = int.Parse(list[0]);
-                string problemName = list[1];
-                items = dbcontext.Problems.Where(item =>
-                    item.problemType == type
-                    && item.problemTitle.Contains(problemName)
-                ).ToList();
-            }
-            else if (x == 8)
-            {
-                int type = int.Parse(list[0]);
-                string ProblemSource = list[1];
-                items = dbcontext.Problems.Where(item =>
-                    item.problemType == type
-                    && item.ProblemSource.Contains(ProblemSource)
-                ).ToList();
-            }
-
             return items;
         }
 
@@ -142,6 +80,13 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
         {
             dbcontext.Problems.Update(newProblem); 
             Commit();
+        }
+
+        public Problem FindByName(string OnlineJudge, string ProblemSourceId)
+        {
+            // need to change -> Mohamed Sameh Add this -- 
+            // Example : Codeforces 123A
+            return dbcontext.Problems.FirstOrDefault(u=> u.problemSourceId==ProblemSourceId && u.ProblemSource==OnlineJudge);
         }
     }
 }

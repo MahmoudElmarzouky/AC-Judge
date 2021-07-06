@@ -45,6 +45,10 @@ h1.static-main-title{
     text-align: center;
     padding: 30px 0px 20px 0px;
 }
+#user-error-msg {
+    display: none;
+}
+
 /*
 mark{
     color:#8C8C8C;
@@ -224,6 +228,15 @@ header .nav-main .navbar-brand span{
 .group-page ul.pagination > li > a{
     background-color: #EEE;
     margin-top: 10px;
+}
+.group-page .groups .panel .invition{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.group-page .groups .panel .invition .btn{
+    padding: 2px 10px;
+    font-size: 1.3rem;
 }
 /* End Group Page */
 /* Start Group Details Page */
@@ -407,8 +420,68 @@ header .nav-main .navbar-brand span{
     vertical-align: middle !important;
     line-height: 1.22222222;
 }
-
+/* Modal Submision */
+.status-page .submision-modal .modal-title span{
+    font-size: 1.5rem;
+    color: #342fe0;
+}
+.status-page .submision-modal .table th,
+.status-page .submision-modal .table td{
+    vertical-align: middle !important;
+}
+.status-page .submision-modal .table .btn{
+    padding: 3px 10px;
+}
+.status-page .submision-modal .submision{
+    position: relative;
+}
+.status-page .submision-modal .submision .btn{
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    padding: 3px 8px;
+    border-radius: 0px 4px 0px 4px;
+}
 /* End Problem & Status Page */
+
+/* Start Create Contest Page */
+.create-contest-page .jumbotron{
+    padding: 25px 40px 30px 40px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+.create-contest-page .toogle-button{
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.create-contest-page .toogle-button button{
+    transition: all 0.25s ease-in-out;
+}
+.create-contest-page .carousel .item{
+    min-height: 480px;
+}
+.create-contest-page .alert:empty{
+    display: none;
+}
+.create-contest-page .alert{
+    padding: 5px 12px;
+    margin: 3px auto 0px auto;
+}
+.create-contest-page input[type='radio']{
+    position: absolute;
+    clip: rect(0,0,0,0);
+    pointer-events: none;
+}
+.create-contest-page .table tr th,
+.create-contest-page .table tr td{
+    vertical-align: middle !important;
+}
+.create-contest-page .table tr th i,
+.create-contest-page .table tr td:last-child i{
+    cursor: pointer;
+}
+/* Start Create Contest Page */
 
 /* Start Footer */
 

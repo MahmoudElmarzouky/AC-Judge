@@ -24,7 +24,6 @@ namespace GraduationProject.ViewModels.ContestViewsModel
         public  ICollection<UserContest> UserContest { get; set; }
         public  ICollection<Submission> Submissions { get; set; }
         public  ICollection<Problem> Problems { get; set; }
-        public int groupId { get; set; }
-        public Group group { get; set; }
+        public int? groupId { get; set; }
     }
 }
