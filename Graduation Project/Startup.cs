@@ -43,7 +43,7 @@ namespace GraduationProject
 
             services.AddScoped<IRepository<Submission>, SubmissionDbRepository> ();
             services.AddScoped<IUserRepository<User>, UserDbRepository>(); 
-            services.AddScoped<IRepository<Blog>, BlogDbRepository>();
+            services.AddScoped<IBlogRepository<Blog>, BlogDbRepository>();
             services.AddScoped<IRepository<Comment>, CommentDbRepository>();
             services.AddScoped<IProblemRepository<Problem>, ProblemDbRepository > ();
             services.AddScoped<IRepository<Contest>, ContestDbRepository>(); 
