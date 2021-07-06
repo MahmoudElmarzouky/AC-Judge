@@ -457,6 +457,9 @@ header .nav-main .navbar-brand span{
 .create-contest-page .carousel .item{
     min-height: 480px;
 }
+.create-contest-page .alert:empty{
+    display: none;
+}
 .create-contest-page .alert{
     padding: 5px 12px;
     margin: 3px auto 0px auto;
