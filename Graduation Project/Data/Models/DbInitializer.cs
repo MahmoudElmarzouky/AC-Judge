@@ -10,10 +10,10 @@ namespace GraduationProject.Data.Models
     {
         public static void Seed(IServiceProvider serviceProvider)
         {
-            return; 
             EntitiesContext context =
                 serviceProvider.GetRequiredService<EntitiesContext>();
-            foreach(var u in context.Users)
+            if (context.Submissions.Any()) return;
+            foreach (var u in context.Users)
             {
                 try
                 {
@@ -25,7 +25,6 @@ namespace GraduationProject.Data.Models
                 }
             }
             context.SaveChanges(); 
-            if (context.Submissions.Any()) return; 
             var contest = context.Contests.FirstOrDefault(c => c.contestId == 56);
             var users = contest.UserContest.Where(u => u.isRegistered == true);
             for (int i = 0; i < 10; i++)

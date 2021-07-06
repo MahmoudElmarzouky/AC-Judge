@@ -15,17 +15,21 @@ namespace GraduationProject.Controllers.Contest
     public class ContestController : Controller
     {
         readonly private IContestRepository<GraduationProject.Data.Models.Contest> contests;
-        readonly private IProblemRepository<Problem> problems; 
+        readonly private IProblemRepository<Problem> problems;
+        readonly private IGroupRepository<GraduationProject.Data.Models.Group> groups; 
         readonly private User user; 
         public ContestController(IContestRepository<GraduationProject.Data.Models.Contest> contests
             , IUserRepository<User> Userrepository
             , IHttpContextAccessor httpContextAccessor
-            , IProblemRepository<Problem> problems)
+            , IProblemRepository<Problem> problems
+            , IGroupRepository<GraduationProject.Data.Models.Group> groups
+            )
         {
             var userId = httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             user = Userrepository.Find(userId);
             this.contests = contests;
-            this.problems = problems; 
+            this.problems = problems;
+            this.groups = groups; 
             
         }
         // GET: HomeController
@@ -47,23 +51,48 @@ namespace GraduationProject.Controllers.Contest
         // GET: HomeController/Create
         public ActionResult Create(int Id)
         {
-            ViewBag.ID = Id; 
-            return View();
+            var createContestView = CreateContestView();
+            if (groups.Find(Id) != null)
+            {
+                createContestView.CreateFromGroup = "1";
+                createContestView.groupId = Id;
+            }
+            return View(createContestView);
         }
 
+        private CreateContestModel CreateContestView()
+        {
+            IList<GroupData> myGroups = new List<GroupData>();
+            foreach(var g in user.UserGroup.Select(u => u.Group))
+                myGroups.Add(new GroupData {groupId = g.GroupId, groupTitle = g.GroupTitle });
+            return new CreateContestModel
+            {
+                groups = myGroups
+            };
+        }
+        private GraduationProject.Data.Models.Contest CreateContestFromCreateContestModel(CreateContestModel model)
+        {
+            return new GraduationProject.Data.Models.Contest
+            {
+                groupId = model.CreateFromGroup == "0" ? null : model.groupId,
+                contestDuration = model.Duration,
+                contestStartTime = model.StartTime,
+                contestTitle = model.contestTitle,
+                InGroup = model.CreateFromGroup == "0" ? false : true,
+                contestVisabilty = model.Visable == "1"? "Public": "Private",
+                // Password 
+            };
+        }
         // POST: HomeController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(GraduationProject.Data.Models.Contest contest)
+        public ActionResult Create(CreateContestModel model)
         {
             try
             {
-                Boolean PublicContest = (contest.groupId == 0 ? true : false);
-                contest.InGroup = !PublicContest;  
-                if (PublicContest)
-                    contest.groupId = null;
+                var contest = CreateContestFromCreateContestModel(model);
                 contests.CreateNewContest(user.UserId, contest); 
-                if (PublicContest)
+                if (!contest.InGroup)
                     return RedirectToAction("Index");
                 else 
                     return RedirectToAction("Details", "Group", new { id = contest.groupId });
