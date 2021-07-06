@@ -140,17 +140,17 @@ namespace GraduationProject.Controllers.Blog
         {
             try
             {
-                
+                var blog = blogs.Find(model.blogId);
                 var newBlog = new GraduationProject.Data.Models.Blog
                 {
 
                     blogId = model.blogId,
                     blogtitle = model.blogtitle,
                     blogcontent = model.blogcontent,
-                    groupId = model.groupId,
+                    groupId = blog.groupId,
                     blogVisabilty = model.blogVisabilty,
-                    blogvote = model.blogvote,
-                    creationTime =model.creationTime
+                    blogvote = blog.blogvote,
+                    creationTime = blog.creationTime
                 };
                 blogs.Update(newBlog);
                 return RedirectToAction(nameof(Index));
