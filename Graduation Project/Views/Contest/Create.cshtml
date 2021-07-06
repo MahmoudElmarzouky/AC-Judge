@@ -13,12 +13,12 @@
                 <h1 class="static-main-title">Create Contest</h1>
                 <div id="CreateContesteGeneric" class="carousel slide" data-interval="false" data-ride="carousel">
                     <div class="btn-group toogle-button" role="group">
-                        <button type="button" class="btn btn-success" data-toggle="btn-success" data-target="#CreateContesteGeneric" data-slide-to="0" class="active">Classical Contest</button>
-                        <button type="button" class="btn btn-default" data-toggle="btn-primary" data-target="#CreateContesteGeneric" data-slide-to="1">Group Contest</button>
+                        <button type="button" class="@Model.ButtonOneClass" data-toggle="btn-success" data-target="#CreateContesteGeneric" data-slide-to="0">Classical Contest</button>
+                        <button type="button" class="@Model.ButtonTwoClass" data-toggle="btn-primary" data-target="#CreateContesteGeneric" data-slide-to="1">Group Contest</button>
                     </div>
                     
                     <div class="carousel-inner" role="listbox">
-                      <div class="item contest-classical active">
+                      <div class="@Model.FormOneClass">
                         <form class="form-horizontal" asp-action="Create">
                             <input hidden asp-for="@Model.CreateFromGroup" value="0" />
                             <div class="form-group row">
@@ -106,7 +106,7 @@
                             </div>
                         </form>
                       </div>
-                      <div class="item contest-group">
+                      <div class="@Model.FormTwoClass">
                           <form class="form-horizontal" asp-action="Create">
                               <input hidden asp-for="@Model.CreateFromGroup" value="1" />
                               <div class="form-group row">

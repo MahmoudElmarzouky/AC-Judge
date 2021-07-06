@@ -24,6 +24,10 @@ namespace GraduationProject.ViewModels.ContestViewsModel
             problems = new List<ProblemData>(); 
         }
         public string CreateFromGroup { get; set; } = "0";
+        public string FormOneClass { get { return "item contest-classical" + (CreateFromGroup == "1" ? "" : " active"); } set { } }
+        public string FormTwoClass { get { return "item contest-group" + (CreateFromGroup == "1" ? " active" : ""); } set { } }
+        public string ButtonOneClass { get { return CreateFromGroup == "1" ? "btn active btn-default" : "btn active btn-success"; } set { } }
+        public string ButtonTwoClass { get { return CreateFromGroup == "1" ? "btn btn-primary" : "btn btn-default"; } set { } }
         public int groupId { get; set; }
         public string contestTitle { get; set; } = "";
         public string Password { get; set; } = "";
