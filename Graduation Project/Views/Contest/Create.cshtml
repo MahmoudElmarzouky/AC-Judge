@@ -5,7 +5,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
 <section class="create-contest-page">
     <div class="container">
         <div class="row">
@@ -87,10 +86,10 @@
                                                     </select>
                                                 </td>
                                                 <td class="form-group">
-                                                    <input class="form-control" type="text" placeholder="CF:123A" />
+                                                    <input asp-for="@Model.problems[0].problemId" class="form-control" type="text" placeholder="CF:123A" />
                                                 </td>
                                                 <td class="form-group">
-                                                    <input class="form-control" type="text" placeholder="" />
+                                                    <input asp-for="@Model.problems[0].Alias" class="form-control" type="text" placeholder="" />
                                                 </td>
                                                 <td><i class="fas fa-check text-success" data-target="acceptproblem"></i></td>
                                             </tr>
@@ -176,19 +175,21 @@
                                               <tr>
                                                   <td>A</td>
                                                   <td class="form-group">
+
                                                       <select class="form-control" name="ProblemSource">
                                                           <option value="Codeforces">Codeforces</option>
                                                           <option value="Atcoder">Atcoder</option>
                                                       </select>
                                                   </td>
                                                   <td class="form-group">
-                                                      <input class="form-control" type="text" placeholder="CF:123A" />
+                                                      <input asp-for="@Model.problems[0].problemId" class="form-control" type="text" placeholder="CF:123A" />
                                                   </td>
                                                   <td class="form-group">
-                                                      <input class="form-control" type="text" placeholder="" />
+                                                      <input asp-for="@Model.problems[0].Alias" class="form-control" type="text" placeholder="" />
                                                   </td>
                                                   <td><i class="fas fa-check text-success" data-target="acceptproblem"></i></td>
                                               </tr>
+                                              
                                           </tbody>
                                       </table>
                                       <div asp-validation-for="problemWrong" class="alert alert-danger"></div>
@@ -205,7 +206,6 @@
                 </div>
             </div>
         </div>
-        
     </div>
 </section>
 
