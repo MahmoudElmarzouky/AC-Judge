@@ -4,6 +4,8 @@
             <thead class="thead-dark">
                 <tr>
                     <th>UserName</th>
+                    <th>Penality</th>
+                    <th>NumberOfSolvedProblems</th> 
                     @for(int i = 1; i < Model.NumberOfProblems; i++)
                     {
                         <th> i </th>
@@ -15,6 +17,8 @@
                 {
                     <tr>
                         <td>@currentUser.userName</td>
+                        <td>@currentUser.TotalPenality</td>
+                        <td>@currentUser.NumberOfSolvedProblems</td>
                         @foreach (var problem in currentUser.UserPoblemsRaw)
                         {
                          <td class="@problem.td_className">
