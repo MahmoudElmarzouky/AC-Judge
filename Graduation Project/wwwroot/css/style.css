@@ -440,6 +440,42 @@ header .nav-main .navbar-brand span{
 }
 /* End Problem & Status Page */
 
+/* Start Create Contest Page */
+.create-contest-page .jumbotron{
+    padding: 25px 40px 30px 40px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+.create-contest-page .toogle-button{
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.create-contest-page .toogle-button button{
+    transition: all 0.25s ease-in-out;
+}
+.create-contest-page .carousel .item{
+    min-height: 480px;
+}
+.create-contest-page .alert{
+    padding: 5px 12px;
+    margin: 3px auto 0px auto;
+}
+.create-contest-page input[type='radio']{
+    position: absolute;
+    clip: rect(0,0,0,0);
+    pointer-events: none;
+}
+.create-contest-page .table tr th,
+.create-contest-page .table tr td{
+    vertical-align: middle !important;
+}
+.create-contest-page .table tr th i,
+.create-contest-page .table tr td:last-child i{
+    cursor: pointer;
+}
+/* Start Create Contest Page */
+
 /* Start Footer */
 
 footer .copyright{

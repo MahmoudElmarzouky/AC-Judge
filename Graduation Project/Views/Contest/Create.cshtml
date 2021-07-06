@@ -5,45 +5,211 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
 
-<h4>Contest</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
-            <input asp-for="groupId" readonly hidden value="@ViewBag.ID"/>    
-            <div class="form-group">
-                <label asp-for="contestTitle" class="control-label"></label>
-                <input asp-for="contestTitle" class="form-control" />
-                <span asp-validation-for="contestTitle" class="text-danger"></span>
+<section class="create-contest-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2 jumbotron">
+                <h1 class="static-main-title">Create Contest</h1>
+                <div id="CreateContesteGeneric" class="carousel slide" data-interval="false" data-ride="carousel">
+                    <div class="btn-group toogle-button" role="group">
+                        <button type="button" class="btn btn-success" data-toggle="btn-success" data-target="#CreateContesteGeneric" data-slide-to="0" class="active">Classical Contest</button>
+                        <button type="button" class="btn btn-default" data-toggle="btn-primary" data-target="#CreateContesteGeneric" data-slide-to="1">Group Contest</button>
+                    </div>
+                    
+                    <div class="carousel-inner" role="listbox">
+                      <div class="item contest-classical active">
+                        <form class="form-horizontal" asp-action="Create">
+                            <div class="form-group row">
+                                <label class="control-label col-md-2">Contest Title</label>
+                                <div class="col-md-10">
+                                    <input asp-for="contestTitle" class="form-control" placeholder="Contest Title Show Pepole" />
+                                    <div asp-validation-for="contestTitle" class="alert alert-danger"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-md-2">Password</label>
+                                <div class="col-md-10">
+                                    <input type="password" name="password" class="form-control" placeholder="Password To Member Register" />
+                                    <div asp-validation-for="contestPassword" class="alert alert-danger"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-md-2">Begin Time</label>
+                                <div class="col-md-10">
+                                    <input asp-for="contestStartTime" class="form-control" />
+                                    <div asp-validation-for="contestStartTime" class="alert alert-danger"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-md-2">Duration</label>
+                                <div class="col-md-10">
+                                    <input asp-for="contestDuration" class="form-control" />
+                                    <div asp-validation-for="contestDuration" class="alert alert-danger"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-md-2">Visibility</label>
+                                <div class="col-md-10 radio-btn-change">
+                                    <div class="btn-group">
+                                        <label class="btn btn-default active">
+                                            <input type="radio" name="visible" value="1" checked />
+                                            Public
+                                        </label>
+                                        <label class="btn btn-default">
+                                            <input type="radio" name="visible" value="0" />
+                                            Private
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-md-2">Problemset</label>
+                                <div class="col-md-10 table-responsive">
+                                    <table class="table text-center">
+                                        <thead>
+                                            <tr class="table-active">
+                                                <th class="text-center">#</th>
+                                                <th class="text-center">Online Judge</th>
+                                                <th class="text-center">Poblem Name</th>
+                                                <th class="text-center">Alias</th>
+                                                <th class="text-center"><i class="fas fa-plus text-primary"></i></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>A</td>
+                                                <td class="form-group">
+                                                    <select class="form-control" name="ProblemSource">
+                                                        <option value="Codeforces">Codeforces</option>
+                                                        <option value="Atcoder">Atcoder</option>
+                                                    </select>
+                                                </td>
+                                                <td class="form-group">
+                                                    <input class="form-control" type="text" placeholder="CF:123A" />
+                                                </td>
+                                                <td class="form-group">
+                                                    <input class="form-control" type="text" placeholder="" />
+                                                </td>
+                                                <td><i class="fas fa-check text-success" data-target="acceptproblem"></i></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div asp-validation-for="problemWrong" class="alert alert-danger"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <button type="submit" class="btn btn-success"><i class="fas fa-plus"></i> New Contest</button>
+                                </div>
+                            </div>
+                        </form>
+                      </div>
+                      <div class="item contest-group">
+                        <form class="form-horizontal" asp-action="Create">
+                            <div class="form-group row">
+                                <label class="control-label col-md-2">Contest Title</label>
+                                <div class="col-md-10">
+                                    <input asp-for="contestTitle" class="form-control" placeholder="Contest Title Show Pepole" />
+                                    <div asp-validation-for="contestTitle" class="alert alert-danger"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-md-2">Password</label>
+                                <div class="col-md-10">
+                                    <input type="password" name="password" class="form-control" placeholder="Password To Member Register" />
+                                    <div asp-validation-for="contestPassword" class="alert alert-danger"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-md-2">Begin Time</label>
+                                <div class="col-md-10">
+                                    <input asp-for="contestStartTime" class="form-control" />
+                                    <div asp-validation-for="contestStartTime" class="alert alert-danger"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-md-2">Duration</label>
+                                <div class="col-md-10">
+                                    <input asp-for="contestDuration" class="form-control" />
+                                    <div asp-validation-for="contestDuration" class="alert alert-danger"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-md-2">Group</label>
+                                <div class="col-md-10">
+                                    <select class="form-control" name="GroupTitle">
+                                        <option value="123">Test Group 1</option>
+                                        <option value="456">Test Group 2</option>
+                                        <option value="789">Test Group 3</option>
+                                        <option value="501">Test Group 4</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-md-2">Visibility</label>
+                                <div class="col-md-10 radio-btn-change">
+                                    <div class="btn-group">
+                                        <label class="btn btn-default active">
+                                            <input type="radio" name="visible" value="1" checked />
+                                            Public
+                                        </label>
+                                        <label class="btn btn-default">
+                                            <input type="radio" name="visible" value="0" />
+                                            Private
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-md-2">Problemset</label>
+                                <div class="col-md-10 table-responsive">
+                                    <table class="table text-center">
+                                        <thead>
+                                            <tr class="table-active">
+                                                <th class="text-center">#</th>
+                                                <th class="text-center">Online Judge</th>
+                                                <th class="text-center">Poblem Name</th>
+                                                <th class="text-center">Alias</th>
+                                                <th class="text-center"><i class="fas fa-plus text-primary"></i></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>A</td>
+                                                <td class="form-group">
+                                                    <select class="form-control" name="ProblemSource">
+                                                        <option value="Codeforces">Codeforces</option>
+                                                        <option value="Atcoder">Atcoder</option>
+                                                    </select>
+                                                </td>
+                                                <td class="form-group">
+                                                    <input class="form-control" type="text" placeholder="CF:123A" />
+                                                </td>
+                                                <td class="form-group">
+                                                    <input class="form-control" type="text" placeholder="" />
+                                                </td>
+                                                <td><i class="fas fa-check text-success" data-target="acceptproblem"></i></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div asp-validation-for="problemWrong" class="alert alert-danger"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> New Contest</button>
+                                </div>
+                            </div>
+                        </form>
+                      </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="contestStartTime" class="control-label"></label>
-                <input asp-for="contestStartTime" class="form-control" />
-                <span asp-validation-for="contestStartTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="contestDuration" class="control-label"></label>
-                <input asp-for="contestDuration" class="form-control" />
-                <span asp-validation-for="contestDuration" class="text-danger"></span>
-            </div>
-            
-            <div class="form-group">
-                <label asp-for="contestVisabilty" class="control-label"></label>
-                <input asp-for="contestVisabilty" class="form-control" />
-                <span asp-validation-for="contestVisabilty" class="text-danger"></span>
-            </div>
-            
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </form>
+        </div>
+        
     </div>
-</div>
-
+</section>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

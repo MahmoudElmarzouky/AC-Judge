@@ -142,7 +142,6 @@ function Get_Submision(URL, SubID, ElementShow){
         }
     });
     
-    //return result;
 }
 
 function Submision_Status_Page(){
@@ -190,6 +189,82 @@ function Submision_Status_Page(){
     });
 }
 
+function Create_Contest_Page(){
+    
+    var ButtonTogle = $('.create-contest-page #CreateContesteGeneric .toogle-button button');
+    ButtonTogle.click(function(){
+        var Temp = 'btn-default';
+        
+        if($(this).hasClass(Temp)){
+            $(this).removeClass(Temp);
+            $(this).addClass($(this).data('toggle'));
+        }
+
+        var NxtElements = $(this).siblings('button');
+        NxtElements.each(function(){
+            var Cur = $(this).data('toggle');
+            if($(this).hasClass(Cur)){
+                $(this).removeClass(Cur);
+                $(this).addClass(Temp);
+            }
+        });
+
+    });
+    
+    var AlertVisible = $('.create-contest-page .alert');
+    AlertVisible.each(function(){
+        if($(this).is(':empty')){
+            $(this).css('display','none');
+        }else{
+            $(this).css('display','block');
+        }
+    });
+    
+    
+    var AddProblem = '.create-contest-page .table i.fa-plus';
+    var DoneProblem = '.create-contest-page .table i.fa-check';
+    var RemProblem = '.create-contest-page .table i.fa-times';
+    
+    $(document).on('click', DoneProblem, function () {
+        var CurRow = $(this).parent().parent();
+        var ParCurRow = CurRow.parent();
+        
+        var ID = CurRow.find('td:first-child').text();
+        ID = String.fromCharCode(ID.charCodeAt(0) + 1);
+        
+        var NewRow = CurRow.clone();
+        NewRow.find('td:first-child').text(ID);
+        
+        $(AddProblem).click(function(){
+           NewRow.appendTo(ParCurRow); 
+        });
+        
+        // Work In Clicked Element
+        $(this).removeClass('fa-check text-success').addClass('fa-times text-danger');
+     
+        var AllInputFiled = CurRow.find("input, select");
+        AllInputFiled.each(function(){
+           $(this).attr('disabled', 'disabled');
+        });
+        
+    });
+    
+    $(document).on('click', RemProblem, function () {
+        var CurRow = $(this).parent().parent();
+        var AllNextRow = CurRow.nextAll();
+        AllNextRow.each(function(){
+            var Temp = $(this).find('td:first-child');
+            //console.log(Temp.text());
+            Temp.text(String.fromCharCode(Temp.text().charCodeAt(0) - 1));
+            
+        });
+
+        if(CurRow.siblings().length != 0)
+            CurRow.remove();
+    });
+    
+}
+
 $(function(){
     
     'use strict';
@@ -222,5 +297,8 @@ $(function(){
     Submision_Status_Page();
     /* End Status Submision */
     
+    /* Start Create Contest */
+    Create_Contest_Page();
+    /* End Create Contest*/
     
 });
