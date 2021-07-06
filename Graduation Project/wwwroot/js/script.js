@@ -234,7 +234,7 @@ function Create_Contest_Page(){
         
         var NewRow = CurRow.clone();
         NewRow.find('td:first-child').text(ID);
-        
+        console.log(ID); 
         $(AddProblem).click(function(){
            NewRow.appendTo(ParCurRow); 
         });
@@ -254,7 +254,7 @@ function Create_Contest_Page(){
         var AllNextRow = CurRow.nextAll();
         AllNextRow.each(function(){
             var Temp = $(this).find('td:first-child');
-            //console.log(Temp.text());
+            console.log(Temp.text());
             Temp.text(String.fromCharCode(Temp.text().charCodeAt(0) - 1));
             
         });
