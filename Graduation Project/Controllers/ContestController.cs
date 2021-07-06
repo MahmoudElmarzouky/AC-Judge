@@ -65,6 +65,7 @@ namespace GraduationProject.Controllers.Contest
             IList<GroupData> myGroups = new List<GroupData>();
             foreach(var g in user.UserGroup.Select(u => u.Group))
                 myGroups.Add(new GroupData {groupId = g.GroupId, groupTitle = g.GroupTitle });
+            
             return new CreateContestModel
             {
                 groups = myGroups
@@ -273,5 +274,7 @@ namespace GraduationProject.Controllers.Contest
                 users = users
             };
         }
+
+        
     }
 }
