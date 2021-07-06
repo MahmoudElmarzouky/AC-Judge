@@ -26,10 +26,12 @@ namespace GraduationProject.Controllers.Contest
             user = Userrepository.Find(userId);
             this.contests = contests;
             this.problems = problems; 
+            
         }
         // GET: HomeController
         public ActionResult Index()
         {
+
             var list = contests.PublicContests(); 
             return View(list);
         }
@@ -147,6 +149,13 @@ namespace GraduationProject.Controllers.Contest
                 return RedirectToAction("Details", new { id = contestId });
             }
         }
+
+        public ActionResult Standing(int Id)
+        {
+            
+            return View(CreateStandingView(Id)); 
+        }
+        
         private ViewContestModel getContestViewModelFromContest(Data.Models.Contest contest)
         {
             string contestStatus = "";
@@ -178,6 +187,61 @@ namespace GraduationProject.Controllers.Contest
                 groupId = contest.groupId, 
                 Problems = Problems, 
                 Submissions = contest.Submissions.ToList()
+            };
+        }
+        private StandingViewModel CreateStandingView(int contestId)
+        {
+            int PenalityForWrongAnswer = 10;
+            var contest = contests.Find(contestId);
+            var usersInContest = contest.UserContest.Where(u=>u.isRegistered == true).Select(u=>u.User);
+            int NumberOfProblems = contest.ContestProblems.Count();
+            int NumberOfUsers = usersInContest.Count();
+            var problemsInContest = contest.ContestProblems.ToList().OrderBy(u => u.order);
+            var EmptyUserProblesRaw = new List<GraduationProject.ViewModels.ContestViewsModel.Data>(); 
+            foreach(var p in problemsInContest)
+            {
+                EmptyUserProblesRaw.Add(new ViewModels.ContestViewsModel.Data { problemId = p.problemId, Solved = false }); 
+            }
+            IList<UserInStanding> users = new List<UserInStanding>();
+            
+            foreach (var u in usersInContest)
+                users.Add(new UserInStanding { userId = u.UserId, userName = u.UserName, UserPoblemsRaw = EmptyUserProblesRaw });
+            var submissions = contest.Submissions.ToList().OrderBy(u=>u.CreationTime);
+            Boolean FirstAccepted = false; 
+            foreach(var submission in submissions)
+            {
+                // userId and Problem Id, should be commperessed first to calculate then decompressed 
+                int currentUserId = submission.userId;
+                int currentProblemId = submission.ProblemId;
+                var submissionVerdict = submission.Verdict;
+                // check if currentUserIndex or currentProblemIndex == -1 
+                var currentUserIndex = users.IndexOf(users.FirstOrDefault(u => u.userId == currentUserId));
+                var currentProblemIndex = users[currentUserIndex].UserPoblemsRaw.IndexOf(users[currentUserIndex].UserPoblemsRaw.FirstOrDefault(u => u.problemId == currentProblemId));
+                int currentNumberOfSubmissions = users[currentUserIndex].UserPoblemsRaw[currentProblemIndex].NumberOfSubmissions;
+                if (users[currentUserIndex].UserPoblemsRaw[currentProblemIndex].Solved)
+                    continue;
+                users[currentUserIndex].UserPoblemsRaw[currentProblemIndex].NumberOfSubmissions++;
+                users[currentUserIndex].UserPoblemsRaw[currentProblemIndex].Submissions.Add(submission);
+                users[currentUserIndex].UserPoblemsRaw[currentProblemIndex].Solved = (submissionVerdict == "Accept" ? true : false); 
+                if (submissionVerdict == "Accepted")
+                {
+                    users[currentUserIndex].UserPoblemsRaw[currentProblemIndex].problemPenality = 
+                        (int)submission.CreationTime.Subtract(contest.contestStartTime).TotalMinutes
+                        + currentNumberOfSubmissions * PenalityForWrongAnswer;
+                    users[currentUserIndex].UserPoblemsRaw[currentProblemIndex].Solved = true; 
+                    if (FirstAccepted == false)
+                    {
+                        FirstAccepted = true;
+                        users[currentUserIndex].UserPoblemsRaw[currentProblemIndex].FirstAcceptedSubmission = true; 
+                    }
+                }
+            }
+            return new StandingViewModel
+            {
+                contestId = contestId,
+                NumberOfProblems = NumberOfProblems, 
+                NumberOfUsers = NumberOfUsers, 
+                users = users
             };
         }
     }
