@@ -16,6 +16,7 @@ namespace GraduationProject.Data.Repositories.Interfaces
         T Find(int Id);
         void CreateNewGroup(int userId, Group newGroup);
         void AddUser(int groupId, int userId);
+        void InviteUser(int groupId, int userId); 
         void RemoveUser(int userId, int groupId);
         void FlipFavourite(int groupId, int userId);
         void ChangeUserRole(int groupId, int userId, string v);

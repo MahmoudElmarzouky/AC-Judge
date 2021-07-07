@@ -100,16 +100,23 @@
                                 <li><a asp-controller="Blog" asp-action="Create" asp-route-id="@Model.GroupId">New Blog</a></li>
 
                                 <li><a asp-action="Leave" asp-route-id="@Model.GroupId" class="confirm">Leave Group</a></li>
-                                
+
                             </ul>
                         </div>
 
 
                         <!-- visible if user participant -->
                     }
-                    else
+                    else if (Model.UserRole == "Not In Group")
                     {
                         <a asp-action="JoinToGroup" asp-route-id="@Model.GroupId" class="btn btn-info">Join Group</a>
+                    }
+                    else
+                    {
+                        <div class="panel-footer invition">
+                            <a asp-action="AcceptInvitation" asp-route-id="@Model.GroupId" class="btn btn-success text-right">Accept</a>
+                            <a asp-action="RejectInvitation" asp-route-id="@Model.GroupId" class="btn btn-danger text-left">Reject</a>
+                        </div>
                     }
 
 
@@ -191,20 +198,23 @@
                                 </thead>
                                 <tbody>
                                     @{
-                                       
+
                                         foreach (var rel in Model.UserGroup)
                                         {
-                                        var roldInNumber = 0;
-                                        if(rel.UserRole == "Creator")
-                                        {
-                                            roldInNumber = 1;
-                                        }else if(rel.UserRole == "Manager")
-                                        {
-                                        roldInNumber = 0;
-                                        }else
-                                        {
-                                        roldInNumber = -1;
-                                        }        
+                                            var roldInNumber = 0;
+                                            if(rel.UserRole == "Creator")
+                                            {
+                                                roldInNumber = 1;
+                                            }else if(rel.UserRole == "Manager")
+                                            {
+                                                roldInNumber = 0;
+                                            }else if(rel.UserRole == "Participant")
+                                            {
+                                                roldInNumber = -1;
+                                            }else
+                                            {
+                                                roldInNumber = -2;
+                                            }
                                     <tr>
                                         <!--  userid, username, name, userrole   -->
                                         @if(@Model.CurrentUserId == @rel.User.UserId || @rel.UserRole == "Creator" || ((@Model.UserRole != "Creator")&&(@Model.UserRole != "Manager")) )
@@ -301,6 +311,7 @@
                                         <td>
                                             <input name="groupId" hidden value="@Model.GroupId"/>
                                             <input name="userId" hidden value = "" data-id="UserId" />
+
                                             <button type="submit" name="buttonName" value="" class="btn btn-success" data-id="UserStatus"></button>
                                             <button type="submit" name="buttonName" value="delete" class="btn btn-danger"><i class="fas fa-times-circle"></i> Delete</button>
                                         </td>

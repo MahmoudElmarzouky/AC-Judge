@@ -28,11 +28,11 @@
             }
             @if (currentAction == "Invitations")
             {
-                <li role="presentation" class="active"><a href="#">Invitations</a></li>
+                <li role="presentation" class="active"><a asp-action="Invitations">Invitations</a></li>
             }
             else
             {
-                <li role="presentation"><a href="#">Invitations</a></li>
+                <li role="presentation"><a asp-action="Invitations">Invitations</a></li>
             }
 
 
@@ -43,49 +43,14 @@
         <div class="row groups">
             @foreach (var item in Model)
             {
-               var classNamebox = "panel panel-";
-
-                classNamebox += (item.GroupStatus == "Public"? "success": "danger");
-
-            
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="@classNamebox">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><a asp-action="Details" asp-route-id="@item.GroupId">@item.GroupTitle</a></h3>
-                        
-                            @{
-                                var className = "fas fa-heart";
-                                if (item.IsFavourite)
-                                    className += " active";
-                            }
-                            <!-- make this unchangeable just show class active if this group is fav-->
-                            <a class="@className" data-favorite="IconFav"></a>
-                            <!-- add class active if this faviorte group -->
-
-
-                    </div>
-                    <div class="panel-body">
-                        @item.GroupDescription
-                    </div>
-                    <div class="panel-footer text-center">
-                        <div class="col-xs-4 footer-cell">
-                            <!-- Number Of User In Group -->
-                            <i class="fas fa-users"></i>
-                            @item.NumberOfMembers
-                        </div>
-                        <div class="col-xs-3 text-info footer-cell">
-                              @item.UserStatus 
-                              <!-- If User Owner This Contest Put word Owner -->
-                        </div>
-                        <ul class="col-xs-5 breadcrumb footer-cell">
-                            <li>@item.NumberOfUpCommingContests</li><!-- scheduled contest -->
-                            <li>@item.NumberOfRunningContests</li><!-- Running contest -->
-                            <li>@item.NumberOfEndedContests</li><!-- End contest -->
-                        </ul>
-
-                    </div>
-                </div>
-            </div>
+                if (currentAction == "Invitations")
+                {
+                    <partial name="groupBoxInvitation" for="@item" />
+                }
+                else
+                {
+                    <partial name="groupBox" for="@item" />
+                }
             }
         </div>
         <div aria-label="Page navigation" class="text-center">
@@ -108,20 +73,6 @@
     </div>
 
 </section>
-
-
-
-<!--
-// Footer panel -> Invitaion
-<div class="panel-footer invition">
-    <a href="" class="btn btn-success text-right">Accept</a>
-    <a href="" class="btn btn-danger text-left">Reject</a>
-</div>
-
--->
-
-
-
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
