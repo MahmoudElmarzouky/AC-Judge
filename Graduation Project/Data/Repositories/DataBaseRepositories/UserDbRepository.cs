@@ -57,7 +57,12 @@ namespace GraduationProject.Data.Repositories
 
         public void Update(User newUser)
         {
-            dbcontext.Users.Update(newUser); 
+            var user = Find(newUser.UserId);
+            user.FirstName = newUser.FirstName;
+            user.LastName = newUser.LastName;
+            user.Country = newUser.Country;
+            user.BirthDate = newUser.BirthDate;
+            user.PhotoUrl = newUser.PhotoUrl;
             Commit();
         }
         public void Commit()
