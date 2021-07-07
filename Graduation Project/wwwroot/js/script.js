@@ -243,6 +243,37 @@ function Insert_Problem_Table_Create_Contest(MainClass){
         }
     });
     
+    // Add All names in fileds and check all problem closed
+    var SubmitBtn = $(MainClass + ' form [type="submit"]');
+    SubmitBtn.on('click', function(e){
+        if($(DoneProblem).length > 0){
+            alert("Please Close Last Problem Check !");
+            e.preventDefault();
+            return;
+        }
+        let AllInputProblemId = $(MainClass + ' [data-target="problemId"]');
+        
+        AllInputProblemId.each(function(idx){
+            var str = "problems[" + idx + "]." + ($(AllInputProblemId[idx]).data('target'));
+            $(AllInputProblemId[idx]).attr('name', str);
+        });
+        
+        let AllSelectBox = $(MainClass + ' [data-target="PlatForm"]');
+        
+        AllSelectBox.each(function(idx){
+            var str = "problems[" + idx + "]." + ($(AllSelectBox[idx]).data('target'));
+            $(AllSelectBox[idx]).attr('name', str);
+        });
+        
+        let AllInputAlias = $(MainClass + ' [data-target="Alias"]');
+        
+        AllInputAlias.each(function(idx){
+            var str = "problems[" + idx + "]." + ($(AllInputAlias[idx]).data('target'));
+            $(AllInputAlias[idx]).attr('name', str);
+        });
+        
+    });
+    
     
 }
 
