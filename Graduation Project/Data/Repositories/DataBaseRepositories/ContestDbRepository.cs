@@ -1,5 +1,6 @@
 ﻿using GraduationProject.Data.Models;
 using GraduationProject.Data.Repositories.Interfaces;
+using GraduationProject.ViewModels.ContestViewsModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -127,6 +128,20 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             }
             Commit();
         }
+        public void FlipFavourite(int contestId, int userId)
+        {
+            var currentUsercontest = getUserContestRole(contestId, userId);
+            if (currentUsercontest == null)
+                return;
+            currentUsercontest.isFavourite ^= true;
+            Commit();
+        }
+
+        private UserContest getUserContestRole(int contestId, int userId)
+        {
+            return Find(contestId).UserContest.FirstOrDefault(u => u.UserId == userId); 
+        }
+
         private void LoadCurrentContest(Contest contest)
         {
             dbcontext.Entry(contest).Collection(c => c.ContestProblems).Load();
@@ -136,6 +151,66 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
                 dbcontext.Entry(cp).Reference(c => c.problem).Load();
             foreach (var uc in contest.UserContest)
                 dbcontext.Entry(uc).Reference(u => u.User).Load(); 
+        }
+        private Boolean IsOwner(UserContest userContest, string name)
+        {
+            if (userContest == null) return false;
+            if (name == null) return true; 
+            return userContest.User.UserName.Contains(name); 
+        }
+        private string getContestType(Boolean inGroup)
+        {
+            return inGroup ? "Group" : "Classical"; 
+        }
+        private string getContestStatus(int num)
+        {
+            switch(num)
+            {
+                case -1:
+                    return "upComming";
+                case 0:
+                    return "Running";
+                case 1:
+                    return "Ended"; 
+            }
+            return ""; 
+        }
+        private Boolean Comp(string x, string y)
+        {
+            
+            return y == null || x == null || x.Contains(y) || y == ""; 
+        }
+        private string RemoveNull(string x)
+        {
+            if (x == null) x = "";
+            return x; 
+        }
+        private string ChangeToAll(string x)
+        {
+            x = RemoveNull(x); 
+            if (x.Contains("All")) x = "";
+            return x; 
+        }
+        private ContestFilter Fix(ContestFilter model)
+        {
+            model.contestTitle = ChangeToAll(model.contestTitle);
+            model.ContestStatus = ChangeToAll(model.ContestStatus);
+            model.ContestType =ChangeToAll(model.ContestType);
+            model.PrepeardBy= ChangeToAll(model.PrepeardBy);
+            model.ContestX = ChangeToAll(model.ContestX);
+            return model;
+        }
+        public IList<Contest> Filter(ContestFilter model)
+        {
+            model = Fix(model);
+            return dbcontext.Contests.Where(
+                u=>
+                u.contestTitle.Contains(model.contestTitle)
+                //u.contestVisabilty.Contains(model.ContestPrivacy) 
+                //getContestStatus(u.contestStatus).Contains(model.ContestStatus) && 
+               // getContestType(u.InGroup).Contains(model.ContestType) 
+                //IsOwner(u.UserContest.FirstOrDefault(o=>o.isOwner == true), model.PrepeardBy) &&
+                ).ToList();
         }
     }
 }

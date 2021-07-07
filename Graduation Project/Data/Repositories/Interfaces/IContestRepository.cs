@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GraduationProject.ViewModels.ContestViewsModel;
 
 namespace GraduationProject.Data.Repositories.Interfaces
 {
@@ -16,6 +17,9 @@ namespace GraduationProject.Data.Repositories.Interfaces
         void AddProblemToContest(int problemId, int contestId);
         T CreateNewContest(int userId, T newContest);
         T Find(int Id);
-        void RegisterInContest(int userId, int contestId); 
+        void RegisterInContest(int userId, int contestId);
+        void FlipFavourite(int contestId, int userId);
+
+        IList<T> Filter(ContestFilter model); 
     }
 }

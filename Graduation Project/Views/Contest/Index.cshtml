@@ -1,5 +1,4 @@
-﻿@model IEnumerable<GraduationProject.Data.Models.Contest>
-
+﻿@model IEnumerable<GraduationProject.ViewModels.ContestViewsModel.ViewContestModel> 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -13,134 +12,52 @@
         </div>
         <section class="contest-table">
             <div class="panel panel-info">
-                <div class="panel-heading">
-                  <div class="panel-title">
-                    <i class="fas fa-filter"></i> Filter
-                  </div>
-                  <i class="fas fa-angle-down" data-toggle="OpenFilterPanel"></i>
-                </div>
-                <div class="panel-body" hidden>
-                    <form class="form-horizontal">
-                        <div class="form-group row">
-                            <label class="control-label col-md-2">Contest Title</label>
-                            <div class="col-md-8">
-                                <input type="text" name="" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="control-label col-md-2">Prepeard By</label>
-                            <div class="col-md-8">
-                                <input type="text" name="" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="control-label col-md-2">Contest Status</label>
-                            <div class="col-md-8">
-                                <select class="form-control text-capitalize" name="">
-                                <option value="All">All</option>
-                                <option value="scheduled">scheduled</option>
-                                <option value="running">running</option>
-                                <option value="ended">ended</option>
-                            </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="control-label col-md-2">Contest Type</label>
-                            <div class="col-md-8">
-                                <select class="form-control text-capitalize" name="">
-                                <option value="All">All Contests</option>
-                                <option value="classical">classical</option>
-                                <option value="group">group</option>
-                            </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="control-label col-md-2">Contest Me</label>
-                            <div class="col-md-8">
-                                <select class="form-control text-capitalize" name="">
-                                <option value="All">All Contests</option>
-                                <option value="Contests">My Contests</option>
-                                <option value="Participation">My Participation</option>
-                                <option value="Arrangement">My Arrangement</option>
-                                <option value="Favorites">My Favorites</option>
-                            </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="control-label col-md-2">Contest Privacy</label>
-                            <div class="col-md-8">
-                                <select class="form-control text-capitalize" name="">
-                                <option value="All">All</option>
-                                <option value="Public">Public</option>
-                                <option value="Private">Private</option>
-                            </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-offset-2 col-md-8">
-                                <input type="reset" value="Reset" class="btn btn-secondary" />
-                                <input type="submit" value="Search" class="btn btn-info" />
-                            </div> 
-                        </div>
-                    </form>
-                </div>
+                <!--Here-->
+                <partial name="ContestFilter"/>
                 <div class="table-responsive">
                     <table class="table table-bordered text-center">
                         <thead>
                             <tr class="active">
                                 <th class="text-center">#</th> <!-- visibility -->
                                 <th class="text-center">Status</th>
-                                <th class="text-center">Favorite</th> 
+                                <th class="text-center">Favorite</th>
                                 <th class="text-center">Title</th>
                                 <th class="text-center">Start Time</th>
                                 <th class="text-center">Length</th>
                                 <th class="text-center">Prepeard By</th>
                             </tr>
                         </thead>
-                       <tbody>
-                            <tr>
-                                <td><i class="fas fa-users-slash" data-toggle="tooltip" data-placement="top" title="Private"></i></td> <!-- Private Contest -->
-                                <td class="ended">Ended</td>
-                                <td><a class="fas fa-heart active" data-favorite="IconFav"></a></td>
-                                <td><a href="#">Heavy Light Decomposition</a></td>
-                                <td class="start-time">
-                                    <div>21/1/2021</div>
-                                    <div>21:40</div>
-                                </td>
-                                <td>02:00</td>
-                                <td><a href="#">Super_Mari000</a></td>
-                                
-                            </tr>
-                            <tr>
-                                <td><i class="fas fa-users" data-toggle="tooltip" data-placement="top" title="Public"></i></td> <!-- Public Contest -->
-                                <td class="running">Running</td>
-                                <td><a class="fas fa-heart" data-favorite="IconFav"></a></td>
-                                <td><a href="#">Codeforces Round #732 (Div. 1)</a></td>
-                                <td class="start-time">
-                                    <div>21/1/2021</div>
-                                    <div>21:40</div>
-                                </td>
-                                <td>100:00</td>
-                                <td><a href="#">Super_Mari000</a></td>
-                                
-                            </tr>
-                            <tr>
-                                <td><i class="fas fa-users" data-toggle="tooltip" data-placement="top" title="Public"></i></td>
-                                <td class="scheduled">Scheduled</td>
-                                <td><a class="fas fa-heart" data-favorite="IconFav"></a></td>
-                                <td><a href="#">Codeforces Round #732 (Div. 1)</a></td>
-                                <td class="start-time">
-                                    <div>21/1/2021</div>
-                                    <div>21:40</div>
-                                </td>
-                                <td>100:00</td>
-                                <td><a href="#">Super_Mari000</a></td>
-                                
-                            </tr>
-                            
-                            <tr>
-                                <td colspan="7">No Matching Records</td>
-                            </tr>
+                        <tbody>
+                            @if (Model.Count() > 0)
+                            {
+                                @foreach (var contest in Model)
+                                {
+                                    <tr>
+                                        <td><i class="@contest.VisableClass" data-toggle="tooltip" data-placement="top" title="@contest.contestVisabilty"></i></td>
+                                        <td class="@contest.contestStatusClass">@contest.contestStatus</td>
+                                        <td><a asp-action="FlipFavourite" asp-route-id="@contest.contestId" class="@contest.FavouuriteClass" data-favorite="IconFav"></a></td>
+                                        <td><a asp-action="Details" asp-route-id="@contest.contestId">@contest.contestTitle</a></td>
+                                        <td>
+                                            <a class="start-time" href="@contest.GlobalTime" target="_blank">
+                                                <div>@contest.contestStartTime.ToString("MM/dd/yyyy")</div>
+                                                <div>@contest.contestStartTime.ToString("HH:mm")</div>
+                                            </a>
+                                        </td>
+                                        @{
+                                            var hours = contest.contestDuration / 60;
+                                            var minutes = contest.contestDuration % 60;
+                                        }
+                                        <td> @hours.ToString("00"):@minutes.ToString("00") </td>
+                                        <td><a asp-controller="User" asp-action="Details" asp-route-id="@contest.PreparedById">@contest.PreparedBy</a></td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="7">No Matching Records</td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>
