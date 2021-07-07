@@ -189,6 +189,95 @@ function Submision_Status_Page(){
     });
 }
 
+function Insert_Problem_Table_Create_Contest(MainClass){
+    
+    var MainTableObj    = $(MainClass + ' .table');
+    var AddProblemPlus  = MainClass + ' .table thead i.fa-plus';
+    var AddProblemMinus = MainClass + ' .table thead i.fa-minus';
+    var DoneProblem     = MainClass + ' .table i.fa-check';
+    var RemProblem      = MainClass + ' .table i.fa-times';
+    var StaticRowObj    = $(MainClass + ' .table tbody tr:first-child').clone();
+    var ID = StaticRowObj.find('td:first-child').text();
+    
+    $(document).on('click', DoneProblem, function () {
+        var CurRow = $(this).parent().parent();
+        var ParCurRow = CurRow.parent();
+        
+        $(AddProblemMinus).removeClass('fa-minus').addClass('fa-plus');
+
+        // Work In Clicked Element
+        $(this).removeClass('fa-check text-success').addClass('fa-times text-danger');
+     
+        var AllInputFiled = CurRow.find("input, select");
+        AllInputFiled.each(function(){
+           $(this).attr('disabled', 'disabled');
+        });
+        
+    });
+    $(document).on('click', AddProblemPlus, function () {
+        if(ID === 'Z')
+            return;
+        ID = String.fromCharCode(ID.charCodeAt(0) + 1); //Increase ID
+
+        var CurObj = StaticRowObj.clone();
+        CurObj.find('td:first-child').text(ID);
+        var TableBody = MainTableObj.find('tbody');
+        TableBody.append(CurObj);
+        
+        $(this).removeClass('fa-plus').addClass('fa-minus');
+    });
+    
+    $(document).on('click', RemProblem, function () {
+        var CurRow = $(this).parent().parent();
+     
+        var AllNextRow = CurRow.nextAll();
+        AllNextRow.each(function(){
+            var Temp = $(this).find('td:first-child');
+            Temp.text(String.fromCharCode(Temp.text().charCodeAt(0) - 1));
+            
+        });
+
+        if(CurRow.siblings().length != 0){
+            CurRow.remove();
+            ID = String.fromCharCode(ID.charCodeAt(0) - 1);
+        }
+    });
+    
+    // Add All names in fileds and check all problem closed
+    var SubmitBtn = $(MainClass + ' form [type="submit"]');
+    SubmitBtn.on('click', function(e){
+        if($(DoneProblem).length > 0){
+            alert("Please Close Last Problem Check !");
+            e.preventDefault();
+            return;
+        }
+        let AllInputProblemId = $(MainClass + ' [data-target="problemId"]');
+        
+        AllInputProblemId.each(function(idx){
+            var str = "problems[" + idx + "]." + ($(AllInputProblemId[idx]).data('target'));
+            $(AllInputProblemId[idx]).attr('name', str);
+        });
+        
+        let AllSelectBox = $(MainClass + ' [data-target="PlatForm"]');
+        
+        AllSelectBox.each(function(idx){
+            var str = "problems[" + idx + "]." + ($(AllSelectBox[idx]).data('target'));
+            $(AllSelectBox[idx]).attr('name', str);
+        });
+        
+        let AllInputAlias = $(MainClass + ' [data-target="Alias"]');
+        
+        AllInputAlias.each(function(idx){
+            var str = "problems[" + idx + "]." + ($(AllInputAlias[idx]).data('target'));
+            $(AllInputAlias[idx]).attr('name', str);
+        });
+        
+    });
+    
+    
+}
+
+
 function Create_Contest_Page(){
     
     var ButtonTogle = $('.create-contest-page #CreateContesteGeneric .toogle-button button');
@@ -221,47 +310,10 @@ function Create_Contest_Page(){
     });
     
     
-    var AddProblem = '.create-contest-page .table i.fa-plus';
-    var DoneProblem = '.create-contest-page .table i.fa-check';
-    var RemProblem = '.create-contest-page .table i.fa-times';
+    // Add Problem To Table  contest-classical , contest-group
+    Insert_Problem_Table_Create_Contest('.create-contest-page .contest-classical');
+    Insert_Problem_Table_Create_Contest('.create-contest-page .contest-group');
     
-    $(document).on('click', DoneProblem, function () {
-        var CurRow = $(this).parent().parent();
-        var ParCurRow = CurRow.parent();
-        
-        var ID = CurRow.find('td:first-child').text();
-        ID = String.fromCharCode(ID.charCodeAt(0) + 1);
-        
-        var NewRow = CurRow.clone();
-        NewRow.find('td:first-child').text(ID);
-        console.log(ID); 
-        $(AddProblem).click(function(){
-           NewRow.appendTo(ParCurRow); 
-        });
-        
-        // Work In Clicked Element
-        $(this).removeClass('fa-check text-success').addClass('fa-times text-danger');
-     
-        var AllInputFiled = CurRow.find("input, select");
-        AllInputFiled.each(function(){
-           $(this).attr('disabled', 'disabled');
-        });
-        
-    });
-    
-    $(document).on('click', RemProblem, function () {
-        var CurRow = $(this).parent().parent();
-        var AllNextRow = CurRow.nextAll();
-        AllNextRow.each(function(){
-            var Temp = $(this).find('td:first-child');
-            console.log(Temp.text());
-            Temp.text(String.fromCharCode(Temp.text().charCodeAt(0) - 1));
-            
-        });
-
-        if(CurRow.siblings().length != 0)
-            CurRow.remove();
-    });
     
 }
 
@@ -274,6 +326,10 @@ $(function(){
     PR.prettyPrint();
     
     /* End Call All Libarary */
+    
+    /* Start Call BootStrap Comp Used */
+    $('[data-toggle="tooltip"]').tooltip();
+    /* End Call BootStrap Comp Used */
     
     /* Start Main Rule */
     
