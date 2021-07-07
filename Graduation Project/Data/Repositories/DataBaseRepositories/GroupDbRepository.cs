@@ -102,9 +102,29 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             foreach (var blog in group.blogs)
                 dbcontext.Entry(blog).Collection(c => c.userBlog).Load();
         }
+        private Boolean ValidUser(string role)
+        {
+            if (role == "Creator")
+                return true;
+            if (role == "Manager")
+                return true;
+            if (role == "Participant")
+                return true;
+            return false; 
+        }
+        private Boolean IsUserExist(int groupId, int userId)
+        {
 
+            var group = Find(groupId);
+            var rel = group.UserGroup.FirstOrDefault(u => u.UserId == userId);
+            if (rel != null && ValidUser(rel.UserRole))
+                return true;
+            return false; 
+        }
         public void AddUser(int groupId, int userId)
         {
+            if (IsUserExist(groupId, userId))
+                return; 
             RemoveUserRole(userId, groupId);
             var group = Find(groupId);
             group.UserGroup.Add(CreateUserRole(userId, groupId, "Participant", DateTime.Now, false));
@@ -160,13 +180,24 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             currentUserGroup.UserRole = newRole;
             Commit(); 
         }
-
+        public void InviteUser(int groupId, int userId)
+        {
+            if (IsUserExist(groupId, userId))
+                return; 
+            RemoveUserRole(userId, groupId);
+            var group = Find(groupId);
+            group.UserGroup.Add(CreateUserRole(userId, groupId, "Invite", DateTime.Now, false));
+            Commit();
+        }
         public IList<Group> MyGroups(int userId)
         {
             IList<Group> list = new List<Group>();
             foreach (var g in dbcontext.Groups)
-                if (g.UserGroup.FirstOrDefault(u => u.GroupId == g.GroupId && u.UserId == userId) != null)
+            {
+                var rel = g.UserGroup.FirstOrDefault(u => u.UserId == userId);
+                if (rel != null && ValidUser(rel.UserRole))
                     list.Add(g);
+            }
             return list; 
         }
     }
