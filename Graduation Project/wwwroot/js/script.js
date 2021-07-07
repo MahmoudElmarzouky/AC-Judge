@@ -327,6 +327,10 @@ $(function(){
     
     /* End Call All Libarary */
     
+    /* Start Call BootStrap Comp Used */
+    $('[data-toggle="tooltip"]').tooltip();
+    /* End Call BootStrap Comp Used */
+    
     /* Start Main Rule */
     
     Main_Rule();

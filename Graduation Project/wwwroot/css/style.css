@@ -481,7 +481,68 @@ header .nav-main .navbar-brand span{
 .create-contest-page .table tr td:last-child i{
     cursor: pointer;
 }
-/* Start Create Contest Page */
+/* End Create Contest Page */
+
+/* Start All Contest Page */
+.all-contest-page{
+    margin: 20px 0;
+}
+.all-contest-page .page-header{
+    padding: 8px 0px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.all-contest-page .page-header h2{
+    margin: 0;
+}
+.all-contest-page .page-header span{
+    font-size: 1.7rem;
+    font-weight: 300;
+}
+.all-contest-page .contest-table .panel .panel-heading{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 2rem !important;
+}
+.all-contest-page .contest-table .panel .panel-heading .panel-title{
+    font-size: inherit;
+}
+.all-contest-page .contest-table .panel .panel-heading i[data-toggle='OpenFilterPanel']{
+    cursor: pointer;
+}
+
+
+.all-contest-page .contest-table .table th{
+    white-space: nowrap;
+}
+.all-contest-page .contest-table .table{
+    font-size: 1.5rem;
+}
+.all-contest-page .contest-table .table th,
+.all-contest-page .contest-table .table td{
+    vertical-align: middle !important;
+}
+.all-contest-page .contest-table .table td.running{
+    color: red !important;
+}
+.all-contest-page .contest-table .table td.ended{
+    color: green !important;
+}
+.all-contest-page .contest-table .table td.scheduled{
+    color: blue !important;
+}
+.all-contest-page .contest-table .table td.start-time{
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+}
+.all-contest-page .contest-table .table td.start-time > div{
+    line-height: 1.7rem;
+}
+
+/* End All Contest Page */
 
 /* Start Footer */
 
