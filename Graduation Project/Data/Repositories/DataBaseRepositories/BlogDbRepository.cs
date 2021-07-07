@@ -61,15 +61,9 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
 
         public void Update(Blog newBlod)
         {
-            dbcontext.Blogs.Update(newBlod);
             var blog = Find(newBlod.blogId);
             blog.blogtitle = newBlod.blogtitle;
             blog.blogcontent = newBlod.blogcontent;
-            blog.blogvote = newBlod.blogvote;
-            blog.Comments = newBlod.Comments;
-            blog.userBlog = newBlod.userBlog;
-            blog.blogcontent = newBlod.blogcontent;
-            blog.groupId = newBlod.groupId;
             Commit();
         }
         public void UpdateVote(int blogId,int userId,int typeVote)

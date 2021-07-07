@@ -17,7 +17,6 @@ namespace GraduationProject
         public static void Main(string[] args)
         {
             var webHost = CreateHostBuilder(args).Build();
-            RunMigrations(webHost);
             webHost.Run();
         }
         private static void RunMigrations(IHost webHost)
