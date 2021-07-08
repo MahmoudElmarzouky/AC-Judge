@@ -13,9 +13,9 @@ namespace GraduationProject.ViewModels.ContestViewsModel
     }
     public class ProblemData
     {
-        public int problemId { get; set; }
+        public string problemId { get; set; } = "";
         public string Alias { get; set; } = "";
-        public string PlatForm { get; set; }
+        public string PlatForm { get; set; } = ""; 
     }
     public class CreateContestModel
     {

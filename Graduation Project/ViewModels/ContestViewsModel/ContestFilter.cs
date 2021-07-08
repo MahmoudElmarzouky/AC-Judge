@@ -13,7 +13,7 @@ namespace GraduationProject.ViewModels.ContestViewsModel
         public string ContestType { get; set; } = "";
         public string ContestX { get; set; } = "";
         public string ContestPrivacy { get; set; } = "";
-        public string Reset { get; set; }
-        public int userId { get; set; }
+        public string Reset { get; set; } = "";
+        public int userId { get; set; } = -1; 
     }
 }

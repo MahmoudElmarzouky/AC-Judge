@@ -45,10 +45,11 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
                 contestVisabilty = newContest.contestVisabilty,
                 InGroup = newContest.InGroup,
                 groupId = newContest.groupId,
-                creationTime = DateTime.Now,
+                creationTime = DateTime.Now
             };
             Add(contest); 
             contest.UserContest.Add( CreateUserContest(contest.contestId, userId, true, false, true) );
+            contest.ContestProblems = newContest.ContestProblems; 
             Commit();
             return contest; 
         }
