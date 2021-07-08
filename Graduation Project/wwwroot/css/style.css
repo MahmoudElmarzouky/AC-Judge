@@ -537,8 +537,6 @@ header .nav-main .navbar-brand span{
 .all-contest-page .contest-table .table td.start-time{
     padding-top: 0.7rem;
     padding-bottom: 0.7rem;
-}
-.all-contest-page .contest-table .table td.start-time > div{
     line-height: 1.7rem;
 }
 

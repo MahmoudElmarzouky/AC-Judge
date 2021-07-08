@@ -37,8 +37,8 @@
                                         <td class="@contest.contestStatusClass">@contest.contestStatus</td>
                                         <td><a asp-action="FlipFavourite" asp-route-id="@contest.contestId" class="@contest.FavouuriteClass" data-favorite="IconFav"></a></td>
                                         <td><a asp-action="Details" asp-route-id="@contest.contestId">@contest.contestTitle</a></td>
-                                        <td>
-                                            <a class="start-time" href="@contest.GlobalTime" target="_blank">
+                                        <td class="start-time">
+                                            <a href="@contest.GlobalTime" target="_blank">
                                                 <div>@contest.contestStartTime.ToString("MM/dd/yyyy")</div>
                                                 <div>@contest.contestStartTime.ToString("HH:mm")</div>
                                             </a>
