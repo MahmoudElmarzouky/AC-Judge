@@ -395,4 +395,8 @@ $(function(){
     Create_Contest_Page();
     /* End Create Contest*/
     
+    /* Start User View Page */
+    User_View_Page();
+    /* End User View Page */
+    
 });
