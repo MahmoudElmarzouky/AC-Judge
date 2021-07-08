@@ -1,7 +1,7 @@
 @model GraduationProject.Data.Models.User
 
 @{
-	ViewData["Title"] = "Details";
+    ViewData["Title"] = "Details";
 }
 
 <section class="main-user-view">
@@ -11,9 +11,9 @@
 		<div class="thumbnail">
 		    @if (Model.PhotoUrl != null) {
 			<img class="img-responsive img-rounded" src="~/img/Profile/@Model.PhotoUrl" alt="@Model.UserName" />
-			} else {
+		    } else {
 			<img class="img-responsive img-rounded" src="~/img/Profile/avatar-male.jpg" alt="@Model.UserName" />
-			}
+		    }
 		    <div class="caption text-center">
 			<p>
 			    <h4 class="user-name">@Model.UserName</h4>

@@ -337,23 +337,23 @@ function User_View_Page(){
      Show My Submision
     */
     var BtnToogleSubmision = $('.main-user-view .my-submision [data-target="flibShareSubmision"]');
-
+    
     BtnToogleSubmision.on('click', function(){
         var ToogleTempIcon = $(this).attr('class');
         $(this).attr('class', $(this).attr('data-toogle'));
         $(this).attr('data-toogle', ToogleTempIcon);
-
+        
         var ParTd = $(this).parent();
         var URL = ParTd.data('link');
         var SubID = ParTd.data('id');
-
+        
         Flib_Status_Submision(URL, SubID);
-
+        
     });
 
-
-
-
+    
+    
+    
 }
 $(function(){
     
