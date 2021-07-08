@@ -175,11 +175,7 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             }
             return ""; 
         }
-        private Boolean Comp(string x, string y)
-        {
-            
-            return y == null || x == null || x.Contains(y) || y == ""; 
-        }
+        
         private string RemoveNull(string x)
         {
             if (x == null) x = "";
@@ -198,19 +194,78 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             model.ContestType =ChangeToAll(model.ContestType);
             model.PrepeardBy= ChangeToAll(model.PrepeardBy);
             model.ContestX = ChangeToAll(model.ContestX);
+            model.ContestPrivacy = ChangeToAll(model.ContestPrivacy); 
             return model;
+        }
+        private Boolean IsContestStatus(int contestStatusNum, string status)
+        {
+            // upcoming, running, ended 
+            return getContestStatus(contestStatusNum).Contains(status) == true;
+        }
+        private Boolean IsContestType(Boolean InGroup, string type)
+        {
+            if (type == "") return true;
+            var currentType = getContestType(InGroup);
+            return currentType.Contains(type) == true;
+        }
+        private Boolean IsContestMe(Contest contest, string contestMe, Boolean IsFav, Boolean IsOwner, Boolean hasSubmission, Boolean Isparticipant)
+        {
+            if (contestMe == "") return true;
+            switch(contestMe)
+            {
+                case "My Contests":
+                    return hasSubmission;
+                case "My Participation":
+                    return Isparticipant; 
+                case "My Arrangement":
+                    return IsOwner;
+                case "My Favorites":
+                    return IsFav; 
+            }
+            return false; 
+        }
+        private Boolean IsCurrentPrivacy(string contestPrivacy, string privacy)
+        {
+            if (privacy == "") return true;
+            return contestPrivacy.Contains(privacy) == true; 
+        }
+        private Boolean Isparticipant(Contest contest, int userId)
+        {
+            var dateDuringContest = contest.contestStartTime.AddMinutes(contest.contestDuration);
+            var mySubmissions = contest.Submissions.FirstOrDefault(u => u.userId == userId && u.CreationTime <= dateDuringContest);
+            return mySubmissions != null; 
         }
         public IList<Contest> Filter(ContestFilter model)
         {
             model = Fix(model);
-            return dbcontext.Contests.Where(
-                u=>
-                u.contestTitle.Contains(model.contestTitle)
-                //u.contestVisabilty.Contains(model.ContestPrivacy) 
-                //getContestStatus(u.contestStatus).Contains(model.ContestStatus) && 
-               // getContestType(u.InGroup).Contains(model.ContestType) 
-                //IsOwner(u.UserContest.FirstOrDefault(o=>o.isOwner == true), model.PrepeardBy) &&
-                ).ToList();
+            var list = new List<Contest>();
+            int userId = model.userId; 
+            foreach(var contest in dbcontext.Contests)
+            {
+                LoadCurrentContest(contest); 
+                // see if user can see the contest 
+                var role = getUserContestRole(contest.contestId, userId);
+                if (role == null)
+                    continue;
+                var isFav = role.isFavourite;
+                var isOwner = role.isOwner;
+                var hasSubmission = contest.Submissions.FirstOrDefault(u => u.userId == userId) != null ? true : false;
+                var isparticipant = Isparticipant(contest, userId); 
+                if (!contest.contestTitle.Contains(model.contestTitle))
+                    continue;
+                if (!IsOwner(contest.UserContest.FirstOrDefault(u => u.isOwner == true), model.PrepeardBy))
+                    continue;
+                if (!IsContestStatus(contest.contestStatus, model.ContestStatus))
+                    continue;
+                if (!IsContestType(contest.InGroup, model.ContestType))
+                    continue;
+                if (!IsContestMe(contest, model.ContestX, isFav, isOwner, hasSubmission, isparticipant))
+                    continue;
+                if (!IsCurrentPrivacy(contest.contestVisabilty, model.ContestPrivacy))
+                    continue;
+                list.Add(contest); 
+            }
+            return list; 
         }
     }
 }

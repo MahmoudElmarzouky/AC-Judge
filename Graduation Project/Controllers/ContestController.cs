@@ -37,16 +37,18 @@ namespace GraduationProject.Controllers.Contest
         // GET: HomeController
         public ActionResult Index()
         {
-
+            return View(getAllContests());
+        }
+        private IList<ViewContestModel> getAllContests()
+        {
             IList<ViewContestModel> list = new List<ViewContestModel>();
             foreach (var c in contests.PublicContests())
             {
-                if(CanAccessTheContest(c.contestId, user.UserId))
+                if (CanAccessTheContest(c.contestId, user.UserId))
                     list.Add(getContestViewModelFromContest(c));
             }
-            return View(list);
+            return list; 
         }
-
         // GET: HomeController/Details/5
         public ActionResult Details(int Id)
         {
@@ -206,9 +208,10 @@ namespace GraduationProject.Controllers.Contest
         [ValidateAntiForgeryToken]
         public ActionResult Filter(ContestFilter model)
         {
-            if (model.Reset == "Reset") 
-                 RedirectToAction("Index"); 
+            if (model.Reset == "Reset")
+                return View("Index", getAllContests());
             var list = new List<ViewContestModel>();
+            model.userId = user.UserId; 
             foreach (var c in contests.Filter(model))
                 list.Add(getContestViewModelFromContest(c));
             return View("Index", list); 
@@ -252,7 +255,7 @@ namespace GraduationProject.Controllers.Contest
                 groupId = contest.groupId,
                 Problems = Problems,
                 Submissions = contest.Submissions.ToList(),
-                IsFavourite = currentUser.isFavourite,
+                IsFavourite = currentUser != null? currentUser.isFavourite: false,
                 PreparedBy = owner.FirstName, 
                 PreparedById = owner.UserId,
             };

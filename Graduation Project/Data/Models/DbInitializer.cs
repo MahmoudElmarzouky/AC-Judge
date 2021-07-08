@@ -8,61 +8,71 @@ namespace GraduationProject.Data.Models
 {
     public class DbInitializer
     {
+        static EntitiesContext dbcontext;
         public static void Seed(IServiceProvider serviceProvider)
         {
-            EntitiesContext context =
+            var rand = new Random();
+            dbcontext =
                 serviceProvider.GetRequiredService<EntitiesContext>();
-            if (context.Submissions.Any()) return;
-            foreach (var u in context.Users)
-            {
-                try
-                {
-                    if (context.UserContest.FirstOrDefault(u=>u.UserId == u.UserId && u.ContestId == 56) == null)
-                    context.UserContest.Add(new UserContest { UserId = u.UserId, ContestId = 56, isRegistered = true , isFavourite = false, isOwner = false});
-                }catch
-                {
-                    continue; 
-                }
-            }
-            context.SaveChanges(); 
-            var contest = context.Contests.FirstOrDefault(c => c.contestId == 56);
-            var users = contest.UserContest.Where(u => u.isRegistered == true);
-            for (int i = 0; i < 10; i++)
-                context.Problems.Add(CreateProblem(i.ToString()));
-            context.SaveChanges();
-            var pr = context.Problems;
-            int x = contest.ContestProblems.Count + 1;
-            foreach (var p in pr)
-                try
-                {
-                    contest.ContestProblems.Add(new ContestProblem { contestId = contest.contestId, order = x++, problemId = p.ProblemId });
-                }
-                catch
-                {
-                    continue;
-                }
-                LoadCurrentContest(context, contest);
+            var d = DateTime.Now;
+            dbcontext.Submissions.RemoveRange(dbcontext.Submissions); 
+            dbcontext.SaveChanges();
 
-            var problems = contest.ContestProblems;
-            context.SaveChanges();
-            foreach (var u in users)
-            {
+            string code = "#include<iostream>;" +
+                "using namespace std;" +
+                "int main(){" +
+                "int n;" +
+                "cin >> n;" +
+                "for(int i = 0; i < n; i++)" +
+                "{" +
+                "int x;" +
+                "cin >> x;" +
+                "if (x > 3)" +
+                "   cout << \"Hello From the other hand\";" +
+                "else " +
+                "cout << \"Hello From The hand\";" +
+                "}" +
+                "}";
+
+            string[] verdicts = { "Accepted", "Wrong Answer", "Time limit exceeded" };
+            var users = dbcontext.Users;
+            var problems = dbcontext.Problems;
                 foreach(var p in problems)
                 {
-                        contest.Submissions.Add(CreateSubmission(u.UserId, p.problemId, contest.contestId, "WrongAnswer"));
+                    foreach(var u in users)
+                    {
+                        int lim = 1 + rand.Next(3); 
+                        for (int i = 0; i < lim; i++)
+                        {
+                            AddSubmission(0, p.ProblemId, u.UserId, verdicts[i], code);
+
+                        }
+                        dbcontext.SaveChanges(); 
+                    }
+
                 }
-            }
-            foreach (var u in users)
-            {
-                foreach (var p in problems)
-                {
-                    contest.Submissions.Add(CreateSubmission(u.UserId, p.problemId, contest.contestId, "Accepted"));
-                }
-            }
-            context.SaveChanges(); 
             
         }
-        private static void LoadCurrentContest(EntitiesContext dbcontext, Contest contest)
+        private static void AddSubmission(int contestId, int problemId, int userId, string verdict, string code)
+        {
+            var sub = new Submission
+            {
+                contestId = contestId,
+                CreationTime = DateTime.Now,
+                InContest = true,
+                ProblemId = problemId,
+                MemoryConsumeBytes = 200,
+                ProgrammingLanguage = "C++",
+                Visable = true,
+                userId = userId,
+                Verdict = verdict,
+                SubmissionText = code,
+                TimeConsumeMillis = 3055
+            };
+            dbcontext.Submissions.Add(sub);
+            dbcontext.SaveChanges(); 
+        }
+        private static void LoadCurrentContest(Contest contest)
         {
             dbcontext.Entry(contest).Collection(c => c.ContestProblems).Load();
             dbcontext.Entry(contest).Collection(c => c.UserContest).Load();

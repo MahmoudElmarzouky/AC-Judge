@@ -27,13 +27,13 @@ namespace GraduationProject.ViewModels.ContestViewsModel
         public string VisableClass { get { return contestVisabilty == "Public" ? "fas fa-users" : "fas fa-users-slash"; } set { } }
         public string contestStatus { get; set; } // upcoming, running, ended 
         public string contestStatusClass { get {
-                switch(contestStatus)
+                switch (contestStatus)
                 {
-                    case "upcoming":
+                    case "Upcoming":
                         return "scheduled"; 
-                    case "running":
+                    case "Running":
                         return "running";
-                    case "ended":
+                    case "Ended":
                         return "ended"; 
                 }
                 return ""; 
