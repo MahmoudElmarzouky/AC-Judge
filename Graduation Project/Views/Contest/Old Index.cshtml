@@ -31,48 +31,79 @@
             <th>
                 @Html.DisplayNameFor(model => model.contestStatus)
             </th>
-           
+
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model)
-{
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.contestTitle)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.contestStartTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.contestDuration)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.creationTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.contestVisabilty)
-            </td>
-            <td>
-                @{ 
-                    var contestStatus = "";
-                    if (item.contestStatus == -1)
-                        contestStatus = "UpComming";
-                    else if (item.contestStatus == 0)
-                        contestStatus = "Running";
-                    else
-                        contestStatus = "Ended"; 
-                }
-               @contestStatus
-            </td>
-            
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.contestId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.contestId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.contestId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.contestTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.contestStartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.contestDuration)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.creationTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.contestVisabilty)
+                </td>
+                <td>
+                    @{
+                        var contestStatus = "";
+                        if (item.contestStatus == -1)
+                            contestStatus = "UpComming";
+                        else if (item.contestStatus == 0)
+                            contestStatus = "Running";
+                        else
+                            contestStatus = "Ended";
+                    }
+                    @contestStatus
+                </td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.contestId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.contestId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.contestId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+
+
+
+
+<tr>
+    <td><i class="fas fa-users" data-toggle="tooltip" data-placement="top" title="Public"></i></td> <!-- Public Contest -->
+    <td class="running">Running</td>
+    <td><a class="fas fa-heart" data-favorite="IconFav"></a></td>
+    <td><a href="#">Codeforces Round #732 (Div. 1)</a></td>
+    <td class="start-time">
+        <div>21/1/2021</div>
+        <div>21:40</div>
+    </td>
+    <td>100:00</td>
+    <td><a href="#">Super_Mari000</a></td>
+
+</tr>
+<tr>
+    <td><i class="fas fa-users" data-toggle="tooltip" data-placement="top" title="Public"></i></td>
+    <td class="scheduled">Scheduled</td>
+    <td><a class="fas fa-heart" data-favorite="IconFav"></a></td>
+    <td><a href="#">Codeforces Round #732 (Div. 1)</a></td>
+    <td class="start-time">
+        <div>21/1/2021</div>
+        <div>21:40</div>
+    </td>
+    <td>100:00</td>
+    <td><a href="#">Super_Mari000</a></td>
+
+</tr>

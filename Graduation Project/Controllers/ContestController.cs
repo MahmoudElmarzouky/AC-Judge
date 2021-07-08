@@ -7,11 +7,13 @@ using GraduationProject.Data.Models;
 using GraduationProject.Data.Repositories.Interfaces;
 using GraduationProject.Data.Repositories.IProblemRepository;
 using GraduationProject.ViewModels.ContestViewsModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GraduationProject.Controllers.Contest
 {
+    [Authorize]
     public class ContestController : Controller
     {
         readonly private IContestRepository<GraduationProject.Data.Models.Contest> contests;
@@ -35,14 +37,23 @@ namespace GraduationProject.Controllers.Contest
         // GET: HomeController
         public ActionResult Index()
         {
-
-            var list = contests.PublicContests(); 
-            return View(list);
+            return View(getAllContests());
         }
-
+        private IList<ViewContestModel> getAllContests()
+        {
+            IList<ViewContestModel> list = new List<ViewContestModel>();
+            foreach (var c in contests.PublicContests())
+            {
+                if (CanAccessTheContest(c.contestId, user.UserId))
+                    list.Add(getContestViewModelFromContest(c));
+            }
+            return list; 
+        }
         // GET: HomeController/Details/5
         public ActionResult Details(int Id)
         {
+            if (!CanAccessTheContest(Id, user.UserId))
+                return RedirectToAction("Index");  
             var contest = contests.Find(Id);
             var model = getContestViewModelFromContest(contest); 
             return View(model);
@@ -60,30 +71,6 @@ namespace GraduationProject.Controllers.Contest
             return View(createContestView);
         }
 
-        private CreateContestModel CreateContestView()
-        {
-            IList<GroupData> myGroups = new List<GroupData>();
-            foreach(var g in user.UserGroup.Select(u => u.Group))
-                myGroups.Add(new GroupData {groupId = g.GroupId, groupTitle = g.GroupTitle });
-            
-            return new CreateContestModel
-            {
-                groups = myGroups
-            };
-        }
-        private GraduationProject.Data.Models.Contest CreateContestFromCreateContestModel(CreateContestModel model)
-        {
-            return new GraduationProject.Data.Models.Contest
-            {
-                groupId = model.CreateFromGroup == "0" ? null : model.groupId,
-                contestDuration = model.Duration,
-                contestStartTime = model.StartTime,
-                contestTitle = model.contestTitle,
-                InGroup = model.CreateFromGroup == "0" ? false : true,
-                contestVisabilty = model.Visable == "1"? "Public": "Private",
-                // Password 
-            };
-        }
         // POST: HomeController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -107,6 +94,8 @@ namespace GraduationProject.Controllers.Contest
         // GET: HomeController/Edit/5
         public ActionResult Edit(int id)
         {
+            if (!CanAccessTheContest(id, user.UserId))
+                return RedirectToAction("Index");
             var contest = contests.Find(id); 
             return View(contest);
         }
@@ -116,6 +105,8 @@ namespace GraduationProject.Controllers.Contest
         [ValidateAntiForgeryToken]
         public ActionResult Edit(GraduationProject.Data.Models.Contest contest)
         {
+            if (!CanAccessTheContest(contest.contestId, user.UserId))
+                return RedirectToAction("Index");
             try
             {
                 contests.Update(contest);
@@ -133,6 +124,8 @@ namespace GraduationProject.Controllers.Contest
         // GET: HomeController/Delete/5
         public ActionResult Delete(int id)
         {
+            if (!CanAccessTheContest(id, user.UserId))
+                return RedirectToAction("Index");
             var contest = contests.Find(id);
             return View(contest);
         }
@@ -142,6 +135,8 @@ namespace GraduationProject.Controllers.Contest
         [ValidateAntiForgeryToken]
         public ActionResult Delete(GraduationProject.Data.Models.Contest contest)
         {
+            if (!CanAccessTheContest(contest.contestId, user.UserId))
+                return RedirectToAction("Index");
             try
             {
                 int? groupId = contests.Find(contest.contestId).groupId; 
@@ -166,6 +161,8 @@ namespace GraduationProject.Controllers.Contest
         [ValidateAntiForgeryToken]
         public ActionResult AddProblemToContest(int contestId, string problemName)
         {
+            if (!CanAccessTheContest(contestId, user.UserId))
+                return RedirectToAction("Index"); 
             var problem = problems.FindByName("CodeForces", problemName); 
             if (problem == null)
                 return RedirectToAction("Details", new { id = contestId });
@@ -182,10 +179,49 @@ namespace GraduationProject.Controllers.Contest
 
         public ActionResult Standing(int Id)
         {
-            
+            if (!CanAccessTheContest(Id, user.UserId))
+                return RedirectToAction("Index");
             return View(CreateStandingView(Id)); 
         }
-        
+
+        public ActionResult FlipFavourite(int id)
+        {
+            return FlipFavourite(user.UserId, id);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult FlipFavourite(int userId, int contestId)
+        {
+            if (!CanAccessTheContest(contestId, user.UserId))
+                return RedirectToAction("Index");
+            try
+            {
+                contests.FlipFavourite(contestId, userId);
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return RedirectToAction("Index");
+            }
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Filter(ContestFilter model)
+        {
+            if (model.Reset == "Reset")
+                return View("Index", getAllContests());
+            var list = new List<ViewContestModel>();
+            model.userId = user.UserId; 
+            foreach (var c in contests.Filter(model))
+                list.Add(getContestViewModelFromContest(c));
+            return View("Index", list); 
+        }
+        private Boolean CanAccessTheContest(int contestId, int userId)
+        {
+            var c = contests.Find(contestId);
+            var rel = c.UserContest.FirstOrDefault(u => u.UserId == userId);
+            return c.contestVisabilty == "Public" || rel != null; 
+        }
         private ViewContestModel getContestViewModelFromContest(Data.Models.Contest contest)
         {
             string contestStatus = "";
@@ -204,19 +240,24 @@ namespace GraduationProject.Controllers.Contest
             ICollection<Problem> Problems = new HashSet<Problem>();
             foreach (var item in contest.ContestProblems.ToList())
                 Problems.Add(item.problem);
-            return new ViewContestModel 
-            { 
-                contestId = contest.contestId, 
-                contestDuration = contest.contestDuration, 
-                contestStartTime = contest.contestStartTime, 
-                contestStatus = contestStatus, 
-                contestTitle = contest.contestTitle, 
-                contestVisabilty = contest.contestVisabilty, 
-                UserContest = contest.UserContest, 
-                creationTime = contest.creationTime, 
-                groupId = contest.groupId, 
-                Problems = Problems, 
-                Submissions = contest.Submissions.ToList()
+            var owner = contest.UserContest.FirstOrDefault(u => u.isOwner == true).User;
+            var currentUser = contest.UserContest.FirstOrDefault(u => u.UserId == user.UserId); 
+            return new ViewContestModel
+            {
+                contestId = contest.contestId,
+                contestDuration = contest.contestDuration,
+                contestStartTime = contest.contestStartTime,
+                contestStatus = contestStatus,
+                contestTitle = contest.contestTitle,
+                contestVisabilty = contest.contestVisabilty,
+                UserContest = contest.UserContest,
+                creationTime = contest.creationTime,
+                groupId = contest.groupId,
+                Problems = Problems,
+                Submissions = contest.Submissions.ToList(),
+                IsFavourite = currentUser != null? currentUser.isFavourite: false,
+                PreparedBy = owner.FirstName, 
+                PreparedById = owner.UserId,
             };
         }
         private StandingViewModel CreateStandingView(int contestId)
@@ -274,7 +315,32 @@ namespace GraduationProject.Controllers.Contest
                 users = users
             };
         }
+        private CreateContestModel CreateContestView()
+        {
+            IList<GroupData> myGroups = new List<GroupData>();
+            foreach (var g in user.UserGroup.Select(u => u.Group))
+                myGroups.Add(new GroupData { groupId = g.GroupId, groupTitle = g.GroupTitle });
 
-        
+            return new CreateContestModel
+            {
+                groups = myGroups
+            };
+        }
+        private GraduationProject.Data.Models.Contest CreateContestFromCreateContestModel(CreateContestModel model)
+        {
+            return new GraduationProject.Data.Models.Contest
+            {
+                groupId = model.CreateFromGroup == "0" ? null : model.groupId,
+                contestDuration = model.Duration,
+                contestStartTime = model.StartTime,
+                contestTitle = model.contestTitle,
+                InGroup = model.CreateFromGroup == "0" ? false : true,
+                contestVisabilty = model.Visable == "1" ? "Public" : "Private",
+                // Password 
+            };
+        }
+
+
+
     }
 }
