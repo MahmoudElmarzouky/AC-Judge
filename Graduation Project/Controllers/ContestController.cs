@@ -184,24 +184,24 @@ namespace GraduationProject.Controllers.Contest
             return View(CreateStandingView(Id)); 
         }
 
-        public ActionResult FlipFavourite(int id)
+        public ActionResult FlipFavourite(int id, ContestFilter Filter)
         {
-            return FlipFavourite(user.UserId, id);
+            return FlipFavourite(user.UserId, id, Filter);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult FlipFavourite(int userId, int contestId)
+        public ActionResult FlipFavourite(int userId, int contestId, ContestFilter Filter)
         {
             if (!CanAccessTheContest(contestId, user.UserId))
-                return RedirectToAction("Index");
+                return RedirectToAction("Filter", Filter);
             try
             {
                 contests.FlipFavourite(contestId, userId);
-                return RedirectToAction("Index");
+                return RedirectToAction("Filter", Filter);
             }
             catch
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Filter", Filter);
             }
         }
         [HttpPost]
