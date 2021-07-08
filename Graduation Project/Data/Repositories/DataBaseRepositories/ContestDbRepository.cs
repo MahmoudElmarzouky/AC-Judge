@@ -70,7 +70,7 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
         }
         public IList<Contest> PublicContests()
         {
-            return dbcontext.Contests.Where(u => u.InGroup == false).ToList(); 
+            return dbcontext.Contests.Where(u => u.contestVisabilty == "Public" && u.InGroup == false).ToList(); 
         }
 
         public void Remove(int Id)
@@ -160,7 +160,7 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
         }
         private string getContestType(Boolean inGroup)
         {
-            return inGroup ? "Group" : "Classical"; 
+            return inGroup ? "group" : "classical"; 
         }
         private string getContestStatus(int num)
         {
@@ -213,13 +213,13 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             if (contestMe == "") return true;
             switch(contestMe)
             {
-                case "My Contests":
+                case "Contests":
                     return hasSubmission;
-                case "My Participation":
+                case "Participation":
                     return Isparticipant; 
-                case "My Arrangement":
+                case "Arrangement":
                     return IsOwner;
-                case "My Favorites":
+                case "Favorites":
                     return IsFav; 
             }
             return false; 
