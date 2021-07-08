@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using GraduationProject.Data.Models;
+using GraduationProject.Data.Repositories.Interfaces;
+using GraduationProject.ViewModels.Rank;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,79 +13,76 @@ namespace GraduationProject.Controllers.Rank
 {
     public class RankController : Controller
     {
-        // GET: HomeController
+        private readonly ISubmissionRepository<Submission> SubmissionRepository;
+        private readonly IUserRepository<User> userRepository;
+        public RankController(IUserRepository<User> _userRepository, ISubmissionRepository<Submission> _SubmissionRepository)
+        {
+            SubmissionRepository = _SubmissionRepository;
+            userRepository = _userRepository;
+        }
         public ActionResult Index()
         {
-            return View();
+            ViewData["Countries"] = GetAllCountries();
+            IOrderedEnumerable<RankViewModel> list = GetAllUserRank();
+            return View(list);
         }
-
-        // GET: HomeController/Details/5
-        public ActionResult Details(int id)
+        public ActionResult FilterRanking()
         {
-            return View();
+            var Country = Request.Form["Country"];
+            var UserName = Request.Form["UserName"];
+            var BirthYearLowerBound = Int32.Parse(Request.Form["BirthYearLowerBound"]);
+            var BirthYearUpperBound = Int32.Parse(Request.Form["BirthYearUpperBound"]);
+            var RatingLowerBound = Int32.Parse(Request.Form["RatingLowerBound"]);
+            var RatingUpperBound = Int32.Parse(Request.Form["RatingUpperBound"]);
+            ViewData["Countries"] = GetAllCountries();
+            IOrderedEnumerable<RankViewModel> list = GetAllUserRank();
+            var newlist = list.Where(e =>
+                e.Country.Contains(Country)&&
+                (UserName != "" ? e.UserName==UserName:e.UserName.Contains("")) &&
+                e.Birthyear >= BirthYearLowerBound &&
+                e.Birthyear <= BirthYearUpperBound &&
+                e.TotalSolved >= RatingLowerBound &&
+                e.TotalSolved <= RatingUpperBound 
+                );
+            return View("Index", newlist);
         }
-
-        // GET: HomeController/Create
-        public ActionResult Create()
+        IOrderedEnumerable<RankViewModel> GetAllUserRank()
         {
-            return View();
-        }
-
-        // POST: HomeController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
+            var users = userRepository.List();
+            IList<RankViewModel> list = new List<RankViewModel>();
+            foreach (var item in users)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+                RankViewModel tmp = new RankViewModel
+                {
+                    userid = item.UserId,
+                    Birthyear = item.BirthDate,
+                    Country = item.Country,
+                    UserName = item.UserName
+                };
+                tmp.TotalSolved = item.submissions.Where(s => s.Verdict == "Accepted").Select(p => p.ProblemId).Distinct().Count();
 
-        // GET: HomeController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
+                list.Add(tmp);
+            }
+            IOrderedEnumerable<RankViewModel> newlist = list.OrderByDescending(T => T.TotalSolved);
+            return newlist;
         }
-
-        // POST: HomeController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        IEnumerable<string> GetAllCountries()
         {
-            try
+            List<string> Countries = new List<string>();
+            CultureInfo[] cultureInfos = CultureInfo.GetCultures(CultureTypes.SpecificCultures);
+            foreach (CultureInfo cultureInfo in cultureInfos)
             {
-                return RedirectToAction(nameof(Index));
+                RegionInfo regionInfo = new(cultureInfo.LCID);
+                if (!Countries.Contains(regionInfo.EnglishName))
+                {
+                    Countries.Add(regionInfo.EnglishName);
+                }
             }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: HomeController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: HomeController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            Countries.Remove("Israel");
+            Countries.Add("Palastine");
+            Countries.Sort();
+            return Countries;
         }
     }
+    
 }

@@ -1,40 +1,82 @@
-.error { color: red;}
-.has-error { padding: 5px;}
-.required-mark { color: red;}
-.btn:focus,.btn:active {
-  outline: none !important;
+.error {
+    color: red;
 }
-a:focus {text-decoration: none;}
 
-.form-inline .checkbox { margin-right: 10px;}
-textarea { resize: vertical;}
+.has-error {
+    padding: 5px;
+}
+
+.required-mark {
+    color: red;
+}
+
+.btn:focus, .btn:active {
+    outline: none !important;
+}
+
+a:focus {
+    text-decoration: none;
+}
+
+.form-inline .checkbox {
+    margin-right: 10px;
+}
+
+textarea {
+    resize: vertical;
+}
 
 
-.middle { vertical-align: middle !important;}
+.middle {
+    vertical-align: middle !important;
+}
 
-.th-center th { text-align: center;}
-.td-center td { text-align: center;}
-.td-middle td { vertical-align: middle !important;}
-.tr-grey th, .tr-grey td { background-color: #AAA;}
+.th-center th {
+    text-align: left;
+    color: #337ab7;
+}
 
-.dl-table th { text-align: right;}
-.dl-table td { padding-left: 20px;}
+.td-center td {
+    text-align: left;
+}
 
-tr[data-href] { cursor: pointer;}
+.td-middle td {
+    vertical-align: middle !important;
+}
 
-.panel>.table-responsive>.table>tbody:first-child>tr:first-child th,
-.panel>.table-responsive>.table>tbody:first-child>tr:first-child td {
-  border-top: 0;
+.tr-grey th, .tr-grey td {
+    background-color: #AAA;
+}
+
+.dl-table th {
+    text-align: center;
+    color: antiquewhite;
+}
+
+.dl-table td {
+    text-align: center;
+    padding-left: 20px;
+}
+
+tr[data-href] {
+    cursor: pointer;
+}
+
+.panel > .table-responsive > .table > tbody:first-child > tr:first-child th,
+.panel > .table-responsive > .table > tbody:first-child > tr:first-child td {
+    border-top: 0;
 }
 
 
 .clearfix:after {
-  content: "";
-  clear: both;
-  display: block;
+    content: "";
+    clear: both;
+    display: block;
 }
 
-.pointer { cursor: pointer;}
+.pointer {
+    cursor: pointer;
+}
 
 /* details summary { display: list-item; cursor: pointer;}
 details {
@@ -42,7 +84,7 @@ details {
   border-radius: 3px;
   border: 1px solid #ccc;
   /*background-color: #f5f5f5;*/
-  /*box-shadow: 2px 2px 3px #ddd;*/
+/*box-shadow: 2px 2px 3px #ddd;*/
 
 
 /* text */
@@ -63,42 +105,55 @@ span.success { color: #5cb85c;}
 .h4-5 { font-size: 16px;}
 a.no-deco { text-decoration: none;} */
 
+
+a {
+    text-decoration: none !important;
+}
+
 pre.plain {
-  border: 0;
-  background-color: transparent;
-  padding: 0;
-  margin: 0;
-  color: inherit;
-  font-size: inherit;
-  white-space: pre-line;
-  word-break: normal;
-  overflow: visible;
+    border: 0;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    color: inherit;
+    font-size: inherit;
+    white-space: pre-line;
+    word-break: normal;
+    overflow: visible;
 }
 
 .fit-font-size.no-break {
-  overflow: hidden;
-  text-overflow: ellipsis;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* margin */
 /* .
 /* btn-text */
 a.btn-text {
-  font-weight:bold;
-  color: navy;
-  font-size: 90%;
-  cursor: pointer;
-  text-decoration: none;
+    font-weight: bold;
+    color: navy;
+    font-size: 90%;
+    cursor: pointer;
+    text-decoration: none;
 }
-a.btn-text:before { content: "[";}
-a.btn-text:after { content: "]";}
+
+    a.btn-text:before {
+        content: "[";
+    }
+
+    a.btn-text:after {
+        content: "]";
+    }
+
 .btn-text-group span.divider:last-child {
-  display: none;
+    display: none;
 }
+
 .btn-text-group span.divider:before {
-  content: '|';
-  padding: 0 5px;
-  color: #DDD;
+    content: '|';
+    padding: 0 5px;
+    color: #DDD;
 }
 
 /* collapse-panel */
@@ -108,77 +163,88 @@ a.btn-text:after { content: "]";}
 
 
 /* header */
-header .navbar{
-  margin-bottom: 0;
+header .navbar {
+    margin-bottom: 0;
 }
 
-header .nav-upper{
-  border-radius: 0;
-}
-header .nav-upper .navbar-form button,
-header .nav-upper .navbar-form a{
-  min-width: 100px;
-}
-header .nav-upper .navbar-form i{
-  margin-right: 0.5rem;
-  font-size: 17px;
-  vertical-align: middle;
+header .nav-upper {
+    border-radius: 0;
 }
 
-header .nav-main .navbar-nav > li > a{
-  color: #BBB;
-  outline: none;
+    header .nav-upper .navbar-form button,
+    header .nav-upper .navbar-form a {
+        min-width: 100px;
+    }
+
+    header .nav-upper .navbar-form i {
+        margin-right: 0.5rem;
+        font-size: 17px;
+        vertical-align: middle;
+    }
+
+header .nav-main .navbar-nav > li > a {
+    color: #BBB;
+    outline: none;
 }
-header .nav-main .navbar-brand{
-  color: #BBB;
-  font-size: 3rem;
-  display: flex;
-  align-items: center;
+
+header .nav-main .navbar-brand {
+    color: #BBB;
+    font-size: 3rem;
+    display: flex;
+    align-items: center;
 }
-header .nav-main .navbar-brand img{
-  width: 40px;
-  height: 40px;
-}
-header .nav-main .navbar-brand span{
-  color: #e60024;
-  margin-left: 5px;
-}
+
+    header .nav-main .navbar-brand img {
+        width: 40px;
+        height: 40px;
+    }
+
+    header .nav-main .navbar-brand span {
+        color: #e60024;
+        margin-left: 5px;
+    }
+
 @media (min-width: 768px) and (max-width: 991.98px) {
-  header .nav-main .navbar-collapse{
-      padding-right: 7px;
-      padding-left: 7px;
-  }
-  header .nav-main .navbar-nav > li > a{
-      padding: 15px 13px;
-  }
+    header .nav-main .navbar-collapse {
+        padding-right: 7px;
+        padding-left: 7px;
+    }
+
+    header .nav-main .navbar-nav > li > a {
+        padding: 15px 13px;
+    }
 }
 
 
 
 /* footer */
 footer {
-  margin-bottom: 20px;
-  font-weight: bold;
+    margin-bottom: 20px;
+    font-weight: bold;
 }
-footer ul {
-  text-align: center;
-  margin-left: 0;
-  padding: 0;
-}
-footer ul li {
-  display: inline;
-  font-size: 12px;
-  margin: 0 5px;
-  list-style-type: none;
-  white-space: nowrap;
-}
-footer a {
-  color: black;
-}
-footer a:hover {
-  color: black;
-  text-decoration: none;
-}
+
+    footer ul {
+        text-align: center;
+        margin-left: 0;
+        padding: 0;
+    }
+
+        footer ul li {
+            display: inline;
+            font-size: 12px;
+            margin: 0 5px;
+            list-style-type: none;
+            white-space: nowrap;
+        }
+
+    footer a {
+        color: black;
+    }
+
+        footer a:hover {
+            color: black;
+            text-decoration: none;
+        }
 
 /* user */
 /* .username > span {font-weight:bold;}
@@ -211,35 +277,64 @@ a:hover.username {text-decoration: none;}
 
 /* filter panel */
 .panel-filter .panel-heading {
-  border-bottom: solid 2px #ddd;
+    border-bottom: solid 2px #ddd;
 }
-.form-inline .select2 { margin-right: 5px;}
-.form-inline input { margin-right: 5px;}
-.form-filter .form-group-sm { margin-bottom: 3px;}
-.form-filter table { margin: 5px 0;}
-.form-filter table td { padding: 2px;}
-.form-filter table td input {
-  width: 80px !important;
-  margin-left: 5px;
+
+.form-inline .select2 {
+    margin-right: 5px;
 }
+
+.form-inline input {
+    margin-right: 5px;
+}
+
+.form-filter .form-group-sm {
+    margin-bottom: 3px;
+}
+
+.form-filter table {
+    margin: 5px 0;
+}
+
+    .form-filter table td {
+        padding: 2px;
+    }
+
+        .form-filter table td input {
+            width: 80px !important;
+            margin-left: 5px;
+        }
+
 .filter-title {
-  display: block;
-  cursor: pointer;
+    display: block;
+    cursor: pointer;
 }
-.filter-title.show span.pull-right:before { content: "\e113";}
-.filter-title span.pull-right:before { content: "\e114";}
+
+    .filter-title.show span.pull-right:before {
+        content: "\e113";
+    }
+
+    .filter-title span.pull-right:before {
+        content: "\e114";
+    }
 
 .filter-body-heading {
-  display: inline-block;
-  width: 100%;
-  font-size: 18px;
-  border-bottom: 1px solid #DDD;
-  margin-top: 10px;
-  margin-bottom: 10px;
+    display: inline-block;
+    width: 100%;
+    font-size: 18px;
+    border-bottom: 1px solid #DDD;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
-.filter-body-heading:first-child { margin-top: -5px;}
-#category-checkbox .checkbox { margin: 0;}
-#collapse-filter form>div:not(:first-child) { margin-top: 10px;}
 
+    .filter-body-heading:first-child {
+        margin-top: -5px;
+    }
 
+#category-checkbox .checkbox {
+    margin: 0;
+}
 
+#collapse-filter form > div:not(:first-child) {
+    margin-top: 10px;
+}

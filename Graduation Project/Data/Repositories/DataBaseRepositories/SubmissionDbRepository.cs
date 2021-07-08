@@ -61,12 +61,12 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             Commit(); 
         }
 
-        public IList<Submission> GetSubmissionSpecific(bool IsPublic)
+        public IList<Submission> GetSubmissionSpecific(bool IsPublic,int Problemtype)
         {
             return dbcontext.Submissions
                .Include(p => p.problem)
                .Include(p => p.user)
-               .Where(s => s.InContest==IsPublic).ToList();
+               .Where(s => s.InContest==IsPublic && s.problem.problemType== Problemtype).ToList();
         }
     }
 }
