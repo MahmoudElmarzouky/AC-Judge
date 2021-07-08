@@ -543,6 +543,31 @@ header .nav-main .navbar-brand span{
 }
 
 /* End All Contest Page */
+/* Start User View Page */
+.main-user-view{
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+.main-user-view .user-info .thumbnail{
+    background-color: #EEE;
+    box-shadow: 8px 12px 20px rgba(0,0,0,.4);
+    font-size: 1.5rem;
+}
+.main-user-view .user-info .thumbnail .user-name{
+    margin-top: 15px;
+    margin-bottom: 5px;
+    color: blue;
+}
+.main-user-view .user-info .thumbnail .joined span{
+    color: #555;
+}
+.main-user-view .user-info .thumbnail .type{
+    font-size: 1.6rem;
+    color: #000;
+}
+
+
+/* End User View Page */
 
 /* Start Footer */
 

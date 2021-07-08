@@ -317,6 +317,12 @@ function Create_Contest_Page(){
     
 }
 
+function User_View_Page(){
+    
+    
+    
+    
+}
 $(function(){
     
     'use strict';
@@ -356,5 +362,9 @@ $(function(){
     /* Start Create Contest */
     Create_Contest_Page();
     /* End Create Contest*/
+    
+    /* Start User View Page */
+    User_View_Page();
+    /* End User View Page */
     
 });

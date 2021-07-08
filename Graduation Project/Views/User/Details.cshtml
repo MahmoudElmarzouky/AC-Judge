@@ -4,69 +4,71 @@
     ViewData["Title"] = "Details";
 }
 
-
-<div class="container">
-	<h2>Details</h2>
-	<div>
-		<h4>User</h4>
-		<hr />
-		<dl class="dl-horizontal">
-			<dt>
-				@Html.DisplayNameFor(model => model.BirthDate)
-			</dt>
-			<dd>
-				@Html.DisplayFor(model => model.BirthDate)
-			</dd>
-			<dt>
-				@Html.DisplayNameFor(model => model.Country)
-			</dt>
-			<dd>
-				@Html.DisplayFor(model => model.Country)
-			</dd>
-			<dt>
-				@Html.DisplayNameFor(model => model.UserName)
-			</dt>
-			<dd>
-				@Html.DisplayFor(model => model.UserName)
-			</dd>
-			<dt>
-				@Html.DisplayNameFor(model => model.PhotoUrl)
-			</dt>
-			<dd>
-				@if (Model.PhotoUrl != null)
-				{
-					<img alt="Profile Picture" src="~/img/Profile/@Model.PhotoUrl" width="500" height="500" />
-
-				}
-				else
-				{
-					<img alt="Profile Picture" src="~/img/Profile/avatar-male.jpg" />
-				}
-			</dd>
-			<dt>
-				@Html.DisplayNameFor(model => model.FirstName)
-			</dt>
-			<dd>
-				@Html.DisplayFor(model => model.FirstName)
-			</dd>
-			<dt>
-				@Html.DisplayNameFor(model => model.LastName)
-			</dt>
-			<dd>
-				@Html.DisplayFor(model => model.LastName)
-			</dd>
-			<dt>
-				@Html.DisplayNameFor(model => model.Gender)
-			</dt>
-			<dd>
-				@Html.DisplayFor(model => model.Gender)
-			</dd>
-			<dt>
-				@Html.DisplayNameFor(model => model.DateOfJoin)
-			</dt>
-			<dd>
-				@Html.DisplayFor(model => model.DateOfJoin)
-			</dd>
-		</dl>
+<section class="main-user-view">
+    <div class="container">
+	<div class="row">
+	    <section class="col-md-3 user-info">
+		<div class="thumbnail">
+		    @if (Model.PhotoUrl != null){
+			<img class="img-responsive img-rounded" src="~/img/Profile/@Model.PhotoUrl" alt="@Model.UserName" />
+		    }else {
+			<img class="img-responsive img-rounded" src="~/img/Profile/avatar-male.jpg" alt="@Model.UserName" />
+		    }
+		    <div class="caption text-center">
+			<p>
+			    <h4 class="user-name">@Model.UserName</h4>
+			    <span class="text-muted">@Model.FirstName @Model.LastName</span>, <a href="#" data-toggle="tooltip" data-placement="top" title="Country">@Model.Country</a><!-- Ranking Page Search Country -->
+			</p>
+			<p>
+			    <span class="type">Birth Year:</span> <a href="#">@Model.BirthDate</a> <!-- Ranking Page Search Year -->
+			</p>
+			<p>
+			    <span class="type">Gender:</span> @Model.Gender
+			</p>
+			<p class="joined">
+			    <i class="far fa-clock"></i> <span>Joined @Model.DateOfJoin</span>
+			</p>
+			
+		    </div>
+		</div>
+	    </section>
+	    <section class="col-md-9">
+		<nav class="navbar navbar-default">
+		    <div class="container-fluid">
+			
+			<div class="navbar-header">
+			  <a class="navbar-brand" href="#">Profile</a>
+			</div>
+			
+			<ul class="nav navbar-nav">
+			  <li><a href="#">Submission</a></li>
+			  <li><a href="#">Contest</a></li>
+			  <li><a href="#">Blog</a></li>
+			  <li><a href="#">Favorite</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+			    <li class="dropdown">
+			      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
+			      <ul class="dropdown-menu">
+				<li><a href="#">General Setting</a></li>
+				<li><a href="#">Edit Email</a></li>
+				<li><a href="#">Change Password</a></li>
+			      </ul>
+			    </li>
+			</ul>
+			
+		    </div>
+		</nav>
+		<section class="user-statistics">
+		    <h1 class="text-center">user statistics</h1>
+		</section>
+	    </section>
 	</div>
-</div>
+	
+    </div>
+</section>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
