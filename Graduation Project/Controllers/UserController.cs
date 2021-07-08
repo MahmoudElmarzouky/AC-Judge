@@ -1,5 +1,6 @@
 ﻿using GraduationProject.Data.Models;
 using GraduationProject.Data.Repositories.Interfaces;
+using GraduationProject.ViewModels.ContestViewsModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -30,7 +31,14 @@ namespace GraduationProject.Controllers
             var user = users.Find(id);
             return View(user);
         }
-
+        public ActionResult OpentContest(int id)
+        {
+            var user = users.Find(id);
+            ContestFilter filter = new ContestFilter {
+            PrepeardBy=user.UserName
+            };
+            return RedirectToAction("Filter", "Contest",filter);
+        }
         // GET: UserController/Create
         public ActionResult Create()
         {
