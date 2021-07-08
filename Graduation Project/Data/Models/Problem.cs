@@ -24,14 +24,6 @@ namespace GraduationProject.Data.Models
 
         public int problemType { get; set; } //interview ==1 or contest==2
 
-        public int timelimit { get; set; }
-
-        public int memorylimit { get; set; }
-
-        public string inputType { get; set; }
-
-        public string outputType { get; set; }
-
         public string problemText { get; set; }
 
         public int? rating { get; set; }
