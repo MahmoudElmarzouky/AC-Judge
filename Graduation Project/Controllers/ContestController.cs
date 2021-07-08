@@ -204,6 +204,10 @@ namespace GraduationProject.Controllers.Contest
                 return RedirectToAction("Filter", Filter);
             }
         }
+        public ActionResult Filter(string PrepeardBy, int userId)
+        {
+            return RedirectToAction("Filter",  new ContestFilter { PrepeardBy = PrepeardBy, userId = userId });
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Filter(ContestFilter model)
@@ -256,7 +260,7 @@ namespace GraduationProject.Controllers.Contest
                 Problems = Problems,
                 Submissions = contest.Submissions.ToList(),
                 IsFavourite = currentUser != null? currentUser.isFavourite: false,
-                PreparedBy = owner.FirstName, 
+                PreparedBy = owner.UserName, 
                 PreparedById = owner.UserId,
             };
         }
@@ -328,6 +332,13 @@ namespace GraduationProject.Controllers.Contest
         }
         private GraduationProject.Data.Models.Contest CreateContestFromCreateContestModel(CreateContestModel model)
         {
+            var Addedproblems = new List<ContestProblem>(); 
+            foreach(var p in model.problems)
+            {
+                var current = problems.FindByName(p.PlatForm, p.problemId);
+                if (current == null) continue;
+                Addedproblems.Add(new ContestProblem { problemId = current.ProblemId, order = Addedproblems.Count }); 
+            }
             return new GraduationProject.Data.Models.Contest
             {
                 groupId = model.CreateFromGroup == "0" ? null : model.groupId,
@@ -336,7 +347,9 @@ namespace GraduationProject.Controllers.Contest
                 contestTitle = model.contestTitle,
                 InGroup = model.CreateFromGroup == "0" ? false : true,
                 contestVisabilty = model.Visable == "1" ? "Public" : "Private",
+                ContestProblems = Addedproblems
                 // Password 
+                // problems 
             };
         }
 
