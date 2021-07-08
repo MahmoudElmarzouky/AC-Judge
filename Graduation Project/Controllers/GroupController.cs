@@ -35,8 +35,14 @@ namespace GraduationProject.Controllers.Group
         public ActionResult Index()
         {
             var list = new List<ViewGroupModel>();
+            int userId = user.UserId; 
             foreach (var item in groups.List())
+            {
+                var rel = item.UserGroup.FirstOrDefault(u=>u.UserId == userId);
+                if ((item.Visable == true) || (rel != null))
                 list.Add(getViewModelFromGroup(item));
+            }
+                
 
             return View(list);
         }
@@ -160,7 +166,7 @@ namespace GraduationProject.Controllers.Group
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddUsers(int groupId, string textareaUsers)
+        public ActionResult InviteUsers(int groupId, string textareaUsers)
         {
             try
             {
@@ -170,7 +176,7 @@ namespace GraduationProject.Controllers.Group
                     var currentUser = users.FindByUserName(name); 
                     if(currentUser != null)
                     {
-                        groups.AddUser(groupId, currentUser.UserId); 
+                        groups.InviteUser(groupId, currentUser.UserId); 
                     }
                 }
                 return RedirectToAction("Details", new { id = groupId});
@@ -238,6 +244,17 @@ namespace GraduationProject.Controllers.Group
                 return RedirectToAction("Details", new { id = groupId });
             }
         }
+        public ActionResult AcceptInvitation(int Id)
+        {
+            int userId = user.UserId;
+            return JoinToGroup(Id, userId);
+        }
+        public ActionResult RejectInvitation(int Id)
+        {
+            int userId = user.UserId;
+            groups.RemoveUser(userId, Id);
+            return RedirectToAction("Invitations"); 
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult EditMember(int groupId, int userId, string buttonName)
@@ -263,6 +280,19 @@ namespace GraduationProject.Controllers.Group
                 return RedirectToAction("Details", new { id = groupId });
             }
          }
+        public ActionResult Invitations()
+        {
+            int userId = user.UserId; 
+            var list = new List<ViewGroupModel>();
+            foreach (var item in groups.List())
+            {
+                var rel = item.UserGroup.FirstOrDefault(u => u.UserId == userId);
+                if (rel != null && rel.UserRole == "Invite")
+                list.Add(getViewModelFromGroup(item));
+            }
+                
+            return View("Index", list);
+        }
 
         private GraduationProject.Data.Models.Group getGroupFromCreateModel(CreateGroupModel model)
         {
@@ -297,7 +327,7 @@ namespace GraduationProject.Controllers.Group
             int NumberOfMembers = group.UserGroup.Count;
             var query = group.UserGroup.FirstOrDefault(u => u.UserId == user.UserId);
             var IsFavourite = query != null? query.isFavourite: false;
-            var role = query != null ? query.UserRole : "--"; 
+            var role = query != null ? query.UserRole : "Not In Group"; 
             var model = new ViewGroupModel {
                 UserRole = role,
                 GroupId = group.GroupId,

@@ -117,40 +117,41 @@ function Modal_Edit_Member_Group(){
     });
 }
 
-function Get_Submision(URL, SubID){
-    var result = '';
+function Get_Submision(URL, SubID, ElementShow){
+    
     $.ajax({
-       method: "POST",
-       cache: false,
+        method: "POST",
+        cache: false,
         url: URL ,
         data: { SubmisionId: SubID },
         success: function (data, status) {
-            console.log(data)
-        //$.each(data, function(){
-        //    if(this[0] === '<')
-        //        result += '&lt;';
-        //    else if(this[0] === '>')
-        //        result += '&gt;';
-        //    else
-        //        result += this[0];
-        //});
-       },
-       error: function(xhr, status, error){
-        console.log(error);
-       }
+            var result = '';
+            for(var i=0;i < data.length; ++i){
+                if(data[i] === '<')
+                    result += '&lt;';
+                else if(data[i] === '>')
+                    result += '&gt;';
+                else
+                    result += data[i];
+            }
+            
+            ElementShow.html(PR.prettyPrintOne(result));
+        },
+        error: function(xhr, status, error){
+            console.log(error);
+        }
     });
     
-    return result;
 }
 
 function Submision_Status_Page(){
     var OpenModal = $('.status-page #ShowSubmisionStatusModal');
     OpenModal.on('show.bs.modal', function (event) {        
-        var button = $(event.relatedTarget); // Button that triggered the modal
-        var UserName = button.data('user'); // Extract info from data-* attributes
+        var button = $(event.relatedTarget);
+        var UserName = button.data('user');
         var SubID = button.data('id');
-        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        
+        
         var modal = $(this);
         modal.find('.modal-title span').text(UserName);
         
@@ -167,9 +168,9 @@ function Submision_Status_Page(){
         var SetID =  modal.find('.modal-body .table tbody tr input[name="SubmisionID"]');
         SetID.val(SubID);
         
-        var URL = "/Problem/GetTextSubmission";
+        var URL = button.data('link');
         var SetCode = modal.find('.modal-body .submision pre');
-        SetCode.text(Get_Submision(URL, SubID));
+        Get_Submision(URL, SubID, SetCode);
     });
     
     var Copied = $('.status-page .submision-modal .submision .btn');
@@ -188,6 +189,134 @@ function Submision_Status_Page(){
     });
 }
 
+function Insert_Problem_Table_Create_Contest(MainClass){
+    
+    var MainTableObj    = $(MainClass + ' .table');
+    var AddProblemPlus  = MainClass + ' .table thead i.fa-plus';
+    var AddProblemMinus = MainClass + ' .table thead i.fa-minus';
+    var DoneProblem     = MainClass + ' .table i.fa-check';
+    var RemProblem      = MainClass + ' .table i.fa-times';
+    var StaticRowObj    = $(MainClass + ' .table tbody tr:first-child').clone();
+    var ID = StaticRowObj.find('td:first-child').text();
+    
+    $(document).on('click', DoneProblem, function () {
+        var CurRow = $(this).parent().parent();
+        var ParCurRow = CurRow.parent();
+        
+        $(AddProblemMinus).removeClass('fa-minus').addClass('fa-plus');
+
+        // Work In Clicked Element
+        $(this).removeClass('fa-check text-success').addClass('fa-times text-danger');
+     
+        var AllInputFiled = CurRow.find("input, select");
+        AllInputFiled.each(function(){
+           $(this).attr('disabled', 'disabled');
+        });
+        
+    });
+    $(document).on('click', AddProblemPlus, function () {
+        if(ID === 'Z')
+            return;
+        ID = String.fromCharCode(ID.charCodeAt(0) + 1); //Increase ID
+
+        var CurObj = StaticRowObj.clone();
+        CurObj.find('td:first-child').text(ID);
+        var TableBody = MainTableObj.find('tbody');
+        TableBody.append(CurObj);
+        
+        $(this).removeClass('fa-plus').addClass('fa-minus');
+    });
+    
+    $(document).on('click', RemProblem, function () {
+        var CurRow = $(this).parent().parent();
+     
+        var AllNextRow = CurRow.nextAll();
+        AllNextRow.each(function(){
+            var Temp = $(this).find('td:first-child');
+            Temp.text(String.fromCharCode(Temp.text().charCodeAt(0) - 1));
+            
+        });
+
+        if(CurRow.siblings().length != 0){
+            CurRow.remove();
+            ID = String.fromCharCode(ID.charCodeAt(0) - 1);
+        }
+    });
+    
+    // Add All names in fileds and check all problem closed
+    var SubmitBtn = $(MainClass + ' form [type="submit"]');
+    SubmitBtn.on('click', function(e){
+        if($(DoneProblem).length > 0){
+            alert("Please Close Last Problem Check !");
+            e.preventDefault();
+            return;
+        }
+        let AllInputProblemId = $(MainClass + ' [data-target="problemId"]');
+        
+        AllInputProblemId.each(function(idx){
+            var str = "problems[" + idx + "]." + ($(AllInputProblemId[idx]).data('target'));
+            $(AllInputProblemId[idx]).attr('name', str);
+        });
+        
+        let AllSelectBox = $(MainClass + ' [data-target="PlatForm"]');
+        
+        AllSelectBox.each(function(idx){
+            var str = "problems[" + idx + "]." + ($(AllSelectBox[idx]).data('target'));
+            $(AllSelectBox[idx]).attr('name', str);
+        });
+        
+        let AllInputAlias = $(MainClass + ' [data-target="Alias"]');
+        
+        AllInputAlias.each(function(idx){
+            var str = "problems[" + idx + "]." + ($(AllInputAlias[idx]).data('target'));
+            $(AllInputAlias[idx]).attr('name', str);
+        });
+        
+    });
+    
+    
+}
+
+
+function Create_Contest_Page(){
+    
+    var ButtonTogle = $('.create-contest-page #CreateContesteGeneric .toogle-button button');
+    ButtonTogle.click(function(){
+        var Temp = 'btn-default';
+        
+        if($(this).hasClass(Temp)){
+            $(this).removeClass(Temp);
+            $(this).addClass($(this).data('toggle'));
+        }
+
+        var NxtElements = $(this).siblings('button');
+        NxtElements.each(function(){
+            var Cur = $(this).data('toggle');
+            if($(this).hasClass(Cur)){
+                $(this).removeClass(Cur);
+                $(this).addClass(Temp);
+            }
+        });
+
+    });
+    
+    var AlertVisible = $('.create-contest-page .alert');
+    AlertVisible.each(function(){
+        if($(this).is(':empty')){
+            $(this).css('display','none');
+        }else{
+            $(this).css('display','block');
+        }
+    });
+    
+    
+    // Add Problem To Table  contest-classical , contest-group
+    Insert_Problem_Table_Create_Contest('.create-contest-page .contest-classical');
+    Insert_Problem_Table_Create_Contest('.create-contest-page .contest-group');
+    
+    
+}
+
 $(function(){
     
     'use strict';
@@ -197,6 +326,10 @@ $(function(){
     PR.prettyPrint();
     
     /* End Call All Libarary */
+    
+    /* Start Call BootStrap Comp Used */
+    $('[data-toggle="tooltip"]').tooltip();
+    /* End Call BootStrap Comp Used */
     
     /* Start Main Rule */
     
@@ -220,5 +353,8 @@ $(function(){
     Submision_Status_Page();
     /* End Status Submision */
     
+    /* Start Create Contest */
+    Create_Contest_Page();
+    /* End Create Contest*/
     
 });

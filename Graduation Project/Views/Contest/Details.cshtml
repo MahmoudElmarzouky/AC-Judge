@@ -14,6 +14,7 @@
         <a hidden asp-action="RegisterInContest" asp-route-id="@Model.contestId"> Register in the contest</a>|
         <a asp-action="Edit" asp-route-id="@Model.contestId">Edit</a> |
         <a asp-action="Delete" asp-route-id="@Model.contestId">Delete</a>
+        <a asp-action="Standing" asp-route-id="@Model.contestId">Standing</a>
         @if (Model.groupId != null)
         {
             <a asp-controller="Group" asp-action="Details" asp-route-id="@Model.groupId">Back to Group</a>

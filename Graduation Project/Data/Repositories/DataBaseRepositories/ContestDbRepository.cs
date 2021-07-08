@@ -23,6 +23,34 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             Commit();
             return newContest;
         }
+        private UserContest CreateUserContest(int contestId, int userId, Boolean isRegistered, Boolean isFavourite, Boolean isOwner)
+        {
+            return new UserContest
+            {
+                ContestId = contestId,
+                UserId = userId,
+                isRegistered = isRegistered,
+                isFavourite = isFavourite,
+                isOwner = isOwner
+            };
+        }
+        public Contest CreateNewContest(int userId, Contest newContest)
+        {
+            var contest = new Contest
+            {
+                contestDuration = newContest.contestDuration,
+                contestStartTime = newContest.contestStartTime,
+                contestTitle = newContest.contestTitle,
+                contestVisabilty = newContest.contestVisabilty,
+                InGroup = newContest.InGroup,
+                groupId = newContest.groupId,
+                creationTime = DateTime.Now,
+            };
+            Add(contest); 
+            contest.UserContest.Add( CreateUserContest(contest.contestId, userId, true, false, true) );
+            Commit();
+            return contest; 
+        }
 
         public void Commit()
         {
@@ -38,6 +66,10 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
         public IList<Contest> List()
         {
             return dbcontext.Contests.ToList();
+        }
+        public IList<Contest> PublicContests()
+        {
+            return dbcontext.Contests.Where(u => u.InGroup == false).ToList(); 
         }
 
         public void Remove(int Id)
@@ -57,8 +89,8 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             contest.contestDuration = newContest.contestDuration;
             contest.contestTitle = newContest.contestTitle;
             contest.contestVisabilty = newContest.contestVisabilty;
+            contest.contestStartTime = newContest.contestStartTime; 
             Commit();
-          
         }
 
         public void AddProblemToContest(int problemId, int contestId)
@@ -79,6 +111,22 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
                 order = order
             };
         }
+        public void RegisterInContest(int userId, int contestId)
+        {
+            var contest = Find(contestId);
+            if (contest == null)
+                return;
+            var userContest = contest.UserContest.FirstOrDefault(u => u.UserId == userId);
+            if (userContest == null)
+            {
+                userContest = CreateUserContest(contestId, userId, true, false, false);
+            }
+            else
+            {
+                userContest.isRegistered = true;
+            }
+            Commit();
+        }
         private void LoadCurrentContest(Contest contest)
         {
             dbcontext.Entry(contest).Collection(c => c.ContestProblems).Load();
@@ -86,6 +134,8 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             dbcontext.Entry(contest).Collection(c => c.Submissions).Load();
             foreach (var cp in contest.ContestProblems)
                 dbcontext.Entry(cp).Reference(c => c.problem).Load();
+            foreach (var uc in contest.UserContest)
+                dbcontext.Entry(uc).Reference(u => u.User).Load(); 
         }
     }
 }

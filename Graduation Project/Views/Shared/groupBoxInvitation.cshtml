@@ -1,0 +1,30 @@
+﻿@model GraduationProject.ViewModels.ViewGroupModel
+@{
+    var classNamebox = "panel panel-";
+
+    classNamebox += (Model.GroupStatus == "Public" ? "success" : "danger");
+}
+
+<div class="col-sm-6 col-md-4 col-lg-3">
+    <div class="@classNamebox">
+        <div class="panel-heading">
+            <h3 class="panel-title"><a asp-action="Details" asp-route-id="@Model.GroupId">@Model.GroupTitle</a></h3>
+
+            @{
+                var className = "fas fa-heart";
+                if (Model.IsFavourite)
+                    className += " active";
+            }
+            <!-- make this unchangeable just show class active if this group is fav-->
+            <a class="@className" data-favorite="IconFav"></a>
+            <!-- add class active if this faviorte group -->
+        </div>
+        <div class="panel-body">
+            @Model.GroupDescription
+        </div>
+        <div class="panel-footer invition">
+            <a asp-action="AcceptInvitation" asp-route-id="@Model.GroupId" class="btn btn-success text-right">Accept</a>
+            <a asp-action="RejectInvitation" asp-route-id="@Model.GroupId" class="btn btn-danger text-left">Reject</a>
+        </div>
+    </div>
+</div>
