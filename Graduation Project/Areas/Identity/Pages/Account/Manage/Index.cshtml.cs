@@ -68,6 +68,7 @@ namespace GraduationProject.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Last Name")]
             [Required]
             public string LastName { get; set; }
+
             [Display(Name = "Country")]
             [Required]
             public string Country { get; set; }

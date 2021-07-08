@@ -37,7 +37,7 @@
 				<div class="col-md-6">
 					<label asp-for="Input.Country"></label>
 					<select class="form-control input-lg" name="@Html.NameFor(model=>model.Input.Country)">
-						<option value="">@Model.Input.Country</option>
+						<option value="@Model.Input.Country">@Model.Input.Country</option>
 						@{
 							foreach (string country in Model.Countries)
 							{
@@ -49,7 +49,7 @@
 				<div class="row form-group">
 					<div class="col-md-6">
 						<select class="form-control input-lg" name="@Html.NameFor(model=>model.Input.BirthDate)">
-							<option value="0">@Model.Input.BirthDate</option>
+							<option value="@Model.Input.BirthDate">@Model.Input.BirthDate</option>
 							@{
 								int startYear = DateTime.Now.Year;
 								for (int year = startYear - 10; year >= startYear - 100; year--)

@@ -44,8 +44,12 @@ namespace GraduationProject.Controllers
             TempData["PrepeardBy"] = currentuser.UserName;
             return RedirectToAction("filter", "Contest");
         }
-        // GET: UserController/Create
-        public ActionResult Create()
+        public ActionResult OpenBlog(int id)
+        {
+            return RedirectToAction("filter", "Contest");
+        }
+            // GET: UserController/Create
+            public ActionResult Create()
         {
             return View();
         }
