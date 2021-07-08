@@ -57,6 +57,9 @@ namespace GraduationProject.Controllers.Blog
                 blogvote = blog.blogvote
                 , creationTime = blog.creationTime
                 , Comments = blog.Comments
+                ,UserBlogs=blog.userBlog,
+                CurrentUserId=user.UserId,
+                GroupId=blog.groupId
                 , isOwner = IsOwner
             };
             return model;
@@ -77,7 +80,7 @@ namespace GraduationProject.Controllers.Blog
         }
 
         // GET: HomeController/Create
-        public ActionResult Create(int id)
+        public ActionResult Create(int? id)
         {
             TempData["GroupID"] = id;
             return View();
@@ -90,7 +93,7 @@ namespace GraduationProject.Controllers.Blog
         {
             try
             {
-                int GrpupID = (int)TempData["GroupID"];
+                int? GrpupID = (int?)TempData["GroupID"];
                 var newBlog = new GraduationProject.Data.Models.Blog
                 {
                     blogtitle = model.blogtitle,
@@ -106,7 +109,7 @@ namespace GraduationProject.Controllers.Blog
                 var userBlog= CreateRelation(userId, blogId);
                 newBlog.userBlog.Add(userBlog);
                 blogs.Update(newBlog);
-                if(GrpupID==3)
+                if(GrpupID==null)
                 return RedirectToAction(nameof(Index));
                 else
                 return RedirectToAction("Details", "Group", new { id = GrpupID });
@@ -153,7 +156,7 @@ namespace GraduationProject.Controllers.Blog
                     creationTime = blog.creationTime
                 };
                 blogs.Update(newBlog);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", new { id = model.blogId });
             }
             catch
             {
@@ -197,14 +200,56 @@ namespace GraduationProject.Controllers.Blog
             {
 
                 blogs.UpdateVote(model.blogId,user.UserId,1);
-                
-                return RedirectToAction(nameof(Index));
+
+                return RedirectToAction("Details", new { id = model.blogId });
             }
             catch
             {
                 return RedirectToAction(nameof(Index));
             }
         }
-        //------------
+        public ActionResult DownVote(int id)
+        {
+            var blog = blogs.Find(id);
+            return DownVote(blog);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DownVote(GraduationProject.Data.Models.Blog model)
+        {
+            try
+            {
+
+                blogs.UpdateVote(model.blogId, user.UserId, -1);
+
+                return RedirectToAction("Details", new { id = model.blogId });
+            }
+            catch
+            {
+                return RedirectToAction(nameof(Index));
+            }
+        }
+        //--------
+        public ActionResult Favourite(int id)
+        {
+            var blog = blogs.Find(id);
+            return Favourite(blog);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Favourite(GraduationProject.Data.Models.Blog model)
+        {
+            try
+            {
+
+                blogs.UpdateFavourite(model.blogId, user.UserId);
+
+                return RedirectToAction("Details", new { id = model.blogId });
+            }
+            catch
+            {
+                return RedirectToAction(nameof(Index));
+            }
+        }
     }
 }

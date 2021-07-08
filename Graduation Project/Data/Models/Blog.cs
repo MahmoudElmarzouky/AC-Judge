@@ -12,20 +12,21 @@ namespace GraduationProject.Data.Models
             userBlog = new HashSet<UserBlog>();
             blogTag = new HashSet<BlogTag>();
             Comments = new HashSet<Comment>();
+           
         }
         public int blogId { get; set; }
         public string blogtitle { get; set; }
         public string blogcontent { get; set; }
-        public int blogvote { get {
-                return userBlog.Where(a => a.VoteValue == 1).Count() - userBlog.Where(a => a.VoteValue == 1).Count();
-            } set { } }
+        public int blogvote { get; set; }
         public DateTime creationTime { get; set; }
         public bool blogVisabilty { get; set; }
         public virtual ICollection<UserBlog> userBlog { get; set; }
         public virtual ICollection<BlogTag> blogTag { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
-        public int groupId { get; set; } 
-        public Group group { get; set; }
+        public int? groupId { get; set; } 
+        public Group? group { get; set; }
+
+
 
     }
 }

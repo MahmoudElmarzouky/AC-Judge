@@ -14,5 +14,6 @@ namespace GraduationProject.Data.Repositories.Interfaces
         void Commit();
         T Find(int Id);
         void UpdateVote(int blogId, int userId, int typeVote);
+        void UpdateFavourite(int blogId, int userId);
     }
 }
