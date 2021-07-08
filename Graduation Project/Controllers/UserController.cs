@@ -34,8 +34,9 @@ namespace GraduationProject.Controllers
         // GET: UserController/Details/5
         public ActionResult Details(int id)
         {
-            var user = users.Find(id);
-            return View(user);
+            var currentuser = users.Find(id);
+            TempData["userIdentity"] = user.UserIdentityId;
+            return View(currentuser);
         }
         public ActionResult OpentContest(int id)
         {
