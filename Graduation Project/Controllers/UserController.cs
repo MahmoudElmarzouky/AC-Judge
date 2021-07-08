@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace GraduationProject.Controllers
@@ -13,10 +14,15 @@ namespace GraduationProject.Controllers
     public class UserController : Controller
     {
         private readonly IUserRepository<User> users;
-
-        public UserController(IUserRepository<User>users)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private User user;
+        public UserController(IUserRepository<User>users, IHttpContextAccessor httpContextAccessor)
         {
             this.users = users;
+            _httpContextAccessor = httpContextAccessor;
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            user = users.Find(userId);
         }
 
         // GET: UserController
@@ -33,11 +39,12 @@ namespace GraduationProject.Controllers
         }
         public ActionResult OpentContest(int id)
         {
-            var user = users.Find(id);
+            var currentuser = users.Find(id);
             ContestFilter filter = new ContestFilter {
-            PrepeardBy=user.UserName
+            PrepeardBy= currentuser.UserName,
+            userId=user.UserId
             };
-            return RedirectToAction("Filter", "Contest",filter);
+            return RedirectToAction("Filter", "Contest", new { model = filter });
         }
         // GET: UserController/Create
         public ActionResult Create()
