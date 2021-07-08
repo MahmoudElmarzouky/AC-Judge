@@ -317,44 +317,6 @@ function Create_Contest_Page(){
     
 }
 
-
-function Flib_Status_Submision(URL, SubID){
-    $.ajax({
-        method: "POST",
-        cache: false,
-        url: URL ,
-        data: { SubmisionId: SubID },
-        success: function (data, status) {
-            // Done
-        },
-        error: function(xhr, status, error){
-            console.log(error);
-        }
-    });
-}
-function User_View_Page(){
-    /*
-     Show My Submision
-    */
-    var BtnToogleSubmision = $('.main-user-view .my-submision [data-target="flibShareSubmision"]');
-    
-    BtnToogleSubmision.on('click', function(){
-        var ToogleTempIcon = $(this).attr('class');
-        $(this).attr('class', $(this).attr('data-toogle'));
-        $(this).attr('data-toogle', ToogleTempIcon);
-        
-        var ParTd = $(this).parent();
-        var URL = ParTd.data('link');
-        var SubID = ParTd.data('id');
-        
-        Flib_Status_Submision(URL, SubID);
-        
-    });
-
-    
-    
-    
-}
 $(function(){
     
     'use strict';
@@ -394,9 +356,5 @@ $(function(){
     /* Start Create Contest */
     Create_Contest_Page();
     /* End Create Contest*/
-    
-    /* Start User View Page */
-    User_View_Page();
-    /* End User View Page */
     
 });
