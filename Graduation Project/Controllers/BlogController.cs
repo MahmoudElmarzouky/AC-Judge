@@ -57,6 +57,8 @@ namespace GraduationProject.Controllers.Blog
                 blogvote = blog.blogvote
                 , creationTime = blog.creationTime
                 , Comments = blog.Comments
+                ,UserBlogs=blog.userBlog,
+                CurrentUserId=user.UserId
                 , isOwner = IsOwner
             };
             return model;
@@ -153,7 +155,7 @@ namespace GraduationProject.Controllers.Blog
                     creationTime = blog.creationTime
                 };
                 blogs.Update(newBlog);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", new { id = model.blogId });
             }
             catch
             {
@@ -197,14 +199,35 @@ namespace GraduationProject.Controllers.Blog
             {
 
                 blogs.UpdateVote(model.blogId,user.UserId,1);
-                
-                return RedirectToAction(nameof(Index));
+
+                return RedirectToAction("Details", new { id = model.blogId });
             }
             catch
             {
                 return RedirectToAction(nameof(Index));
             }
         }
-        //------------
+        public ActionResult DownVote(int id)
+        {
+            var blog = blogs.Find(id);
+            return DownVote(blog);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DownVote(GraduationProject.Data.Models.Blog model)
+        {
+            try
+            {
+
+                blogs.UpdateVote(model.blogId, user.UserId, -1);
+
+                return RedirectToAction("Details", new { id = model.blogId });
+            }
+            catch
+            {
+                return RedirectToAction(nameof(Index));
+            }
+        }
+        //--------
     }
 }

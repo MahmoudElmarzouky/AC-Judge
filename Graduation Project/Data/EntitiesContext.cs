@@ -23,6 +23,8 @@ namespace GraduationProject.Data
         public DbSet<ProblemTag> ProblemTag { get; set; }
         public DbSet<Comment>Comments  { get; set; }
         public DbSet<Blog> Blogs { get; set; }
+      
+
         public DbSet<Handle> Handles { get; set; }
         public DbSet<atcoderStatistics> atcoderStatistics { get; set; }
         public DbSet<CodeforcesStatistics> CodeforcesStatistics { get; set; }
@@ -42,6 +44,7 @@ namespace GraduationProject.Data
             .HasKey(p => new { p.userId, p.blogId });
             modelBuilder.Entity<commentVote>()
             .HasKey(p => new { p.commentId, p.userId });
+
 
             modelBuilder.Entity<ProblemUser>().HasKey(pu => new
             {

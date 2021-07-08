@@ -33,6 +33,18 @@
 			</dt>
 			<dd>
 				@Html.DisplayFor(model => model.blogvote)
+				@{
+					var userblog = Model.UserBlogs.FirstOrDefault(u => u.userId == Model.CurrentUserId);
+					if (userblog != null && userblog.VoteValue != 0)
+					{
+                      // Error 
+					}
+				
+						<a asp-action="UpVote" asp-route-id="@Model.blogId" disable class="btn btn-default">Up</a>
+						<a asp-action="DownVote" asp-route-id="@Model.blogId" disable class="btn btn-default">Down</a>
+					
+				}
+
 			</dd>
 			<dt>
 				@Html.DisplayNameFor(model => model.creationTime)
@@ -40,14 +52,14 @@
 			<dd>
 				@Html.DisplayFor(model => model.creationTime)
 			</dd>
+
 			<dt>
 				Comments :     @Model.Comments.Count
 			</dt>
-			<h1></h1>
 			@foreach (var item in Model.Comments)
 			{
 
-				<h4>             @item.content</h4>
+				<h4> @item.content</h4>
 			}
 		</dl>
 	</div>

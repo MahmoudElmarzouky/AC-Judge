@@ -70,9 +70,27 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
         {
             var blog = Find(blogId);
             var userBlog = blog.userBlog.FirstOrDefault(User => User.userId == userId);
-            userBlog.VoteValue = typeVote;
-            blog.userBlog.Remove(blog.userBlog.FirstOrDefault(User => User.userId == userId));
-            blog.userBlog.Add(userBlog);
+
+            if (userBlog == null)
+            {
+                UserBlog newuserBlog = new UserBlog
+                {
+                    blogId = blogId,
+                    userId = userId,
+                    blogOwenr = false,
+                    VoteValue = typeVote,
+                    isFavourite = false
+                };
+                blog.userBlog.Add(newuserBlog);
+            }
+            else if (userBlog.VoteValue == 0)
+            {
+                userBlog.VoteValue = typeVote;
+            }
+            else {
+                return;
+            }
+            blog.blogvote = blog.blogvote + typeVote;
             Commit();
 
         }

@@ -44,10 +44,6 @@
 				<td>
 					@Html.DisplayFor(modelItem => item.blogOwner)
 				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.blogvote)
-					<a asp-action="UpVote" asp-route-id="@item.blogId">Up</a>
-				</td>
 				
 				<td>
 					@Html.DisplayFor(modelItem => item.creationTime)
