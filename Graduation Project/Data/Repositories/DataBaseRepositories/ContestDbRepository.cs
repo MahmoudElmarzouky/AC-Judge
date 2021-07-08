@@ -246,10 +246,10 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
                 LoadCurrentContest(contest); 
                 // see if user can see the contest 
                 var role = getUserContestRole(contest.contestId, userId);
-                if (role == null)
+                if (role == null && contest.contestVisabilty == "Private")
                     continue;
-                var isFav = role.isFavourite;
-                var isOwner = role.isOwner;
+                var isFav = role != null? role.isFavourite: false;
+                var isOwner = role != null? role.isOwner: false;
                 var hasSubmission = contest.Submissions.FirstOrDefault(u => u.userId == userId) != null ? true : false;
                 var isparticipant = Isparticipant(contest, userId); 
                 if (!contest.contestTitle.Contains(model.contestTitle))

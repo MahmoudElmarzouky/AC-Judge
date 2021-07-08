@@ -40,11 +40,8 @@ namespace GraduationProject.Controllers
         public ActionResult OpentContest(int id)
         {
             var currentuser = users.Find(id);
-            ContestFilter filter = new ContestFilter {
-            PrepeardBy= currentuser.UserName,
-            userId=user.UserId
-            };
-            return RedirectToAction("Filter", "Contest", new { model = filter });
+            TempData["PrepeardBy"] = currentuser.UserName;
+            return RedirectToAction("filter", "Contest");
         }
         // GET: UserController/Create
         public ActionResult Create()

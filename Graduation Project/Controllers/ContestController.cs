@@ -204,9 +204,10 @@ namespace GraduationProject.Controllers.Contest
                 return RedirectToAction("Filter", Filter);
             }
         }
-        public ActionResult Filter(string PrepeardBy, int userId)
+        public ActionResult Filter()
         {
-            return RedirectToAction("Filter",  new ContestFilter { PrepeardBy = PrepeardBy, userId = userId });
+            ContestFilter filter = new ContestFilter {PrepeardBy = (string)TempData["PrepeardBy"]};
+            return Filter(filter);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
