@@ -561,9 +561,29 @@ header .nav-main .navbar-brand span{
 .main-user-view .user-info .thumbnail .joined span{
     color: #555;
 }
+
 .main-user-view .user-info .thumbnail .type{
     font-size: 1.6rem;
     color: #000;
+}
+.main-user-view .my-submision .table{
+    font-size: 1.3rem;
+}
+.main-user-view .my-submision .table th{
+    vertical-align: middle !important;
+    white-space: nowrap;
+}
+.main-user-view .my-submision .table td{
+    vertical-align: middle !important;
+    line-height: 1.22222222;
+}
+.main-user-view .my-submision .table tbody tr td:last-child i{
+    font-size: 2.3rem;
+    color: green;
+    cursor: pointer;
+}
+.main-user-view .my-submision .table tbody tr [data-open="openMySubmision"]{
+    cursor: pointer;
 }
 
 
