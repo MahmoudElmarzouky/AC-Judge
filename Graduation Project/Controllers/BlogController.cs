@@ -229,5 +229,26 @@ namespace GraduationProject.Controllers.Blog
             }
         }
         //--------
+        public ActionResult Favourite(int id)
+        {
+            var blog = blogs.Find(id);
+            return Favourite(blog);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Favourite(GraduationProject.Data.Models.Blog model)
+        {
+            try
+            {
+
+                blogs.UpdateFavourite(model.blogId, user.UserId);
+
+                return RedirectToAction("Details", new { id = model.blogId });
+            }
+            catch
+            {
+                return RedirectToAction(nameof(Index));
+            }
+        }
     }
 }

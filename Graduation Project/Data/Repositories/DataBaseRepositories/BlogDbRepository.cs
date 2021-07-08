@@ -94,5 +94,31 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             Commit();
 
         }
+        public void UpdateFavourite(int blogId, int userId) {
+              var blog = Find(blogId);
+            var userBlog = blog.userBlog.FirstOrDefault(User => User.userId == userId);
+
+            if (userBlog == null)
+            {
+                UserBlog newuserBlog = new UserBlog
+                {
+                    blogId = blogId,
+                    userId = userId,
+                    blogOwenr = false,
+                    VoteValue = 0,
+                    isFavourite = true
+                };
+                blog.userBlog.Add(newuserBlog);
+            }
+            else if (userBlog.isFavourite == false)
+            {
+                userBlog.isFavourite = true;
+            }
+            else if (userBlog.isFavourite == true)
+            {
+                userBlog.isFavourite = false;
+            }
+            Commit();
+        }
     }
 }
