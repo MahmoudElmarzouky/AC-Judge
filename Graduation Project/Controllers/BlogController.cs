@@ -58,7 +58,8 @@ namespace GraduationProject.Controllers.Blog
                 , creationTime = blog.creationTime
                 , Comments = blog.Comments
                 ,UserBlogs=blog.userBlog,
-                CurrentUserId=user.UserId
+                CurrentUserId=user.UserId,
+                GroupId=blog.groupId
                 , isOwner = IsOwner
             };
             return model;
@@ -79,7 +80,7 @@ namespace GraduationProject.Controllers.Blog
         }
 
         // GET: HomeController/Create
-        public ActionResult Create(int id)
+        public ActionResult Create(int? id)
         {
             TempData["GroupID"] = id;
             return View();
@@ -92,7 +93,7 @@ namespace GraduationProject.Controllers.Blog
         {
             try
             {
-                int GrpupID = (int)TempData["GroupID"];
+                int? GrpupID = (int?)TempData["GroupID"];
                 var newBlog = new GraduationProject.Data.Models.Blog
                 {
                     blogtitle = model.blogtitle,
@@ -108,7 +109,7 @@ namespace GraduationProject.Controllers.Blog
                 var userBlog= CreateRelation(userId, blogId);
                 newBlog.userBlog.Add(userBlog);
                 blogs.Update(newBlog);
-                if(GrpupID==3)
+                if(GrpupID==null)
                 return RedirectToAction(nameof(Index));
                 else
                 return RedirectToAction("Details", "Group", new { id = GrpupID });

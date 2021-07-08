@@ -23,9 +23,9 @@ namespace GraduationProject.Data.Models
         public virtual ICollection<UserBlog> userBlog { get; set; }
         public virtual ICollection<BlogTag> blogTag { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
-        public int groupId { get; set; } 
-        public Group group { get; set; }
-     
+        public int? groupId { get; set; } 
+        public Group? group { get; set; }
+
 
 
     }
