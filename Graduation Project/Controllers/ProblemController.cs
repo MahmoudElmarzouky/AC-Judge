@@ -57,7 +57,7 @@ namespace GraduationProject.Controllers.problems
         }
         public ActionResult Status()
         {
-            var submissions = SubmissionRepository.GetSubmissionSpecific(false);
+            var submissions = SubmissionRepository.GetSubmissionSpecific(false,1);
             var list = GetAllStatus(submissions);
             return View(list);
         }
@@ -83,7 +83,7 @@ namespace GraduationProject.Controllers.problems
             var ProblemSource = Request.Form["ProblemSource"]=="All"?"":(string)Request.Form["ProblemSource"];
             var ProblemResult = Request.Form["ProblemResult"]=="All"?"":(string)Request.Form["ProblemResult"];
             var ProblemLang = Request.Form["ProblemLang"]=="All"?"":(string)Request.Form["ProblemLang"];
-            var submissions = SubmissionRepository.GetSubmissionSpecific(false);
+            var submissions = SubmissionRepository.GetSubmissionSpecific(false,1);
             IEnumerable<ViewStatusModel> list = GetAllStatus(submissions);
             IEnumerable<ViewStatusModel> model = list.Where(
                 s => 
@@ -172,7 +172,7 @@ namespace GraduationProject.Controllers.problems
                         {
                             RunID = item.SubmissionId,
                             UserId = item.user.UserId,
-                            UserName = item.user.FirstName,
+                            UserName = item.user.UserName,
                             ProblemId = item.problem.ProblemId,
                             OnlineJudge = item.problem.ProblemSource,
                             ProblemSourcesId = item.problem.problemSourceId,
