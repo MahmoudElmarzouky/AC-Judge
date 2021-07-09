@@ -15,11 +15,12 @@ namespace GraduationProject.ViewModels
             UserGroup = new HashSet<UserGroup>();
             Blogs = new HashSet<Blog>();
         }
+        
         public int GroupId { get; set; }
         public string GroupTitle { get; set; }
         public string GroupDescription { get; set; }
         public int NumberOfMembers { get; set; }
-       
+        
         public DateTime creationTime { get; set; }
         public int NumberOfUpCommingContests {
             get {
@@ -39,12 +40,13 @@ namespace GraduationProject.ViewModels
             set { } 
         }
         public string GroupStatus { get; set; } // Public / Private 
-        public string UserRole { get; set; }
-        public Boolean IsFavourite { get; set; }
+        public int CurrentUserId { get; set; }
+        public string UserRole { get; set; } // current user, who open the group
+        public Boolean IsFavourite { get; set; } // for the current User 
         public ICollection<Contest> Contests { get; set; }
         public ICollection<UserGroup> UserGroup { get; set; }
         public ICollection<Blog> Blogs { get; set; }
-        public int CurrentUserId { get; set; }
+        
         public string UserStatus { get 
             {
                 if (UserRole == "Creator")
