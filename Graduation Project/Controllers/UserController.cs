@@ -1,6 +1,8 @@
 ﻿using GraduationProject.Data.Models;
 using GraduationProject.Data.Repositories.Interfaces;
 using GraduationProject.ViewModels.ContestViewsModel;
+using GraduationProject.ViewModels.ProblemViewsModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,15 +16,28 @@ namespace GraduationProject.Controllers
     public class UserController : Controller
     {
         private readonly IUserRepository<User> users;
+        private readonly ISubmissionRepository<Submission> SubmissionRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly Boolean login;
         private User user;
-        public UserController(IUserRepository<User>users, IHttpContextAccessor httpContextAccessor)
+        public UserController(ISubmissionRepository<Submission> _SubmissionRepository, IUserRepository<User> users, IHttpContextAccessor httpContextAccessor)
         {
-            this.users = users;
             _httpContextAccessor = httpContextAccessor;
-            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            this.users = users;
+            var flag = _httpContextAccessor.HttpContext.User.Identity.IsAuthenticated;
+            if (flag == true)
+            {
+                SubmissionRepository = _SubmissionRepository;
+                login = true;
+                _httpContextAccessor = httpContextAccessor;
+                var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                user = users.Find(userId);
+            }
+            else
+            {
+                login = false;
+            }
 
-            user = users.Find(userId);
         }
 
         // GET: UserController
@@ -31,15 +46,15 @@ namespace GraduationProject.Controllers
             return View();
         }
 
-        // GET: UserController/Details/5
         [Route("User/Details/{id}")]
         public ActionResult Details(int id)
         {
             var currentuser = users.Find(id);
-            TempData["userIdentity"] = user.UserIdentityId;
+            if (login == true)
+                TempData["userIdentity"] = user.UserIdentityId;
             return View(currentuser);
         }
-
+        [Authorize]
         [Route("User/MyProfile")]
         public ActionResult Details()
         {
@@ -58,8 +73,48 @@ namespace GraduationProject.Controllers
             TempData["BlogsByUser"] = "UserBlogs";
             return RedirectToAction("Index", "Blog");
         }
-            // GET: UserController/Create
-            public ActionResult Create()
+        [Authorize]
+        public ActionResult MySubmission(int id)
+        {
+            ViewBag.USER = user;
+            IList<ViewStatusModel> list = GetAllSubmission(id);
+            return View(list);
+        }
+        public ActionResult FliBShare(int Subid)
+        {
+            Submission submission = SubmissionRepository.Find(Subid);
+            submission.Visable ^= true;
+            SubmissionRepository.Update(submission);
+            return RedirectToAction("MySubmission", new { id = user.UserId });
+        }
+        public IList<ViewStatusModel> GetAllSubmission(int id)
+        {
+            var allSubmission = SubmissionRepository.FindSubmissionUser(id);
+            IList<ViewStatusModel> list = new List<ViewStatusModel>();
+            foreach (var item in allSubmission)
+            {
+                var tmp = new ViewStatusModel
+                {
+                    RunID = item.SubmissionId,
+                    UserId = item.user.UserId,
+                    UserName = item.user.FirstName,
+                    ProblemId = item.problem.ProblemId,
+                    OnlineJudge = item.problem.ProblemSource,
+                    ProblemSourcesId = item.problem.problemSourceId,
+                    Verdict = item.Verdict,
+                    TimeConsumed = item.TimeConsumeMillis,
+                    MemoryConsumed = item.MemoryConsumeBytes,
+                    Language = item.ProgrammingLanguage,
+                    SubmitTime = item.CreationTime
+                };
+                if (item.Visable == true) tmp.Visiable = true;
+                else item.Visable = false;
+                list.Add(tmp);
+            }
+            return list;
+        }
+        // GET: UserController/Create
+        public ActionResult Create()
         {
             return View();
         }

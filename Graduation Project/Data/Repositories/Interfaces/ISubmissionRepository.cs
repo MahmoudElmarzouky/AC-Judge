@@ -13,6 +13,7 @@ namespace GraduationProject.Data.Repositories.Interfaces
         void Remove(int Id);
         void Commit();
         T Find(int Id);
+        IList<T> FindSubmissionUser(int Id);
         IList<T> GetSubmissionSpecific(bool IsPublic, int Problemtype);
     }
 }

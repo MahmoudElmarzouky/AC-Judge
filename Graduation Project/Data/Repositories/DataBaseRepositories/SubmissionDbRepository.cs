@@ -68,5 +68,14 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
                .Include(p => p.user)
                .Where(s => s.InContest==IsPublic && s.problem.problemType== Problemtype).ToList();
         }
+
+        public IList<Submission> FindSubmissionUser(int Id)
+        {
+            return dbcontext.Submissions
+                .Include(p => p.problem)
+                .Include(p => p.user)
+                .Where(p=> p.userId==Id)
+                .ToList();
+        }
     }
 }
