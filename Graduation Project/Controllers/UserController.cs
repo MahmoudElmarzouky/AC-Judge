@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace GraduationProject.Controllers
 {
-    [Authorize]
+    
     public class UserController : Controller
     {
         private readonly IUserRepository<User> users;
@@ -77,17 +77,27 @@ namespace GraduationProject.Controllers
         [Authorize]
         public ActionResult MySubmission(int id)
         {
-            ViewBag.USER = user;
-            IList<ViewStatusModel> list = GetAllSubmission(id);
-            return View(list);
+            if (user.UserId == id)
+            {
+                ViewBag.USER = user;
+                IList<ViewStatusModel> list = GetAllSubmission(id);
+                return View(list);
+            }
+            else
+            {
+                return View("~/Views/Shared/ErrorLink.cshtml");
+            }
         }
         public void FlibShare(int SubmisionId)
         {
             Submission submission = SubmissionRepository.Find(SubmisionId);
-            submission.Visable ^= true;
-            SubmissionRepository.Update(submission);
+            if (submission!=null && login && user.UserId==submission.userId)
+            {
+                submission.Visable ^= true;
+                SubmissionRepository.Update(submission);
+            }
         }
-        public IList<ViewStatusModel> GetAllSubmission(int id)
+        private IList<ViewStatusModel> GetAllSubmission(int id)
         {
             var allSubmission = SubmissionRepository.FindSubmissionUser(id);
             IList<ViewStatusModel> list = new List<ViewStatusModel>();
