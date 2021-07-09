@@ -73,26 +73,10 @@
                                                     <th class="text-center">Online Judge</th>
                                                     <th class="text-center">Poblem Name</th>
                                                     <th class="text-center">Alias</th>
-                                                    <th class="text-center"><i class="fas fa-minus text-primary"></i></th>
+                                                    <th class="text-center"><i class="fas fa-plus text-primary"></i></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>A</td>
-                                                    <td class="form-group">
-                                                        <select class="form-control" asp-for="@Model.problems[0].PlatForm">
-                                                            <option value="Codeforces">Codeforces</option>
-                                                            <option value="Atcoder">Atcoder</option>
-                                                        </select>
-                                                    </td>
-                                                    <td class="form-group">
-                                                        <input asp-for="@Model.problems[0].problemId" class="form-control" type="text" placeholder="CF:123A" />
-                                                    </td>
-                                                    <td class="form-group">
-                                                        <input asp-for="@Model.problems[0].Alias" class="form-control" type="text" placeholder="" />
-                                                    </td>
-                                                    <td><i class="fas fa-check text-success" data-target="acceptproblem"></i></td>
-                                                </tr>
                                             </tbody>
                                         </table>
                                         <div asp-validation-for="problemWrong" class="alert alert-danger"></div>
@@ -168,30 +152,10 @@
                                                     <th class="text-center">Online Judge</th>
                                                     <th class="text-center">Poblem Name</th>
                                                     <th class="text-center">Alias</th>
-                                                    <th class="text-center"><i class="fas fa-minus text-primary"></i></th>
+                                                    <th class="text-center"><i class="fas fa-plus text-primary"></i></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>A</td>
-                                                    <td class="form-group">
-                                                        <!--name = "problems[0].PlatForm"-->
-                                                        <select class="form-control" asp-for="@Model.problems[0].PlatForm">
-                                                            <option value="Codeforces">Codeforces</option>
-                                                            <option value="Atcoder">Atcoder</option>
-                                                        </select>
-                                                    </td>
-                                                    <td class="form-group">
-                                                        <!-- name= "problems[0].problemId" -->
-                                                        <input asp-for="@Model.problems[0].problemId" class="form-control" type="text" placeholder="CF:123A" />
-                                                    </td>
-                                                    <td class="form-group">
-                                                        <!--name ="problems[0].Alias"-->
-                                                        <input asp-for="@Model.problems[0].Alias" class="form-control" type="text" placeholder="" />
-                                                    </td>
-                                                    <td><i class="fas fa-check text-success" data-target="acceptproblem"></i></td>
-                                                </tr>
-
                                             </tbody>
                                         </table>
                                         <div asp-validation-for="problemWrong" class="alert alert-danger"></div>
@@ -214,3 +178,122 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<script language="javascript" type="text/javascript">
+
+    var CreateFormClassic = '.create-contest-page .contest-classical';
+    var CreateFormGroup   = '.create-contest-page .contest-group';
+    
+    Control_Problem_Table(CreateFormClassic);
+    Control_Problem_Table(CreateFormGroup);
+    
+    function Control_Problem_Table(MainClass){
+        
+        var MainTableObj    = $(MainClass + ' .table');
+        var AddProblemPlus  = MainClass + ' .table thead i.fa-plus';
+        var AddProblemMinus = MainClass + ' .table thead i.fa-minus';
+        var DoneProblem     = MainClass + ' .table i.fa-check';
+        var RemProblem      = MainClass + ' .table i.fa-times';
+        var ID = 65, ProblemNumber = 0;
+        
+        
+        $(document).on('click', DoneProblem, function () {
+            var CurRow = $(this).parent().parent();
+            var ParCurRow = CurRow.parent();
+            
+            $(AddProblemMinus).removeClass('fa-minus').addClass('fa-plus');
+    
+            // Work In Clicked Element
+            $(this).removeClass('fa-check text-success').addClass('fa-times text-danger');
+         
+            var AllInputFiled = CurRow.find("input, select");
+            AllInputFiled.each(function(){
+               $(this).attr('disabled', 'disabled');
+            });
+            
+        });
+        
+        $(document).on('click', AddProblemPlus, function () {
+            if(String.fromCharCode(ID) === 'Z')
+                return;
+            /*
+            @{
+                Model.Books.Add(new Book());
+            }*/
+            console.log("Yes");
+            MainTableObj.children('tbody').append(Create_TableRow_Poblem(ID, ProblemNumber));
+            ++ID,++ProblemNumber;
+            $(this).removeClass('fa-plus').addClass('fa-minus');
+        });
+        
+        $(document).on('click', RemProblem, function () {
+            var CurRow = $(this).parent().parent();
+         
+            var AllNextRow = CurRow.nextAll();
+            AllNextRow.each(function(){
+                var Temp = $(this).children('td:first-child');
+                Temp.text(String.fromCharCode(Temp.text().charCodeAt(0) - 1));
+            });
+            CurRow.remove();
+            --ID,--ProblemNumber;
+        });
+        
+        // Submit Button
+        var SubmitBtn = $(MainClass + ' form [type="submit"]');
+        SubmitBtn.on('click', function(e){
+            var OpenProblemLen  = $(DoneProblem).length;
+            var CountProblemLen = MainTableObj.children('tbody').children().length;
+            
+            if(ProblemNumber == 0 || CountProblemLen == 0){
+                alert("Please Add At Least One Problem !");
+                e.preventDefault();
+            }else if(OpenProblemLen > 0){
+                alert("Please Close Last Problem Check !");
+                e.preventDefault();
+            }
+            
+        });
+    }
+    
+    function Create_TableRow_Poblem(ID, ProblemNumber){
+        var TR = $('<tr />');
+        
+        var TDProblemChar = '<td>' + String.fromCharCode(ID) + '</td>';
+        TR.append(TDProblemChar);
+        
+        
+        function BuildNameAndId(ProblemNumber, Type){
+            return 'id="problems_' + ProblemNumber + '__' + Type + '" name="problems[' + ProblemNumber + '].' + Type + '"';
+        }
+        
+        //name = "problems[0].PlatForm"
+        var TDOnlineJudge = '<td class="form-group">'
+                            + '<select class="form-control" ' + BuildNameAndId(ProblemNumber, 'PlatForm') + ' >'
+                            + '<option value="Codeforces">Codeforces</option>'
+                            + '<option value="Atcoder">Atcoder</option>'
+                            + '</select>'
+                            + '</td>'
+        TR.append(TDOnlineJudge);
+        
+        //name= "problems[0].problemId"
+        var TDProblemName = '<td class="form-group">'
+                            + '<input class="form-control" ' + BuildNameAndId(ProblemNumber, 'problemId') + ' type="text" placeholder="CF:123A" />'
+                            + '</td>';
+        TR.append(TDProblemName);
+        
+        //name ="problems[0].Alias"
+        var TDProblemAlias = '<td class="form-group">'
+                            + '<input class="form-control" ' + BuildNameAndId(ProblemNumber, 'Alias') + ' type="text" placeholder="New Problem Name" />'
+                            + '</td>';
+        TR.append(TDProblemAlias);
+        
+        var TDProblemAlias = '<td class="form-group">'
+                            + '<i class="fas fa-check text-success" data-target="acceptproblem"></i>'
+                            + '</td>';
+        TR.append(TDProblemAlias);
+
+        return TR;
+    }
+
+</script>
+
