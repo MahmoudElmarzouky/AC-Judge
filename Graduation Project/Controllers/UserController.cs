@@ -80,12 +80,11 @@ namespace GraduationProject.Controllers
             IList<ViewStatusModel> list = GetAllSubmission(id);
             return View(list);
         }
-        public ActionResult FliBShare(int Subid)
+        public void FlibShare(int SubmisionId)
         {
-            Submission submission = SubmissionRepository.Find(Subid);
+            Submission submission = SubmissionRepository.Find(SubmisionId);
             submission.Visable ^= true;
             SubmissionRepository.Update(submission);
-            return RedirectToAction("MySubmission", new { id = user.UserId });
         }
         public IList<ViewStatusModel> GetAllSubmission(int id)
         {
