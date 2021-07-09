@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace GraduationProject.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IUserRepository<User> users;

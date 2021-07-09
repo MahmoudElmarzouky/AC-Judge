@@ -148,6 +148,10 @@ namespace GraduationProject.Controllers.Blog
         // GET: HomeController/Edit/5
         public ActionResult Edit(int id)
         {
+            if (!CanAccessTheBlog(id, user.UserId))
+            {
+                return RedirectToAction(nameof(Index));
+            }
             var blog = blogs.Find(id);
             return View(blog);
         }
@@ -159,6 +163,10 @@ namespace GraduationProject.Controllers.Blog
         {
             try
             {
+                if (!CanAccessTheBlog(id, user.UserId))
+                {
+                    return RedirectToAction(nameof(Index));
+                }
                 var blog = blogs.Find(model.blogId);
                 var newBlog = new GraduationProject.Data.Models.Blog
                 {
@@ -183,6 +191,9 @@ namespace GraduationProject.Controllers.Blog
         // GET: HomeController/Delete/5
         public ActionResult Delete(int id)
         {
+            if (!CanAccessTheBlog(id, user.UserId)) { 
+                return RedirectToAction(nameof(Index));
+            }
             var blog = blogs.Find(id);
             return View(blog);
         }
@@ -194,6 +205,10 @@ namespace GraduationProject.Controllers.Blog
         {
             try
             {
+                if (!CanAccessTheBlog(id, user.UserId))
+                {
+                    return RedirectToAction(nameof(Index));
+                }
                 blogs.Remove(model.blogId);
                 return RedirectToAction(nameof(Index));
             }
@@ -202,7 +217,12 @@ namespace GraduationProject.Controllers.Blog
                 return View();
             }
         }
-        //------------------------
+        private Boolean CanAccessTheBlog(int blogId, int userId)
+        {
+            var c = blogs.Find(blogId);
+            var rel = c.userBlog.FirstOrDefault(u => u.userId == userId);
+            return  rel != null;
+        }
         public ActionResult UpVote(int id)
         {
             var blog = blogs.Find(id);
