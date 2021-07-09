@@ -24,9 +24,10 @@ namespace GraduationProject.Data.Models
 
         public int problemType { get; set; } //interview ==1 or contest==2
 
-        public string problemText { get; set; }
+        public string ProblemHtml { get; set; }
 
         public int? rating { get; set; }
+
         public virtual ICollection<ProblemTag> ProblemTag { get; set; }
         public virtual ICollection<Submission> Submissions { get; set; }
         public virtual ICollection<ProblemUser> ProblemUsers { get; set; }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GraduationProject.Data.Models;
+using GraduationProject.Data.API;
 using GraduationProject.Data.Repositories.IProblemRepository;
 using Microsoft.EntityFrameworkCore;
 
@@ -86,7 +87,25 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
         {
             // need to change -> Mohamed Sameh Add this -- 
             // Example : Codeforces 123A
-            return dbcontext.Problems.FirstOrDefault(u=> u.problemSourceId==ProblemSourceId && u.ProblemSource==OnlineJudge);
+            var problem = dbcontext.Problems.FirstOrDefault(u => u.problemSourceId == ProblemSourceId && u.ProblemSource == OnlineJudge);
+            if (problem == null)
+            {
+                var p = APi.GetProblem(OnlineJudge, ProblemSourceId);
+
+                if (p == null) return null;
+                Problem newproblem = new Problem()
+                {
+                    ProblemSource = p.source,
+                    problemSourceId = p.problemID,
+                    problemTitle = p.title,
+                    problemType = 1,
+                    ProblemHtml = p.problem,
+                    rating = p.rate
+                };
+                return Add(newproblem);
+                
+            }
+            return problem;
         }
     }
 }
