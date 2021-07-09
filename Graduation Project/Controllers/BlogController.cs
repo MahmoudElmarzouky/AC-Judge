@@ -35,11 +35,27 @@ namespace GraduationProject.Controllers.Blog
         // GET: HomeController
         public ActionResult Index()
         {
+            if (TempData["BlogsByUser"]!=null && TempData["BlogsByUser"].ToString()=="UserBlogs") {
+                TempData["BlogsUser"] = "blogUser";
+                return View(GetBlogsByUser());
+            }
             var list = new List<ViewBlogModel>();
             foreach (var item in blogs.List())
                 list.Add(getViewModelFromBlog(item));
 
             return View(list);
+        }
+        public IList<ViewBlogModel> GetBlogsByUser()
+        {
+            var list = new List<ViewBlogModel>();
+            var blog = blogs.List();
+            foreach (var item in blog) {
+                var userblog = item.userBlog.FirstOrDefault(userBlog=> userBlog.userId==user.UserId&&
+                userBlog.blogId==item.blogId&&userBlog.blogOwenr==true);
+                if (userblog != null)
+                    list.Add(getViewModelFromBlog(item));
+            }
+            return list;
         }
         private ViewBlogModel getViewModelFromBlog(GraduationProject.Data.Models.Blog blog)
         {

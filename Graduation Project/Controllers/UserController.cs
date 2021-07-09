@@ -32,20 +32,34 @@ namespace GraduationProject.Controllers
         }
 
         // GET: UserController/Details/5
+        [Route("User/Details/{id}")]
         public ActionResult Details(int id)
         {
             var currentuser = users.Find(id);
             TempData["userIdentity"] = user.UserIdentityId;
             return View(currentuser);
         }
-        public ActionResult OpentContest(int id)
+
+        [Route("User/MyProfile")]
+        public ActionResult Details()
+        {
+            var currentuser = users.Find(user.UserId);
+            TempData["userIdentity"] = user.UserIdentityId;
+            return View(currentuser);
+        }
+        public ActionResult OpenContest(int id)
         {
             var currentuser = users.Find(id);
             TempData["PrepeardBy"] = currentuser.UserName;
             return RedirectToAction("filter", "Contest");
         }
-        // GET: UserController/Create
-        public ActionResult Create()
+        public ActionResult OpenBlog()
+        {
+            TempData["BlogsByUser"] = "UserBlogs";
+            return RedirectToAction("Index", "Blog");
+        }
+            // GET: UserController/Create
+            public ActionResult Create()
         {
             return View();
         }

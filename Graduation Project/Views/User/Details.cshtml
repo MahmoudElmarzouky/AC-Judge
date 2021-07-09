@@ -34,37 +34,45 @@
 	    </section>
 	    <section class="col-md-9">
 		<nav class="navbar navbar-default">
-		    <div class="container-fluid">
-			
-			<div class="navbar-header">
-			  <a class="navbar-brand" href="#">Profile</a>
-			</div>
-			@{
-				string userIdentity = (string)TempData["userIdentity"];
-			<ul class="nav navbar-nav">
-				<li><a href="#">Submission</a></li>
-				<li><a asp-action="OpentContest" asp-route-id="@Model.UserId">Contest</a></li>
-				<li><a href="#">Blog</a></li>
-				@if (userIdentity == Model.UserIdentityId)
-				{
-				<li><a href="#">Favorite</a></li>
-				}
-			</ul>	
-			  if (userIdentity == Model.UserIdentityId)
+			<div class="container-fluid">
+
+				@{
+					string userIdentity = (string)TempData["userIdentity"];
+					if (userIdentity == Model.UserIdentityId)
 					{
-				<ul class="nav navbar-nav navbar-right">
-			    <li class="dropdown">
-			      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
-			      <ul class="dropdown-menu">
-				<li><a href="#">General Setting</a></li>
-				<li><a href="#">Edit Email</a></li>
-				<li><a href="#">Change Password</a></li>
-			      </ul>
-			    </li>
-			</ul>}
-			}
-			
-		    </div>
+						<div class="navbar-header">
+							<a class="navbar-brand" href="#">Profile</a>
+						</div>
+						<ul class="nav navbar-nav">
+							<li><a href="#">Submission</a></li>
+							<li><a asp-action="OpenContest" asp-route-id="@Model.UserId">Contest</a></li>
+							<li><a asp-action="OpenBlog">Blog</a></li>
+
+							<li><a href="#">Favorite</a></li>
+
+						</ul>
+
+						<ul class="nav navbar-nav navbar-right">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
+								<ul class="dropdown-menu">
+									<li><a href="#">General Setting</a></li>
+									<li><a href="#">Edit Email</a></li>
+									<li><a href="#">Change Password</a></li>
+								</ul>
+							</li>
+						</ul>
+						}
+						else {
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">@Model.UserName</a>
+			</div>
+					}
+
+					}
+
+
+			</div>
 		</nav>
 		<section class="user-statistics">
 		    <h1 class="text-center">user statistics</h1>
