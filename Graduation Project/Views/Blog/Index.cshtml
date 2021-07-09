@@ -35,7 +35,7 @@
 		<tbody>
 			@foreach (var item in Model)
 			{
-				@if (item.GroupId == null)
+				@if ((TempData["BlogsUser"]!=null&& TempData["BlogsUser"].ToString()=="blogUser")|| item.GroupId == null)
 				{
 			<tr>
 				<td>
