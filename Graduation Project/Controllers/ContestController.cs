@@ -97,7 +97,8 @@ namespace GraduationProject.Controllers.Contest
             if (!CanAccessTheContest(id, user.UserId))
                 return RedirectToAction("Index");
             var contest = contests.Find(id); 
-            return View(contest);
+
+            return View(getCreateContestModel(contest));
         }
 
         // POST: HomeController/Edit/5
@@ -351,6 +352,23 @@ namespace GraduationProject.Controllers.Contest
                 ContestProblems = Addedproblems
                 // Password 
                 // problems 
+            };
+        }
+        private CreateContestModel getCreateContestModel(GraduationProject.Data.Models.Contest contest)
+        {
+            var problems = new List<ProblemData>();
+            foreach(var cp in contest.ContestProblems)
+            {
+                problems.Add(new ProblemData { PlatForm = cp.PlatForm, Alias = cp.Alias, problemId = cp.ProblemSourceId }); 
+            }
+            return new CreateContestModel
+            {
+                Visable = contest.contestVisabilty,
+                contestTitle = contest.contestTitle,
+                Duration = contest.contestDuration,
+                groupId = contest.groupId == null? -1: (int)contest.groupId,
+                problems = problems, 
+                StartTime = contest.contestStartTime
             };
         }
 

@@ -1,64 +1,115 @@
-﻿@model GraduationProject.Data.Models.Contest
+﻿@model GraduationProject.ViewModels.ContestViewsModel.CreateContestModel
 
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
-
-<h4>Contest</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="@Model.contestId" />
-            <input type="hidden" asp-for="@Model.groupId"/>
-            <div class="form-group">
-                <label asp-for="contestTitle" class="control-label"></label>
-                <input asp-for="@Model.contestTitle" class="form-control" />
-                <span asp-validation-for="contestTitle" class="text-danger"></span>
+<section class="create-contest-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2 jumbotron">
+                <h1 class="static-main-title">Edit Contest</h1>
+                    <div class="carousel-inner" role="listbox">
+                        <div class="item contest-classical active">
+                                <form class="form-horizontal" asp-action="Edit">
+                                    <input hidden asp-for="@Model.CreateFromGroup" value="0" />
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-2">Contest Title</label>
+                                        <div class="col-md-10">
+                                            <input asp-for="@Model.contestTitle" class="form-control" placeholder="Contest Title Show Pepole" />
+                                            <div asp-validation-for="@Model.contestTitle" class="alert alert-danger"></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-2">Password</label>
+                                        <div class="col-md-10">
+                                            <input type="password" asp-for="@Model.Password" class="form-control" placeholder="Password To Member Register" />
+                                            <div asp-validation-for="@Model.Password" class="alert alert-danger"></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-2">Begin Time</label>
+                                        <div class="col-md-10">
+                                            <input asp-for="@Model.StartTime" class="form-control" />
+                                            <div asp-validation-for="@Model.StartTime" class="alert alert-danger"></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-2">Duration</label>
+                                        <div class="col-md-10">
+                                            <input asp-for="@Model.Duration" class="form-control" />
+                                            <div asp-validation-for="@Model.Duration" class="alert alert-danger"></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-2">Visibility</label>
+                                        <div class="col-md-10 radio-btn-change">
+                                            <div class="btn-group">
+                                                <label class="btn btn-default active">
+                                                    <input type="radio" asp-for="@Model.Visable" value="1" checked />
+                                                    Public
+                                                </label>
+                                                <label class="btn btn-default">
+                                                    <input type="radio" asp-for="@Model.Visable" value="0" />
+                                                    Private
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-2">Problemset</label>
+                                        <div class="col-md-10 table-responsive">
+                                            <table class="table text-center">
+                                                <thead>
+                                                    <tr class="table-active">
+                                                        <th class="text-center">#</th>
+                                                        <th class="text-center">Online Judge</th>
+                                                        <th class="text-center">Poblem Name</th>
+                                                        <th class="text-center">Alias</th>
+                                                        <th class="text-center"><i class="fas fa-plus text-primary"></i></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @for (int i = 0; i < Model.problems.Count; i++)
+                                                    {
+                                                        <tr>
+                                                            <td>@Convert.ToChar('A' + i)</td>
+                                                            <td class="form-group">
+                                                                <select class="form-control" asp-for="@Model.problems[i].PlatForm" data-target="PlatForm">
+                                                                    <option value="CodeForces">Codeforces</option>
+                                                                    <option value="Atcoder">Atcoder</option>
+                                                                </select>
+                                                            </td>
+                                                            <td class="form-group">
+                                                                <input asp-for="@Model.problems[i].problemId" class="form-control" type="text" placeholder="CF:123A" data-target="problemId" />
+                                                            </td>
+                                                            <td class="form-group">
+                                                                <input asp-for="@Model.problems[i].Alias" class="form-control" type="text" placeholder="" data-target="Alias" />
+                                                            </td>
+                                                            <td><i class="fas fa-check text-success" data-target="acceptproblem"></i></td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                            <div asp-validation-for="problemWrong" class="alert alert-danger"></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-offset-2 col-md-10">
+                                            <button type="submit" class="btn btn-success"><i class="fas fa-plus"></i> Edit Contest</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                    </div>
             </div>
-            <div class="form-group">
-                <label asp-for="contestStartTime" class="control-label"></label>
-                <input asp-for="@Model.contestStartTime" class="form-control" />
-                <span asp-validation-for="contestStartTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="contestDuration" class="control-label"></label>
-                <input asp-for="@Model.contestDuration" class="form-control" />
-                <span asp-validation-for="contestDuration" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="creationTime" class="control-label"></label>
-                <input asp-for="@Model.creationTime" class="form-control" />
-                <span asp-validation-for="creationTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="contestVisabilty" class="control-label"></label>
-                <input asp-for="@Model.contestVisabilty" class="form-control" />
-                <span asp-validation-for="contestVisabilty" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="contestStatus" class="control-label"></label>
-                <input asp-for="@Model.contestStatus" class="form-control" />
-                <span asp-validation-for="contestStatus" class="text-danger"></span>
-            </div>
-            
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </form>
     </div>
-</div>
-@if (Model.groupId != null)
-{
-<div>
-    <a asp-controller="Group" asp-action="Details" asp-route-id="@Model.groupId">Back to Group</a>
-</div>
-}
+    </div>
+</section>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
 }
+
