@@ -256,8 +256,7 @@ function Insert_Problem_Table_Create_Contest(MainClass) {
 
         AllInputProblemId.each(function (idx) {
             var str = "problems[" + idx + "]." + ($(AllInputProblemId[idx]).data('target'));
-            $(AllInputProblemId[idx]).attr('name', str);
-            $(AllInputProblemId[idx]).removeAttr('disabled');
+            $(AllInputProblemId[idx]).removeAttr('disabled').attr('name', str);
 
         });
 
@@ -265,20 +264,18 @@ function Insert_Problem_Table_Create_Contest(MainClass) {
 
         AllSelectBox.each(function (idx) {
             var str = "problems[" + idx + "]." + ($(AllSelectBox[idx]).data('target'));
-            $(AllSelectBox[idx]).attr('name', str);
-            $(AllSelectBox[idx]).removeAttr('disabled');
+            $(AllSelectBox[idx]).removeAttr('disabled').attr('name', str);
         });
 
         let AllInputAlias = $(MainClass + ' [data-target="Alias"]');
 
         AllInputAlias.each(function (idx) {
             var str = "problems[" + idx + "]." + ($(AllInputAlias[idx]).data('target'));
-            $(AllInputAlias[idx]).attr('name', str);
-            $(AllInputAlias[idx]).removeAttr('disabled');
+            $(AllInputAlias[idx]).removeAttr('disabled').attr('name', str);
 
         });
+        
     });
-
 
 }
 
