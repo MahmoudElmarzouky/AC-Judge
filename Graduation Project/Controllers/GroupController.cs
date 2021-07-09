@@ -42,8 +42,6 @@ namespace GraduationProject.Controllers.Group
                 if ((item.Visable == true) || (rel != null))
                 list.Add(getViewModelFromGroup(item));
             }
-                
-
             return View(list);
         }
         public ActionResult MyGroups()
@@ -91,9 +89,19 @@ namespace GraduationProject.Controllers.Group
         // GET: HomeController/Edit/5
         public ActionResult Edit(int id)
         {
-            var group = groups.Find(id);
-            var model = getEditModelFromGroup(group);
-            return View(model);
+            try
+            {
+                if (!groups.IsOwner(id, user.UserId))
+                    return RedirectToAction("Index");
+                var group = groups.Find(id);
+                var model = getEditModelFromGroup(group);
+                return View(model);
+            }
+            catch
+            {
+                return RedirectToAction("Index");
+            }
+            
         }
 
         
@@ -105,6 +113,8 @@ namespace GraduationProject.Controllers.Group
         {
             try
             {
+                if (!groups.IsOwner(model.groupId, user.UserId))
+                    return RedirectToAction("Index");
                 var oldPassword = groups.Find(model.groupId).Password;
                 if (oldPassword != model.oldPassword)
                     return View(model);
@@ -143,9 +153,19 @@ namespace GraduationProject.Controllers.Group
         // GET: HomeController/Delete/5
         public ActionResult Delete(int id)
         {
-            var group = groups.Find(id);
-            var model = getCreateModelFromGroup(group);
-            return Delete(model);
+            try
+            {
+                if (!groups.IsOwner(id, user.UserId))
+                    return RedirectToAction("Index");
+                var group = groups.Find(id);
+                var model = getCreateModelFromGroup(group);
+                return Delete(model);
+            }
+            catch
+            {
+                return RedirectToAction("Index"); 
+            }
+            
         }
 
         // POST: HomeController/Delete/5
@@ -155,6 +175,8 @@ namespace GraduationProject.Controllers.Group
         {
             try
             {
+                if (!groups.IsOwner(model.GroupId, user.UserId))
+                    return RedirectToAction("Index");
                 groups.Remove(model.GroupId); 
                 return RedirectToAction(nameof(Index));
             }
@@ -170,6 +192,8 @@ namespace GraduationProject.Controllers.Group
         {
             try
             {
+                if (!groups.IsOwner(groupId, user.UserId))
+                    return RedirectToAction("Details", new { groupId });
                 var allNames = textareaUsers.Split(" ");
                 foreach(var name in allNames)
                 {
@@ -199,6 +223,8 @@ namespace GraduationProject.Controllers.Group
         {
             try
             {
+                if (user.UserId != userId)
+                    return RedirectToAction("Details", new { groupId }); 
                 groups.RemoveUser(userId, groupId);
                 return RedirectToAction("Index");
             }
@@ -233,10 +259,27 @@ namespace GraduationProject.Controllers.Group
         [ValidateAntiForgeryToken]
         public ActionResult JoinToGroup(int groupId, int userId)
         {
-            
+            // if the group is public or there is an invitation 
             try
             {
-                groups.AddUser(groupId, userId);  
+                var group = groups.Find(groupId); 
+                if (group.Visable || group.UserGroup.FirstOrDefault(u=>u.UserId == userId) != null)
+                    groups.AddUser(groupId, userId);  
+                return RedirectToAction("Details", new { id = groupId });
+            }
+            catch
+            {
+                return RedirectToAction("Details", new { id = groupId });
+            }
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult JoinToGroup(int groupId, int userId, string Password)
+        {
+            try
+            {
+                if (groups.Find(groupId).Password == Password)
+                    groups.AddUser(groupId, userId);
                 return RedirectToAction("Details", new { id = groupId });
             }
             catch
@@ -259,6 +302,8 @@ namespace GraduationProject.Controllers.Group
         [ValidateAntiForgeryToken]
         public ActionResult EditMember(int groupId, int userId, string buttonName)
         {
+            if (!groups.IsOwner(groupId, user.UserId))
+                return RedirectToAction("Details", new { groupId });
             try
             {
                 switch (buttonName)
@@ -290,7 +335,6 @@ namespace GraduationProject.Controllers.Group
                 if (rel != null && rel.UserRole == "Invite")
                 list.Add(getViewModelFromGroup(item));
             }
-                
             return View("Index", list);
         }
 

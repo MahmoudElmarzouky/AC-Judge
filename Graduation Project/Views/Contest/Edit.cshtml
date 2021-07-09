@@ -13,6 +13,7 @@
                     <div class="carousel-inner" role="listbox">
                         <div class="item contest-classical active">
                                 <form class="form-horizontal" asp-action="Edit">
+                                    <input hidden asp-for="@Model.contestId" value="@Model.contestId"/>
                                     <input hidden asp-for="@Model.CreateFromGroup" value="0" />
                                     <div class="form-group row">
                                         <label class="control-label col-md-2">Contest Title</label>
@@ -76,16 +77,16 @@
                                                         <tr>
                                                             <td>@Convert.ToChar('A' + i)</td>
                                                             <td class="form-group">
-                                                                <select class="form-control" asp-for="@Model.problems[i].PlatForm" data-target="PlatForm">
+                                                                <select class="form-control" asp-for="@Model.problems[i].PlatForm" value="@Model.problems[i].PlatForm" data-target="PlatForm">
                                                                     <option value="CodeForces">Codeforces</option>
                                                                     <option value="Atcoder">Atcoder</option>
                                                                 </select>
                                                             </td>
                                                             <td class="form-group">
-                                                                <input asp-for="@Model.problems[i].problemId" class="form-control" type="text" placeholder="CF:123A" data-target="problemId" />
+                                                                <input value="@Model.problems[i].problemId" asp-for="@Model.problems[i].problemId" class="form-control" type="text" placeholder="CF:123A" data-target="problemId" />
                                                             </td>
                                                             <td class="form-group">
-                                                                <input asp-for="@Model.problems[i].Alias" class="form-control" type="text" placeholder="" data-target="Alias" />
+                                                                <input value ="@Model.problems[i].Alias" asp-for="@Model.problems[i].Alias" class="form-control" type="text" placeholder="" data-target="Alias" />
                                                             </td>
                                                             <td><i class="fas fa-check text-success" data-target="acceptproblem"></i></td>
                                                         </tr>

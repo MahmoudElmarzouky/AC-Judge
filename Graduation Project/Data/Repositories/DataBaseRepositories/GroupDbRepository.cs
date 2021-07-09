@@ -200,5 +200,16 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             }
             return list; 
         }
+        public Boolean IsOwner(int groupId, int userId)
+        {
+            try
+            {
+                var rel = Find(groupId).UserGroup.FirstOrDefault(u => u.UserId == userId);
+                return rel.UserRole == "Creator" || rel.UserRole == "Manager"; 
+            }catch
+            {
+                return false; 
+            }
+        }
     }
 }

@@ -21,5 +21,6 @@ namespace GraduationProject.Data.Repositories.Interfaces
         void FlipFavourite(int groupId, int userId);
         void ChangeUserRole(int groupId, int userId, string v);
         IList<T> MyGroups(int id);
+        Boolean IsOwner(int groupId, int userId); 
     }
 }

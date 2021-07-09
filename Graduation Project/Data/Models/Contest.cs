@@ -19,7 +19,15 @@ namespace GraduationProject.Data.Models
         public int contestDuration { get; set; }
         public DateTime creationTime { get; set; }
         public string contestVisabilty { get; set; }
-        public int contestStatus { get
+        public virtual ICollection<UserContest> UserContest { get; set; }
+        public virtual ICollection<Submission> Submissions { get; set; }
+        public virtual ICollection<ContestProblem> ContestProblems { get; set; }
+        public int? groupId { get; set; }
+        public Boolean InGroup { get { return groupId != null;  } set { } }
+        public string Password { get; set; } = "";
+        public int contestStatus
+        {
+            get
             {
                 // -1 upcomming 
                 // 0 running 
@@ -28,15 +36,9 @@ namespace GraduationProject.Data.Models
                     return -1;
                 if (contestStartTime.AddMinutes(contestDuration) < DateTime.Now)
                     return 1;
-                return 0; 
-            } 
-            set {  } 
+                return 0;
+            }
+            set { }
         }
-        public virtual ICollection<UserContest> UserContest { get; set; }
-        public virtual ICollection<Submission> Submissions { get; set; }
-        public virtual ICollection<ContestProblem> ContestProblems { get; set; }
-        public int? groupId { get; set; }
-        public Boolean InGroup { get; set; }
-
     }
 }

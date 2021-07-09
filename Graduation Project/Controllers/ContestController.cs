@@ -94,20 +94,20 @@ namespace GraduationProject.Controllers.Contest
         // GET: HomeController/Edit/5
         public ActionResult Edit(int id)
         {
-            if (!CanAccessTheContest(id, user.UserId))
-                return RedirectToAction("Index");
+            if (!contests.IsOwner(id, user.UserId))
+                return RedirectToAction("Details", new {id});
             var contest = contests.Find(id); 
-
             return View(getCreateContestModel(contest));
         }
 
         // POST: HomeController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(GraduationProject.Data.Models.Contest contest)
+        public ActionResult Edit(CreateContestModel model)
         {
-            if (!CanAccessTheContest(contest.contestId, user.UserId))
+            if (!contests.IsOwner(model.contestId, user.UserId))
                 return RedirectToAction("Index");
+            var contest = CreateContestFromCreateContestModel(model);
             try
             {
                 contests.Update(contest);
@@ -125,7 +125,7 @@ namespace GraduationProject.Controllers.Contest
         // GET: HomeController/Delete/5
         public ActionResult Delete(int id)
         {
-            if (!CanAccessTheContest(id, user.UserId))
+            if (!contests.IsOwner(id, user.UserId))
                 return RedirectToAction("Index");
             var contest = contests.Find(id);
             return View(contest);
@@ -136,11 +136,11 @@ namespace GraduationProject.Controllers.Contest
         [ValidateAntiForgeryToken]
         public ActionResult Delete(GraduationProject.Data.Models.Contest contest)
         {
-            if (!CanAccessTheContest(contest.contestId, user.UserId))
+            if (!contests.IsOwner(contest.contestId, user.UserId))
                 return RedirectToAction("Index");
             try
             {
-                int? groupId = contests.Find(contest.contestId).groupId; 
+                int? groupId = contests.Find(contest.contestId).groupId;
                 contests.Remove(contest.contestId);
                 if (groupId != null)
                     return RedirectToAction("Details", "Group", new { id = groupId });
@@ -156,26 +156,6 @@ namespace GraduationProject.Controllers.Contest
         {
             contests.RegisterInContest(user.UserId, id);
             return RedirectToAction("Details", new { id });
-        }
-        
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AddProblemToContest(int contestId, string problemName)
-        {
-            if (!CanAccessTheContest(contestId, user.UserId))
-                return RedirectToAction("Index"); 
-            var problem = problems.FindByName("CodeForces", problemName); 
-            if (problem == null)
-                return RedirectToAction("Details", new { id = contestId });
-            try
-            {
-                contests.AddProblemToContest(problem.ProblemId, contestId); 
-                return RedirectToAction("Details", new { id = contestId });
-            }
-            catch
-            {
-                return RedirectToAction("Details", new { id = contestId });
-            }
         }
 
         public ActionResult Standing(int Id)
@@ -334,26 +314,49 @@ namespace GraduationProject.Controllers.Contest
         }
         private GraduationProject.Data.Models.Contest CreateContestFromCreateContestModel(CreateContestModel model)
         {
-            var Addedproblems = new List<ContestProblem>(); 
-            foreach(var p in model.problems)
-            {
-                var current = problems.FindByName(p.PlatForm, p.problemId);
-                if (current == null) continue;
-                Addedproblems.Add(new ContestProblem { problemId = current.ProblemId, order = Addedproblems.Count }); 
-            }
+            var contestProblems = getContestProblmes(model.problems); 
             return new GraduationProject.Data.Models.Contest
             {
                 groupId = model.CreateFromGroup == "0" ? null : model.groupId,
                 contestDuration = model.Duration,
                 contestStartTime = model.StartTime,
                 contestTitle = model.contestTitle,
-                InGroup = model.CreateFromGroup == "0" ? false : true,
                 contestVisabilty = model.Visable == "1" ? "Public" : "Private",
-                ContestProblems = Addedproblems
-                // Password 
-                // problems 
+                ContestProblems = contestProblems, 
+                Password = model.Password,
+                contestId = model.contestId
             };
         }
+
+        private List<ContestProblem> getContestProblmes(IList<ProblemData> Modelproblems)
+        {
+            var list = new List<ContestProblem>();
+            int order = 0; 
+            foreach (var p in Modelproblems)
+            {
+                Problem current = null;
+                try
+                {
+                    current = problems.FindByName(p.PlatForm, p.problemId);
+                }
+                catch
+                {
+                    continue;
+                }
+                if (current == null) continue;
+                list.Add(
+                new ContestProblem
+                {
+                    problemId = current.ProblemId,
+                    order = order++,
+                    Alias = p.Alias,
+                    PlatForm = p.PlatForm,
+                    ProblemSourceId = p.problemId
+                });
+            }
+            return list; 
+        }
+
         private CreateContestModel getCreateContestModel(GraduationProject.Data.Models.Contest contest)
         {
             var problems = new List<ProblemData>();
@@ -368,11 +371,10 @@ namespace GraduationProject.Controllers.Contest
                 Duration = contest.contestDuration,
                 groupId = contest.groupId == null? -1: (int)contest.groupId,
                 problems = problems, 
-                StartTime = contest.contestStartTime
+                StartTime = contest.contestStartTime,
+                contestId = contest.contestId
             };
         }
-
-
 
     }
 }

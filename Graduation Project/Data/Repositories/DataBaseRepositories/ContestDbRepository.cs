@@ -91,7 +91,8 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             contest.contestDuration = newContest.contestDuration;
             contest.contestTitle = newContest.contestTitle;
             contest.contestVisabilty = newContest.contestVisabilty;
-            contest.contestStartTime = newContest.contestStartTime; 
+            contest.contestStartTime = newContest.contestStartTime;
+            contest.ContestProblems = newContest.ContestProblems; 
             Commit();
         }
 
@@ -267,6 +268,19 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
                 list.Add(contest); 
             }
             return list; 
+        }
+        public Boolean IsOwner(int contestId, int userId)
+        {
+            try
+            {
+                var contest = Find(contestId);
+                var rel = contest.UserContest.FirstOrDefault(u => u.isOwner == true);
+                return rel.UserId == userId;
+            }
+            catch
+            {
+                return false; 
+            }
         }
     }
 }
