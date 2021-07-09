@@ -39,6 +39,7 @@ namespace GraduationProject.ViewModels.ContestViewsModel
         public string Visable { get; set; } = "";
         public IList<GroupData> groups { get; set; }
         public IList<ProblemData> problems { get; set; }
-        
+        public int contestId { get; set; }
+
     }
 }
