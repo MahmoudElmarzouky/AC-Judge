@@ -35,13 +35,18 @@ namespace GraduationProject.Controllers.Group
         public ActionResult Index()
         {
             var list = new List<ViewGroupModel>();
-            int userId = user.UserId; 
+            int userId = user.UserId;
+            int NumberOfGroupInvitations = 0; 
             foreach (var item in groups.List())
             {
                 var rel = item.UserGroup.FirstOrDefault(u=>u.UserId == userId);
                 if ((item.Visable == true) || (rel != null))
                 list.Add(getViewModelFromGroup(item));
+
+                if (rel != null && rel.UserRole == "Invite")
+                    NumberOfGroupInvitations++; 
             }
+            ViewBag.NumberOfGroupInvitations = NumberOfGroupInvitations;
             return View(list);
         }
         public ActionResult MyGroups()
@@ -49,9 +54,16 @@ namespace GraduationProject.Controllers.Group
             int id = user.UserId;
             var myGroups = groups.MyGroups(id);
             var list = new List<ViewGroupModel>();
+            int NumberOfGroupInvitations = 0;
+            foreach (var item in groups.List())
+            {
+                var rel = item.UserGroup.FirstOrDefault(u => u.UserId == user.UserId);
+                if (rel != null && rel.UserRole == "Invite")
+                    NumberOfGroupInvitations++;
+            }
             foreach (var item in myGroups)
                 list.Add(getViewModelFromGroup(item));
-
+            ViewBag.NumberOfGroupInvitations = NumberOfGroupInvitations;
             return View("Index", list);
         }
 
@@ -367,26 +379,33 @@ namespace GraduationProject.Controllers.Group
         }
         private ViewGroupModel getViewModelFromGroup(GraduationProject.Data.Models.Group group)
         {
-            
-            int NumberOfMembers = group.UserGroup.Count;
-            var query = group.UserGroup.FirstOrDefault(u => u.UserId == user.UserId);
-            var IsFavourite = query != null? query.isFavourite: false;
-            var role = query != null ? query.UserRole : "Not In Group"; 
-            var model = new ViewGroupModel {
-                UserRole = role,
-                GroupId = group.GroupId,
-                GroupTitle = group.GroupTitle,
-                GroupDescription = group.GroupDescription,
-                NumberOfMembers = NumberOfMembers,
-                GroupStatus = group.Visable ? "Public" : "Private",
-                creationTime = group.creationTime,
-                UserGroup = group.UserGroup,
-                Contests = group.Contests.ToList(), 
-                Blogs= group.blogs.ToList(),
-                IsFavourite = IsFavourite,
-                CurrentUserId = user.UserId,
-            };
-            return model;
+            try
+            {
+                int NumberOfMembers = group.UserGroup.Where(u=>u.UserRole != "Invite").Count();
+                var query = group.UserGroup.FirstOrDefault(u => u.UserId == user.UserId);
+                var IsFavourite = query != null ? query.isFavourite : false;
+                var role = query != null ? query.UserRole : "Not In Group";
+                return new ViewGroupModel
+                {
+                    UserRole = role,
+                    GroupId = group.GroupId,
+                    GroupTitle = group.GroupTitle,
+                    GroupDescription = group.GroupDescription,
+                    NumberOfMembers = NumberOfMembers,
+                    GroupStatus = group.Visable ? "Public" : "Private",
+                    creationTime = group.creationTime,
+                    UserGroup = group.UserGroup,
+                    Contests = group.Contests.ToList(),
+                    Blogs = group.blogs.ToList(),
+                    IsFavourite = IsFavourite,
+                    CurrentUserId = user.UserId,
+                    
+                };
+            }
+            catch
+            {
+                return new ViewGroupModel();
+            }
         }
     }
 }
