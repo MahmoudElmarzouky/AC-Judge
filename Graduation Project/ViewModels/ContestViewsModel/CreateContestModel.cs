@@ -24,7 +24,7 @@ namespace GraduationProject.ViewModels.ContestViewsModel
             groups = new List<GroupData>();
             problems = new List<ProblemData>();
             for (int i = 0; i < 26; i++)
-                problems.Add(new ProblemData());  
+                problems.Add(new ProblemData()); 
         }
         public string CreateFromGroup { get; set; } = "0";
         public string FormOneClass { get { return "item contest-classical" + (CreateFromGroup == "1" ? "" : " active"); } set { } }
