@@ -59,7 +59,7 @@ namespace GraduationProject.Controllers.Blog
         }
         private ViewBlogModel getViewModelFromBlog(GraduationProject.Data.Models.Blog blog)
         {
-            var userBlog = blog.userBlog.FirstOrDefault(b => b.blogId == blog.blogId);
+            var userBlog = blog.userBlog.FirstOrDefault(b => b.blogId == blog.blogId&&b.blogOwenr==true);
             bool IsOwner = false;
             if (userBlog.User.UserIdentityId == user.UserIdentityId) {
                 IsOwner = true;
