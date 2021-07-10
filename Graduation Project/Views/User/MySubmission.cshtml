@@ -43,18 +43,18 @@
                         </div>
 
                         <ul class="nav navbar-nav">
-                            <li><a href="#" class="active">Submission</a></li>
-                            <li><a href="#">Contest</a></li>
-                            <li><a href="#">Blog</a></li>
-                            <li><a href="#">Favorite</a></li>
+                            <li><a asp-action="MySubmission" asp-route-id="@ViewBag.USER.UserId" class="active">Submission</a></li>
+                            <li><a asp-action="OpenContest" asp-route-id="@ViewBag.USER.UserId">Contest</a></li>
+                            <li><a asp-action="OpenBlog">Blog</a></li>
+                            <li><a asp-action="Favorite" asp-route-id="@ViewBag.USER.UserId">Favorite</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">General Setting</a></li>
-                                    <li><a href="#">Edit Email</a></li>
-                                    <li><a href="#">Change Password</a></li>
+                                    <li><a asp-area="Identity" asp-page="/Account/Manage/Index">General Setting</a></li>
+                                    <li><a id="email" asp-area="Identity" asp-page="/Account/Manage/Email">Edit Email</a></li>
+                                    <li><a id="change-password" asp-area="Identity" asp-page="/Account/Manage/ChangePassword">Change Password</a></li>
                                 </ul>
                             </li>
                         </ul>
