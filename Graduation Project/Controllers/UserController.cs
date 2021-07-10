@@ -88,6 +88,21 @@ namespace GraduationProject.Controllers
                 return View("~/Views/Shared/ErrorLink.cshtml");
             }
         }
+        
+        [Authorize]
+        public ActionResult Favorite(int id)
+        {
+            if (user.UserId == id)
+            {
+                ViewBag.USER = user;
+                IList<ViewStatusModel> list = GetAllSubmission(id);
+                return View(list);
+            }
+            else
+            {
+                return View("~/Views/Shared/ErrorLink.cshtml");
+            }
+        }
         public void FlibShare(int SubmisionId)
         {
             Submission submission = SubmissionRepository.Find(SubmisionId);
