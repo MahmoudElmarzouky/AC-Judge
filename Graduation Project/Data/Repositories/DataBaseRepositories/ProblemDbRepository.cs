@@ -86,8 +86,8 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
 
         public Problem FindByName(string OnlineJudge, string ProblemSourceId)
         {
-            // need to change -> Mohamed Sameh Add this -- 
-            // Example : Codeforces 123A
+            ProblemSourceId = ProblemSourceId.ToUpper();
+
             var problem = dbcontext.Problems.FirstOrDefault(u => u.problemSourceId == ProblemSourceId && u.ProblemSource == OnlineJudge);
             if (problem == null)
             {
@@ -107,7 +107,6 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
                         }
                         _ = (flag == true) ? id += item : c += item;
                     }
-                    c = c.ToUpper();
                     // ------------------------------------------------------------------
                     var p = APi.GetProblem(OnlineJudge, id, c);
 
