@@ -8,28 +8,17 @@ using System.Threading.Tasks;
 
 public static class APi
 {
-    public static ProblemIfo GetProblem(string OnlineJudge, string ProblemId)
+    public static ProblemIfo GetProblem(string OnlineJudge, string Contestid,string charproblemm)
     {
         ProblemIfo problemIfo = new ProblemIfo();
         if (OnlineJudge == "CodeForces")
         {
-            Boolean flag = true;
-            string id = "";
-            string c = "";
-            foreach (var item in ProblemId)
-            {
-                if (Char.IsLetter(item))
-                {
-                    flag = false;
-                    c += item;
-                    continue;
-                }
-                _ = (flag == true) ? id += item : c += item;
-            }
-            string url = "http://157.90.173.120/cf/" + id + "/" + c;
+            
+            string url = "http://157.90.173.120/cf/" + Contestid + "/" + charproblemm;
             string json = GetUrlToString(url);
-            if (json == null) return null;
             problemIfo = JsonConvert.DeserializeObject<ProblemIfo>(json);
+            if (problemIfo.problem == null) return null;
+            return problemIfo;
 
         }
         return problemIfo;

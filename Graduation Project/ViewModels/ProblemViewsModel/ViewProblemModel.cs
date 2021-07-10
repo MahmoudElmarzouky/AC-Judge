@@ -12,6 +12,7 @@ namespace GraduationProject.ViewModels.ProblemViewsModel
         public Boolean Favorite { get; set; }
         public string OnlineJudge { get; set; }
         public string ProblemSourceId { get; set; }
+        public string UrlSource { get; set; }
         public string Title { get; set; }
         public int? rating { get; set; }
         

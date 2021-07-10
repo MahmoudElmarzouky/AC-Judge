@@ -128,7 +128,8 @@ namespace GraduationProject.Controllers.problems
                     OnlineJudge = p.ProblemSource,
                     ProblemSourceId = p.problemSourceId,
                     Title = p.problemTitle,
-                    rating = p.rating
+                    rating = p.rating,
+                    UrlSource=p.UrlSource
                 };
                 if (login)
                 {
