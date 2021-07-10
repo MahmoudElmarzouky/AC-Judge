@@ -19,6 +19,7 @@ namespace GraduationProject.Data.Models
         public string ProblemSource { get; set; }
 
         public string problemSourceId { get; set; }
+        public string UrlSource { get; set; }
 
         public string problemTitle { get; set; }
 

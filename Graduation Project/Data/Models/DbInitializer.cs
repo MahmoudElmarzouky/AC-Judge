@@ -11,10 +11,18 @@ namespace GraduationProject.Data.Models
         static EntitiesContext dbcontext;
         public static void Seed(IServiceProvider serviceProvider)
         {
+            
             var rand = new Random();
             dbcontext =
                 serviceProvider.GetRequiredService<EntitiesContext>();
+
+
+            //////////////// Add Problem ////////////////////////
+            GetAllProblem();
+            return;
+            //////////////  End Add problem /////////////////
             var d = DateTime.Now;
+
             dbcontext.Submissions.RemoveRange(dbcontext.Submissions); 
             dbcontext.SaveChanges();
 
@@ -52,6 +60,58 @@ namespace GraduationProject.Data.Models
 
                 }
             
+        }
+        private static void GetAllProblem()
+        {
+            for (int i = 1; i <= 10; i++)
+            {
+                for (char ca = 'a'; ca <= 'd'; ca++)
+                {
+                    var ProblemSourceId = i.ToString() + ca;
+                    var OnlineJudge = "CodeForces";
+                    var problem = dbcontext.Problems.FirstOrDefault(u => u.problemSourceId == ProblemSourceId && u.ProblemSource == OnlineJudge);
+                    if (problem == null)
+                    {
+                        if (OnlineJudge == "CodeForces")
+                        {
+                            // --------------- Convert Source Id to Contest Id and problem char
+                            Boolean flag = true;
+                            string id = "";
+                            string c = "";
+                            foreach (var item in ProblemSourceId)
+                            {
+                                if (Char.IsLetter(item))
+                                {
+                                    flag = false;
+                                    c += item;
+                                    continue;
+                                }
+                                _ = (flag == true) ? id += item : c += item;
+                            }
+                            c = c.ToUpper();
+                            // ------------------------------------------------------------------
+
+                            var p = APi.GetProblem(OnlineJudge, id, c);
+
+                            if (p == null) continue;
+                            Problem newproblem = new Problem()
+                            {
+                                ProblemSource = p.source,
+                                problemSourceId = p.problemID,
+                                problemTitle = p.title.Substring(2),
+                                problemType = 1,
+                                ProblemHtml = p.problem,
+                                rating = p.rate,
+                                UrlSource = "https://codeforces.com/problemset/problem/" + id + "/" + c
+                            };
+                            dbcontext.Add(newproblem);
+                            dbcontext.SaveChanges();
+                        }
+                    }
+
+                }
+
+            }
         }
         private static void AddSubmission(int contestId, int problemId, int userId, string verdict, string code)
         {
