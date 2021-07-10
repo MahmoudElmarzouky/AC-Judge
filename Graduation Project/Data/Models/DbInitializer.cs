@@ -63,7 +63,7 @@ namespace GraduationProject.Data.Models
         }
         private static void GetAllProblem()
         {
-            for (int i = 1; i <= 10; i++)
+            for (int i = 33; i <= 60; i++)
             {
                 for (char ca = 'a'; ca <= 'd'; ca++)
                 {
@@ -99,7 +99,7 @@ namespace GraduationProject.Data.Models
                                 ProblemSource = p.source,
                                 problemSourceId = p.problemID,
                                 problemTitle = p.title.Substring(2),
-                                problemType = 1,
+                                problemType = 2,
                                 ProblemHtml = p.problem,
                                 rating = p.rate,
                                 UrlSource = "https://codeforces.com/problemset/problem/" + id + "/" + c

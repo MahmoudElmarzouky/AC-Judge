@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using X.PagedList;
 
 namespace GraduationProject.Controllers.problems
 {
@@ -40,11 +41,15 @@ namespace GraduationProject.Controllers.problems
             }
 
         }
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
+            int pagenumber = page ?? 1;
             IList<Problem> ListProblems = problemRepository.Search(1, new List<string> { "1" });
             var model = getAllmodel(ListProblems);
-            return View(model);
+            ViewBag.TotalPageProblem = (model.Count()/25) + (model.Count() % 25==0 ? 0 : 1);
+            ViewBag.Pagenum = pagenumber;
+            var list= model.ToPagedList(pagenumber,25);
+            return View(list);
         }
         public Boolean CanSeeSubmission(int SubmissionId)
         {

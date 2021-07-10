@@ -64,6 +64,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.IdentityModel.Logging" Version="6.11.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="8.1.0" />
   </ItemGroup>
 
 </Project>
