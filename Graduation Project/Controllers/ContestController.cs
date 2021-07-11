@@ -38,7 +38,14 @@ namespace GraduationProject.Controllers.Contest
         // GET: HomeController
         public ActionResult Index()
         {
-            return View(getPageItems(getAllContests(), 1));
+            try
+            {
+                return View(getPageItems(getAllContests(), 1));
+            }catch
+            {
+                return View("ErrorLink");
+            }
+
         }
         private List<ViewContestModel> getAllContests()
         {
@@ -53,23 +60,35 @@ namespace GraduationProject.Controllers.Contest
         // GET: HomeController/Details/5
         public ActionResult Details(int Id)
         {
-            if (!CanAccessTheContest(Id, user.UserId))
-                return RedirectToAction("Index");  
-            var contest = contests.Find(Id);
-            var model = getContestViewModelFromContest(contest); 
-            return View(model);
+            try
+            {
+                if (!CanAccessTheContest(Id, user.UserId))
+                    return RedirectToAction("Index");
+                var contest = contests.Find(Id);
+                var model = getContestViewModelFromContest(contest);
+                return View(model);
+            }catch
+            {
+                return View("ErrorLink");
+            }
         }
 
         // GET: HomeController/Create
         public ActionResult Create(int Id)
         {
-            var createContestView = CreateContestView();
-            if (groups.Find(Id) != null)
+            try
             {
-                createContestView.CreateFromGroup = "1";
-                createContestView.groupId = Id;
+                var createContestView = CreateContestView();
+                if (groups.Find(Id) != null)
+                {
+                    createContestView.CreateFromGroup = "1";
+                    createContestView.groupId = Id;
+                }
+                return View(createContestView);
+            }catch
+            {
+                return View("Index");
             }
-            return View(createContestView);
         }
 
         // POST: HomeController/Create
@@ -95,10 +114,17 @@ namespace GraduationProject.Controllers.Contest
         // GET: HomeController/Edit/5
         public ActionResult Edit(int id)
         {
-            if (!contests.IsOwner(id, user.UserId))
-                return RedirectToAction("Details", new {id});
-            var contest = contests.Find(id); 
-            return View(getCreateContestModel(contest));
+            try
+            {
+                if (!contests.IsOwner(id, user.UserId))
+                    return RedirectToAction("Details", new { id });
+                var contest = contests.Find(id);
+                return View(getCreateContestModel(contest));
+            }catch
+            {
+                return View("Index"); 
+            }
+
         }
 
         // POST: HomeController/Edit/5
@@ -126,10 +152,18 @@ namespace GraduationProject.Controllers.Contest
         // GET: HomeController/Delete/5
         public ActionResult Delete(int id)
         {
-            if (!contests.IsOwner(id, user.UserId))
-                return RedirectToAction("Index");
-            var contest = contests.Find(id);
-            return View(contest);
+            try
+            {
+                if (!contests.IsOwner(id, user.UserId))
+                    return RedirectToAction("Index");
+                var contest = contests.Find(id);
+                return View(contest);
+            }catch
+            {
+                return View("ErrorLink");
+            }
+
+
         }
 
         // POST: HomeController/Delete/5
@@ -155,15 +189,27 @@ namespace GraduationProject.Controllers.Contest
         }
         public ActionResult RegisterInContest(int id)
         {
-            contests.RegisterInContest(user.UserId, id);
-            return RedirectToAction("Details", new { id });
+            try
+            {
+                contests.RegisterInContest(user.UserId, id);
+                return RedirectToAction("Details", new { id });
+            }catch
+            {
+                return View("ErrorLink");
+            }
         }
 
         public ActionResult Standing(int Id)
         {
-            if (!CanAccessTheContest(Id, user.UserId))
-                return RedirectToAction("Index");
-            return View(CreateStandingView(Id)); 
+            try
+            {
+                if (!CanAccessTheContest(Id, user.UserId))
+                    return RedirectToAction("Index");
+                return View(CreateStandingView(Id));
+            }catch
+            {
+                return View("ErrorLink");
+            }
         }
 
         public ActionResult FlipFavourite(int id, ContestFilter Filter)
@@ -174,10 +220,11 @@ namespace GraduationProject.Controllers.Contest
         [ValidateAntiForgeryToken]
         public ActionResult FlipFavourite(int userId, int contestId, ContestFilter Filter)
         {
-            if (!CanAccessTheContest(contestId, user.UserId))
-                return RedirectToAction("Filter", Filter);
-            try
-            {
+            try 
+            { 
+                if (!CanAccessTheContest(contestId, user.UserId))
+                    return RedirectToAction("Filter", Filter);
+            
                 contests.FlipFavourite(contestId, userId);
                 return RedirectToAction("Filter", Filter);
             }
@@ -188,26 +235,44 @@ namespace GraduationProject.Controllers.Contest
         }
         public ActionResult Filter()
         {
-            ContestFilter filter = new ContestFilter {PrepeardBy = (string)TempData["PrepeardBy"]};
-            return Filter(filter);
+            try
+            {
+                ContestFilter filter = new ContestFilter { PrepeardBy = (string)TempData["PrepeardBy"] };
+                return Filter(filter);
+            }catch
+            {
+                return View("Index");
+            }
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Filter(ContestFilter model)
         {
-            if (model.Reset == "Reset")
-                return RedirectToAction("Index");
-            var list = new List<ViewContestModel>();
-            model.userId = user.UserId; 
-            foreach (var c in contests.Filter(model))
-                list.Add(getContestViewModelFromContest(c));
-            return View("Index", getPageItems(list, 1)); 
+            try
+            {
+                if (model.Reset == "Reset")
+                    return RedirectToAction("Index");
+                var list = new List<ViewContestModel>();
+                model.userId = user.UserId;
+                foreach (var c in contests.Filter(model))
+                    list.Add(getContestViewModelFromContest(c));
+                return View("Index", getPageItems(list, 1));
+            }catch
+            {
+                return View("Index"); 
+            }
         }
         private Boolean CanAccessTheContest(int contestId, int userId)
         {
-            var c = contests.Find(contestId);
-            var rel = c.UserContest.FirstOrDefault(u => u.UserId == userId);
-            return c.contestVisabilty == "Public" || rel != null; 
+            try
+            {
+                var c = contests.Find(contestId);
+                var rel = c.UserContest.FirstOrDefault(u => u.UserId == userId);
+                return c.contestVisabilty == "Public" || rel != null;
+            }catch
+            {
+                return false; 
+            }
         }
         private ViewContestModel getContestViewModelFromContest(Data.Models.Contest contest)
         {
@@ -398,8 +463,14 @@ namespace GraduationProject.Controllers.Contest
         }
         public ActionResult Page(int PageNumber)
         {
-            var list = getPageItems(getAllContests(), PageNumber);
-            return View("Index", list);
+            try
+            {
+                var list = getPageItems(getAllContests(), PageNumber);
+                return View("Index", list);
+            }catch
+            {
+                return View("Index"); 
+            }
         }
 
     }

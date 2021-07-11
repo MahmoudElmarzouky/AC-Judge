@@ -62,6 +62,8 @@
                     </table>
                 </div>
             </div>
+            @if (ViewBag.NumberOfPages != 0)
+            {
             <div aria-label="Page navigation" class="text-center">
                 <ul class="pagination pagination-lg">
                     @{
@@ -114,6 +116,7 @@
 
                 </ul>
             </div>
+            }
         </section>
     </div>
 </section>
