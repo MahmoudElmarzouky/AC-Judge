@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace GraduationProject.Controllers
 {
@@ -75,13 +76,17 @@ namespace GraduationProject.Controllers
             return RedirectToAction("Index", "Blog");
         }
         [Authorize]
-        public ActionResult MySubmission(int id)
+        public ActionResult MySubmission(int id,int? page)
         {
             if (user.UserId == id)
             {
+                int pagenumber = page ?? 1;
                 ViewBag.USER = user;
-                IList<ViewStatusModel> list = GetAllSubmission(id);
-                return View(list);
+                var list = GetAllSubmission(id).OrderByDescending(s => s.RunID);
+                ViewBag.TotalPageProblem = (list.Count() / 25) + (list.Count() % 25 == 0 ? 0 : 1);
+                ViewBag.Pagenum = pagenumber;
+                var newlist = list.ToPagedList(pagenumber, 25);
+                return View(newlist);
             }
             else
             {
