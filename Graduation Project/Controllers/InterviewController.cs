@@ -44,6 +44,7 @@ namespace GraduationProject.Controllers.Interview
         }
         public ActionResult Index(int? page)
         {
+            ViewBag.function = "Index";
             int pagenumber = page ?? 1;
             IList<Problem> ListProblems = problemRepository.Search(1, new List<string> { "2" });
             var model = getAllmodel(ListProblems);
@@ -61,11 +62,16 @@ namespace GraduationProject.Controllers.Interview
                 return true;
             return false;
         }
-        public ActionResult Status()
+        public ActionResult Status(int? page)
         {
+            int pagenum = page ?? 1;
+            ViewBag.function = "Status";
             var submissions = SubmissionRepository.GetSubmissionSpecific(false, 2);
             var list = GetAllStatus(submissions);
-            return View(list);
+            ViewBag.TotalPageProblem = (list.Count() / 25) + (list.Count() % 25 == 0 ? 0 : 1);
+            ViewBag.Pagenum = pagenum;
+            var newlist = list.ToPagedList(pagenum, 25).OrderByDescending(s => s.RunID);
+            return View(newlist);
         }
         [HttpPost]
         public ActionResult GetTextSubmission(int SubmisionId)
@@ -73,32 +79,51 @@ namespace GraduationProject.Controllers.Interview
             var Result = SubmissionRepository.Find(SubmisionId).SubmissionText;
             return Content(Result, "text/plain");
         }
-        public ActionResult Filter()
+        public ActionResult Filter(int? page, string problemID, string problemName, string ProblemSource)
         {
-            var problemID = Request.Form["problemID"];
-            var problemName = Request.Form["problemName"];
-            var ProblemSource = Request.Form["ProblemSource"];
-            var list = problemRepository.Search(2, new List<string> { "2", problemID, problemName, ProblemSource });
-            var model = getAllmodel(list);
-            return View("Index", model);
+            int pagenumber = page ?? 1;
+            ViewBag.problemid = problemID;
+            ViewBag.problemname = problemName;
+            ViewBag.Problemsource = ProblemSource;
+            ViewBag.function = "Filter";
+            var ListProblems = problemRepository.Search(2, new List<string> { "2", problemID, problemName, ProblemSource });
+            var model = getAllmodel(ListProblems);
+            ViewBag.TotalPageProblem = (model.Count() / 25) + (model.Count() % 25 == 0 ? 0 : 1);
+            ViewBag.Pagenum = pagenumber;
+            var list = model.ToPagedList(pagenumber, 25);
+            return View("Index", list);
         }
-        public ActionResult FilterStatus()
+        public ActionResult FilterStatus(int? page, string UserName, string ProblemName, string ProblemSource, string ProblemResult, string ProblemLang)
         {
-            var User_Name = Request.Form["UserName"];
-            var ProblemName = Request.Form["ProblemName"];
-            var ProblemSource = Request.Form["ProblemSource"] == "All" ? "" : (string)Request.Form["ProblemSource"];
-            var ProblemResult = Request.Form["ProblemResult"] == "All" ? "" : (string)Request.Form["ProblemResult"];
-            var ProblemLang = Request.Form["ProblemLang"] == "All" ? "" : (string)Request.Form["ProblemLang"];
+            int pagenum = page ?? 1;
+            ViewBag.function = "FilterStatus";
+            UserName = (UserName == null ? "" : UserName);
+            ProblemName = (ProblemName == null ? "" : ProblemName);
+            ProblemSource = ((ProblemSource == null || ProblemSource == "All") ? "" : ProblemSource);
+            ProblemResult = ((ProblemResult == null || ProblemResult == "All") ? "" : ProblemResult);
+            ProblemLang = ((ProblemLang == null || ProblemLang == "All") ? "" : ProblemLang);
+
+
+            ViewBag.username = UserName;
+            ViewBag.problemName = ProblemName;
+            ViewBag.problemSource = ProblemSource;
+            ViewBag.problemResult = ProblemResult;
+            ViewBag.problemLang = ProblemLang;
+
+
+
             var submissions = SubmissionRepository.GetSubmissionSpecific(false, 2);
-            IEnumerable<ViewStatusModel> list = GetAllStatus(submissions);
-            IEnumerable<ViewStatusModel> model = list.Where(
+            IEnumerable<ViewStatusModel> list = GetAllStatus(submissions).Where(
                 s =>
-                s.UserName.Contains(User_Name) &&
+                s.UserName.Contains(UserName) &&
                 s.ProblemSourcesId.Contains(ProblemName) &&
                 s.OnlineJudge.Contains(ProblemSource) &&
                 s.Verdict.Contains(ProblemResult) &&
                 s.Language.Contains(ProblemLang)
                 );
+            ViewBag.TotalPageProblem = (list.Count() / 25) + (list.Count() % 25 == 0 ? 0 : 1);
+            ViewBag.Pagenum = pagenum;
+            var model = list.ToPagedList(pagenum, 25).OrderByDescending(s => s.RunID);
             return View("Status", model);
         }
         public ActionResult FlipFavourite(int id)
@@ -134,7 +159,8 @@ namespace GraduationProject.Controllers.Interview
                     OnlineJudge = p.ProblemSource,
                     ProblemSourceId = p.problemSourceId,
                     Title = p.problemTitle,
-                    rating = p.rating
+                    rating = p.rating,
+                    UrlSource = p.UrlSource
                 };
                 if (login)
                 {
