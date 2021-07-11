@@ -12,34 +12,69 @@
         <hr class="mt-0 mb-1">
 
         <ul class="nav nav-pills small mb-1">
-            <li class="active"><a href="/ranking/all">All Users</a></li>
+            <li class="active"><a asp-action="Index">All Users</a></li>
         </ul>
 
 
         <div class="text-center">
             <ul class="pagination pagination-sm mt-0 mb-1">
+                @{
+                    if (ViewBag.Pagenum > 1)
+                    {
 
-                <li class="active"><a href='/ranking?page=1'>1</a></li>
+                        @if (ViewBag.function == "Filter")
+                        {
+                            <li>
+                                <a asp-action="FilterRanking" asp-route-page="@(ViewBag.Pagenum-1)" asp-route-Country="@ViewBag.Country" asp-route-UserName="@ViewBag.UserName" asp-route-BirthYearLowerBound="@ViewBag.BirthYearLowerBound" asp-route-BirthYearUpperBound="@ViewBag.BirthYearUpperBound" asp-route-RatingLowerBound="@ViewBag.RatingLowerBound" asp-route-RatingUpperBound="@ViewBag.RatingUpperBound" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a asp-action="Index" asp-route-page="@(ViewBag.Pagenum-1)" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        }
 
-                <li><a href='#'>2</a></li>
+                    }
+                    for (int i = 1; i <= ViewBag.TotalPageProblem; i++)
+                    {
+                        if (ViewBag.function == "Filter")
+                        {
+                            <li><a asp-action="FilterRanking" asp-route-page="@i" asp-route-Country="@ViewBag.Country" asp-route-UserName="@ViewBag.UserName" asp-route-BirthYearLowerBound="@ViewBag.BirthYearLowerBound" asp-route-BirthYearUpperBound="@ViewBag.BirthYearUpperBound" asp-route-RatingLowerBound="@ViewBag.RatingLowerBound" asp-route-RatingUpperBound="@ViewBag.RatingUpperBound">@i</a></li>
+                        }
+                        else
+                        {
+                            <li><a asp-action="Index" asp-route-page="@i">@i</a></li>
+                        }
 
-                <li><a href='#'>4</a></li>
+                    }
+                    if (ViewBag.Pagenum < ViewBag.TotalPageProblem)
+                    {
 
-                <li><a href='#'>8</a></li>
+                        @if (ViewBag.function == "Filter")
+                        {
+                            <li>
+                                <a asp-action="FilterRanking" asp-route-page="@(ViewBag.Pagenum+1)" asp-route-Country="@ViewBag.Country" asp-route-UserName="@ViewBag.UserName" asp-route-BirthYearLowerBound="@ViewBag.BirthYearLowerBound" asp-route-BirthYearUpperBound="@ViewBag.BirthYearUpperBound" asp-route-RatingLowerBound="@ViewBag.RatingLowerBound" asp-route-RatingUpperBound="@ViewBag.RatingUpperBound" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a asp-action="Index" asp-route-page="@(ViewBag.Pagenum+1)" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        }
 
-                <li><a href='#'>16</a></li>
+                    }
 
-                <li><a href='/ranking?page=32'>32</a></li>
-
-                <li><a href='/ranking?page=64'>64</a></li>
-
-                <li><a href='/ranking?page=128'>128</a></li>
-
-                <li><a href='/ranking?page=256'>256</a></li>
-
-                <li><a href='/ranking?page=512'>512</a></li>
-
-                <li><a href='/ranking?page=828'>828</a></li>
+                }
 
             </ul>
         </div>

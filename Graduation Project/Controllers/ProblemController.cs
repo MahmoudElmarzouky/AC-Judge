@@ -48,6 +48,7 @@ namespace GraduationProject.Controllers.problems
             IList<Problem> ListProblems = problemRepository.Search(1, new List<string> { "1" });
             var model = getAllmodel(ListProblems);
             ViewBag.TotalPageProblem = (model.Count() / 25) + (model.Count() % 25 == 0 ? 0 : 1);
+            if (pagenumber < 0 || pagenumber > ViewBag.TotalPageProblem) pagenumber = 1;
             ViewBag.Pagenum = pagenumber;
             var list = model.ToPagedList(pagenumber, 25);
             return View(list);
@@ -68,6 +69,7 @@ namespace GraduationProject.Controllers.problems
             var submissions = SubmissionRepository.GetSubmissionSpecific(false, 1);
             var list = GetAllStatus(submissions);
             ViewBag.TotalPageProblem = (list.Count() / 25) + (list.Count() % 25 == 0 ? 0 : 1);
+            if (pagenum < 0 || pagenum > ViewBag.TotalPageProblem) pagenum = 1;
             ViewBag.Pagenum = pagenum;
             var newlist = list.ToPagedList(pagenum, 25).OrderByDescending(s => s.RunID);
             return View(newlist);
@@ -88,6 +90,7 @@ namespace GraduationProject.Controllers.problems
             var ListProblems = problemRepository.Search(2, new List<string> { "1", problemID, problemName, ProblemSource });
             var model = getAllmodel(ListProblems);
             ViewBag.TotalPageProblem = (model.Count() / 25) + (model.Count() % 25 == 0 ? 0 : 1);
+            if (pagenumber < 0 || pagenumber > ViewBag.TotalPageProblem) pagenumber = 1;
             ViewBag.Pagenum = pagenumber;
             var list = model.ToPagedList(pagenumber, 25);
             return View("Index", list);
@@ -121,6 +124,7 @@ namespace GraduationProject.Controllers.problems
                 s.Language.Contains(ProblemLang)
                 );
             ViewBag.TotalPageProblem = (list.Count() / 25) + (list.Count() % 25 == 0 ? 0 : 1);
+            if (pagenum < 0 || pagenum > ViewBag.TotalPageProblem) pagenum = 1;
             ViewBag.Pagenum = pagenum;
             var model = list.ToPagedList(pagenum, 25).OrderByDescending(s => s.RunID);
             return View("Status", model);

@@ -8,6 +8,7 @@ using GraduationProject.Data.Repositories.Interfaces;
 using GraduationProject.ViewModels.Rank;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using X.PagedList;
 
 namespace GraduationProject.Controllers.Rank
 {
@@ -20,31 +21,56 @@ namespace GraduationProject.Controllers.Rank
             SubmissionRepository = _SubmissionRepository;
             userRepository = _userRepository;
         }
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
+            ViewBag.function = "Index";
+            int pagenumber = page ?? 1;
             ViewData["Countries"] = GetAllCountries();
             IOrderedEnumerable<RankViewModel> list = GetAllUserRank();
-            return View(list);
+            ViewBag.TotalPageProblem = (list.Count() / 25) + (list.Count() % 25 == 0 ? 0 : 1);
+            if (pagenumber < 0 || pagenumber > ViewBag.TotalPageProblem) pagenumber = 1;
+            ViewBag.Pagenum = pagenumber;
+            var newlist = list.ToPagedList(pagenumber, 25);
+            return View(newlist);
         }
-        public ActionResult FilterRanking()
+        public ActionResult FilterRanking(int? page,string Country,string UserName,string BirthYearLowerBound,string BirthYearUpperBound,string RatingLowerBound,string RatingUpperBound)
         {
-            var Country = Request.Form["Country"];
-            var UserName = Request.Form["UserName"];
-            var BirthYearLowerBound = Int32.Parse(Request.Form["BirthYearLowerBound"]);
-            var BirthYearUpperBound = Int32.Parse(Request.Form["BirthYearUpperBound"]);
-            var RatingLowerBound = Int32.Parse(Request.Form["RatingLowerBound"]);
-            var RatingUpperBound = Int32.Parse(Request.Form["RatingUpperBound"]);
+            int pagenum = page ?? 1;
+            ViewBag.function = "Filter";
             ViewData["Countries"] = GetAllCountries();
+            Country = (Country == null ? "" : Country);
+            UserName = (UserName == null ? "" : UserName);
+            BirthYearLowerBound = ((BirthYearLowerBound == null ) ? "" : BirthYearLowerBound);
+            BirthYearUpperBound = ((BirthYearUpperBound == null ) ? "" : BirthYearUpperBound);
+            RatingLowerBound = ((RatingLowerBound == null ) ? "" : RatingLowerBound);
+            RatingUpperBound = ((RatingUpperBound == null ) ? "" : RatingUpperBound);
+
+            var birthYearLowerBound = Int32.Parse(BirthYearLowerBound);
+            var birthYearUpperBound = Int32.Parse(BirthYearUpperBound);
+            var ratingLowerBound = Int32.Parse(RatingLowerBound);
+            var ratingUpperBound = Int32.Parse(RatingUpperBound);
+
+            ViewBag.Country = Country;
+            ViewBag.UserName = UserName;
+            ViewBag.BirthYearLowerBound = BirthYearLowerBound;
+            ViewBag.BirthYearUpperBound = BirthYearUpperBound;
+            ViewBag.RatingLowerBound = RatingLowerBound;
+            ViewBag.RatingUpperBound = RatingUpperBound;
             IOrderedEnumerable<RankViewModel> list = GetAllUserRank();
             var newlist = list.Where(e =>
                 e.Country.Contains(Country)&&
                 (UserName != "" ? e.UserName==UserName:e.UserName.Contains("")) &&
-                e.Birthyear >= BirthYearLowerBound &&
-                e.Birthyear <= BirthYearUpperBound &&
-                e.TotalSolved >= RatingLowerBound &&
-                e.TotalSolved <= RatingUpperBound 
+                e.Birthyear >= birthYearLowerBound &&
+                e.Birthyear <= birthYearUpperBound &&
+                e.TotalSolved >= ratingLowerBound &&
+                e.TotalSolved <= ratingUpperBound 
                 );
-            return View("Index", newlist);
+
+            ViewBag.TotalPageProblem = (newlist.Count() / 25) + (newlist.Count() % 25 == 0 ? 0 : 1);
+            if (pagenum < 0 || pagenum > ViewBag.TotalPageProblem) pagenum = 1;
+            ViewBag.Pagenum = pagenum;
+            var model = newlist.ToPagedList(pagenum, 25);
+            return View("Index", model);
         }
         IOrderedEnumerable<RankViewModel> GetAllUserRank()
         {
