@@ -129,19 +129,63 @@
                 </div>
                 <div aria-label="Page navigation" class="text-center">
                     <ul class="pagination pagination-lg">
-                        <li>
-                            <a href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li>
-                            <a href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
+                        @{
+                            if (ViewBag.Pagenum > 1)
+                            {
+
+                                @if (ViewBag.function == "FilterStatus")
+                                {
+                                    <li>
+                                        <a asp-action="FilterStatus" asp-route-page="@(ViewBag.Pagenum-1)" asp-route-UserName="@ViewBag.username" asp-route-ProblemName="@ViewBag.problemName" asp-route-ProblemSource="@ViewBag.problemSource" asp-route-ProblemResult="@ViewBag.problemResult" asp-route-ProblemLang="@ViewBag.problemLang" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <a asp-action="Status" asp-route-page="@(ViewBag.Pagenum-1)" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                }
+
+                            }
+                            for (int i = 1; i <= ViewBag.TotalPageProblem; i++)
+                            {
+                                if (ViewBag.function == "FilterStatus")
+                                {
+                                    <li><a asp-action="FilterStatus" asp-route-page="@i" asp-route-UserName="@ViewBag.username" asp-route-ProblemName="@ViewBag.problemName" asp-route-ProblemSource="@ViewBag.problemSource" asp-route-ProblemResult="@ViewBag.problemResult" asp-route-ProblemLang="@ViewBag.problemLang">@i</a></li>
+                                }
+                                else
+                                {
+                                    <li><a asp-action="Status" asp-route-page="@i">@i</a></li>
+                                }
+
+                            }
+                            if (ViewBag.Pagenum < ViewBag.TotalPageProblem)
+                            {
+
+                                @if (ViewBag.function == "FilterStatus")
+                                {
+                                    <li>
+                                        <a asp-action="FilterStatus" asp-route-page="@(ViewBag.Pagenum+1)" asp-route-page="@(ViewBag.Pagenum-1)" asp-route-UserName="@ViewBag.username" asp-route-ProblemName="@ViewBag.problemName" asp-route-ProblemSource="@ViewBag.problemSource" asp-route-ProblemResult="@ViewBag.problemResult" asp-route-ProblemLang="@ViewBag.problemLang" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <a asp-action="Status" asp-route-page="@(ViewBag.Pagenum+1)" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                }
+
+                            }
+
+                        }
                     </ul>
                 </div>
             </section>

@@ -541,6 +541,50 @@ header .nav-main .navbar-brand span{
 }
 
 /* End All Contest Page */
+/* Start Show Problem Page */
+.show-problem-page{
+    margin-top: 35px;
+    margin-bottom: 35px;
+}
+.show-problem-page ul.nav{
+    margin-bottom: 40px;
+    font-size: 1.5rem;
+    border: 1px solid #EEE;
+    border-radius: 8px;
+    background-color: #F9F9F9;
+}
+.show-problem-page .problem-info .panel:first-child ul li{
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 1.3rem;
+}
+.show-problem-page .problem-info .panel:first-child ul li span:first-child{
+    font-weight: bold;
+}
+
+.show-problem-page #CodeforcesProblemContent .ttypography{
+    margin: 0 !important;
+}
+.show-problem-page #CodeforcesProblemContent .ttypography .problem-statement{
+    margin-top: 0 !important;
+    display: none;
+}
+.show-problem-page #CodeforcesProblemContent .ttypography .problem-statement div[data-section="problemsection"]{
+    background-color: #EDEDED;
+    border: 1px solid #EEE;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 4px 4px 8px rgba(1, 1, 1, 0.5);
+}
+.show-problem-page #CodeforcesProblemContent .ttypography .problem-statement > div{
+    margin-bottom: 25px;
+}
+.show-problem-page #CodeforcesProblemContent .ttypography .problem-statement .section-title{
+    margin-bottom: 8px;
+    padding-left: 10px;
+}
+
+/* End Show Problem Page */
 /* Start User View Page */
 .main-user-view{
     margin-top: 30px;
