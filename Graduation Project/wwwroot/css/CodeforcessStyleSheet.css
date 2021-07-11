@@ -1,0 +1,671 @@
+@charset "utf-8";
+
+#CodeforcesProblemContent{
+	font-size: 14px;
+}
+#CodeforcesProblemContent pre{
+	background-color: inherit;
+	border: none;
+	border-radius: none;
+}
+#CodeforcesProblemContent div, #CodeforcesProblemContent dl, #CodeforcesProblemContent dt, #CodeforcesProblemContent dd, #CodeforcesProblemContent ul, #CodeforcesProblemContent ol, #CodeforcesProblemContent li, #CodeforcesProblemContent h1, #CodeforcesProblemContent h2, #CodeforcesProblemContent h3, #CodeforcesProblemContent h4, #CodeforcesProblemContent h5, #CodeforcesProblemContent h6, #CodeforcesProblemContent pre, #CodeforcesProblemContent form, #CodeforcesProblemContent fieldset, #CodeforcesProblemContent input, #CodeforcesProblemContent p, #CodeforcesProblemContent blockquote, #CodeforcesProblemContent th, #CodeforcesProblemContent td {
+  margin: 0;
+  padding: 0;
+}
+#CodeforcesProblemContent table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+#CodeforcesProblemContent fieldset, #CodeforcesProblemContent img {
+  border: 0;
+}
+#CodeforcesProblemContent address, #CodeforcesProblemContent caption, #CodeforcesProblemContent cite, #CodeforcesProblemContent code, #CodeforcesProblemContent dfn, #CodeforcesProblemContent em, #CodeforcesProblemContent strong, #CodeforcesProblemContent th, #CodeforcesProblemContent var {
+  font-style: normal;
+  font-weight: 400;
+}
+#CodeforcesProblemContent ol, #CodeforcesProblemContent ul {
+  list-style: none;
+}
+#CodeforcesProblemContent caption, #CodeforcesProblemContent th {
+  text-align: left;
+}
+#CodeforcesProblemContent h1, #CodeforcesProblemContent h2, #CodeforcesProblemContent h3, #CodeforcesProblemContent h4, #CodeforcesProblemContent h5, #CodeforcesProblemContent h6 {
+  font-size: 100%;
+  font-weight: 400;
+}
+#CodeforcesProblemContent q:before, #CodeforcesProblemContent q:after {
+  content: '';
+}
+#CodeforcesProblemContent abbr, #CodeforcesProblemContent acronym {
+  border: 0;
+}
+#CodeforcesProblemContent textarea {
+  margin: 0;
+  padding: 2px;
+}
+#CodeforcesProblemContent a:link {
+  color: #00c;
+}
+#CodeforcesProblemContent body {
+  background: #fff;
+  margin: 3px 8px;
+}
+#CodeforcesProblemContent body, #CodeforcesProblemContent select, #CodeforcesProblemContent input {
+  font-family: verdana, arial, sans-serif;
+}
+#CodeforcesProblemContent body {
+  font-size: 1.4rem;
+}
+#CodeforcesProblemContent h1 {
+  font-size: 1.8em;
+  font-weight: 700;
+}
+#CodeforcesProblemContent h2 {
+  font-size: 1.6em;
+  font-weight: 700;
+}
+#CodeforcesProblemContent h3 {
+  font-size: 1.4em;
+  font-weight: 700;
+}
+#CodeforcesProblemContent h4 {
+  font-size: 1.2em;
+  font-weight: 700;
+}
+#CodeforcesProblemContent h5 {
+  font-size: 1em;
+  font-weight: 700;
+}
+#CodeforcesProblemContent td td, #CodeforcesProblemContent th th, #CodeforcesProblemContent th td, #CodeforcesProblemContent td th {
+  font-size: 100%;
+}
+#CodeforcesProblemContent strong {
+  font-weight: 700;
+}
+#CodeforcesProblemContent em {
+  font-style: italic;
+}
+#CodeforcesProblemContent pre {
+  font-size: 110%;
+}
+#CodeforcesProblemContent form {
+  padding: 0;
+  margin: 0;
+}
+#CodeforcesProblemContent input {
+  padding-left: 1px;
+  padding-right: 1px;
+}
+
+#CodeforcesProblemContent div.ttypography textarea, #CodeforcesProblemContent div.ttypography pre, #CodeforcesProblemContent div.ttypography code, #CodeforcesProblemContent div.ttypography kbd, #CodeforcesProblemContent div.ttypography samp, #CodeforcesProblemContent div.ttypography var, #CodeforcesProblemContent div.ttypography tt {
+  font-family: Consolas, lucida console, andale mono, bitstream vera sans mono, courier new, Courier;
+}
+#CodeforcesProblemContent div.ttypography {
+  font-family: helvetica neue, Helvetica, Arial, sans-serif;
+  base: 14px;
+  line-height: 21px;
+  color: #222;
+  -webkit-text-size-adjust: 100%;
+  font-size: 1.4rem;
+  word-wrap: break-word;
+  margin: 1.5em 0 0 !important;
+}
+#CodeforcesProblemContent div.ttypography .tt {
+  margin: 0 4px;
+  padding: 2px 4px;
+  border: 1px solid #ccc;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-image: initial;
+}
+#CodeforcesProblemContent div.ttypography h1, #CodeforcesProblemContent div.ttypography h2, #CodeforcesProblemContent div.ttypography h3, #CodeforcesProblemContent div.ttypography h4, #CodeforcesProblemContent div.ttypography h5, #CodeforcesProblemContent div.ttypography h6 {
+  font-family: helvetica neue, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  color: #161e21;
+  margin: 0;
+}
+#CodeforcesProblemContent div.ttypography h1 {
+  font-size: 250%;
+  line-height: 0.8571em;
+  margin: 0.4286em 0 0;
+}
+#CodeforcesProblemContent div.ttypography h2 {
+  font-size: 200%;
+  line-height: 1.2em;
+  margin: 0.6em 0 0;
+}
+#CodeforcesProblemContent div.ttypography h3 {
+  font-size: 175%;
+  line-height: 0.8571em;
+  margin: 0.8571em 0 0;
+}
+#CodeforcesProblemContent div.ttypography h4 {
+  font-size: 150%;
+  line-height: 1.25em;
+  margin: 1.25em 0 0;
+}
+#CodeforcesProblemContent div.ttypography h5 {
+  font-size: 135%;
+  line-height: 1.2857em;
+  margin: 1.2857em 0 0;
+}
+#CodeforcesProblemContent div.ttypography h6 {
+  font-weight: 700;
+  font-size: 100%;
+  line-height: 1.5em;
+  margin: 1.5em 0 0;
+}
+#CodeforcesProblemContent div.ttypography ul, #CodeforcesProblemContent div.ttypography ol, #CodeforcesProblemContent div.ttypography dl {
+  font-size: 1em;
+  line-height: 1.5em;
+  margin: 0.5em 0 0 1em;
+}
+#CodeforcesProblemContent div.ttypography ul {
+  list-style-type: disc;
+}
+#CodeforcesProblemContent div.ttypography ol {
+  list-style-type: decimal;
+}
+#CodeforcesProblemContent div.ttypography ul ul {
+  list-style-type: circle;
+  margin-top: 0;
+}
+#CodeforcesProblemContent div.ttypography ol ol {
+  list-style-type: lower-latin;
+  margin-top: 0;
+}
+#CodeforcesProblemContent div.ttypography ol ul {
+  list-style-type: circle;
+  margin-top: 0;
+}
+#CodeforcesProblemContent div.ttypography li {
+  font-size: 1em;
+  line-height: 1.5em;
+  margin-left: 0.8em;
+}
+#CodeforcesProblemContent div.ttypography dt {
+  font-weight: 700;
+}
+#CodeforcesProblemContent div.ttypography dd {
+  margin: 0 0 1.5em 0.8em;
+}
+#CodeforcesProblemContent div.ttypography p:not(:first-child) {
+  margin: 1.5em 0 0;
+}
+#CodeforcesProblemContent div.ttypography p {
+  font-size: 1em;
+  line-height: 1.4em;
+}
+#CodeforcesProblemContent div.ttypography blockquote, #CodeforcesProblemContent div.ttypography cite, #CodeforcesProblemContent div.ttypography q {
+  font-family: Georgia, times new roman, Times, serif;
+  font-style: italic;
+}
+#CodeforcesProblemContent div.ttypography blockquote {
+  margin: 1.5em 0 0 1.5em;
+  color: #666;
+}
+#CodeforcesProblemContent div.ttypography strong, #CodeforcesProblemContent div.ttypography b {
+  font-weight: 700;
+}
+#CodeforcesProblemContent div.ttypography em, #CodeforcesProblemContent div.ttypography i {
+  font-style: italic;
+}
+#CodeforcesProblemContent div.ttypography big {
+  font-size: 116.667%;
+}
+#CodeforcesProblemContent div.ttypography small {
+  font-size: 85.71%;
+}
+#CodeforcesProblemContent div.ttypography pre, #CodeforcesProblemContent div.ttypography code, #CodeforcesProblemContent div.ttypography kbd, #CodeforcesProblemContent div.ttypography tt, #CodeforcesProblemContent div.ttypography samp, #CodeforcesProblemContent div.ttypography var {
+  font-size: 100%;
+}
+#CodeforcesProblemContent div.ttypography pre {
+  line-height: 1.5em;
+  margin: 1.5em 0 0;
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+#CodeforcesProblemContent div.ttypography pre, #CodeforcesProblemContent div.ttypography code {
+  color: #800;
+}
+#CodeforcesProblemContent div.ttypography pre.lstlisting {
+  background-color: #eff0f1;
+  margin: 0.75em 0;
+}
+#CodeforcesProblemContent div.ttypography kbd, #CodeforcesProblemContent div.ttypography samp, #CodeforcesProblemContent div.ttypography var, #CodeforcesProblemContent div.ttypography tt {
+  color: #666;
+  font-weight: 700;
+}
+#CodeforcesProblemContent div.ttypography var, #CodeforcesProblemContent div.ttypography dfn {
+  font-style: italic;
+}
+#CodeforcesProblemContent div.ttypography acronym, #CodeforcesProblemContent div.ttypography abbr {
+  border-bottom: 1px #aaa dotted;
+  font-variant: small-caps;
+  letter-spacing: 0.07em;
+  cursor: help;
+}
+#CodeforcesProblemContent div.ttypography sub, #CodeforcesProblemContent div.ttypography sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+#CodeforcesProblemContent div.ttypography sup {
+  top: -0.5em;
+}
+#CodeforcesProblemContent div.ttypography sub {
+  bottom: -0.25em;
+}
+#CodeforcesProblemContent div.ttypography mark {
+  background: #ff0;
+  color: #000;
+}
+#CodeforcesProblemContent div.ttypography hr {
+  color: #fff;
+  background: 0 0;
+  margin: 0 0 0.75em;
+  padding: 0 0 0.75em;
+  border: 0;
+  border-bottom: 1px #eee solid;
+}
+#CodeforcesProblemContent div.ttypography a {
+  color: #4d87c7;
+  background: 0 0;
+  text-decoration: none;
+}
+#CodeforcesProblemContent div.ttypography a:active {
+  outline: none;
+}
+#CodeforcesProblemContent div.ttypography a:hover, #CodeforcesProblemContent div.ttypography a:focus {
+  background-color: #800;
+  color: #fff;
+  text-decoration: none;
+}
+#CodeforcesProblemContent div.ttypography img, #CodeforcesProblemContent div.ttypography figure {
+  margin: 0;
+}
+#CodeforcesProblemContent div.ttypography .flexible {
+  margin-top: 1.5em;
+  max-width: 100%;
+}
+#CodeforcesProblemContent div.ttypography .bordered {
+  margin-top: 1.5em;
+  border: 2px #eee solid;
+  border: 2px #fff solid;
+  -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+}
+#CodeforcesProblemContent div.ttypography table {
+  border-collapse: collapse;
+  margin: 1.3571em 0 0;
+  color: #222;
+  border-top: 1px #ccc solid;
+  border-bottom: 1px #ccc solid;
+}
+#CodeforcesProblemContent div.ttypography table.narrow {
+  margin: 1.4286em 0 0;
+}
+#CodeforcesProblemContent div.ttypography table.narrow th, #CodeforcesProblemContent div.ttypography table.narrow td {
+  padding: 0 0.5em;
+  line-height: 1.4286em;
+}
+#CodeforcesProblemContent div.ttypography table.bordertable {
+  border: 1px #ccc solid;
+}
+#CodeforcesProblemContent div.ttypography table caption {
+  font-variant: small-caps;
+}
+#CodeforcesProblemContent div.ttypography th, #CodeforcesProblemContent div.ttypography td {
+  line-height: 1.5em;
+  vertical-align: top;
+  padding: 0.7143em 0.5em;
+}
+#CodeforcesProblemContent div.ttypography th *:first-child, #CodeforcesProblemContent td *:first-child {
+  margin-top: 0;
+}
+#CodeforcesProblemContent div.ttypography th.nowrap, #CodeforcesProblemContent div.ttypography td.nowrap {
+  white-space: nowrap;
+}
+#CodeforcesProblemContent div.ttypography thead th {
+  text-align: left;
+  color: #000;
+  border-bottom: 2px #000 solid;
+  font-weight: 700;
+}
+#CodeforcesProblemContent div.ttypography .bordertable thead th {
+  background: #e0e0e0;
+  border-right: 1px #ccc solid;
+  border-bottom: 1px #ccc solid;
+  font-weight: 700;
+}
+#CodeforcesProblemContent div.ttypography .bordertable tbody th[scope=row] {
+  background: #f0f0f0;
+}
+#CodeforcesProblemContent div.ttypography tbody th {
+  text-align: left;
+  border-top: 1px solid #ccc;
+  text-align: left;
+  font-weight: 700;
+}
+#CodeforcesProblemContent div.ttypography .bordertable tbody th {
+  border-right: 1px solid #ccc;
+  font-weight: 700;
+}
+#CodeforcesProblemContent div.ttypography tbody td {
+  text-align: left;
+  border-top: 1px solid #ccc;
+}
+#CodeforcesProblemContent div.ttypography .bordertable tbody td {
+  border-right: 1px solid #ccc;
+}
+#CodeforcesProblemContent div.ttypography tbody tr:hover th, #CodeforcesProblemContent div.ttypography tbody tr:hover td {
+  background: #f8f8f8;
+}
+#CodeforcesProblemContent div.ttypography pre code {
+  font-size: 95%;
+  position: relative;
+}
+#CodeforcesProblemContent div.ttypography .MathJax {
+  color: #000 !important;
+}
+
+
+@media print {
+  #CodeforcesProblemContent div.print-content article.node .node-blog .clearfix div.item-body p a {
+    display: none;
+  }
+  #CodeforcesProblemContent .compact-problemset div.ttypography {
+    margin: 0 !important;
+  }
+  #CodeforcesProblemContent .compact-problemset .problem-statement p {
+    margin-bottom: 0.75em !important;
+    page-break-inside: avoid;
+  }
+  #CodeforcesProblemContent .compact-problemset .problem-frames {
+    column-count: 2;
+  }
+  #CodeforcesProblemContent .compact-problemset .problem-statement .input, #CodeforcesProblemContent .compact-problemset .problem-statement .output {
+    page-break-inside: avoid;
+  }
+  #CodeforcesProblemContent .compact-problemset .problem-statement .output {
+    page-break-inside: avoid;
+  }
+  #CodeforcesProblemContent .compact-problemset .problem-statement {
+    margin: 0.25em;
+    font-family: helvetica neue, Helvetica, Arial, sans-serif;
+    line-height: 1.45em;
+    font-size: 1.4rem;
+  }
+  #CodeforcesProblemContent .compact-problemset #header {
+    display: none;
+  }
+  #CodeforcesProblemContent .compact-problemset .problem-statement .time-limit, #CodeforcesProblemContent .compact-problemset .problem-statement .memory-limit {
+    display: inline;
+  }
+  #CodeforcesProblemContent .compact-problemset .problem-statement .time-limit::after {
+    content: ", ";
+  }
+  #CodeforcesProblemContent .compact-problemset .problem-statement .property-title {
+    display: none;
+  }
+  #CodeforcesProblemContent .compact-problemset .problem-statement .input-file, #CodeforcesProblemContent .compact-problemset .problem-statement .output-file {
+    display: none;
+  }
+  #CodeforcesProblemContent .compact-problemset .problem-statement .sample-tests .section-title, #CodeforcesProblemContent .compact-problemset .problem-statement .note .section-title {
+    display: none;
+  }
+  #CodeforcesProblemContent .compact-problemset .input-output-copier {
+    display: none;
+  }
+}
+#CodeforcesProblemContent .problem-statement {
+  margin: 0.5em;
+  font-family: helvetica neue, Helvetica, Arial, sans-serif;
+  line-height: 1.5em;
+  font-size: 1.4rem;
+}
+#CodeforcesProblemContent .problem-statement .epigraph-text {
+  margin-left: 67%;
+  width: 33%;
+}
+#CodeforcesProblemContent .problem-statement .epigraph-source {
+  border-top: 1px solid #888;
+  text-align: right;
+}
+#CodeforcesProblemContent .problem-statement p {
+  margin: 0 0 1em !important;
+}
+#CodeforcesProblemContent .problem-statement .header {
+  margin-bottom: 1em;
+  text-align: center;
+}
+#CodeforcesProblemContent .problem-statement .header .title {
+  font-size: 150%;
+  margin-bottom: 0.5em;
+}
+#CodeforcesProblemContent .problem-statement .header .title {
+  font-size: 150%;
+  font-family: helvetica neue, Helvetica, Arial, sans-serif;
+}
+#CodeforcesProblemContent .problem-statement ul {
+  list-style: disc;
+  list-style-type: disc;
+  list-style-position: outside;
+  margin-top: 1em !important;
+  margin-bottom: 1em !important;
+}
+#CodeforcesProblemContent .problem-statement ol {
+  list-style: decimal;
+  list-style-type: decimal;
+  list-style-position: outside;
+  margin-top: 1em !important;
+  margin-bottom: 1em !important;
+}
+#CodeforcesProblemContent .problem-statement li {
+  line-height: 1.5em;
+  margin-left: 3em;
+}
+#CodeforcesProblemContent .problem-statement .property-title {
+  display: inline;
+  padding-right: 4px;
+}
+#CodeforcesProblemContent .problem-statement .property-title:after {
+  content: ":";
+}
+#CodeforcesProblemContent .problem-statement .time-limit, #CodeforcesProblemContent .problem-statement .memory-limit, #CodeforcesProblemContent .problem-statement .input-file, #CodeforcesProblemContent .problem-statement .output-file {
+  margin: 0 auto;
+}
+#CodeforcesProblemContent .problem-statement .legend {
+  margin-bottom: 1em;
+}
+#CodeforcesProblemContent .problem-statement .section-title {
+  font-family: helvetica neue, Helvetica, Arial, sans-serif;
+  font-size: 115%;
+  font-weight: 700;
+}
+#CodeforcesProblemContent .problem-statement .output-specification {
+  margin-bottom: 1em;
+}
+#CodeforcesProblemContent .problem-statement .sample-tests .input, #CodeforcesProblemContent .problem-statement .sample-tests .output {
+  border: 1px solid #888;
+}
+#CodeforcesProblemContent .problem-statement .sample-tests .output {
+  margin-bottom: 1em;
+  position: relative;
+  top: -1px;
+}
+#CodeforcesProblemContent .problem-statement .sample-tests pre {
+  line-height: 1.25em;
+  padding: 0.25em;
+  margin: 0;
+  background-color: #efefef;
+}
+#CodeforcesProblemContent .problem-statement .sample-tests {
+  font-family: Consolas, lucida console, andale mono, bitstream vera sans mono, courier new, Courier;
+  font-size: 0.9em;
+}
+#CodeforcesProblemContent .problem-statement .sample-tests .title {
+  font-size: 1.3em;
+  padding: 0.25em;
+  border-bottom: 1px solid #888;
+  text-transform: lowercase;
+  font-weight: 700;
+}
+#CodeforcesProblemContent .problem-statement .test {
+  margin-bottom: 3em;
+}
+#CodeforcesProblemContent .problem-statement .test-title {
+  font-weight: 700;
+}
+#CodeforcesProblemContent .problem-statement .test-stem, #CodeforcesProblemContent .problem-statement .test-explanation-note {
+  margin: 0.5em 0;
+}
+#CodeforcesProblemContent .problem-statement input[type=submit] {
+  margin-top: 0.5em;
+  margin-right: 1em;
+  padding: 0 1em;
+}
+#CodeforcesProblemContent .problemindexholder {
+  position: relative;
+}
+#CodeforcesProblemContent div .problem-statement-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #000;
+  z-index: 50;
+  opacity: 0.2;
+}
+#CodeforcesProblemContent .load-answers-waiting-indicator {
+  position: absolute;
+  top: 49%;
+  left: 49%;
+}
+#CodeforcesProblemContent .problem-statement input[type=radio] {
+  margin-right: 0.5em;
+}
+#CodeforcesProblemContent .problem-statement input[type=checkbox] {
+  margin-right: 0.5em;
+}
+#CodeforcesProblemContent .problem-statement input[type=text] {
+  width: 20em;
+}
+#CodeforcesProblemContent .problem-statement textarea {
+  width: 20em;
+  height: 7em;
+}
+#CodeforcesProblemContent .problem-statement .test-form {
+  line-height: 1.75em;
+}
+#CodeforcesProblemContent .problem-statement .test-form {
+  line-height: 1.75em;
+}
+#CodeforcesProblemContent .tex-formula {
+  font-family: times new roman, sans-serif;
+  vertical-align: middle;
+  margin: 0;
+  border: medium;
+  position: relative;
+  bottom: 2px;
+}
+#CodeforcesProblemContent .tex-span {
+  font-size: 125%;
+  font-family: times new roman, sans-serif;
+  white-space: nowrap;
+}
+#CodeforcesProblemContent .tex-font-size-tiny {
+  font-size: 70%;
+}
+#CodeforcesProblemContent .tex-font-size-script {
+  font-size: 75%;
+}
+#CodeforcesProblemContent .tex-font-size-footnotes {
+  font-size: 85%;
+}
+#CodeforcesProblemContent .tex-font-size-small {
+  font-size: 85%;
+}
+#CodeforcesProblemContent .tex-font-size-normal {
+  font-size: 100%;
+}
+#CodeforcesProblemContent .tex-font-size-large-1 {
+  font-size: 115%;
+}
+#CodeforcesProblemContent .tex-font-size-large-2 {
+  font-size: 130%;
+}
+#CodeforcesProblemContent .tex-font-size-large-3 {
+  font-size: 145%;
+}
+#CodeforcesProblemContent .tex-font-size-huge-1 {
+  font-size: 175%;
+}
+#CodeforcesProblemContent .tex-font-size-huge-2 {
+  font-size: 200%;
+}
+#CodeforcesProblemContent .tex-font-style-sf {
+  font-family: helvetica neue, Helvetica, Arial, sans-serif;
+}
+#CodeforcesProblemContent .tex-font-style-tt {
+  font-size: 110%;
+  font-family: courier new, monospace;
+}
+#CodeforcesProblemContent .tex-font-style-bf {
+  font-weight: 700;
+}
+#CodeforcesProblemContent .tex-font-style-it {
+  font-style: italic;
+}
+#CodeforcesProblemContent .tex-font-style-sl {
+  font-style: italic;
+}
+#CodeforcesProblemContent .tex-font-style-sc {
+  text-transform: uppercase;
+}
+#CodeforcesProblemContent .tex-font-style-striked {
+  text-decoration: line-through;
+}
+#CodeforcesProblemContent .tex-font-style-underline {
+  text-decoration: underline;
+}
+#CodeforcesProblemContent .tex-graphics {
+  display: block;
+}
+#CodeforcesProblemContent .tex-font-style-part {
+  font-size: 187.5%;
+  font-weight: 700;
+  font-family: Tahoma, Arial, Helvetica, sans-serif;
+}
+#CodeforcesProblemContent .tex-font-style-chapter {
+  font-size: 162.5%;
+  font-weight: 700;
+  font-family: Tahoma, Arial, Helvetica, sans-serif;
+}
+#CodeforcesProblemContent .tex-font-style-section {
+  font-size: 137.5%;
+  font-weight: 700;
+}
+#CodeforcesProblemContent .tex-font-style-subsection {
+  font-size: 125%;
+  font-weight: 700;
+}
+#CodeforcesProblemContent .tex-font-style-subsubsection {
+  font-size: 112.5%;
+  font-weight: 700;
+}
+#CodeforcesProblemContent .tex-font-style-paragraph {
+  font-size: 100%;
+  font-weight: 700;
+}
+#CodeforcesProblemContent .tex-font-style-subparagraph {
+  font-size: 100%;
+  font-style: italic;
+}
+

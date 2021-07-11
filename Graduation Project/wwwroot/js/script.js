@@ -1,9 +1,4 @@
 
-$(document).ready(function(){
-    'use strict';
-        
-});
-
 function Main_Rule(){
     /*
      Favorite Item [ select and unselect favorite items]
@@ -352,11 +347,60 @@ function User_View_Page(){
         Flib_Status_Submision(URL, SubID);
         
     });
-
-    
-    
     
 }
+
+
+function Divide_And_Merge_Codeforcess_Problem(){
+    if($('#CodeforcesProblemContent').length < 1)
+        return;
+
+    let ProblmeStatment = $('#CodeforcesProblemContent .problem-statement');
+   
+    // Edit Problem Name
+    var MainProblemTitle = $('#CodeforcesProblemContent .header .title');
+    var GetIndexOfDot = MainProblemTitle.text().indexOf('.');
+    var NewTitleText = MainProblemTitle.text().substr(GetIndexOfDot + 1).trim();
+    MainProblemTitle.text(NewTitleText);
+    
+    
+    // Edit Sections 
+    let ProbelmSections = ProblmeStatment.children();
+    
+    ProbelmSections.each(function(idx){
+        var Section = $(ProbelmSections[idx]);
+        if(idx > 0){
+            var SectionTitle = Section.children('.section-title');
+            if(SectionTitle.length > 0){
+                var InsertDiv = $('<div />');
+                InsertDiv.attr('data-section', 'problemsection');
+                InsertDiv.append(SectionTitle.nextAll()); 
+                InsertDiv.insertAfter(SectionTitle);
+            }else{
+                Section.attr('data-section', 'problemsection');
+            }
+        }
+    });
+    
+    
+    function SetInfo(Get, Set){
+       var Element = MainProblemTitle.siblings(Get);
+        var Text = Element.clone().children().remove().end().text();
+        $('.show-problem-page .all-data-problem .problem-info ' + Set).text(Text);
+        Element.remove(); 
+    }
+    
+    // Edit Info
+    SetInfo('.time-limit', '[data-refere="TimeLimit"]');
+    SetInfo('.memory-limit', '[data-refere="MemoryLimit"]');
+    SetInfo('.input-file', '[data-refere="InputFile"]');
+    SetInfo('.output-file', '[data-refere="OutputFile"]');
+    
+    
+    ProblmeStatment.css('display', 'block');
+   
+}
+
 $(function(){
     
     'use strict';
@@ -401,4 +445,7 @@ $(function(){
     User_View_Page();
     /* End User View Page */
     
+    /* Start Codeforces Edit Problem */
+    Divide_And_Merge_Codeforcess_Problem();
+    /* End Codeforces Edit Problem */
 });
