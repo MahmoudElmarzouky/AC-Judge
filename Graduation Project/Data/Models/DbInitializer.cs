@@ -17,6 +17,7 @@ namespace GraduationProject.Data.Models
                 serviceProvider.GetRequiredService<EntitiesContext>();
 
 
+
             //////////////// Add Problem ////////////////////////
             //GetAllProblem();
             //return;
@@ -52,13 +53,16 @@ namespace GraduationProject.Data.Models
                         int lim = 1 + rand.Next(3); 
                         for (int i = 0; i < lim; i++)
                         {
-                            AddSubmission(0, p.ProblemId, u.UserId, verdicts[i], code);
-                       
+                            AddSubmission(null, p.ProblemId, u.UserId, verdicts[i], code);
+
                         }
+                        
                     }
 
                 }
-                dbcontext.SaveChanges();
+            dbcontext.SaveChanges(); 
+            
+
 
         }
         private static void GetAllProblem()
@@ -113,7 +117,7 @@ namespace GraduationProject.Data.Models
 
             }
         }
-        private static void AddSubmission(int contestId, int problemId, int userId, string verdict, string code)
+        private static void AddSubmission(int? contestId, int problemId, int userId, string verdict, string code)
         {
             var sub = new Submission
             {
@@ -130,7 +134,7 @@ namespace GraduationProject.Data.Models
                 TimeConsumeMillis = 3055
             };
             dbcontext.Submissions.Add(sub);
-            
+
         }
         private static void LoadCurrentContest(Contest contest)
         {

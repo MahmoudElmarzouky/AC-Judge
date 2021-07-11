@@ -1,35 +1,86 @@
 ﻿@model GraduationProject.ViewModels.ContestViewsModel.StandingViewModel
-    <div class="center-block">
-        <table class="table table-bordered text-center">
-            <thead class="thead-dark">
+<div class="center-block">
+    <table class="table table-bordered text-center">
+        <thead class="thead-dark">
+            <tr>
+                <th>#</th>
+                <th>UserName</th>
+                <th>Penalty</th>
+                <th>=</th>
+                @for (int i = 0; i < Model.NumberOfProblems; i++)
+                {
+                    <th> @Convert.ToChar(i + 'A') </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @{ int Rank = 0; }
+            @foreach (var currentUser in Model.users)
+            {
+                Rank++;
                 <tr>
-                    <th>UserName</th>
-                    <th>Penality</th>
-                    <th>NumberOfSolvedProblems</th> 
-                    @for(int i = 1; i < Model.NumberOfProblems; i++)
+                    <td>@Rank</td>
+                    <td>@currentUser.userName</td>
+                    <td>@currentUser.TotalPenality</td>
+                    <td>@currentUser.NumberOfSolvedProblems</td>
+                    @{ int i = -1;}
+                    @foreach (var problem in currentUser.UserPoblemsRaw)
                     {
-                        <th> i </th>
+                        i++;
+                        <td class="@problem.td_className">
+                            @if (problem.Solved)
+                            {
+                                int FirstSubmissionId = currentUser.UserPoblemsRaw[i].Submissions[0].SubmissionId;
+                                <a asp-action="GetTextSubmission" asp-controller="Problem" data-user="@currentUser.userName" data-id="@FirstSubmissionId" data-target="#ShowSubmisionStatusModal"> @problem.NumberOfSubmissions </a>
+                            }
+                        </td>
                     }
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var currentUser in Model.users)
-                {
-                    <tr>
-                        <td>@currentUser.userName</td>
-                        <td>@currentUser.TotalPenality</td>
-                        <td>@currentUser.NumberOfSolvedProblems</td>
-                        @foreach (var problem in currentUser.UserPoblemsRaw)
-                        {
-                         <td class="@problem.td_className">
-                             @if (problem.Solved) 
-                             {
-                               @problem.NumberOfSubmissions
-                             }
-                         </td>
-                        }
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+            }
+        </tbody>
+    </table>
+    <section class="modal fade submision-modal" id="ShowSubmisionStatusModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="model-header-flex">
+                        <h4 class="modal-title">
+                            Solution By <span>SuperMari000</span>
+                        </h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th class="text-center">Problem</th>
+                                    <th class="text-center">Verdict</th>
+                                    <th class="text-center">Time</th>
+                                    <th class="text-center">Memory</th>
+                                    <th class="text-center">Language</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td class=""></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="submision">
+                        <button class="btn btn-secondary">Copy</button>
+                        <pre class="prettyprint"></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

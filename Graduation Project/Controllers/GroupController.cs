@@ -20,6 +20,7 @@ namespace GraduationProject.Controllers.Group
         private readonly IGroupRepository<GraduationProject.Data.Models.Group> groups;
         private readonly IUserRepository<User> users;
         private readonly User user;
+        private readonly int NumberOfItemsForPage = 2; 
        
 
         public GroupController(IGroupRepository<GraduationProject.Data.Models.Group> groups, IUserRepository<User> Userrepository, IHttpContextAccessor httpContextAccessor)
@@ -34,36 +35,17 @@ namespace GraduationProject.Controllers.Group
         
         public ActionResult Index()
         {
-            var list = new List<ViewGroupModel>();
-            int userId = user.UserId;
-            int NumberOfGroupInvitations = 0; 
-            foreach (var item in groups.List())
-            {
-                var rel = item.UserGroup.FirstOrDefault(u=>u.UserId == userId);
-                if ((item.Visable == true) || (rel != null))
-                list.Add(getViewModelFromGroup(item));
-
-                if (rel != null && rel.UserRole == "Invite")
-                    NumberOfGroupInvitations++; 
-            }
-            ViewBag.NumberOfGroupInvitations = NumberOfGroupInvitations;
+            var list = getPageItems(getAllowedGroups(), 1); 
             return View(list);
+        }
+        public ActionResult Page(int PageNumber)
+        {
+            var list = getPageItems(getAllowedGroups(), PageNumber);
+            return View("Index", list);
         }
         public ActionResult MyGroups()
         {
-            int id = user.UserId;
-            var myGroups = groups.MyGroups(id);
-            var list = new List<ViewGroupModel>();
-            int NumberOfGroupInvitations = 0;
-            foreach (var item in groups.List())
-            {
-                var rel = item.UserGroup.FirstOrDefault(u => u.UserId == user.UserId);
-                if (rel != null && rel.UserRole == "Invite")
-                    NumberOfGroupInvitations++;
-            }
-            foreach (var item in myGroups)
-                list.Add(getViewModelFromGroup(item));
-            ViewBag.NumberOfGroupInvitations = NumberOfGroupInvitations;
+            var list = getPageItems(getAllowedGroups(true), 1); 
             return View("Index", list);
         }
 
@@ -347,6 +329,7 @@ namespace GraduationProject.Controllers.Group
                 if (rel != null && rel.UserRole == "Invite")
                 list.Add(getViewModelFromGroup(item));
             }
+            list = getPageItems(list, 1); 
             return View("Index", list);
         }
 
@@ -406,6 +389,38 @@ namespace GraduationProject.Controllers.Group
             {
                 return new ViewGroupModel();
             }
+        }
+        private List<ViewGroupModel> getPageItems(List<ViewGroupModel> list, int PageNumber)
+        {
+            if (PageNumber < 1 || PageNumber > (list.Count + NumberOfItemsForPage - 1) / NumberOfItemsForPage)
+                PageNumber = 1;
+            ViewBag.NumberOfPages = (list.Count+NumberOfItemsForPage-1)/NumberOfItemsForPage;
+            ViewBag.PageNumber = PageNumber; 
+            int startIndex = (PageNumber - 1) * NumberOfItemsForPage;
+            int endIndex = PageNumber * NumberOfItemsForPage;
+            if (list.Count > endIndex)
+                list.RemoveRange(endIndex, list.Count - endIndex);
+            if (list.Count > NumberOfItemsForPage)
+                list.RemoveRange(0, list.Count - NumberOfItemsForPage);
+            return list; 
+        }
+        private List<ViewGroupModel> getAllowedGroups(Boolean Mine = false)
+        {
+            var list = new List<ViewGroupModel>();
+            int userId = user.UserId;
+            int NumberOfGroupInvitations = 0;
+            var Groups = Mine ? groups.MyGroups(userId) : groups.List(); 
+            foreach (var item in Groups)
+            {
+                var rel = item.UserGroup.FirstOrDefault(u => u.UserId == userId);
+                if ((item.Visable == true) || (rel != null))
+                    list.Add(getViewModelFromGroup(item));
+
+                if (rel != null && rel.UserRole == "Invite")
+                    NumberOfGroupInvitations++;
+            }
+            ViewBag.NumberOfGroupInvitations = NumberOfGroupInvitations;
+            return list; 
         }
     }
 }

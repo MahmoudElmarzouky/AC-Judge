@@ -49,7 +49,7 @@ namespace GraduationProject.ViewModels.ContestViewsModel
         {
             UserPoblemsRaw = new List<Data>(); 
         }
-        public int NumberOfSolvedProblems { get; set; }
+        public int NumberOfSolvedProblems { get; set; } = 0; 
         public int TotalPenality { get {
                 return UserPoblemsRaw.Where(u => u.Solved == true).Sum(u => u.problemPenality); 
             } set { } }

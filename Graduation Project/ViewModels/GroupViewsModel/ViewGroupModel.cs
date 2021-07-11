@@ -7,6 +7,7 @@ using GraduationProject.ViewModels.GroupViewsModel;
 
 namespace GraduationProject.ViewModels
 {
+
     public class ViewGroupModel
     {
         public ViewGroupModel()
@@ -61,6 +62,8 @@ namespace GraduationProject.ViewModels
                 int mx = UserGroup.Select(u => u.User.TotalNumberOfSolvedProblems).Max();
                 return UserGroup.FirstOrDefault(u => u.User.TotalNumberOfSolvedProblems == mx).User.FirstName;
             } set { } }
+
+
 
     }
 }
