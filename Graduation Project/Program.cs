@@ -1,6 +1,7 @@
 using GraduationProject.Data;
 using GraduationProject.Data.Models;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -17,14 +18,25 @@ namespace GraduationProject
         public static void Main(string[] args)
         {
             var webHost = CreateHostBuilder(args).Build();
-            //RunMigrations(webHost); 
+            RunMigrations(webHost);
             webHost.Run();
         }
         private static void RunMigrations(IHost webHost)
         {
-            using var scope = webHost.Services.CreateScope();
-            var db = scope.ServiceProvider.GetRequiredService<EntitiesContext>();
-            DbInitializer.Seed(scope.ServiceProvider);
+            try
+            {
+                using (var scope = webHost.Services.CreateScope())
+                {
+                    var db = scope.ServiceProvider.GetRequiredService<EntitiesContext>();
+                    db.Database.Migrate();
+                }
+            }
+            catch
+            {
+                return;
+            }
+
+
         }
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
