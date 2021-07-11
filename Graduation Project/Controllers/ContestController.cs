@@ -254,15 +254,19 @@ namespace GraduationProject.Controllers.Contest
             int NumberOfProblems = contest.ContestProblems.Count();
             int NumberOfUsers = usersInContest.Count();
             var problemsInContest = contest.ContestProblems.ToList().OrderBy(u => u.order);
-            var EmptyUserProblesRaw = new List<GraduationProject.ViewModels.ContestViewsModel.Data>(); 
-            foreach(var p in problemsInContest)
-            {
-                EmptyUserProblesRaw.Add(new ViewModels.ContestViewsModel.Data { problemId = p.problemId, Solved = false }); 
-            }
+            
             IList<UserInStanding> users = new List<UserInStanding>();
+           
             
             foreach (var u in usersInContest)
-                users.Add(new UserInStanding { userId = u.UserId, userName = u.UserName, UserPoblemsRaw = EmptyUserProblesRaw });
+            {
+                var EmptyUserProblemsRaw = new List<GraduationProject.ViewModels.ContestViewsModel.Data>();
+                foreach (var p in problemsInContest)
+                {
+                    EmptyUserProblemsRaw.Add(new ViewModels.ContestViewsModel.Data { problemId = p.problemId, Solved = false });
+                }
+                users.Add(new UserInStanding { userId = u.UserId, userName = u.UserName, UserPoblemsRaw = EmptyUserProblemsRaw });
+            }
             var submissions = contest.Submissions.ToList().OrderBy(u=>u.CreationTime);
             Boolean FirstAccepted = false; 
             foreach(var submission in submissions)
@@ -279,9 +283,9 @@ namespace GraduationProject.Controllers.Contest
                     continue;
                 users[currentUserIndex].UserPoblemsRaw[currentProblemIndex].NumberOfSubmissions++;
                 users[currentUserIndex].UserPoblemsRaw[currentProblemIndex].Submissions.Add(submission);
-                users[currentUserIndex].UserPoblemsRaw[currentProblemIndex].Solved = (submissionVerdict == "Accept" ? true : false); 
                 if (submissionVerdict == "Accepted")
                 {
+                    users[currentUserIndex].NumberOfSolvedProblems++; 
                     users[currentUserIndex].UserPoblemsRaw[currentProblemIndex].problemPenality = 
                         (int)submission.CreationTime.Subtract(contest.contestStartTime).TotalMinutes
                         + currentNumberOfSubmissions * PenalityForWrongAnswer;
@@ -293,12 +297,13 @@ namespace GraduationProject.Controllers.Contest
                     }
                 }
             }
+
             return new StandingViewModel
             {
                 contestId = contestId,
-                NumberOfProblems = NumberOfProblems, 
-                NumberOfUsers = NumberOfUsers, 
-                users = users
+                NumberOfProblems = NumberOfProblems,
+                NumberOfUsers = NumberOfUsers,
+                users = users.OrderBy(u => -u.NumberOfSolvedProblems).ThenBy(u => u.TotalPenality).ToList() 
             };
         }
         private CreateContestModel CreateContestView()
