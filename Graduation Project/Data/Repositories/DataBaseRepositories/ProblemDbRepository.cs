@@ -32,6 +32,7 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             var problem = dbcontext.Problems
                 .Include(p => p.Submissions)
                 .Include(pu => pu.ProblemUsers)
+                .Include(pu => pu.ProblemTag)
                 .FirstOrDefault(problem => problem.ProblemId == Id);
             return problem;
         }
@@ -41,6 +42,7 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             return dbcontext.Problems
                 .Include(p => p.Submissions)
                 .Include(pu => pu.ProblemUsers)
+                .Include(pu => pu.ProblemTag)
                 .ToList();
         }
 
@@ -91,7 +93,11 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
         {
             ProblemSourceId = ProblemSourceId.ToUpper();
 
-            var problem = dbcontext.Problems.FirstOrDefault(u => u.problemSourceId == ProblemSourceId && u.ProblemSource == OnlineJudge);
+            var problem = dbcontext.Problems
+                .Include(p => p.Submissions)
+                .Include(pu => pu.ProblemUsers)
+                .Include(pu => pu.ProblemTag)
+                .FirstOrDefault(u => u.problemSourceId == ProblemSourceId && u.ProblemSource == OnlineJudge);
             if (problem == null)
             {
                 if (OnlineJudge == "CodeForces")
