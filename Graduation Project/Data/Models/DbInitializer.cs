@@ -18,13 +18,13 @@ namespace GraduationProject.Data.Models
 
 
             //////////////// Add Problem ////////////////////////
-            GetAllProblem();
-            return;
+            //GetAllProblem();
+            //return;
             //////////////  End Add problem /////////////////
             var d = DateTime.Now;
 
-            dbcontext.Submissions.RemoveRange(dbcontext.Submissions); 
-            dbcontext.SaveChanges();
+            //dbcontext.Submissions.RemoveRange(dbcontext.Submissions); 
+            //dbcontext.SaveChanges();
 
             string code = "#include<iostream>;" +
                 "using namespace std;" +
@@ -53,13 +53,13 @@ namespace GraduationProject.Data.Models
                         for (int i = 0; i < lim; i++)
                         {
                             AddSubmission(0, p.ProblemId, u.UserId, verdicts[i], code);
-
+                       
                         }
-                        dbcontext.SaveChanges(); 
                     }
 
                 }
-            
+                dbcontext.SaveChanges();
+
         }
         private static void GetAllProblem()
         {
@@ -117,20 +117,20 @@ namespace GraduationProject.Data.Models
         {
             var sub = new Submission
             {
-                contestId = contestId,
+                contestId = null,
                 CreationTime = DateTime.Now,
-                InContest = true,
+                InContest = false,
                 ProblemId = problemId,
                 MemoryConsumeBytes = 200,
                 ProgrammingLanguage = "C++",
-                Visable = true,
+                Visable = false,
                 userId = userId,
                 Verdict = verdict,
                 SubmissionText = code,
                 TimeConsumeMillis = 3055
             };
             dbcontext.Submissions.Add(sub);
-            dbcontext.SaveChanges(); 
+            
         }
         private static void LoadCurrentContest(Contest contest)
         {

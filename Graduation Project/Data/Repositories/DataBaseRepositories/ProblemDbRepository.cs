@@ -68,6 +68,9 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
                 string problemID = list[1];
                 string problemName = list[2];
                 string ProblemSource = (list[3] == "All" ? "" : list[3]);
+                problemID = (problemID == null ? "" : problemID);
+                problemName = (problemName == null ? "" : problemName);
+                ProblemSource = (ProblemSource == null ? "" : ProblemSource);
                 items = dbcontext.Problems.Where(item =>
                     item.problemType == type
                     && item.problemSourceId.Contains(problemID)
