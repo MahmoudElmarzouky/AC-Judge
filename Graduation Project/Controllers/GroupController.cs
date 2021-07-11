@@ -456,8 +456,6 @@ namespace GraduationProject.Controllers.Group
                     if (newItem != null)
                         list.Add(newItem);
                 }
-                    
-
                 if (rel != null && rel.UserRole == "Invite")
                     NumberOfGroupInvitations++;
             }
