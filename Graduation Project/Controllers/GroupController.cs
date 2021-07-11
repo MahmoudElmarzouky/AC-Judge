@@ -35,26 +35,53 @@ namespace GraduationProject.Controllers.Group
         
         public ActionResult Index()
         {
-            var list = getPageItems(getAllowedGroups(), 1); 
-            return View(list);
+            try
+            {
+                var list = getPageItems(getAllowedGroups(), 1);
+                return View(list);
+            }catch
+            {
+                return View("ErrorLink"); 
+            }
+            
         }
         public ActionResult Page(int PageNumber)
         {
-            var list = getPageItems(getAllowedGroups(), PageNumber);
-            return View("Index", list);
+            try
+            {
+                var list = getPageItems(getAllowedGroups(), PageNumber);
+                return View("Index", list);
+            }catch
+            {
+                return View("ErrorLink");
+            }
         }
         public ActionResult MyGroups()
         {
-            var list = getPageItems(getAllowedGroups(true), 1); 
-            return View("Index", list);
+            try
+            {
+                var list = getPageItems(getAllowedGroups(true), 1);
+                return View("Index", list);
+            }catch
+            {
+                return View("ErrorLink");
+            }
         }
 
         // GET: HomeController/Details/5
         public ActionResult Details(int id)
         {
-            var group = groups.Find(id);
-            var model = getViewModelFromGroup(group); 
-            return View(model);
+            try
+            {
+                var group = groups.Find(id);
+                var model = getViewModelFromGroup(group);
+                if (model != null)
+                    return View(model);
+                return RedirectToAction("Index");
+            }catch
+            {
+                return View("ErrorLink");
+            }
         }
 
         // GET: HomeController/Create
@@ -321,16 +348,26 @@ namespace GraduationProject.Controllers.Group
          }
         public ActionResult Invitations()
         {
-            int userId = user.UserId; 
-            var list = new List<ViewGroupModel>();
-            foreach (var item in groups.List())
+            try
             {
-                var rel = item.UserGroup.FirstOrDefault(u => u.UserId == userId);
-                if (rel != null && rel.UserRole == "Invite")
-                list.Add(getViewModelFromGroup(item));
+                int userId = user.UserId;
+                var list = new List<ViewGroupModel>();
+                foreach (var item in groups.List())
+                {
+                    var rel = item.UserGroup.FirstOrDefault(u => u.UserId == userId);
+                    if (rel != null && rel.UserRole == "Invite")
+                    {
+                        var newItem = getViewModelFromGroup(item);
+                        list.Add(newItem);
+                    }
+
+                }
+                list = getPageItems(list, 1);
+                return View("Index", list);
+            }catch
+            {
+                return View("Index"); 
             }
-            list = getPageItems(list, 1); 
-            return View("Index", list);
         }
 
         private GraduationProject.Data.Models.Group getGroupFromCreateModel(CreateGroupModel model)
@@ -387,7 +424,7 @@ namespace GraduationProject.Controllers.Group
             }
             catch
             {
-                return new ViewGroupModel();
+                return null;
             }
         }
         private List<ViewGroupModel> getPageItems(List<ViewGroupModel> list, int PageNumber)
@@ -414,7 +451,12 @@ namespace GraduationProject.Controllers.Group
             {
                 var rel = item.UserGroup.FirstOrDefault(u => u.UserId == userId);
                 if ((item.Visable == true) || (rel != null))
-                    list.Add(getViewModelFromGroup(item));
+                {
+                    var newItem = getViewModelFromGroup(item);
+                    if (newItem != null)
+                        list.Add(newItem);
+                }
+                    
 
                 if (rel != null && rel.UserRole == "Invite")
                     NumberOfGroupInvitations++;
