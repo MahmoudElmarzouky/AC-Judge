@@ -25,42 +25,26 @@
                 {
                     var verdictClass = item.Verdict == "Accepted" ? "text-success" : "text-danger";
                     var Type = item.CreationTime > Model.contestStartTime.AddMinutes(Model.contestDuration) ? "offline" : "online";
-                    <tr>
-                        <td><a data-link="@Url.Action("GetTextSubmission")" data-user="@item.user.UserName" data-id="@item.SubmissionId" data-toggle="modal" data-target="#StatusCotntest">@item.SubmissionId</a></td>
-                        <td> <a asp-action="Details" asp-controller="User" asp-route-id="@item.userId">@item.user.UserName</a></td>
-                        <td><a asp-action="Details" asp-controller="Problem" asp-route-id="@item.ProblemId"> @item.problem.problemTitle</a></td>
+                <tr>
+                    <td><a data-link="@Url.Action("GetTextSubmission")" data-user="@item.user.UserName" data-id="@item.SubmissionId" data-toggle="modal" data-target="#StatusCotntest">@item.SubmissionId</a></td>
+                    <td> <a asp-action="Details" asp-controller="User" asp-route-id="@item.userId">@item.user.UserName</a></td>
+                    <td> <a asp-action="DisplayProblem" asp-route-id="@Model.contestId" asp-route-problemId="@item.problem.ProblemId"> @item.problem.problemTitle</a></td>
 
-                        <td class="@verdictClass">@item.Verdict</td>
-                        <td>@item.TimeConsumeMillis</td>
-                        <td>@item.MemoryConsumeBytes</td>
-                        <td>@item.ProgrammingLanguage</td>
-                        <td>
-                            <div>@item.CreationTime.ToString("MM/dd/yyyy")</div>
-                            <div>@item.CreationTime.ToString("HH:mm")</div>
-                        </td>
-                        <td>@Type</td>
-                    </tr>
+                    <td class="@verdictClass">@item.Verdict</td>
+                    <td>@item.TimeConsumeMillis</td>
+                    <td>@item.MemoryConsumeBytes</td>
+                    <td>@item.ProgrammingLanguage</td>
+                    <td>
+                        <div>@item.CreationTime.ToString("MM/dd/yyyy")</div>
+                        <div>@item.CreationTime.ToString("HH:mm")</div>
+                    </td>
+                    <td>@Type</td>
+                </tr>
                 }
             </tbody>
         </table>
     </div>
-    <div aria-label="Page navigation" class="text-center">
-        <ul class="pagination pagination-lg">
-            <li>
-            <a href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-            </a>
-            </li>
-            <li><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li>
-            <a href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-            </a>
-            </li>
-        </ul>
-    </div>
+    
 </section>
 <!-- View Status Modal -->
 <section class="modal fade submision-modal" id="StatusCotntest" tabindex="-1" role="dialog" aria-hidden="true">

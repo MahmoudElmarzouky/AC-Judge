@@ -44,10 +44,6 @@ namespace GraduationProject.Data.Repositories
                 .ThenInclude(pu=>pu.problem)
                 .Include(u => u.UserContest)
                 .ThenInclude(c => c.Contest)
-                .Include(u => u.UserGroup)
-                .ThenInclude(ug => ug.Group)
-                .Include(u => u.userBlog)
-                .ThenInclude(ub => ub.blog)
                 .FirstOrDefault(user => user.UserIdentityId == Id);
             return user;
         }
