@@ -1,86 +1,140 @@
 ﻿@model GraduationProject.ViewModels.ContestViewsModel.StandingViewModel
-<div class="center-block">
-    <table class="table table-bordered text-center">
-        <thead class="thead-dark">
-            <tr>
-                <th>#</th>
-                <th>UserName</th>
-                <th>Penalty</th>
-                <th>=</th>
-                @for (int i = 0; i < Model.NumberOfProblems; i++)
-                {
-                    <th> @Convert.ToChar(i + 'A') </th>
-                }
-            </tr>
-        </thead>
-        <tbody>
-            @{ int Rank = 0; }
-            @foreach (var currentUser in Model.users)
-            {
-                Rank++;
-                <tr>
-                    <td>@Rank</td>
-                    <td>@currentUser.userName</td>
-                    <td>@currentUser.TotalPenality</td>
-                    <td>@currentUser.NumberOfSolvedProblems</td>
-                    @{ int i = -1;}
-                    @foreach (var problem in currentUser.UserPoblemsRaw)
-                    {
-                        i++;
-                        <td class="@problem.td_className">
-                            @if (problem.Solved)
-                            {
-                                int FirstSubmissionId = currentUser.UserPoblemsRaw[i].Submissions[0].SubmissionId;
-                                <a asp-action="GetTextSubmission" asp-controller="Problem" data-user="@currentUser.userName" data-id="@FirstSubmissionId" data-target="#ShowSubmisionStatusModal"> @problem.NumberOfSubmissions </a>
-                            }
-                        </td>
-                    }
-                </tr>
-            }
-        </tbody>
-    </table>
-    <section class="modal fade submision-modal" id="ShowSubmisionStatusModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="model-header-flex">
-                        <h4 class="modal-title">
-                            Solution By <span>SuperMari000</span>
-                        </h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
+
+@{
+    ViewData["Title"] = "Contest Standing";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    string currentAction = ViewContext.RouteData.Values.ContainsKey("Action") ? ViewContext.RouteData.Values["Action"].ToString() : "NULL";
+    string[] navElementsA = { "Details", "MySubmission", "Status", "Standing" };
+    string[] navElements = { "Overview", "My Submission", "Status", "Standings" };
+
+}
+<section class="show-contest-page">
+    <div class="container">
+        <section class="header-contest text-center">
+            <div class="row">
+                <div class="col-md-2">
+                    <h5>Start</h5>
+                    <div>@Model.NavInfo.contestStartTime</div>
                 </div>
-                <div class="modal-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered text-center">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th class="text-center">Problem</th>
-                                    <th class="text-center">Verdict</th>
-                                    <th class="text-center">Time</th>
-                                    <th class="text-center">Memory</th>
-                                    <th class="text-center">Language</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td class=""></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="submision">
-                        <button class="btn btn-secondary">Copy</button>
-                        <pre class="prettyprint"></pre>
-                    </div>
+                <div class="col-md-8">
+                    <h3>@Model.NavInfo.contestTitle</h3>
+                </div>
+                <div class="col-md-2">
+                    <h5>End</h5>
+                    <div>@Model.NavInfo.contestStartTime.AddMinutes(Model.NavInfo.contestDuration)</div>
                 </div>
             </div>
-        </div>
-    </section>
-</div>
+            <div claa="schedule-timer">
+            </div>
+            <!--
+            <div class="row">
+                <div class="col-sm-10 col-sm-offset-1">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-success active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 90%">
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+        </section>
+        <section class="nav-action">
+            <ul class="nav nav-tabs">
+                @for (int i = 0; i < navElements.Length; i++)
+                {
+                    if (currentAction == navElementsA[i])
+                    {
+                        <li role="presentation" class="active"> <a asp-action="@navElementsA[i]" asp-route-id="@Model.contestId"> @navElements[i]</a></li>
+                    }
+                    else
+                    {
+                        <li role="presentation"> <a asp-action="@navElementsA[i]" asp-route-id="@Model.contestId"> @navElements[i]</a></li>
+                    }
+                }
+                <li role="presentation" class="dropdown pull-right">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        Control <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        @if (Model.NavInfo.groupId != null)
+                        {
+                            <li><a asp-controller="Group" asp-action="Details" asp-route-id="@Model.NavInfo.groupId">Show Group</a></li>
+                        }
+                        @if (Model.NavInfo.IsCurrentUserOwner)
+                        {
+                            <li><a asp-action="Edit" asp-route-id="@Model.contestId">Edit Contest</a></li>
+                            <li><a asp-action="Delete" asp-route-id="@Model.contestId">Delete Contest</a></li>
+                        }
+                        
+                    </ul>
+                </li>
+            </ul>
+        </section>
+
+        <section class="table-standing">
+            <div class="table-responsive">
+                <table class="table table-bordered text-center">
+                    <thead class="thead-light">
+                        <tr>
+                            <th class="text-center">#</th>
+                            <th class="text-center">User Name</th>
+                            <th class="text-center" width="60px">Score</th>
+                            <th class="text-center">Penality</th>
+                            @for (int i = 0; i < Model.NumberOfProblems; i++)
+                            {
+                                <th class="text-center" width="70px"><a href="">@Convert.ToChar(i + 'A')</a></th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ int Rank = 0; }
+                        @foreach (var currentUser in Model.users)
+                        {
+                            Rank++;
+                            <tr>
+                                <td>@Rank</td>
+                                <td><a href="">@currentUser.userName</a></td>
+                                <td>@currentUser.NumberOfSolvedProblems</td>
+                                <td>@currentUser.TotalPenality</td>
+
+                                @{ int i = -1;}
+                                @foreach (var problem in currentUser.UserPoblemsRaw)
+                                {
+                                    i++;
+                                    <td class="@problem.td_className">
+                                        @if (problem.Solved)
+                                        {
+                                            int FirstSubmissionId = currentUser.UserPoblemsRaw[i].Submissions[0].SubmissionId;
+                                            <a asp-action="GetTextSubmission" asp-controller="Problem" data-user="@currentUser.userName" data-id="@FirstSubmissionId" data-target="#ShowSubmisionStatusModal"> @problem.NumberOfSubmissions </a>
+                                        }
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div aria-label="Page navigation" class="text-center">
+                <ul class="pagination pagination-lg">
+                    <li>
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li>
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </div>
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

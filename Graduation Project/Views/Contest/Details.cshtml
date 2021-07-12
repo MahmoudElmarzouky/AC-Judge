@@ -4,7 +4,13 @@
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@{ 
+    string currentAction = ViewContext.RouteData.Values.ContainsKey("Action") ? ViewContext.RouteData.Values["Action"].ToString() : "NULL";
+    string[] navElementsA = { "Details", "MySubmission", "Status", "Standing"}; 
+    string[] navElements = { "Overview", "My Submission", "Status", "Standings"};
+    string partialName = currentAction == "Details"? navElements[0]: currentAction;
+    
+}
 <section class="show-contest-page">
     <div class="container">
         <section class="header-contest text-center">
@@ -35,10 +41,18 @@
         </section>
         <section class="nav-action">
             <ul class="nav nav-tabs">
-                <li role="presentation" class="active"><a href="#">Overview</a></li>
-                <li role="presentation"><a href="#">My Sabmision</a></li>
-                <li role="presentation"><a href="#">Status</a></li>
-                <li role="presentation"><a href="#">Standings</a></li>
+                @for (int i = 0; i < navElements.Length; i++)
+                {
+                    if (currentAction == navElementsA[i])
+                    {
+                        <li role="presentation" class="active"> <a asp-action="@navElementsA[i]" asp-route-id="@Model.contestId"> @navElements[i]</a></li>
+                    }
+                    else
+                    {
+                        <li role="presentation"> <a asp-action="@navElementsA[i]" asp-route-id="@Model.contestId"> @navElements[i]</a></li>
+                    }
+
+                }
                 <li role="presentation" class="dropdown pull-right">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                         Control <span class="caret"></span>
@@ -48,73 +62,18 @@
                         {
                             <li><a asp-controller="Group" asp-action="Details" asp-route-id="@Model.groupId">Show Group</a></li>
                         }
-                        <li><a asp-action="Edit" asp-route-id="@Model.contestId">Edit Contest</a></li>
-                        <li><a asp-action="Delete" asp-route-id="@Model.contestId">Delete Contest</a></li>
+                        @if (Model.IsCurrentUserOwner)
+                        {
+                            <li><a asp-action="Edit" asp-route-id="@Model.contestId">Edit Contest</a></li>
+                            <li><a asp-action="Delete" asp-route-id="@Model.contestId">Delete Contest</a></li>
+                        }
                     </ul>
                 </li>
             </ul>
         </section>
-        @{
-            Boolean ContestEnded = Model.contestStartTime.AddMinutes(Model.contestDuration) >= DateTime.Now;
 
-            Boolean ShowOrigin = Model.IsCurrentUserOwner || ContestEnded;
-            Boolean ShowProblems = Model.IsCurrentUserOwner || ContestEnded || Model.contestStartTime >= DateTime.Now;
-
-
-        }
-        
-        
-            <section class="table-problem">
-                <div class="table-responsive">
-                    <table class="table table-bordered text-center">
-                        <thead class="thead-light">
-                            <tr>
-                                <th class="text-center" width="89px">#</th>
-                                @if (ShowOrigin)
-                                {
-                                    <th class="text-center">Origin</th>
-
-                                }
-                                <th class="text-center">Title</th>
-                                <th class="text-center">Statistics</th>
-                            </tr>
-                        </thead>
-                        
-                        <tbody>
-                            @if (ShowProblems)
-                            {
-                                for (int i = 0; i < Model.Problems.Count; i++)
-                                {
-                                <tr>
-                                    <td class="@Model.Problems[i].SolvedClass"> @Convert.ToChar(i + 'A') </td>
-                                    @if (ShowOrigin)
-                                    {
-                                        <td> <a href="@Model.Problems[i].originUrl"> @Model.Problems[i].OriginName</a></td>
-                                    }
-                                    <td class="text-left"> <a asp-action="Details" asp-controller="Problem" asp-route-id="@Model.Problems[i].ProblemId"> @Model.Problems[i].PropblemTitle</a></td>
-                                    <td>
-                                    <span>
-                                        <i class="fas fa-user"></i> @Model.Problems[i].NumberOfAccepted 
-                                        </span> 
-                                        <span class="muted">/</span> 
-                                    <span>
-                                        <i class="fas fa-paper-plane"></i> @Model.Problems[i].NumberOfSubmissions
-                                    </span>
-                                    </td>
-                                </tr>
-                                }
-                            }else
-                            {
-                            <tr>
-                                <td colspan="7">Contest Not Started Yet Or You Don't Have Permission To See The Problems </td>
-                            </tr>
-                            }
-                            </tbody>
-                            
-                        </table>
-                </div>
-            </section>
-                           
+        <partial name="@partialName" for="@Model" />
+       
     </div>
 </section>
 

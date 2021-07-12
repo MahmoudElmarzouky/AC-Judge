@@ -6,6 +6,14 @@ using GraduationProject.Data.Models;
 
 namespace GraduationProject.ViewModels.ContestViewsModel
 {
+    public class NavInfo
+    {
+        public int? groupId { get; set; }
+        public string contestTitle { get; set; }
+        public DateTime contestStartTime { get; set; }
+        public int contestDuration { get; set; }
+        public Boolean IsCurrentUserOwner { get; set; }
+    }
     public class Data
     {
         public Data()
@@ -18,23 +26,24 @@ namespace GraduationProject.ViewModels.ContestViewsModel
         public string td_className { get { 
             if(Solved)
             {
+                   
                 if (FirstAcceptedSubmission)
                 {
-                        return "bg-primary";
+                        return "submit-standing Pfsolve";
                 }
                 else
                 {
-                        return "bg-success";
+                        return "submit-standing Psolve";
                 }
             }else
             {
                 if (NumberOfSubmissions > 0)
                 {
-                        return "bg-danger";
+                        return "submit-standing Pattemped";
                 }
                     else
                 {
-                        return "bg-info"; 
+                        return "submit-standing Punattemped"; 
                 }
             }
             } set { } }
@@ -61,13 +70,15 @@ namespace GraduationProject.ViewModels.ContestViewsModel
     {
         public StandingViewModel()
         {
-            users = new List<UserInStanding>(); 
+            users = new List<UserInStanding>();
+            NavInfo = new NavInfo(); 
         }
         public int contestId { get; set; }
         public int NumberOfProblems { get; set; }
         public int NumberOfUsers { get {
                 return users.Count; 
             } set { } }
-        public IList<UserInStanding> users { get; set;}  
+        public IList<UserInStanding> users { get; set;}
+        public NavInfo NavInfo { get; set; }
     }
 }
