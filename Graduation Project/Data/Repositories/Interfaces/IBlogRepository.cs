@@ -16,6 +16,6 @@ namespace GraduationProject.Data.Repositories.Interfaces
         T Find(int Id);
         void UpdateVote(int blogId, int userId, int typeVote);
         void UpdateFavourite(int blogId, int userId);
-        IList<T> Search(string Title, UserBlog PrepeardBy;
+        IList<T> Search(string Title, UserBlog PrepeardBy);
     }
 }
