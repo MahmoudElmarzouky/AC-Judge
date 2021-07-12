@@ -289,9 +289,28 @@ namespace GraduationProject.Controllers.Contest
                     contestStatus = "Ended";
                     break;
             }
-            ICollection<Problem> Problems = new HashSet<Problem>();
-            foreach (var item in contest.ContestProblems.ToList())
-                Problems.Add(item.problem);
+            IList<ProblemInfo> Problems = new List<ProblemInfo>();
+            foreach (var item in contest.ContestProblems.OrderBy(u=>u.order).ToList())
+            {
+                var newProblem = new ProblemInfo();
+                newProblem.ProblemId = item.problemId;
+                newProblem.Origin = item.PlatForm;
+                newProblem.OriginName = item.ProblemSourceId; 
+                newProblem.PropblemTitle = item.Alias;
+                newProblem.Solved = contest.Submissions.FirstOrDefault
+                    (u => u.userId == user.UserId && 
+                    u.ProblemId == item.problemId && 
+                    u.Verdict == "Accepted") != null;
+                newProblem.NumberOfAccepted = contest.Submissions.Where
+                    (u => u.userId == user.UserId &&
+                    u.ProblemId == item.problemId &&
+                    u.Verdict == "Accepted").Count();
+                newProblem.NumberOfSubmissions = contest.Submissions.Count;
+                newProblem.originUrl = "URL";
+                newProblem.HasAttempt = contest.Submissions.FirstOrDefault
+                    (u => u.userId == user.UserId && u.ProblemId == item.problemId) != null;
+                Problems.Add(newProblem); 
+            }
             var owner = contest.UserContest.FirstOrDefault(u => u.isOwner == true).User;
             var currentUser = contest.UserContest.FirstOrDefault(u => u.UserId == user.UserId); 
             return new ViewContestModel

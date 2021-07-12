@@ -9,6 +9,15 @@ namespace GraduationProject.ViewModels.ContestViewsModel
     public class ProblemInfo
     {
         public int ProblemId { get; set; }
+        public string Origin { get; set; }
+        public string originUrl { get; set; }
+        public string PropblemTitle { get; set; }
+        public Boolean Solved { get; set; }
+        public Boolean HasAttempt { get; set; }
+        public string SolvedClass { get { return Solved ? "bg-success" : HasAttempt? "bg-danger": "unsolved"; } set { } }
+        public int NumberOfAccepted { get; set; }
+        public int NumberOfSubmissions { get; set; }
+        public string OriginName { get; set; }
 
     }
     public class ViewContestModel
@@ -17,7 +26,7 @@ namespace GraduationProject.ViewModels.ContestViewsModel
         {
             UserContest = new HashSet<UserContest>();
             Submissions = new HashSet<Submission>();
-            Problems = new HashSet<Problem>();
+            Problems = new List<ProblemInfo>();
         }
         public Boolean IsFavourite { get; set; }
         public Boolean IsCurrentUserOwner { get; set; }
@@ -49,7 +58,7 @@ namespace GraduationProject.ViewModels.ContestViewsModel
         public string PreparedBy { get; set; }
         public  ICollection<UserContest> UserContest { get; set; }
         public  ICollection<Submission> Submissions { get; set; }
-        public  ICollection<Problem> Problems { get; set; }
+        public  IList<ProblemInfo> Problems { get; set; }
         public int? groupId { get; set; }
         public string GlobalTime { get
             {

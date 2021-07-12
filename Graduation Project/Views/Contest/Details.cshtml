@@ -83,24 +83,26 @@
                         <tbody>
                             @if (ShowProblems)
                             {
+                                for (int i = 0; i < Model.Problems.Count; i++)
+                                {
                                 <tr>
-                                    <td class="unsolved">A</td>
-                                    <td><a href="">Codeforcess - 123A</a></td>
-                                    <td class="text-left"><a href="#">Heavy Light Decomposition</a></td>
-                                    <td><span><i class="fas fa-user"></i> 500</span> <span class="muted">/</span> <span><i class="fas fa-paper-plane"></i> 1000</span></td>
+                                    <td class="@Model.Problems[i].SolvedClass"> @Convert.ToChar(i + 'A') </td>
+                                    @if (ShowOrigin)
+                                    {
+                                        <td> <a href="@Model.Problems[i].originUrl"> @Model.Problems[i].OriginName</a></td>
+                                    }
+                                    <td class="text-left"> <a asp-action="Details" asp-controller="Problem" asp-route-id="@Model.Problems[i].ProblemId"> @Model.Problems[i].PropblemTitle</a></td>
+                                    <td>
+                                    <span>
+                                        <i class="fas fa-user"></i> @Model.Problems[i].NumberOfAccepted 
+                                        </span> 
+                                        <span class="muted">/</span> 
+                                    <span>
+                                        <i class="fas fa-paper-plane"></i> @Model.Problems[i].NumberOfSubmissions
+                                    </span>
+                                    </td>
                                 </tr>
-                                <tr>
-                                    <td class="bg-success">B</td>
-                                    <td><a href="">Codeforcess - 123A</a></td>
-                                    <td class="text-left"><a href="#">Heavy Light Decomposition</a></td>
-                                    <td><span><i class="fas fa-user"></i> 500</span> <span class="muted">/</span> <span><i class="fas fa-paper-plane"></i> 1000</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="bg-danger">C</td>
-                                    <td><a href="">Codeforcess - 123A</a></td>
-                                    <td class="text-left"><a href="#">Heavy Light Decomposition</a></td>
-                                    <td><span><i class="fas fa-user"></i> 500</span> <span class="muted">/</span> <span><i class="fas fa-paper-plane"></i> 1000</span></td>
-                                </tr>
+                                }
                             }else
                             {
                             <tr>
