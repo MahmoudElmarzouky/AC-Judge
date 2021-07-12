@@ -11,14 +11,14 @@
             <div class="row">
                 <div class="col-md-2">
                     <h5>Start</h5>
-                    <div>2021-07-15 02:00</div>
+                    <div>@Model.contestStartTime</div>
                 </div>
                 <div class="col-md-8">
-                    <h3>Heavy Light Decomposition</h3>
+                    <h3>@Model.contestTitle</h3>
                 </div>
                 <div class="col-md-2">
                     <h5>End</h5>
-                    <div>2021-07-15 02:00</div>
+                    <div>@Model.contestStartTime.AddMinutes(Model.contestDuration)</div>
                 </div>
             </div>
             <div claa="schedule-timer">
@@ -44,12 +44,15 @@
                     Control <span class="caret"></span>
                   </a>
                   <ul class="dropdown-menu">
-                    @if (Model.groupId != null)
-                    {
-                        <li><a asp-controller="Group" asp-action="Details" asp-route-id="@Model.groupId">Show Group</a></li>
-                    }
-                    <li><a asp-action="Edit" asp-route-id="@Model.contestId">Edit Contest</a></li>
-                    <li><a asp-action="Delete" asp-route-id="@Model.contestId">Delete Contest</a></li>
+                      @if (Model.groupId != null)
+                      {
+                          <li><a asp-controller="Group" asp-action="Details" asp-route-id="@Model.groupId">Show Group</a></li>
+                      }
+                      @if (Model.IsCurrentUserOwner)
+                      {
+                          <li><a asp-action="Edit" asp-route-id="@Model.contestId">Edit Contest</a></li>
+                          <li><a asp-action="Delete" asp-route-id="@Model.contestId">Delete Contest</a></li>
+                      }
                   </ul>
                 </li>
             </ul>
@@ -70,49 +73,27 @@
                             <th class="text-center">TYPE</th>
                         </tr>
                     </thead>
-                   <tbody>
-                        <tr>
-                            <td><a href="" data-link="@Url.Action("GetTextSubmission")" data-user="@item.UserName" data-id="@item.RunID" data-toggle="modal" data-target="#StatusCotntest">@item.RunID</a></td> 
-                            <td><a href="">SuperMari000</a></td>
-                            <td><a href="#">A</a></td>
-                            <td class="text-danger">Time limit exceeded on test 122</td>
-                            <td>2550 ms</td>
-                            <td>11800 KB</td>
-                            <td>Microsoft Visual C++ 2017</td>
-                            <td>
-                                <div>21/1/2021</div>
-                                <div>21:40</div>
-                            </td>
-                            <td>Online</td>
-                        </tr>
-                        <tr>
-                            <td><a href="" data-link="@Url.Action("GetTextSubmission")" data-user="@item.UserName" data-id="@item.RunID" data-toggle="modal" data-target="#StatusCotntest">@item.RunID</a></td>
-                            <td><a href="">Mari000</a></td>
-                            <td><a href="#">B</a></td>
-                            <td class="text-danger">Time limit exceeded on test 120</td>
-                            <td>2550 ms</td>
-                            <td>11800 KB</td>
-                            <td>Microsoft Visual C++ 2017</td>
-                            <td>
-                                <div>21/1/2021</div>
-                                <div>21:40</div>
-                            </td>
-                            <td>Offline</td>
-                        </tr>
-                        <tr>
-                            <td><a href="" data-link="@Url.Action("GetTextSubmission")" data-user="@item.UserName" data-id="@item.RunID" data-toggle="modal" data-target="#StatusCotntest">@item.RunID</a></td>
-                            <td><a href="">SuperMari000</a></td>
-                            <td><a href="#">C</a></td>
-                            <td class="text-success">Accepted</td>
-                            <td>2550 ms</td>
-                            <td>11800 KB</td>
-                            <td>C++ 2017</td>
-                            <td>
-                                <div>21/1/2021</div>
-                                <div>21:40</div>
-                            </td>
-                            <td>Offline</td>
-                        </tr>
+                    <tbody>
+                        @foreach (var item in Model.Submissions)
+                        {
+                            var verdictClass = item.Verdict == "Accepted" ? "text-success" : "text-danger";
+                            var Type = item.CreationTime > Model.contestStartTime.AddMinutes(Model.contestDuration) ? "offline" : "online";
+                            <tr>
+                                <td><a data-link="@Url.Action("GetTextSubmission")" data-user="@item.user.UserName" data-id="@item.SubmissionId" data-toggle="modal" data-target="#StatusCotntest">@item.SubmissionId</a></td>
+                                <td> <a asp-action="Details" asp-controller="User" asp-route-id="@item.userId">@item.user.UserName</a></td>
+                                <td><a asp-action="Details" asp-controller="Problem" asp-route-id="@item.ProblemId"> @item.problem.problemTitle</a></td>
+
+                                <td class="@verdictClass">@item.Verdict</td>
+                                <td>@item.TimeConsumeMillis</td>
+                                <td>@item.MemoryConsumeBytes</td>
+                                <td>@item.ProgrammingLanguage</td>
+                                <td>
+                                    <div>@item.CreationTime.ToString("MM/dd/yyyy")</div>
+                                    <div>@item.CreationTime.ToString("HH:mm")</div>
+                                </td>
+                                <td>@Type</td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
