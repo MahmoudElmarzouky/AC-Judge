@@ -403,12 +403,18 @@ function Divide_And_Merge_Codeforcess_Problem(){
         return;
 
     let ProblmeStatment = $('#CodeforcesProblemContent .problem-statement');
-   
-    // Edit Problem Name
     var MainProblemTitle = $('#CodeforcesProblemContent .header .title');
-    var GetIndexOfDot = MainProblemTitle.text().indexOf('.');
-    var NewTitleText = MainProblemTitle.text().substr(GetIndexOfDot + 1).trim();
-    MainProblemTitle.text(NewTitleText);
+    
+    // Edit Problem Name
+    if($('.show-problem-page').length > 0){
+        var GetIndexOfDot = MainProblemTitle.text().indexOf('.');
+        var NewTitleText = MainProblemTitle.text().substr(GetIndexOfDot + 1).trim();
+        MainProblemTitle.text(NewTitleText);
+    }else if($('.show-contest-page').length > 0){
+        var Alias = $('.show-problem .panel [data-refere="ProblemAlias"]');
+        MainProblemTitle.text(Alias.text())
+    }
+    
     
     
     // Edit Sections 
@@ -433,7 +439,7 @@ function Divide_And_Merge_Codeforcess_Problem(){
     function SetInfo(Get, Set){
        var Element = MainProblemTitle.siblings(Get);
         var Text = Element.clone().children().remove().end().text();
-        $('.show-problem-page .all-data-problem .problem-info ' + Set).text(Text);
+        $('.all-data-problem .problem-info ' + Set).text(Text);
         Element.remove(); 
     }
     
@@ -443,6 +449,8 @@ function Divide_And_Merge_Codeforcess_Problem(){
     SetInfo('.input-file', '[data-refere="InputFile"]');
     SetInfo('.output-file', '[data-refere="OutputFile"]');
     
+    // Modal Name
+    $('#SubmitProblmeMain [data-target="ProblemName"]').text(MainProblemTitle.text());
     
     ProblmeStatment.css('display', 'block');
    

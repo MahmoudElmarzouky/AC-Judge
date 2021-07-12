@@ -558,24 +558,24 @@ header .nav-main .navbar-brand span{
     font-weight: bold;
 }
 
-.show-problem-page #CodeforcesProblemContent .ttypography{
+#CodeforcesProblemContent .ttypography{
     margin: 0 !important;
 }
-.show-problem-page #CodeforcesProblemContent .ttypography .problem-statement{
+#CodeforcesProblemContent .ttypography .problem-statement{
     margin-top: 0 !important;
     display: none;
 }
-.show-problem-page #CodeforcesProblemContent .ttypography .problem-statement div[data-section="problemsection"]{
+#CodeforcesProblemContent .ttypography .problem-statement div[data-section="problemsection"]{
     background-color: #EDEDED;
     border: 1px solid #EEE;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 4px 4px 8px rgba(1, 1, 1, 0.5);
 }
-.show-problem-page #CodeforcesProblemContent .ttypography .problem-statement > div{
+#CodeforcesProblemContent .ttypography .problem-statement > div{
     margin-bottom: 25px;
 }
-.show-problem-page #CodeforcesProblemContent .ttypography .problem-statement .section-title{
+#CodeforcesProblemContent .ttypography .problem-statement .section-title{
     margin-bottom: 8px;
     padding-left: 10px;
 }
@@ -677,6 +677,7 @@ header .nav-main .navbar-brand span{
     border-radius: 0px 4px 0px 4px;
 }
 
+
 /* End Status And My Submision contest page */
 /* Start Standing Contest Page */
 
@@ -719,6 +720,19 @@ header .nav-main .navbar-brand span{
 }
 
 /* End Standing Contest Page */
+/* Start Problem Contest Page */
+.show-contest-page .show-problem{
+    margin-top: 40px;
+}
+.show-contest-page .problem-info .panel:first-child ul li{
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 1.3rem;
+}
+.show-contest-page .problem-info .panel:first-child ul li span:first-child{
+    font-weight: bold;
+}
+/* End Problem Contest Page */
 /* Start User View Page */
 .main-user-view{
     margin-top: 30px;
