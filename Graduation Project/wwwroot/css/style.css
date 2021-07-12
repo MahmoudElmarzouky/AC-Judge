@@ -356,8 +356,8 @@ header .nav-main .navbar-brand span{
     clip: rect(0,0,0,0);
     pointer-events: none;
 }
-.create-group-page .form-horizontal .form-group:last-child,
-.edit-group-page .form-horizontal .form-group:last-child{
+.create-group-page .form-horizontal div.form-group:last-child,
+.edit-group-page .form-horizontal div.form-group:last-child{
     margin-top: 30px;
 }
 
@@ -782,8 +782,20 @@ header .nav-main .navbar-brand span{
     padding-bottom: 0.7rem;
     line-height: 1.7rem;
 }
-
 /* End Main Blog Page */
+/* Start Create & Edit Blog */
+
+.create-blog-page,
+.edit-blog-page{
+    margin-top: 20px;
+    margin-bottom: 30px;  
+}
+.create-blog-page .form-horizontal div.form-group:last-child,
+.edit-blog-page .form-horizontal div.form-group:last-child{
+    margin-top: 30px;
+}
+
+/* End Create & Edit Blog */
 /* Start Problem Contest Page */
 .show-contest-page .show-problem{
     margin-top: 40px;
