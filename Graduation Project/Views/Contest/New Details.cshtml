@@ -1,0 +1,97 @@
+﻿@model GraduationProject.ViewModels.ContestViewsModel.ViewContestModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="show-contest-page">
+    <div class="container">
+        <section class="header-contest text-center">
+            <div class="row">
+                <div class="col-md-2">
+                    <h5>Start</h5>
+                    <div>2021-07-15 02:00</div>
+                </div>
+                <div class="col-md-8">
+                    <h3>Heavy Light Decomposition</h3>
+                </div>
+                <div class="col-md-2">
+                    <h5>End</h5>
+                    <div>2021-07-15 02:00</div>
+                </div>
+            </div>
+            <div claa="schedule-timer">
+            </div>
+            <!--
+            <div class="row">
+                <div class="col-sm-10 col-sm-offset-1">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-success active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 90%">
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+        </section>
+        <section class="nav-action">
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active"><a href="#">Overview</a></li>
+                <li role="presentation"><a href="#">My Sabmision</a></li>
+                <li role="presentation"><a href="#">Status</a></li>
+                <li role="presentation"><a href="#">Standings</a></li>
+                <li role="presentation" class="dropdown pull-right">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                    Control <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    @if (Model.groupId != null)
+                    {
+                        <li><a asp-controller="Group" asp-action="Details" asp-route-id="@Model.groupId">Show Group</a></li>
+                    }
+                    <li><a asp-action="Edit" asp-route-id="@Model.contestId">Edit Contest</a></li>
+                    <li><a asp-action="Delete" asp-route-id="@Model.contestId">Delete Contest</a></li>
+                  </ul>
+                </li>
+            </ul>
+        </section>
+        <section class="table-problem">
+            <div class="table-responsive">
+                <table class="table table-bordered text-center">
+                    <thead class="thead-light">
+                        <tr>
+                            <th class="text-center" width="89px">#</th>
+                            <th class="text-center">Origin</th> <!-- if user is owner or contest end -->
+                            <th class="text-center">Title</th>
+                            <th class="text-center">Statistics</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="unsolved">A</td>
+                            <td><a href="">Codeforcess - 123A</a></td>
+                            <td class="text-left"><a href="#">Heavy Light Decomposition</a></td>
+                            <td><span><i class="fas fa-user"></i> 500</span> <span class="muted">/</span> <span><i class="fas fa-paper-plane"></i> 1000</span></td>
+                        </tr>
+                        <tr>
+                            <td class="bg-success">B</td>
+                            <td><a href="">Codeforcess - 123A</a></td>
+                            <td class="text-left"><a href="#">Heavy Light Decomposition</a></td>
+                            <td><span><i class="fas fa-user"></i> 500</span> <span class="muted">/</span> <span><i class="fas fa-paper-plane"></i> 1000</span></td>
+                        </tr>
+                        <tr>
+                            <td class="bg-danger">C</td>
+                            <td><a href="">Codeforcess - 123A</a></td>
+                            <td class="text-left"><a href="#">Heavy Light Decomposition</a></td>
+                            <td><span><i class="fas fa-user"></i> 500</span> <span class="muted">/</span> <span><i class="fas fa-paper-plane"></i> 1000</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</section>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
