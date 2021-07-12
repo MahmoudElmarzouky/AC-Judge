@@ -137,7 +137,7 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
                 var result = dbcontext.Blogs.Include(userBlog => userBlog.userBlog)
                      .ThenInclude(user => user.User)
                      .Include(comment => comment.Comments)
-                     .Include(group => group.group).Where(blog => blog.blogtitle.Contains(Title) || blog.userBlog == userBlog
+                     .Include(group => group.group).Where(blog => blog.blogtitle.Contains(Title) || blog.userBlog == PrepeardBy
                     ).ToList();
                 return result;
             }
