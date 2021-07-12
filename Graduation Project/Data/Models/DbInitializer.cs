@@ -53,7 +53,7 @@ namespace GraduationProject.Data.Models
                         int lim = 1 + rand.Next(3); 
                         for (int i = 0; i < lim; i++)
                         {
-                            AddSubmission(null, p.ProblemId, u.UserId, verdicts[i], code);
+                            AddSubmission(11, p.ProblemId, u.UserId, verdicts[i], code);
 
                         }
                         
@@ -121,9 +121,8 @@ namespace GraduationProject.Data.Models
         {
             var sub = new Submission
             {
-                contestId = null,
+                contestId = contestId,
                 CreationTime = DateTime.Now,
-                InContest = false,
                 ProblemId = problemId,
                 MemoryConsumeBytes = 200,
                 ProgrammingLanguage = "C++",
@@ -159,7 +158,6 @@ namespace GraduationProject.Data.Models
             return new Submission
             {
                 CreationTime = DateTime.Now,
-                InContest = true,
                 contestId = contestId,
                 ProblemId = problemId,
                 Verdict = Verdict, 

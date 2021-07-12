@@ -49,6 +49,7 @@ namespace GraduationProject.Controllers.Interview
             IList<Problem> ListProblems = problemRepository.Search(1, new List<string> { "2" });
             var model = getAllmodel(ListProblems);
             ViewBag.TotalPageProblem = (model.Count() / 25) + (model.Count() % 25 == 0 ? 0 : 1);
+            if (pagenumber < 0 || pagenumber > ViewBag.TotalPageProblem) pagenumber = 1;
             ViewBag.Pagenum = pagenumber;
             var list = model.ToPagedList(pagenumber, 25);
             return View(list);
@@ -66,11 +67,12 @@ namespace GraduationProject.Controllers.Interview
         {
             int pagenum = page ?? 1;
             ViewBag.function = "Status";
-            var submissions = SubmissionRepository.GetSubmissionSpecific(false, 2);
+            var submissions = SubmissionRepository.GetSubmissionSpecific(2, "", "", "", "", "", null).OrderByDescending(s => s.SubmissionId);
             var list = GetAllStatus(submissions);
             ViewBag.TotalPageProblem = (list.Count() / 25) + (list.Count() % 25 == 0 ? 0 : 1);
+            if (pagenum < 0 || pagenum > ViewBag.TotalPageProblem) pagenum = 1;
             ViewBag.Pagenum = pagenum;
-            var newlist = list.ToPagedList(pagenum, 25).OrderByDescending(s => s.RunID);
+            var newlist = list.ToPagedList(pagenum, 25);
             return View(newlist);
         }
         [HttpPost]
@@ -89,6 +91,7 @@ namespace GraduationProject.Controllers.Interview
             var ListProblems = problemRepository.Search(2, new List<string> { "2", problemID, problemName, ProblemSource });
             var model = getAllmodel(ListProblems);
             ViewBag.TotalPageProblem = (model.Count() / 25) + (model.Count() % 25 == 0 ? 0 : 1);
+            if (pagenumber < 0 || pagenumber > ViewBag.TotalPageProblem) pagenumber = 1;
             ViewBag.Pagenum = pagenumber;
             var list = model.ToPagedList(pagenumber, 25);
             return View("Index", list);
@@ -102,49 +105,29 @@ namespace GraduationProject.Controllers.Interview
             ProblemSource = ((ProblemSource == null || ProblemSource == "All") ? "" : ProblemSource);
             ProblemResult = ((ProblemResult == null || ProblemResult == "All") ? "" : ProblemResult);
             ProblemLang = ((ProblemLang == null || ProblemLang == "All") ? "" : ProblemLang);
-
-
             ViewBag.username = UserName;
             ViewBag.problemName = ProblemName;
             ViewBag.problemSource = ProblemSource;
             ViewBag.problemResult = ProblemResult;
             ViewBag.problemLang = ProblemLang;
 
-
-
-            var submissions = SubmissionRepository.GetSubmissionSpecific(false, 2);
-            IEnumerable<ViewStatusModel> list = GetAllStatus(submissions).Where(
-                s =>
-                s.UserName.Contains(UserName) &&
-                s.ProblemSourcesId.Contains(ProblemName) &&
-                s.OnlineJudge.Contains(ProblemSource) &&
-                s.Verdict.Contains(ProblemResult) &&
-                s.Language.Contains(ProblemLang)
-                );
+            var submissions = SubmissionRepository.GetSubmissionSpecific(2, UserName, ProblemName, ProblemSource, ProblemResult, ProblemLang, null).OrderByDescending(s => s.SubmissionId);
+            IEnumerable<ViewStatusModel> list = GetAllStatus(submissions);
             ViewBag.TotalPageProblem = (list.Count() / 25) + (list.Count() % 25 == 0 ? 0 : 1);
+            if (pagenum < 0 || pagenum > ViewBag.TotalPageProblem) pagenum = 1;
             ViewBag.Pagenum = pagenum;
-            var model = list.ToPagedList(pagenum, 25).OrderByDescending(s => s.RunID);
+            var model = list.ToPagedList(pagenum, 25);
             return View("Status", model);
         }
+
         public ActionResult FlipFavourite(int id)
         {
-            var newproblem = problemRepository.Find(id);
-            ProblemUser pu = new ProblemUser();
-            var problemuser = newproblem.ProblemUsers.FirstOrDefault(u => u.UserId == user.UserId);
-            if (problemuser == null)
+            var p = problemRepository.Find(id);
+            if (p == null)
             {
-                pu.ProblemId = id;
-                pu.UserId = user.UserId;
-                pu.IsFavourite = true;
-                newproblem.ProblemUsers.Add(pu);
+                return View("~/Views/Shared/ErrorLink.cshtml");
             }
-            else
-            {
-                problemuser.IsFavourite ^= true;
-            }
-
-            problemRepository.Update(newproblem);
-
+            oppFavorite(p);
             return RedirectToAction(nameof(Index));
         }
 
@@ -194,7 +177,7 @@ namespace GraduationProject.Controllers.Interview
             }
             return model;
         }
-        public IList<ViewStatusModel> GetAllStatus(IList<Submission> submissions)
+        public IList<ViewStatusModel> GetAllStatus(IEnumerable<Submission> submissions)
         {
             IList<ViewStatusModel> list = new List<ViewStatusModel>();
             foreach (var item in submissions)
@@ -211,7 +194,8 @@ namespace GraduationProject.Controllers.Interview
                     TimeConsumed = item.TimeConsumeMillis,
                     MemoryConsumed = item.MemoryConsumeBytes,
                     Language = item.ProgrammingLanguage,
-                    SubmitTime = item.CreationTime
+                    SubmitTime = item.CreationTime,
+                    contestId = item.contestId
                 };
                 if (item.Visable == true || (login && item.user.UserId == user.UserId)) tmp.Visiable = true;
                 else item.Visable = false;
@@ -219,11 +203,79 @@ namespace GraduationProject.Controllers.Interview
             }
             return list;
         }
+        public ActionResult FlipFavouriteDetails(int id)
+        {
+            if (login)
+            {
+                var problem = problemRepository.Find(id);
+                if (problem == null)
+                {
+                    return View("~/Views/Shared/ErrorLink.cshtml");
+                }
+                oppFavorite(problem);
+                return RedirectToAction("Details", new { id = id });
+            }
+            return View("~/Views/Shared/ErrorLink.cshtml");
+        }
         public ActionResult Details(int id)
         {
             var problem = problemRepository.Find(id);
-            return View(problem);
+            if (problem == null)
+            {
+                return View("~/Views/Shared/ErrorLink.cshtml");
+            }
+            var model = GetDetailProblem(problem);
+            return View(model);
         }
+        private ViewProblemDetails GetDetailProblem(Problem problem)
+        {
 
+            ViewProblemDetails model = new ViewProblemDetails()
+            {
+                problemId = problem.ProblemId,
+                problemSource = problem.ProblemSource,
+                problemsourceId = problem.problemSourceId,
+                urlSource = problem.UrlSource,
+                problemtitle = problem.problemTitle,
+                Problemhtml = problem.ProblemHtml,
+                Rating = problem.rating,
+                NumberAc = problem.Submissions.Where(p => p.Verdict == "Accepted").Count(),
+                Numbersubmission = problem.Submissions.Count()
+            };
+            if (login)
+            {
+                var Is_Favorite = ListMyfavorite.FirstOrDefault(f => f.IsFavourite == true && f.ProblemId == problem.ProblemId);
+                if (Is_Favorite != null)
+                    model.IsFavorite = true;
+                else
+                    model.IsFavorite = false;
+            }
+            List<string> tags = new List<string>();
+
+            foreach (var item in problem.ProblemTag)
+            {
+                tags.Add(item.Tag.tagName);
+            }
+            model.problemTag = tags;
+            return model;
+        }
+        private void oppFavorite(Problem newproblem)
+        {
+            ProblemUser pu = new ProblemUser();
+            var problemuser = newproblem.ProblemUsers.FirstOrDefault(u => u.UserId == user.UserId);
+            if (problemuser == null)
+            {
+                pu.ProblemId = newproblem.ProblemId;
+                pu.UserId = user.UserId;
+                pu.IsFavourite = true;
+                newproblem.ProblemUsers.Add(pu);
+            }
+            else
+            {
+                problemuser.IsFavourite ^= true;
+            }
+
+            problemRepository.Update(newproblem);
+        }
     }
 }

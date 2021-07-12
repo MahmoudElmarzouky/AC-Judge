@@ -1,0 +1,187 @@
+﻿@model GraduationProject.ViewModels.ContestViewsModel.ViewContestModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="show-contest-page">
+    <div class="container">
+        <section class="header-contest text-center">
+            <div class="row">
+                <div class="col-md-2">
+                    <h5>Start</h5>
+                    <div>2021-07-15 02:00</div>
+                </div>
+                <div class="col-md-8">
+                    <h3>Heavy Light Decomposition</h3>
+                </div>
+                <div class="col-md-2">
+                    <h5>End</h5>
+                    <div>2021-07-15 02:00</div>
+                </div>
+            </div>
+            <div claa="schedule-timer">
+            </div>
+            <!--
+            <div class="row">
+                <div class="col-sm-10 col-sm-offset-1">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-success active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 90%">
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+        </section>
+        <section class="nav-action">
+            <ul class="nav nav-tabs">
+                <li role="presentation"><a href="#">Overview</a></li>
+                <li role="presentation"><a href="#">My Submision</a></li>
+                <li role="presentation" class="active"><a href="#">Status</a></li>
+                <li role="presentation"><a href="#">Standings</a></li>
+                <li role="presentation" class="dropdown pull-right">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                    Control <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    @if (Model.groupId != null)
+                    {
+                        <li><a asp-controller="Group" asp-action="Details" asp-route-id="@Model.groupId">Show Group</a></li>
+                    }
+                    <li><a asp-action="Edit" asp-route-id="@Model.contestId">Edit Contest</a></li>
+                    <li><a asp-action="Delete" asp-route-id="@Model.contestId">Delete Contest</a></li>
+                  </ul>
+                </li>
+            </ul>
+        </section>
+        <section class="table-status">
+            <div class="table-responsive">
+                <table class="table table-bordered text-center">
+                    <thead class="thead-light">
+                        <tr>
+                            <th class="text-center">Run ID</th>
+                            <th class="text-center">User Name</th>
+                            <th class="text-center">Problem</th>
+                            <th class="text-center">Verdict</th>
+                            <th class="text-center">Time</th>
+                            <th class="text-center">Memory</th>
+                            <th class="text-center">Language</th>
+                            <th class="text-center">When</th>
+                            <th class="text-center">TYPE</th>
+                        </tr>
+                    </thead>
+                   <tbody>
+                        <tr>
+                            <td><a href="" data-link="@Url.Action("GetTextSubmission")" data-user="@item.UserName" data-id="@item.RunID" data-toggle="modal" data-target="#StatusCotntest">@item.RunID</a></td> 
+                            <td><a href="">SuperMari000</a></td>
+                            <td><a href="#">A</a></td>
+                            <td class="text-danger">Time limit exceeded on test 122</td>
+                            <td>2550 ms</td>
+                            <td>11800 KB</td>
+                            <td>Microsoft Visual C++ 2017</td>
+                            <td>
+                                <div>21/1/2021</div>
+                                <div>21:40</div>
+                            </td>
+                            <td>Online</td>
+                        </tr>
+                        <tr>
+                            <td><a href="" data-link="@Url.Action("GetTextSubmission")" data-user="@item.UserName" data-id="@item.RunID" data-toggle="modal" data-target="#StatusCotntest">@item.RunID</a></td>
+                            <td><a href="">Mari000</a></td>
+                            <td><a href="#">B</a></td>
+                            <td class="text-danger">Time limit exceeded on test 120</td>
+                            <td>2550 ms</td>
+                            <td>11800 KB</td>
+                            <td>Microsoft Visual C++ 2017</td>
+                            <td>
+                                <div>21/1/2021</div>
+                                <div>21:40</div>
+                            </td>
+                            <td>Offline</td>
+                        </tr>
+                        <tr>
+                            <td><a href="" data-link="@Url.Action("GetTextSubmission")" data-user="@item.UserName" data-id="@item.RunID" data-toggle="modal" data-target="#StatusCotntest">@item.RunID</a></td>
+                            <td><a href="">SuperMari000</a></td>
+                            <td><a href="#">C</a></td>
+                            <td class="text-success">Accepted</td>
+                            <td>2550 ms</td>
+                            <td>11800 KB</td>
+                            <td>C++ 2017</td>
+                            <td>
+                                <div>21/1/2021</div>
+                                <div>21:40</div>
+                            </td>
+                            <td>Offline</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div aria-label="Page navigation" class="text-center">
+                <ul class="pagination pagination-lg">
+                  <li>
+                    <a href="#" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                  <li><a href="#">1</a></li>
+                  <li><a href="#">2</a></li>
+                  <li><a href="#">3</a></li>
+                  <li>
+                    <a href="#" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                </ul>
+            </div>
+        </section>
+        <!-- View Status Modal -->
+        <section class="modal fade submision-modal" id="StatusCotntest" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="model-header-flex">
+                            <h4 class="modal-title">
+                                Solution By <span>SuperMari000</span>
+                            </h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th class="text-center">Problem</th>
+                                        <th class="text-center">Verdict</th>
+                                        <th class="text-center">Time</th>
+                                        <th class="text-center">Memory</th>
+                                        <th class="text-center">Language</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td class=""></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="submision">
+                            <button class="btn btn-secondary">Copy</button>
+                            <pre class="prettyprint"></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

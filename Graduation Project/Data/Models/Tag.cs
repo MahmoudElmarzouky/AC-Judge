@@ -9,7 +9,8 @@ namespace GraduationProject.Data.Models
     {
         public Tag()
         {
-            ProblemTag = new HashSet<ProblemTag>(); 
+            ProblemTag = new HashSet<ProblemTag>();
+            blogTag = new HashSet<BlogTag>(); 
         }
         public int tagId { get; set; }
         public string tagName { get; set; }
