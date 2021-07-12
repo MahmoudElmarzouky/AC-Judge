@@ -6,10 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Views\Contest\ShowProblem.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="Areas\Identity\Pages\Account\Login.cshtml" />
     <None Include="Areas\Identity\Pages\Account\Logout.cshtml" />
     <None Include="Areas\Identity\Pages\Account\Manage\Index.cshtml" />
@@ -18,7 +14,6 @@
     <None Include="Areas\Identity\Pages\Account\Register.cshtml" />
     <None Include="Areas\Identity\Pages\Account\_ViewImports.cshtml" />
     <None Include="Views\Blog\Index.cshtml" />
-    <None Include="Views\Contest\ShowProblem.cshtml" />
     <None Include="wwwroot\fonts\glyphicons-halflings-regular.svg" />
     <None Include="wwwroot\fonts\glyphicons-halflings-regular.woff2" />
     <None Include="wwwroot\js\bootstrap.min.js" />

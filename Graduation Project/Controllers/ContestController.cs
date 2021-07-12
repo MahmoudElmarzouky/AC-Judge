@@ -7,6 +7,7 @@ using GraduationProject.Data.Models;
 using GraduationProject.Data.Repositories.Interfaces;
 using GraduationProject.Data.Repositories.IProblemRepository;
 using GraduationProject.ViewModels.ContestViewsModel;
+using GraduationProject.ViewModels.ProblemViewsModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,22 +19,26 @@ namespace GraduationProject.Controllers.Contest
     {
         readonly private IContestRepository<GraduationProject.Data.Models.Contest> contests;
         readonly private IProblemRepository<Problem> problems;
-        readonly private IGroupRepository<GraduationProject.Data.Models.Group> groups; 
+        readonly private IGroupRepository<GraduationProject.Data.Models.Group> groups;
+        private readonly ISubmissionRepository<Submission> Submissions;
         readonly private User user; 
-        readonly private int NumberOfItemsForPage = 2; 
+        readonly private int NumberOfItemsForPage = 12; 
         public ContestController(IContestRepository<GraduationProject.Data.Models.Contest> contests
             , IUserRepository<User> Userrepository
             , IHttpContextAccessor httpContextAccessor
             , IProblemRepository<Problem> problems
             , IGroupRepository<GraduationProject.Data.Models.Group> groups
+            , ISubmissionRepository<Submission> Submissions
             )
         {
             var userId = httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             user = Userrepository.Find(userId);
             this.contests = contests;
             this.problems = problems;
-            this.groups = groups; 
-            
+            this.groups = groups;
+            this.Submissions = Submissions;
+
+
         }
         // GET: HomeController
         public ActionResult Index()
@@ -45,7 +50,6 @@ namespace GraduationProject.Controllers.Contest
             {
                 return View("ErrorLink");
             }
-
         }
         private List<ViewContestModel> getAllContests()
         {
@@ -273,6 +277,7 @@ namespace GraduationProject.Controllers.Contest
                     return RedirectToAction("Index");
                 var contest = contests.Find(Id);
                 var model = getContestViewModelFromContest(contest);
+                model.Submissions = model.Submissions.OrderByDescending(u => u.CreationTime).ToList(); 
                 return View("Details", model);
             }
             catch
@@ -290,7 +295,7 @@ namespace GraduationProject.Controllers.Contest
                     return RedirectToAction("Index");
                 var contest = contests.Find(Id);
                 var model = getContestViewModelFromContest(contest);
-                model.Submissions = model.Submissions.Where(u => u.userId == user.UserId).ToList(); 
+                model.Submissions = model.Submissions.Where(u => u.userId == user.UserId).OrderByDescending(u=>u.CreationTime).ToList(); 
                 return View("Details", model);
             }
             catch
@@ -299,18 +304,53 @@ namespace GraduationProject.Controllers.Contest
             }
         }
         
-
-
-        public ActionResult Problem(int id)
+        public ActionResult DisplayProblem(int id, int problemId)
         {
-            return null; 
+            var contest = contests.Find(id);
+            var owner = contest.UserContest.FirstOrDefault(u => u.isOwner == true);
+            int? ownerId = owner != null ? owner.UserId : null;
+            string alias = contest.ContestProblems.FirstOrDefault(u => u.problemId == problemId).Alias; 
+            
+            var problem = contest.ContestProblems.FirstOrDefault(u => u.problemId == problemId).problem;
+            if (alias == "") alias = problem.problemTitle; 
+            var model = GetDetailProblem(problem);
+            model.contestDuration = contest.contestDuration;
+            model.contestId = contest.contestId;
+            model.contestStartTime = contest.contestStartTime;
+            model.groupId = contest.groupId;
+            model.IsCurrentUserOwner = (user.UserId == ownerId);
+            model.contestTitle = contest.contestTitle;
+            model.problemtitle = alias; 
+            return View("ProblemInContest", model);
         }
-        [HttpPost]
-        [AutoValidateAntiforgeryToken]
-        public ActionResult Problem()
+        // This Code Copied From Problem Controller vv
+        private ViewProblemDetailsInContest GetDetailProblem(Problem problem)
         {
-            return null;
+
+            ViewProblemDetailsInContest model = new ViewProblemDetailsInContest()
+            {
+                problemId = problem.ProblemId,
+                problemSource = problem.ProblemSource,
+                problemsourceId = problem.problemSourceId,
+                urlSource = problem.UrlSource,
+                problemtitle = problem.problemTitle,
+                Problemhtml = problem.ProblemHtml,
+                Rating = problem.rating,
+                NumberAc = problem.Submissions.Where(p => p.Verdict == "Accepted").Count(),
+                Numbersubmission = problem.Submissions.Count()
+            };
+            
+            List<string> tags = new List<string>();
+
+            foreach (var item in problem.ProblemTag)
+            {
+                tags.Add(item.Tag.tagName);
+            }
+            model.problemTag = tags;
+            return model;
         }
+        // This Code Copied From Problem Controller ^^
+
         // This is For Problem 
         private Boolean CanAccessTheContest(int contestId, int userId)
         {
@@ -342,6 +382,7 @@ namespace GraduationProject.Controllers.Contest
             IList<ProblemInfo> Problems = new List<ProblemInfo>();
             foreach (var item in contest.ContestProblems.OrderBy(u=>u.order).ToList())
             {
+                string ProblemUrl = item.problem.UrlSource; 
                 var newProblem = new ProblemInfo();
                 newProblem.ProblemId = item.problemId;
                 newProblem.Origin = item.PlatForm;
@@ -356,7 +397,7 @@ namespace GraduationProject.Controllers.Contest
                     u.ProblemId == item.problemId &&
                     u.Verdict == "Accepted").Count();
                 newProblem.NumberOfSubmissions = contest.Submissions.Where(u=>u.ProblemId == item.problemId).Count();
-                newProblem.originUrl = "URL";
+                newProblem.originUrl = ProblemUrl;
                 newProblem.HasAttempt = contest.Submissions.FirstOrDefault
                     (u => u.userId == user.UserId && u.ProblemId == item.problemId) != null;
                 Problems.Add(newProblem); 
@@ -379,7 +420,7 @@ namespace GraduationProject.Controllers.Contest
                 IsFavourite = currentUser != null? currentUser.isFavourite: false,
                 PreparedBy = owner.UserName, 
                 PreparedById = owner.UserId,
-                IsCurrentUserOwner = owner.UserId == user.UserId
+                IsCurrentUserOwner = (owner.UserId == user.UserId)
             };
         }
         private StandingViewModel CreateStandingView(int contestId)
@@ -558,6 +599,31 @@ namespace GraduationProject.Controllers.Contest
                 return View("Index"); 
             }
         }
+        public ActionResult SubmitCode(int contestId, int problemId, string code, string lang)
+        {
+            
+            try
+            {
+                int userId = user.UserId;
+                if (!CanAccessTheContest(contestId, userId))
+                    return RedirectToAction("MySubmission", new { contestId });
+                contests.Submit(userId, contestId, problemId, code, lang);
+                return RedirectToAction("MySubmission", new { id = contestId });
+            }
+            catch
+            {
+                return RedirectToAction("MySubmission", new { contestId });
+            }
+            
+        }
+        
+        [HttpPost]
+        public ActionResult GetTextSubmission(int SubmisionId)
+        {
+            var Result = Submissions.Find(SubmisionId).SubmissionText;
+            return Content(Result, "text/plain");
+        }
+
 
     }
 }

@@ -1,10 +1,13 @@
-﻿@{ 
+﻿@model GraduationProject.ViewModels.ContestViewsModel.ViewContestModel
+
+@{
     ViewData["Title"] = "Overview";
 }
-@{
-    Boolean ContestEnded = Model.contestStartTime.AddMinutes(Model.contestDuration) >= DateTime.Now;
+@{ 
+    Boolean ContestEnded = Model.contestStatus == "Ended";
     Boolean ShowOrigin = Model.IsCurrentUserOwner || ContestEnded;
-    Boolean ShowProblems = Model.IsCurrentUserOwner || ContestEnded || Model.contestStartTime >= DateTime.Now;
+    Boolean ShowProblems = Model.IsCurrentUserOwner || ContestEnded || (Model.contestStartTime <= DateTime.Now);
+    
 }
 <section class="table-problem">
     <div class="table-responsive">
@@ -15,7 +18,6 @@
                     @if (ShowOrigin)
                     {
                         <th class="text-center">Origin</th>
-
                     }
                     <th class="text-center">Title</th>
                     <th class="text-center">Statistics</th>
@@ -23,17 +25,18 @@
             </thead>
 
             <tbody>
-                @if (ShowProblems)
-                {
-                    for (int i = 0; i < Model.Problems.Count; i++)
+                
+                    @for (int i = 0; i < Model.Problems.Count; i++)
                     {
                         <tr>
                             <td class="@Model.Problems[i].SolvedClass"> @Convert.ToChar(i + 'A') </td>
                             @if (ShowOrigin)
                             {
-                                <td> <a href="@Model.Problems[i].originUrl"> @Model.Problems[i].OriginName</a></td>
+                                var ProblemName = Model.Problems[i].OriginName + " - " + Model.Problems[i].Origin;
+                                
+                                <td> <a target="_blank" href="@Model.Problems[i].originUrl"> @ProblemName </a></td>
                             }
-                            <td class="text-left"> <a asp-action="Details" asp-controller="Problem" asp-route-id="@Model.Problems[i].ProblemId"> @Model.Problems[i].PropblemTitle</a></td>
+                            <td class="text-left"> <a asp-action="DisplayProblem" asp-route-id="@Model.contestId" asp-route-problemId="@Model.Problems[i].ProblemId"> @Model.Problems[i].PropblemTitle</a></td>
                             <td>
                                 <span>
                                     <i class="fas fa-user"></i> @Model.Problems[i].NumberOfAccepted
@@ -45,13 +48,7 @@
                             </td>
                         </tr>
                     }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="7">Contest Not Started Yet Or You Don't Have Permission To See The Problems </td>
-                    </tr>
-                }
+              
             </tbody>
 
         </table>

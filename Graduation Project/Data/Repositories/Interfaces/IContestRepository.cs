@@ -20,6 +20,7 @@ namespace GraduationProject.Data.Repositories.Interfaces
         void RegisterInContest(int userId, int contestId);
         void FlipFavourite(int contestId, int userId);
         Boolean IsOwner(int contestId, int userId); 
-        IList<T> Filter(ContestFilter model); 
+        IList<T> Filter(ContestFilter model);
+        string Submit(int userId, int contestId, int problemId, string Code, string lang); 
     }
 }

@@ -65,7 +65,7 @@
                             <li><a asp-action="Edit" asp-route-id="@Model.contestId">Edit Contest</a></li>
                             <li><a asp-action="Delete" asp-route-id="@Model.contestId">Delete Contest</a></li>
                         }
-                        
+
                     </ul>
                 </li>
             </ul>
@@ -93,7 +93,7 @@
                             Rank++;
                             <tr>
                                 <td>@Rank</td>
-                                <td><a href="">@currentUser.userName</a></td>
+                                <td><a asp-action="Details" asp-controller="User" asp-route-id="@currentUser.userId">@currentUser.userName</a></td>
                                 <td>@currentUser.NumberOfSolvedProblems</td>
                                 <td>@currentUser.TotalPenality</td>
 
@@ -104,8 +104,8 @@
                                     <td class="@problem.td_className">
                                         @if (problem.Solved)
                                         {
-                                            int FirstSubmissionId = currentUser.UserPoblemsRaw[i].Submissions[0].SubmissionId;
-                                            <a asp-action="GetTextSubmission" asp-controller="Problem" data-user="@currentUser.userName" data-id="@FirstSubmissionId" data-target="#ShowSubmisionStatusModal"> @problem.NumberOfSubmissions </a>
+                                            int SubmissionId = currentUser.UserPoblemsRaw[i].Submissions.FirstOrDefault(u => u.Verdict == "Accepted").SubmissionId;
+                                            @problem.NumberOfSubmissions
                                         }
                                     </td>
                                 }
@@ -114,26 +114,12 @@
                     </tbody>
                 </table>
             </div>
-            <div aria-label="Page navigation" class="text-center">
-                <ul class="pagination pagination-lg">
-                    <li>
-                        <a href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li>
-                        <a href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+
+
         </section>
     </div>
 </section>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
