@@ -6,6 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Views\Contest\My Submision.txt" />
+    <None Remove="Views\Contest\Status.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Views\Contest\My Submision.txt" />
+    <Content Include="Views\Contest\Status.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="Areas\Identity\Pages\Account\Login.cshtml" />
     <None Include="Areas\Identity\Pages\Account\Logout.cshtml" />
     <None Include="Areas\Identity\Pages\Account\Manage\Index.cshtml" />

@@ -71,20 +71,20 @@
                         </tr>
                     </thead>
                    <tbody>
-                        <tr>
-                            <td><a href="" data-link="@Url.Action("GetTextSubmission")" data-user="@item.UserName" data-id="@item.RunID" data-toggle="modal" data-target="#StatusCotntest">@item.RunID</a></td> 
-                            <td><a href="">SuperMari000</a></td>
-                            <td><a href="#">A</a></td>
-                            <td class="text-danger">Time limit exceeded on test 122</td>
-                            <td>2550 ms</td>
-                            <td>11800 KB</td>
-                            <td>Microsoft Visual C++ 2017</td>
-                            <td>
-                                <div>21/1/2021</div>
-                                <div>21:40</div>
-                            </td>
-                            <td>Online</td>
-                        </tr>
+                       <tr>
+                           <!--<td><a href="" data-link="@Url.Action("GetTextSubmission")" data-user="@item.UserName" data-id="@item.RunID" data-toggle="modal" data-target="#StatusCotntest">@item.RunID</a></td> -->
+                           <td><a href="">SuperMari000</a></td>
+                           <td><a href="#">A</a></td>
+                           <td class="text-danger">Time limit exceeded on test 122</td>
+                           <td>2550 ms</td>
+                           <td>11800 KB</td>
+                           <td>Microsoft Visual C++ 2017</td>
+                           <td>
+                               <div>21/1/2021</div>
+                               <div>21:40</div>
+                           </td>
+                           <td>Online</td>
+                       </tr>
                         <tr>
                             <td><a href="" data-link="@Url.Action("GetTextSubmission")" data-user="@item.UserName" data-id="@item.RunID" data-toggle="modal" data-target="#StatusCotntest">@item.RunID</a></td>
                             <td><a href="">Mari000</a></td>
