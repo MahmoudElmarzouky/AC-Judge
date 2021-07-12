@@ -1,0 +1,59 @@
+﻿@{ 
+    ViewData["Title"] = "Overview";
+}
+@{
+    Boolean ContestEnded = Model.contestStartTime.AddMinutes(Model.contestDuration) >= DateTime.Now;
+    Boolean ShowOrigin = Model.IsCurrentUserOwner || ContestEnded;
+    Boolean ShowProblems = Model.IsCurrentUserOwner || ContestEnded || Model.contestStartTime >= DateTime.Now;
+}
+<section class="table-problem">
+    <div class="table-responsive">
+        <table class="table table-bordered text-center">
+            <thead class="thead-light">
+                <tr>
+                    <th class="text-center" width="89px">#</th>
+                    @if (ShowOrigin)
+                    {
+                        <th class="text-center">Origin</th>
+
+                    }
+                    <th class="text-center">Title</th>
+                    <th class="text-center">Statistics</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (ShowProblems)
+                {
+                    for (int i = 0; i < Model.Problems.Count; i++)
+                    {
+                        <tr>
+                            <td class="@Model.Problems[i].SolvedClass"> @Convert.ToChar(i + 'A') </td>
+                            @if (ShowOrigin)
+                            {
+                                <td> <a href="@Model.Problems[i].originUrl"> @Model.Problems[i].OriginName</a></td>
+                            }
+                            <td class="text-left"> <a asp-action="Details" asp-controller="Problem" asp-route-id="@Model.Problems[i].ProblemId"> @Model.Problems[i].PropblemTitle</a></td>
+                            <td>
+                                <span>
+                                    <i class="fas fa-user"></i> @Model.Problems[i].NumberOfAccepted
+                                </span>
+                                <span class="muted">/</span>
+                                <span>
+                                    <i class="fas fa-paper-plane"></i> @Model.Problems[i].NumberOfSubmissions
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7">Contest Not Started Yet Or You Don't Have Permission To See The Problems </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+</section>
