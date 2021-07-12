@@ -310,6 +310,7 @@ namespace GraduationProject.Controllers.Contest
                 IsFavourite = currentUser != null? currentUser.isFavourite: false,
                 PreparedBy = owner.UserName, 
                 PreparedById = owner.UserId,
+                IsCurrentUserOwner = owner.UserId == user.UserId
             };
         }
         private StandingViewModel CreateStandingView(int contestId)

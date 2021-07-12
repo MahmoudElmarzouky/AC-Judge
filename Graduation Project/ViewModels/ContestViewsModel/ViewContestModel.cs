@@ -6,6 +6,11 @@ using GraduationProject.Data.Models;
 
 namespace GraduationProject.ViewModels.ContestViewsModel
 {
+    public class ProblemInfo
+    {
+        public int ProblemId { get; set; }
+
+    }
     public class ViewContestModel
     {
         public ViewContestModel()
@@ -15,6 +20,8 @@ namespace GraduationProject.ViewModels.ContestViewsModel
             Problems = new HashSet<Problem>();
         }
         public Boolean IsFavourite { get; set; }
+        public Boolean IsCurrentUserOwner { get; set; }
+
         public string FavouuriteClass { get {
                 return IsFavourite ? "fas fa-heart active" : "fas fa-heart"; 
             } set { } }

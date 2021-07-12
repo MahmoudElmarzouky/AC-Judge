@@ -581,6 +581,46 @@ header .nav-main .navbar-brand span{
 }
 
 /* End Show Problem Page */
+/* Start Show Contest Page */
+.show-contest-page{
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.show-contest-page .header-contest{
+    background-color: #EDEDED;
+    padding: 10px 10px;
+    vertical-align: middle !important;
+}
+.show-contest-page .header-contest > div:first-child{
+    margin-bottom: 20px;
+}
+.show-contest-page .header-contest h5{
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.show-contest-page .nav-action{
+    margin-top: 20px;
+}
+.show-contest-page .nav-action .nav > li:last-child > a{
+    margin-right: 0;
+}
+.show-contest-page .nav-action .active a{
+    color: #495057 !important;
+    background-color: #e9ecef !important;
+}
+.show-contest-page .table-problem .table{
+    border-top: none;
+    font-size: 1.6rem;
+    font-weight: 500;
+}
+.show-contest-page .table-problem .table{
+    border-top: none;
+}
+.show-contest-page .table-problem td.unsolved{
+    background-color: rgba(0,0,0,.05);
+}
+
+/* End Show Contest Page */
 /* Start User View Page */
 .main-user-view{
     margin-top: 30px;
