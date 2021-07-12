@@ -14,6 +14,7 @@ namespace GraduationProject.Data.Models
 
         [Key, Column(Order = 1)]
         public int ProblemId { get; set; }
+        public Problem problem { get; set; }
 
         [Key, Column(Order = 2)]
         public Boolean IsFavourite { get; set; }

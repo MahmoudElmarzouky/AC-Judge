@@ -26,6 +26,13 @@ namespace GraduationProject.Data.Repositories
             var user = dbcontext.Users
                 .Include(s => s.submissions)
                 .Include(pu => pu.ProblemUsers)
+                .ThenInclude(pu => pu.problem)
+                .Include(u => u.UserContest)
+                .ThenInclude(c => c.Contest)
+                .Include(u => u.UserGroup)
+                .ThenInclude(ug => ug.Group)
+                .Include(u => u.userBlog)
+                .ThenInclude(ub => ub.blog)
                 .FirstOrDefault(user => user.UserId == Id);
             return user; 
         }
@@ -34,6 +41,13 @@ namespace GraduationProject.Data.Repositories
             var user = dbcontext.Users
                 .Include(s => s.submissions)
                 .Include(pu => pu.ProblemUsers)
+                .ThenInclude(pu=>pu.problem)
+                .Include(u => u.UserContest)
+                .ThenInclude(c => c.Contest)
+                .Include(u => u.UserGroup)
+                .ThenInclude(ug => ug.Group)
+                .Include(u => u.userBlog)
+                .ThenInclude(ub => ub.blog)
                 .FirstOrDefault(user => user.UserIdentityId == Id);
             return user;
         }
@@ -42,6 +56,13 @@ namespace GraduationProject.Data.Repositories
             return dbcontext.Users
                 .Include(s => s.submissions)
                 .Include(pu => pu.ProblemUsers)
+                .ThenInclude(pu => pu.problem)
+                .Include(u => u.UserContest)
+                .ThenInclude(c => c.Contest)
+                .Include(u => u.UserGroup)
+                .ThenInclude(ug => ug.Group)
+                .Include(u => u.userBlog)
+                .ThenInclude(ub => ub.blog)
                 .ToList(); 
         }
 
