@@ -107,10 +107,14 @@ function Modal_Edit_Member_Group(){
         }else if(Role == '0'){
             btnStatus.val('-1');
             btnStatus.html('<i class="fas fa-edit"></i> Set Participant');
+        }else if(Role == '-2'){
+            btnStatus.val('-2');
+            btnStatus.css('display','none');
         }
   
     });
 }
+
 
 function Get_Submision(URL, SubID, ElementShow){
     
@@ -183,7 +187,50 @@ function Submision_Status_Page(){
 
     });
 }
+function Status_Page_Contest(){
+    var OpenModal = $('.show-contest-page #StatusCotntest');
+    OpenModal.on('show.bs.modal', function (event) {        
+        var button = $(event.relatedTarget);
+        var UserName = button.data('user');
+        var SubID = button.data('id');
+        
+        
+        var modal = $(this);
+        modal.find('.modal-title span').text(UserName);
+        
+        var AllSiblingsButton = button.parent().nextAll();
+        var TableRowSet = modal.find('.modal-body .table tbody tr td');
+        
+        for(var i=1,j=0;i<AllSiblingsButton.length-1 && j<TableRowSet.length;++i,++j){
+            var From = $(AllSiblingsButton[i]);
+            var To = $(TableRowSet[j]);
+            To.text(From.text());
+            To.attr('class',From.attr('class'));
+        }
+        
+        var SetID =  modal.find('.modal-body .table tbody tr input[name="SubmisionID"]');
+        SetID.val(SubID);
+        
+        var URL = button.data('link');
+        var SetCode = modal.find('.modal-body .submision pre');
+        Get_Submision(URL, SubID, SetCode);
+    });
+    
+    var Copied = $('.show-contest-page .submision-modal .submision .btn');
+    Copied.click(function(){
+        var PreCode = $(this).next('pre');
+        let Txt = PreCode.text();
+        
+        var TextareaTemp = $('<textarea />');
+        $(this).append(TextareaTemp);
+        
+        TextareaTemp.val(Txt).select();
+        
+        document.execCommand("copy");
+        TextareaTemp.remove();
 
+    });
+}
 
 function Insert_Problem_Table_Create_Contest(MainClass) {
 
@@ -448,4 +495,10 @@ $(function(){
     /* Start Codeforces Edit Problem */
     Divide_And_Merge_Codeforcess_Problem();
     /* End Codeforces Edit Problem */
+    
+    
+    /* Start Contest Page */
+    Status_Page_Contest();
+    /* End Contest Page  */
+    
 });

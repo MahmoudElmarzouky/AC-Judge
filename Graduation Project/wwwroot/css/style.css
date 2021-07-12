@@ -621,6 +621,64 @@ header .nav-main .navbar-brand span{
 }
 
 /* End Show Contest Page */
+/* Start Status And My Submision contest page */
+
+.show-contest-page .table-status .table th,
+.show-contest-page .table-mysubmision .table th{
+    white-space: nowrap;
+}
+
+.show-contest-page .table-status .table,
+.show-contest-page .table-mysubmision .table{
+    font-size: 1.3rem;
+    border-top: 0;
+}
+.show-contest-page .table-status .table th,
+.show-contest-page .table-mysubmision .table th{
+    vertical-align: middle !important;
+    border-right: 0;
+    border-left: 0;
+}
+.show-contest-page .table-status .table th:first-child,
+.show-contest-page .table-mysubmision .table th:first-child{
+    border-left: 1px;
+}
+.show-contest-page .table-status .table th:last-child,
+.show-contest-page .table-mysubmision .table th:last-child{
+    border-right: 1px;
+}
+.show-contest-page .table-status .table td,
+.show-contest-page .table-mysubmision .table td{
+    vertical-align: middle !important;
+    line-height: 1.22222222;
+}
+
+
+/* Modal Show Submit */
+.show-contest-page .submision-modal .modal-title span{
+    font-size: 1.5rem;
+    color: #342fe0;
+}
+.show-contest-page .submision-modal .table th,
+.show-contest-page .submision-modal .table td{
+    vertical-align: middle !important;
+}
+.show-contest-page .submision-modal .table .btn{
+    padding: 3px 10px;
+}
+.show-contest-page .submision-modal .submision{
+    position: relative;
+}
+.show-contest-page .submision-modal .submision .btn{
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    padding: 3px 8px;
+    border-radius: 0px 4px 0px 4px;
+}
+
+
+/* End Status And My Submision contest page */
 /* Start User View Page */
 .main-user-view{
     margin-top: 30px;
