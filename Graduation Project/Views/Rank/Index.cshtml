@@ -44,11 +44,11 @@
                     {
                         if (ViewBag.function == "Filter")
                         {
-                            <li><a asp-action="FilterRanking" asp-route-page="@i" asp-route-Country="@ViewBag.Country" asp-route-UserName="@ViewBag.UserName" asp-route-BirthYearLowerBound="@ViewBag.BirthYearLowerBound" asp-route-BirthYearUpperBound="@ViewBag.BirthYearUpperBound" asp-route-RatingLowerBound="@ViewBag.RatingLowerBound" asp-route-RatingUpperBound="@ViewBag.RatingUpperBound">@i</a></li>
+                            <li class="@(ViewBag.Pagenum==i?"active":"")"><a asp-action="FilterRanking" asp-route-page="@i" asp-route-Country="@ViewBag.Country" asp-route-UserName="@ViewBag.UserName" asp-route-BirthYearLowerBound="@ViewBag.BirthYearLowerBound" asp-route-BirthYearUpperBound="@ViewBag.BirthYearUpperBound" asp-route-RatingLowerBound="@ViewBag.RatingLowerBound" asp-route-RatingUpperBound="@ViewBag.RatingUpperBound">@i</a></li>
                         }
                         else
                         {
-                            <li><a asp-action="Index" asp-route-page="@i">@i</a></li>
+                            <li class="@(ViewBag.Pagenum==i?"active":"")"><a asp-action="Index" asp-route-page="@i">@i</a></li>
                         }
 
                     }
