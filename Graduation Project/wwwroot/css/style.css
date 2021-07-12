@@ -356,8 +356,8 @@ header .nav-main .navbar-brand span{
     clip: rect(0,0,0,0);
     pointer-events: none;
 }
-.create-group-page .form-horizontal .form-group:last-child,
-.edit-group-page .form-horizontal .form-group:last-child{
+.create-group-page .form-horizontal div.form-group:last-child,
+.edit-group-page .form-horizontal div.form-group:last-child{
     margin-top: 30px;
 }
 
@@ -737,6 +737,65 @@ header .nav-main .navbar-brand span{
 }
 
 /* End Standing Contest Page */
+/* Start Main Blog Page */
+.all-blog-page{
+    margin: 20px 0;
+}
+.all-blog-page .page-header{
+    padding: 8px 0px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.all-blog-page .page-header h2{
+    margin: 0;
+}
+.all-blog-page .page-header span{
+    font-size: 1.7rem;
+    font-weight: 300;
+}
+.all-blog-page .blog-table .panel .panel-heading{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 2rem !important;
+}
+.all-blog-page .blog-table .panel .panel-heading .panel-title{
+    font-size: inherit;
+}
+.all-blog-page .blog-table .panel .panel-heading i[data-toggle='OpenFilterPanel']{
+    cursor: pointer;
+}
+.all-blog-page .blog-table .table th{
+    white-space: nowrap;
+}
+.all-blog-page .blog-table .table{
+    font-size: 1.5rem;
+}
+.all-blog-page .blog-table .table th,
+.all-blog-page .blog-table .table td{
+    vertical-align: middle !important;
+}
+.all-blog-page .blog-table .table td.creat-time{
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+    line-height: 1.7rem;
+}
+/* End Main Blog Page */
+/* Start Create & Edit Blog */
+
+.create-blog-page,
+.edit-blog-page{
+    margin-top: 20px;
+    margin-bottom: 30px;  
+}
+.create-blog-page .form-horizontal div.form-group:last-child,
+.edit-blog-page .form-horizontal div.form-group:last-child{
+    margin-top: 30px;
+}
+
+/* End Create & Edit Blog */
 /* Start Problem Contest Page */
 .show-contest-page .show-problem{
     margin-top: 40px;
@@ -792,7 +851,6 @@ header .nav-main .navbar-brand span{
 .main-user-view .my-submision .table tbody tr [data-open="openMySubmision"]{
     cursor: pointer;
 }
-
 
 /* End User View Page */
 
