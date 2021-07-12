@@ -108,7 +108,7 @@
   -webkit-text-size-adjust: 100%;
   font-size: 1.4rem;
   word-wrap: break-word;
-  margin: 1.5em 0 0 !important;
+  margin: 1.5em 0 0;
 }
 #CodeforcesProblemContent div.ttypography .tt {
   margin: 0 4px;
