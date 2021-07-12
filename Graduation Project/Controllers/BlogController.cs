@@ -17,6 +17,7 @@ namespace GraduationProject.Controllers.Blog
     public class BlogController : Controller
     {
         private readonly IBlogRepository<Data.Models.Blog> blogs;
+        private readonly IUserRepository<User> userrepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private User user;
         public BlogController(IBlogRepository<GraduationProject.Data.Models.Blog> blogs
@@ -25,11 +26,11 @@ namespace GraduationProject.Controllers.Blog
             )
         {
             this.blogs = blogs;
-
+            userrepository = Userrepository;
             _httpContextAccessor = httpContextAccessor;
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            user = Userrepository.Find(userId);
+            user = userrepository.Find(userId);
 
         }
         // GET: HomeController
@@ -223,6 +224,27 @@ namespace GraduationProject.Controllers.Blog
             var rel = c.userBlog.FirstOrDefault(u => u.userId == userId);
             return  rel != null;
         }
+        public ActionResult Filter(string Title,string PrepeardBy)
+        {
+            var list = new List<ViewBlogModel>();
+            
+            if (PrepeardBy.Contains(""))
+            {
+                var _user = userrepository.FindByUserName(PrepeardBy);
+                var userBlog = _user.userBlog.FirstOrDefault(u => u.userId == _user.UserId && u.blogOwenr == true);
+                var listItem = blogs.Search(Title, userBlog);
+                foreach (var item in listItem)
+                    list.Add(getViewModelFromBlog(item));
+            }else
+            {
+                var listItem = blogs.Search(Title, null);
+                foreach (var item in listItem)
+                    list.Add(getViewModelFromBlog(item));
+            }
+
+            return View("Index",list);
+        }
+
         public ActionResult UpVote(int id)
         {
             var blog = blogs.Find(id);
