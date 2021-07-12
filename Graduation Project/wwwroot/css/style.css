@@ -677,8 +677,48 @@ header .nav-main .navbar-brand span{
     border-radius: 0px 4px 0px 4px;
 }
 
-
 /* End Status And My Submision contest page */
+/* Start Standing Contest Page */
+
+.show-contest-page .table-standing .table th{
+    white-space: nowrap;
+    border-right: 0;
+    border-left: 0;
+}
+
+.show-contest-page .table-standing .table{
+    border-top: 0;
+}
+
+.show-contest-page .table-standing .table th,
+.show-contest-page .table-standing .table td{
+    vertical-align: middle !important;
+}
+.show-contest-page .table-standing .table th:first-child{
+    border-left: 1px;
+}
+.show-contest-page .table-standing .table th:last-child{
+    border-right: 1px;
+}
+.show-contest-page .table-standing .table .submit-standing{
+    color: #FFF;
+    font-size: 1.6rem;
+}
+
+.show-contest-page .table-standing .table .Pfsolve{
+    background-color: #006400 !important;
+}
+.show-contest-page .table-standing .table .Psolve{
+    background-color: #32CD32 !important;
+}
+.show-contest-page .table-standing .table .Pattemped{
+    background-color: #e74c3c !important;
+}
+.show-contest-page .table-standing .table .Punattemped{
+    background-color: rgba(0,0,0,.05) !important;
+}
+
+/* End Standing Contest Page */
 /* Start User View Page */
 .main-user-view{
     margin-top: 30px;
