@@ -1,7 +1,9 @@
 ﻿using GraduationProject.Data.Models;
 using GraduationProject.Data.Repositories.Interfaces;
+using GraduationProject.Data.Repositories.IProblemRepository;
 using GraduationProject.ViewModels.ContestViewsModel;
 using GraduationProject.ViewModels.ProblemViewsModel;
+using GraduationProject.ViewModels.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,18 +16,28 @@ using X.PagedList;
 
 namespace GraduationProject.Controllers
 {
-    
+
     public class UserController : Controller
     {
         private readonly IUserRepository<User> users;
+        private readonly IBlogRepository<Data.Models.Blog> blogs;
+        private readonly IGroupRepository<GraduationProject.Data.Models.Group> groups;
+        readonly private IContestRepository<GraduationProject.Data.Models.Contest> contests;
+        private readonly IEnumerable<Submission> ListMysubmission;
+        private readonly IEnumerable<ProblemUser> ListMyfavorite;
         private readonly ISubmissionRepository<Submission> SubmissionRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly Boolean login;
+        private readonly IProblemRepository<Problem> problemRepository;
         private User user;
-        public UserController(ISubmissionRepository<Submission> _SubmissionRepository, IUserRepository<User> users, IHttpContextAccessor httpContextAccessor)
+        public UserController(IBlogRepository<GraduationProject.Data.Models.Blog> blogs,IGroupRepository<GraduationProject.Data.Models.Group> groups, IContestRepository<GraduationProject.Data.Models.Contest> contests, IProblemRepository<Problem> problemRepository, ISubmissionRepository<Submission> _SubmissionRepository, IUserRepository<User> users, IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
+            this.problemRepository = problemRepository;
+            this.contests = contests;
+            this.groups = groups;
             this.users = users;
+            this.blogs = blogs;
             var flag = _httpContextAccessor.HttpContext.User.Identity.IsAuthenticated;
             if (flag == true)
             {
@@ -34,6 +46,8 @@ namespace GraduationProject.Controllers
                 _httpContextAccessor = httpContextAccessor;
                 var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 user = users.Find(userId);
+                ListMysubmission = user.submissions;
+                ListMyfavorite = user.ProblemUsers;
             }
             else
             {
@@ -76,7 +90,7 @@ namespace GraduationProject.Controllers
             return RedirectToAction("Index", "Blog");
         }
         [Authorize]
-        public ActionResult MySubmission(int id,int? page)
+        public ActionResult MySubmission(int id, int? page)
         {
             if (user.UserId == id)
             {
@@ -93,15 +107,30 @@ namespace GraduationProject.Controllers
                 return View("~/Views/Shared/ErrorLink.cshtml");
             }
         }
-        
+
         [Authorize]
         public ActionResult Favorite(int id)
         {
             if (user.UserId == id)
             {
                 ViewBag.USER = user;
-                IList<ViewStatusModel> list = GetAllSubmission(id);
-                return View(list);
+                var Favouritecontest = user.UserContest.Where(c => c.isFavourite == true).ToList();
+                var Favouritegroup = user.UserGroup.Where(g => g.isFavourite == true).ToList();
+                var Favouriteblog = user.userBlog.Where(b => b.isFavourite == true).ToList();
+
+                var listproblemuser = user.ProblemUsers.Where(pu => pu.IsFavourite == true);
+                var FavouriteProblem = getAllmodel(listproblemuser);
+                FavoriteViewModel model = new FavoriteViewModel()
+                {
+                    pu = FavouriteProblem,
+                    uc = Favouritecontest,
+                    ug = Favouritegroup,
+                    ub = Favouriteblog
+
+                };
+
+
+                return View(model);
             }
             else
             {
@@ -111,7 +140,7 @@ namespace GraduationProject.Controllers
         public void FlibShare(int SubmisionId)
         {
             Submission submission = SubmissionRepository.Find(SubmisionId);
-            if (submission!=null && login && user.UserId==submission.userId)
+            if (submission != null && login && user.UserId == submission.userId)
             {
                 submission.Visable ^= true;
                 SubmissionRepository.Update(submission);
@@ -204,6 +233,93 @@ namespace GraduationProject.Controllers
             {
                 return View();
             }
+        }
+
+        public IEnumerable<ViewProblemModel> getAllmodel(IEnumerable<ProblemUser> List)
+        {
+            List<ViewProblemModel> model = new List<ViewProblemModel>();
+            foreach (var p in List)
+            {
+                ViewProblemModel item = new ViewProblemModel()
+                {
+                    ProblemId = p.ProblemId,
+                    OnlineJudge = p.problem.ProblemSource,
+                    ProblemSourceId = p.problem.problemSourceId,
+                    Title = p.problem.problemTitle,
+                    rating = p.problem.rating,
+                    UrlSource = p.problem.UrlSource,
+                    Favorite = p.IsFavourite
+                };
+                var acsubmission = ListMysubmission.FirstOrDefault(s => s.ProblemId == p.ProblemId && s.Verdict == "Accepted");
+                if (acsubmission != null)
+                {
+                    item.Status = "Solved";
+                }
+                else
+                {
+                    var wrsubmission = ListMysubmission.FirstOrDefault(s => s.ProblemId == p.ProblemId && s.Verdict == "Wrong");
+                    if (wrsubmission != null)
+                        item.Status = "Attempted";
+                    else
+                        item.Status = "";
+                }
+                model.Add(item);
+            }
+            return model;
+        }
+        [Authorize]
+        public ActionResult FlipFavouriteProblem(int id, int uid)
+        {
+            if (uid != user.UserId)
+                return View("~/Views/Shared/ErrorLink.cshtml");
+            var p = problemRepository.Find(id);
+            if (p == null)
+            {
+                return View("~/Views/Shared/ErrorLink.cshtml");
+            }
+            var problemuser = p.ProblemUsers.FirstOrDefault(u => u.UserId == user.UserId);
+            problemuser.IsFavourite ^= true;
+            problemRepository.Update(p);
+            return RedirectToAction(nameof(Favorite), new { id = user.UserId });
+        }
+        [Authorize]
+        public ActionResult FlipFavouritecontest(int id, int uid)
+        {
+            if (uid != user.UserId)
+                return View("~/Views/Shared/ErrorLink.cshtml");
+            var c = contests.Find(id);
+            if (c == null)
+            {
+                return View("~/Views/Shared/ErrorLink.cshtml");
+            }
+            contests.FlipFavourite(id, uid);
+            return RedirectToAction(nameof(Favorite), new { id = user.UserId });
+        }
+        [Authorize]
+        public ActionResult FlipFavouritegroup(int id, int uid)
+        {
+            if (uid != user.UserId)
+                return View("~/Views/Shared/ErrorLink.cshtml");
+            var g = groups.Find(id);
+            if (g == null)
+            {
+                return View("~/Views/Shared/ErrorLink.cshtml");
+            }
+            groups.FlipFavourite(id, uid);
+            return RedirectToAction(nameof(Favorite), new { id = user.UserId });
+        }
+        [Authorize]
+        public ActionResult FlipFavouriteblog(int id, int uid)
+        {
+            if (uid != user.UserId)
+                return View("~/Views/Shared/ErrorLink.cshtml");
+            var b = blogs.Find(id);
+            if (b == null)
+            {
+                return View("~/Views/Shared/ErrorLink.cshtml");
+            }
+            blogs.UpdateFavourite(id, uid);
+            return RedirectToAction(nameof(Favorite), new { id = user.UserId });
         }
     }
 }

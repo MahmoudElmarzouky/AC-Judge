@@ -13,6 +13,7 @@ namespace GraduationProject.Data.Models
             UserGroup = new HashSet<UserGroup>();
             submissions = new HashSet<Submission>();
             ProblemUsers = new HashSet<ProblemUser>();
+            userBlog = new HashSet<UserBlog>();
         }
         public string UserIdentityId { get; set; }
         public int UserId { get; set; }
