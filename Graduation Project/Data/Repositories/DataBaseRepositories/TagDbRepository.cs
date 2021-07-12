@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GraduationProject.Data.Models;
 using GraduationProject.Data.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace GraduationProject.Data.Repositories.DataBaseRepositories
 {
@@ -28,13 +29,19 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
 
         public Tag Find(int Id)
         {
-            var tag = dbcontext.Tags.FirstOrDefault(tag => tag.tagId == Id);
+            var tag = dbcontext.Tags
+                .Include(pu => pu.ProblemTag)
+                .Include(b => b.blogTag)
+                .FirstOrDefault(tag => tag.tagId == Id);
             return tag; 
         }
 
         public IList<Tag> List()
         {
-            return dbcontext.Tags.ToList(); 
+            return dbcontext.Tags
+                .Include(pu => pu.ProblemTag)
+                .Include(b => b.blogTag)
+                .ToList(); 
         }
 
         public void Remove(int Id)

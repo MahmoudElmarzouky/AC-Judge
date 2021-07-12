@@ -13,6 +13,7 @@ namespace GraduationProject.ViewModels.ProblemViewsModel
         public int UserId { get; set; }
         public String UserName { get; set; }
         public int ProblemId { get; set; }
+        public int? contestId { get; set; }
         public string OnlineJudge { get; set; }
         public string ProblemSourcesId { get; set; }
         public string Verdict { get; set; }

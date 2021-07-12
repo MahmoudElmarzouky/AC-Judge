@@ -14,6 +14,15 @@ namespace GraduationProject.Data.Repositories.Interfaces
         void Commit();
         T Find(int Id);
         IList<T> FindSubmissionUser(int Id);
-        IList<T> GetSubmissionSpecific(bool IsPublic, int Problemtype);
+        /*
+         * Problemtype >> Contest =1 -- InterView =2
+         * UserName 
+         * ProblemName Ex:12A
+         * ProblemSource Codeforces etc
+         * ProblemResult Accepted - Wrong etc
+         * ProblemLang c++ , java etc
+         * ContestId can be null or assign to contest id
+         */
+        IList<T> GetSubmissionSpecific(int Problemtype, string UserName, string ProblemName, string ProblemSource, string ProblemResult, string ProblemLang, int? ContestId);
     }
 }

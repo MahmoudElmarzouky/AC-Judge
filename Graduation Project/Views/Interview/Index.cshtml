@@ -123,11 +123,11 @@
                         {
                             if (ViewBag.function == "Filter")
                             {
-                                <li><a asp-action="Filter" asp-route-page="@i" asp-route-problemID="@ViewBag.problemid" asp-route-problemName="@ViewBag.problemname" asp-route-ProblemSource="@ViewBag.Problemsource">@i</a></li>
+                                <li class="@(ViewBag.Pagenum==i?"active":"")"><a asp-action="Filter" asp-route-page="@i" asp-route-problemID="@ViewBag.problemid" asp-route-problemName="@ViewBag.problemname" asp-route-ProblemSource="@ViewBag.Problemsource">@i</a></li>
                             }
                             else
                             {
-                                <li><a asp-action="Index" asp-route-page="@i">@i</a></li>
+                                <li class="@(ViewBag.Pagenum==i?"active":"")"><a asp-action="Index" asp-route-page="@i">@i</a></li>
                             }
 
                         }
