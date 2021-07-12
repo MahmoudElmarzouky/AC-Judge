@@ -11,7 +11,7 @@ namespace GraduationProject.Data.API
         public string source { get; set; }
         public string problemID { get; set; }
         public int rate { get; set; }
-        public ICollection<string> tags { get; set; }
+        public IList<string> tags { get; set; }
         public string problem { get; set; }
     }
 }

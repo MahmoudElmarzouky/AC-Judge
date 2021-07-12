@@ -33,6 +33,7 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
                 .Include(p => p.Submissions)
                 .Include(pu => pu.ProblemUsers)
                 .Include(pu => pu.ProblemTag)
+                .ThenInclude(t => t.Tag)
                 .FirstOrDefault(problem => problem.ProblemId == Id);
             return problem;
         }
@@ -43,6 +44,7 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
                 .Include(p => p.Submissions)
                 .Include(pu => pu.ProblemUsers)
                 .Include(pu => pu.ProblemTag)
+                .ThenInclude(t => t.Tag)
                 .ToList();
         }
 
@@ -97,6 +99,7 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
                 .Include(p => p.Submissions)
                 .Include(pu => pu.ProblemUsers)
                 .Include(pu => pu.ProblemTag)
+                .ThenInclude(t => t.Tag)
                 .FirstOrDefault(u => u.problemSourceId == ProblemSourceId && u.ProblemSource == OnlineJudge);
             if (problem == null)
             {
@@ -130,7 +133,36 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
                         rating = p.rate,
                         UrlSource = "https://codeforces.com/problemset/problem/" + id + "/" + c
                     };
-                    return Add(newproblem);
+                    Add(newproblem);
+                    for (int i = 0; i < p.tags.Count() - 1; i++)
+                    {
+                        var x = dbcontext.Tags.FirstOrDefault(tag => tag.tagName == p.tags[i]);
+                        if (x == null)
+                        {
+                            Tag newTag = new Tag()
+                            {
+                                tagName = p.tags[i]
+                            };
+                            dbcontext.Tags.Add(newTag);
+                            Commit();
+                            int tagid= dbcontext.Tags.FirstOrDefault(tag => tag.tagName == p.tags[i]).tagId;
+                            int problemid= dbcontext.Problems.FirstOrDefault(u => u.problemSourceId == ProblemSourceId && u.ProblemSource == OnlineJudge).ProblemId;
+                            dbcontext.ProblemTag.Add(new ProblemTag() { ProblemId = problemid, TagId = tagid });
+                            Commit();
+                        }
+                        else
+                        {
+                            int tagid = x.tagId;
+                            int problemid = dbcontext.Problems.FirstOrDefault(u => u.problemSourceId == ProblemSourceId && u.ProblemSource == OnlineJudge).ProblemId;
+                            dbcontext.ProblemTag.Add(new ProblemTag() { ProblemId = problemid, TagId = tagid });
+                            Commit();
+                        }
+                        
+                         
+                    }
+
+                    
+                    return newproblem;
                 }
 
 
