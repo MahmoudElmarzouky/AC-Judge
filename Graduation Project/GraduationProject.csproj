@@ -6,13 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Views\Contest\My Submision.txt" />
-    <None Remove="Views\Contest\Status.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Views\Contest\My Submision.txt" />
-    <Content Include="Views\Contest\Status.txt" />
+    <Content Remove="Views\Contest\Show Problem.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,6 +18,7 @@
     <None Include="Areas\Identity\Pages\Account\Register.cshtml" />
     <None Include="Areas\Identity\Pages\Account\_ViewImports.cshtml" />
     <None Include="Views\Blog\Index.cshtml" />
+    <None Include="Views\Contest\Show Problem.cshtml" />
     <None Include="wwwroot\fonts\glyphicons-halflings-regular.svg" />
     <None Include="wwwroot\fonts\glyphicons-halflings-regular.woff2" />
     <None Include="wwwroot\js\bootstrap.min.js" />
