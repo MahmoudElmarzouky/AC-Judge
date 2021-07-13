@@ -258,7 +258,7 @@ namespace GraduationProject.Controllers.Blog
         private Boolean CanAccessTheBlog(int blogId, int userId)
         {
             var c = blogs.Find(blogId);
-            var rel = c.userBlog.FirstOrDefault(u => u.userId == userId);
+            var rel = c.userBlog.FirstOrDefault(u => u.userId == userId&&u.blogOwenr==true);
             return  rel != null;
         }
         public ActionResult Filter(string Title,string PrepeardBy)
