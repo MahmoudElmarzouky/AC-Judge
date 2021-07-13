@@ -25,11 +25,18 @@
                         <p>
                             <span class="type">Birth Year:</span> <a href="#">@Model.BirthDate</a> <!-- Ranking Page Search Year -->
                         </p>
-                        <p>
-                            <span class="type">Gender:</span> @Model.Gender
-                        </p>
+                       
+                        @if (@Model.Gender == false)
+						{<p>
+                            <span class="type">Gender: </span>Male 
+                        </p>}
+						else { 
+					<p>
+						<span class="type">Gender: </span>Female
+					</p>
+                        }
                         <p class="joined">
-                            <i class="far fa-clock"></i> <span>Joined @Model.DateOfJoin</span>
+                            <i class="far fa-clock"></i> <span>Joined @Model.DateOfJoin.ToString("MMMM yyyy")</span>
                         </p>
 
                     </div>
