@@ -28,7 +28,7 @@ namespace GraduationProject.Controllers.Rank
             ViewData["Countries"] = GetAllCountries();
             IOrderedEnumerable<RankViewModel> list = GetAllUserRank();
             ViewBag.TotalPageProblem = (list.Count() / 25) + (list.Count() % 25 == 0 ? 0 : 1);
-            if (pagenumber < 0 || pagenumber > ViewBag.TotalPageProblem) pagenumber = 1;
+            if (pagenumber <= 0 || pagenumber > ViewBag.TotalPageProblem) pagenumber = 1;
             ViewBag.Pagenum = pagenumber;
             var newlist = list.ToPagedList(pagenumber, 25);
             return View(newlist);
