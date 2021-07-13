@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using GraduationProject.ViewModels;
+using X.PagedList;
 
 namespace GraduationProject.Controllers.Blog
 {
@@ -34,7 +35,7 @@ namespace GraduationProject.Controllers.Blog
 
         }
         // GET: HomeController
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
             if (TempData["BlogsByUser"]!=null && TempData["BlogsByUser"].ToString()=="UserBlogs") {
                 TempData["BlogsUser"] = "blogUser";
@@ -43,8 +44,12 @@ namespace GraduationProject.Controllers.Blog
             var list = new List<ViewBlogModel>();
             foreach (var item in blogs.List())
                 list.Add(getViewModelFromBlog(item));
-
-            return View(list);
+            int pagenumber = page ?? 1;
+            ViewBag.TotalPageProblem = (list.Count() / 10) + (list.Count() % 10 == 0 ? 0 : 1);
+            if (pagenumber < 0 || pagenumber > ViewBag.TotalPageProblem) pagenumber = 1;
+            ViewBag.Pagenum = pagenumber;
+           
+            return View(list.ToPagedList(pagenumber, 10));
         }
         public IList<ViewBlogModel> GetBlogsByUser()
         {
