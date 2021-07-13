@@ -41,9 +41,9 @@ namespace GraduationProject.Controllers.Group
                 return View(list);
             }catch
             {
-                return View("ErrorLink"); 
+                return View("ErrorLink", "You Don't Have Access To Groups");
             }
-            
+
         }
         public ActionResult Page(int PageNumber)
         {
@@ -73,6 +73,7 @@ namespace GraduationProject.Controllers.Group
         {
             try
             {
+                // User Can See Group even if he is not a member of the group is private 
                 var group = groups.Find(id);
                 var model = getViewModelFromGroup(group);
                 if (model != null)
@@ -80,7 +81,7 @@ namespace GraduationProject.Controllers.Group
                 return RedirectToAction("Index");
             }catch
             {
-                return View("ErrorLink");
+                return View("ErrorLink", "Group Doesn't Exist");
             }
         }
 
@@ -113,7 +114,7 @@ namespace GraduationProject.Controllers.Group
             try
             {
                 if (!groups.IsOwner(id, user.UserId))
-                    return RedirectToAction("Index");
+                    return View("ErrorLink", "You Don't Have Access To Edit This Group");
                 var group = groups.Find(id);
                 var model = getEditModelFromGroup(group);
                 return View(model);
@@ -125,8 +126,6 @@ namespace GraduationProject.Controllers.Group
             
         }
 
-        
-
         // POST: HomeController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -135,7 +134,7 @@ namespace GraduationProject.Controllers.Group
             try
             {
                 if (!groups.IsOwner(model.groupId, user.UserId))
-                    return RedirectToAction("Index");
+                    return View("ErrorLink", "You Don't Have Permission To Edit Tshis Group");
                 var oldPassword = groups.Find(model.groupId).Password;
                 if (oldPassword != model.oldPassword)
                     return View(model);
@@ -177,7 +176,7 @@ namespace GraduationProject.Controllers.Group
             try
             {
                 if (!groups.IsOwner(id, user.UserId))
-                    return RedirectToAction("Index");
+                    return View("ErrorLink", "You Don't Have Permission To Delete This Group");
                 var group = groups.Find(id);
                 var model = getCreateModelFromGroup(group);
                 return Delete(model);
@@ -197,7 +196,7 @@ namespace GraduationProject.Controllers.Group
             try
             {
                 if (!groups.IsOwner(model.GroupId, user.UserId))
-                    return RedirectToAction("Index");
+                    return View("ErrorLink", "You Don't Have Permission To Delete Tshis Group");
                 groups.Remove(model.GroupId); 
                 return RedirectToAction(nameof(Index));
             }
@@ -245,7 +244,7 @@ namespace GraduationProject.Controllers.Group
             try
             {
                 if (user.UserId != userId)
-                    return RedirectToAction("Details", new { groupId }); 
+                    return View("ErrorLink", "You Don't Have Permission To Delete a user");
                 groups.RemoveUser(userId, groupId);
                 return RedirectToAction("Index");
             }
@@ -286,6 +285,8 @@ namespace GraduationProject.Controllers.Group
                 var group = groups.Find(groupId); 
                 if (group.Visable || group.UserGroup.FirstOrDefault(u=>u.UserId == userId) != null)
                     groups.AddUser(groupId, userId);  
+                else
+                    return View("ErrorLink", "You Can't Join This Group");
                 return RedirectToAction("Details", new { id = groupId });
             }
             catch
@@ -324,7 +325,7 @@ namespace GraduationProject.Controllers.Group
         public ActionResult EditMember(int groupId, int userId, string buttonName)
         {
             if (!groups.IsOwner(groupId, user.UserId))
-                return RedirectToAction("Details", new { groupId });
+                return View("ErrorLink", "You Can't Edit User");
             try
             {
                 switch (buttonName)
