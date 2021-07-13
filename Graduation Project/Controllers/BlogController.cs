@@ -65,6 +65,8 @@ namespace GraduationProject.Controllers.Blog
             if (userBlog.User.UserIdentityId == user.UserIdentityId) {
                 IsOwner = true;
             }
+            var IsFavorite = user.userBlog.FirstOrDefault(userBlog => userBlog.isFavourite == true
+                                 &&userBlog.blogId==blog.blogId);
             var model = new ViewBlogModel
             {
                 blogId = blog.blogId,
@@ -77,7 +79,8 @@ namespace GraduationProject.Controllers.Blog
                 ,UserBlogs=blog.userBlog,
                 CurrentUserId=user.UserId,
                 GroupId=blog.groupId
-                , isOwner = IsOwner
+                , isOwner = IsOwner,
+                isFavorite=(IsFavorite!=null)?true:false
             };
             return model;
         }
@@ -309,7 +312,7 @@ namespace GraduationProject.Controllers.Blog
 
                 blogs.UpdateFavourite(model.blogId, user.UserId);
 
-                return RedirectToAction("Details", new { id = model.blogId });
+                return RedirectToAction(nameof(Index));
             }
             catch
             {

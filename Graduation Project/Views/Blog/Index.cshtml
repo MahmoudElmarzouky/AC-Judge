@@ -57,7 +57,8 @@
 								@if ((TempData["BlogsUser"] != null && TempData["BlogsUser"].ToString() == "blogUser") || item.GroupId == null)
 								{
 							<tr>
-								<td><a class="fas fa-heart active" data-favorite="IconFav"></a></td>
+								<td>
+								<td><a asp-action="Favourite" asp-route-id="@item.blogId" class="fas fa-heart @(item.isFavorite == true ? "active" : "")" data-favorite="IconFav"></a></td>
 								<td><a asp-action="Details" asp-route-id="@item.blogId">@Html.DisplayFor(modelItem => item.blogtitle)</a></td>
 								<td class="creat-time">
 									<div>@item.creationTime.ToString("MM/dd/yyyy")</div>
@@ -70,7 +71,7 @@
 
 									<td><a asp-controller="User" asp-action="Details" asp-route-id="@userId">@userName </a></td>
 								}
-								
+
 
 							</tr>}
 								}
