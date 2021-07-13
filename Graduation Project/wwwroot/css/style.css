@@ -142,6 +142,24 @@ header .nav-main .navbar-brand span{
 .home-page #Main-Slider .overlay p{
     font-size: 1.5rem;
 }
+
+.home-page .about-website{
+    padding: 40px 0;
+}
+.home-page .about-website h1{
+    color: #34495E;
+}
+.home-page .about-website h1 span{
+    color: #e60024;
+}
+
+.home-page .about-website .lead{
+    color: #888;
+    margin-top: 20px;
+    line-height: 1.333;
+    font-size: 1.9rem;
+}
+
 .home-page .our-team{
     background-repeat: no-repeat;
     background-position: center center;
@@ -378,8 +396,8 @@ header .nav-main .navbar-brand span{
     clip: rect(0,0,0,0);
     pointer-events: none;
 }
-.create-group-page .form-horizontal div.form-group:last-child,
-.edit-group-page .form-horizontal div.form-group:last-child{
+.create-group-page .form-horizontal > div.form-group:last-child,
+.edit-group-page .form-horizontal > div.form-group:last-child{
     margin-top: 30px;
 }
 
@@ -812,8 +830,8 @@ header .nav-main .navbar-brand span{
     margin-top: 20px;
     margin-bottom: 30px;  
 }
-.create-blog-page .form-horizontal div.form-group:last-child,
-.edit-blog-page .form-horizontal div.form-group:last-child{
+.create-blog-page .form-horizontal > div.form-group:last-child,
+.edit-blog-page .form-horizontal > div.form-group:last-child{
     margin-top: 30px;
 }
 
