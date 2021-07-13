@@ -387,7 +387,7 @@ namespace GraduationProject.Controllers.Contest
                 newProblem.ProblemId = item.problemId;
                 newProblem.Origin = item.PlatForm;
                 newProblem.OriginName = item.ProblemSourceId; 
-                newProblem.PropblemTitle = item.Alias;
+                newProblem.PropblemTitle = item.Alias == ""? item.ProblemSourceId: item.Alias;
                 newProblem.Solved = contest.Submissions.FirstOrDefault
                     (u => u.userId == user.UserId && 
                     u.ProblemId == item.problemId && 

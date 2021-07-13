@@ -142,6 +142,28 @@ header .nav-main .navbar-brand span{
 .home-page #Main-Slider .overlay p{
     font-size: 1.5rem;
 }
+.home-page .our-team{
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+}
+.home-page .our-team .overlay{
+    padding-top: 40px;
+    padding-bottom: 30px;
+    background: rgba(2,2,2,0.8);
+    color: #FFF;
+}
+.home-page .our-team .container > h1{
+    margin-bottom: 50px;
+    
+}
+.home-page .our-team .person{
+    margin-bottom: 40px;
+}
+.home-page .our-team .person > img{
+    margin-left: auto;
+    margin-right: auto;
+}
 
 /* End Home Page */
 /* Start User Sign In - Sign Up */
