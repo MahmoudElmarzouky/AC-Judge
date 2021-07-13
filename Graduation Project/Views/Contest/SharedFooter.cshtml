@@ -1,0 +1,60 @@
+﻿@model string 
+
+@{ 
+    string ActionName = Model.Split(":")[0];
+    int Id = Convert.ToInt32(Model.Split(":")[1]); 
+}
+@if (ViewBag.NumberOfPages != 0)
+{
+    <div aria-label="Page navigation" class="text-center">
+        <ul class="pagination pagination-lg">
+            @{
+                Boolean IsFirstPage = ViewBag.PageNumber == 1;
+                Boolean IsLastPage = ViewBag.PageNumber == ViewBag.NumberOfPages;
+
+            }
+            @if (!IsFirstPage)
+            {
+                <li>
+                    <a asp-action="@ActionName" asp-route-id="@Id" asp-route-PageNumber="@(ViewBag.PageNumber - 1)" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            }
+
+            @{
+                List<int> list = new List<int>();
+                for (int i = 1; i <= Math.Min(3, ViewBag.NumberOfPages); i++)
+                    list.Add(i);
+                for (int i = Math.Min(3, ViewBag.NumberOfPages) + 1; i < ViewBag.NumberOfPages; i *= 2)
+                    list.Add(i);
+                list.Add(ViewBag.PageNumber);
+                list.Add(ViewBag.NumberOfPages); 
+                list.Sort();
+                list = list.Distinct().ToList();
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (list[i] == ViewBag.PageNumber)
+                    {
+                        <li class="active"><a>@list[i]</a></li>
+                    }
+                    else
+                    {
+                        <li><a asp-action="@ActionName" asp-route-id="@Id" asp-route-PageNumber="@list[i]">@list[i]</a></li>
+                    }
+                }
+
+            }
+
+
+            @if (!IsLastPage)
+            {
+                <li>
+                    <a asp-action="@ActionName" asp-route-id="@Id" asp-route-PageNumber="@(ViewBag.PageNumber + 1)" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+}

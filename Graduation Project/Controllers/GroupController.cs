@@ -427,7 +427,7 @@ namespace GraduationProject.Controllers.Group
                 return null;
             }
         }
-        private List<ViewGroupModel> getPageItems(List<ViewGroupModel> list, int PageNumber)
+        private List<T> getPageItems<T>(List<T> list, int PageNumber)
         {
             if (PageNumber < 1 || PageNumber > (list.Count + NumberOfItemsForPage - 1) / NumberOfItemsForPage)
                 PageNumber = 1;

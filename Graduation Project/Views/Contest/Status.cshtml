@@ -27,10 +27,17 @@
                     var Type = item.CreationTime > Model.contestStartTime.AddMinutes(Model.contestDuration) ? "offline" : "online";
 
                 <tr>
-                    <td><a data-link="@Url.Action("GetTextSubmission")" data-user="@item.user.UserName" data-id="@item.SubmissionId" data-toggle="modal" data-target="#StatusCotntest">@item.SubmissionId</a></td>
+                    @if ((Model.contestStatus == "Ended" && item.Visable == true) || item.userId == Model.currentUserId)
+                    {
+                        <td><a data-link="@Url.Action("GetTextSubmission")" data-user="@item.user.UserName" data-id="@item.SubmissionId" data-toggle="modal" data-target="#StatusCotntest">@item.SubmissionId</a></td>
+                    }
+                    else
+                    {
+                        <td>@item.SubmissionId</td>
+                    }
                     <td> <a asp-action="Details" asp-controller="User" asp-route-id="@item.userId">@item.user.UserName</a></td>
                     <td><a asp-action="Details" asp-controller="Problem" asp-route-id="@item.ProblemId"> @item.problem.problemTitle</a></td>
-                           
+
                     <td class="@verdictClass">@item.Verdict</td>
                     <td>@item.TimeConsumeMillis</td>
                     <td>@item.MemoryConsumeBytes</td>
@@ -45,7 +52,11 @@
             </tbody>
         </table>
     </div>
-    
+    @{
+        string contestIdSTR = Model.contestId.ToString();
+        string Action = "Status:" + contestIdSTR;
+    }
+    <partial name="SharedFooter" for="@Action">
 </section>
 <!-- View Status Modal -->
 <section class="modal fade submision-modal" id="StatusCotntest" tabindex="-1" role="dialog" aria-hidden="true">

@@ -63,6 +63,7 @@ namespace GraduationProject.ViewModels.ContestViewsModel
                 return UserPoblemsRaw.Where(u => u.Solved == true).Sum(u => u.problemPenality); 
             } set { } }
         public int userId { get; set; }
+        public int Rank { get; set; }
         public string userName { get; set; }
         public IList<Data> UserPoblemsRaw { get; set; }
     }

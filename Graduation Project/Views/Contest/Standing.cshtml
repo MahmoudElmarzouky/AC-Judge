@@ -87,12 +87,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @{ int Rank = 0; }
                         @foreach (var currentUser in Model.users)
                         {
-                            Rank++;
                             <tr>
-                                <td>@Rank</td>
+                                <td>@currentUser.Rank</td>
                                 <td><a asp-action="Details" asp-controller="User" asp-route-id="@currentUser.userId">@currentUser.userName</a></td>
                                 <td>@currentUser.NumberOfSolvedProblems</td>
                                 <td>@currentUser.TotalPenality</td>
@@ -118,6 +116,12 @@
 
         </section>
     </div>
+    @{
+        string contestIdSTR = Model.contestId.ToString();
+        string Action = "Standing:" + contestIdSTR;
+    }
+    <partial name="SharedFooter" for="@Action">
+
 </section>
 
 
