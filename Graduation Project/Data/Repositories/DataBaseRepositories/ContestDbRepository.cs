@@ -169,11 +169,11 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             switch(num)
             {
                 case -1:
-                    return "upComming";
+                    return "scheduled";
                 case 0:
-                    return "Running";
+                    return "running";
                 case 1:
-                    return "Ended"; 
+                    return "ended"; 
             }
             return ""; 
         }
@@ -222,9 +222,10 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
                 case "Arrangement":
                     return IsOwner;
                 case "Favorites":
-                    return IsFav; 
+                    return IsFav;
+                default:
+                    return false; 
             }
-            return false; 
         }
         private Boolean IsCurrentPrivacy(string contestPrivacy, string privacy)
         {
