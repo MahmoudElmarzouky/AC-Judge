@@ -17,7 +17,7 @@ public static class APi
         if (OnlineJudge == "CodeForces")
         {
 
-            string url = "http://157.90.173.120/cf/" + Contestid + "/" + charproblemm;
+            string url = "http://95.216.185.187/cf/" + Contestid + "/" + charproblemm;
             string json = GetUrlToString(url);
             problemIfo = JsonConvert.DeserializeObject<ProblemIfo>(json);
             if (problemIfo.problem == null) return null;
@@ -51,11 +51,13 @@ public static class APi
         //sw.WriteLine(solution);
         //sw.Close();
         WebClient wc = new WebClient();
+
+        var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(solution);
+        var x= System.Convert.ToBase64String(plainTextBytes);
         wc.QueryString.Add("ProblemId", ProblemId);
-        wc.QueryString.Add("SubmitText", solution);
+        wc.QueryString.Add("SubmitText", x);
         wc.QueryString.Add("Language", "GNU G++17 7.3.0");
-        wc.QueryString.Add("SubmissionId", "1");
-        
+
         var data = wc.UploadValues(URI, "POST", wc.QueryString);
 
         var responseString = Encoding.Default.GetString(data);
