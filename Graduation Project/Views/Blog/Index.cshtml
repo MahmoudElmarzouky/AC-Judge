@@ -69,7 +69,7 @@
 									var userName = item.UserBlogs.FirstOrDefault(u => u.blogOwenr == true).User.UserName;
 									var userId = item.UserBlogs.FirstOrDefault(u => u.blogOwenr == true).User.UserId;
 
-									<td><a asp-controller="User" asp-action="Details" asp-route-id="@userId">@userName </a></td>
+									<td><a asp-controller="User" asp-action="Details" asp-route-id="@userId">@userName</a></td>
 								}
 
 

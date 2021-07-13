@@ -893,6 +893,37 @@ header .nav-main .navbar-brand span{
 }
 
 /* End User View Page */
+/* Start Favorit User */
+.main-user-view .user-favorit .panel .panel-heading{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.9rem !important;
+}
+
+.main-user-view .user-favorit .panel .panel-heading i{
+    cursor: pointer;
+}
+.main-user-view .user-favorit .panel table td{
+    vertical-align:middle !important;
+}
+.main-user-view .user-favorit .panel .table td.starte-time{
+    font-size: 1.5rem !important;
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+    line-height: 1.7rem;
+}
+.main-user-view .user-favorit .panel .table td.running{
+    color: red !important;
+}
+.main-user-view .user-favorit .panel .table td.ended{
+    color: green !important;
+}
+.main-user-view .user-favorit .panel .table td.scheduled{
+    color: blue !important;
+}
+
+/* End Favorit User */
 
 /* Start Footer */
 
