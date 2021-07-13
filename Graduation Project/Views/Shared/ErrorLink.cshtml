@@ -1,7 +1,12 @@
-﻿
+﻿@model string 
+@{ 
+    string Text = Model;
+    if (Text == null || Text == "")
+        Text = "You Don't Have Access To This Page"; 
+}
 <div class="container">
     <h3>
-        The requested URL was not found on this server.
+        @Text  
     </h3>
 </div>
 
