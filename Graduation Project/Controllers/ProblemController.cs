@@ -56,10 +56,12 @@ namespace GraduationProject.Controllers.problems
         }
         [Authorize]
         [HttpPost]
-        public ActionResult Submit(int ProblemId, string Language,string SubmitText)
+        public ActionResult Submit(int ProblemId, String problemSourceId,string Language )
         {
 
+            var SubmitText=Request.Form["SubmitText"];
 
+            var result = APi.GetVerdict(problemSourceId, SubmitText, Language);
             Submission submission = new Submission
             {
                 MemoryConsumeBytes=1,
