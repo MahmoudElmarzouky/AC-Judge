@@ -312,7 +312,7 @@ namespace GraduationProject.Controllers.Contest
             string alias = contest.ContestProblems.FirstOrDefault(u => u.problemId == problemId).Alias; 
             
             var problem = contest.ContestProblems.FirstOrDefault(u => u.problemId == problemId).problem;
-            if (alias == "") alias = problem.problemTitle; 
+            if (alias == null || alias == "") alias = problem.problemTitle; 
             var model = GetDetailProblem(problem);
             model.contestDuration = contest.contestDuration;
             model.contestId = contest.contestId;
@@ -387,7 +387,7 @@ namespace GraduationProject.Controllers.Contest
                 newProblem.ProblemId = item.problemId;
                 newProblem.Origin = item.PlatForm;
                 newProblem.OriginName = item.problem.problemTitle; 
-                newProblem.PropblemTitle = item.Alias == ""? item.ProblemSourceId: item.Alias;
+                newProblem.PropblemTitle = item.Alias == null || item.Alias == ""? item.problem.problemTitle : item.Alias;
                 newProblem.Solved = contest.Submissions.FirstOrDefault
                     (u => u.userId == user.UserId && 
                     u.ProblemId == item.problemId && 
