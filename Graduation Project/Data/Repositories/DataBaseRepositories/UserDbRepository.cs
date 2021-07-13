@@ -89,7 +89,15 @@ namespace GraduationProject.Data.Repositories
 
         public User FindByUserName(string name)
         {
-            var user = dbcontext.Users.FirstOrDefault(u => u.UserName == name);
+            var user = dbcontext.Users.Include(s => s.submissions)
+                .Include(pu => pu.ProblemUsers)
+                .ThenInclude(pu => pu.problem)
+                .Include(u => u.UserContest)
+                .ThenInclude(c => c.Contest)
+                .Include(u => u.UserGroup)
+                .ThenInclude(ug => ug.Group)
+                .Include(u => u.userBlog)
+                .ThenInclude(ub => ub.blog).FirstOrDefault(u => u.UserName == name);
             return user; 
         }
     }

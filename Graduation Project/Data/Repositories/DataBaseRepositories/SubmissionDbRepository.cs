@@ -13,18 +13,18 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
         readonly private EntitiesContext dbcontext;
         public SubmissionDbRepository(EntitiesContext dbcontext)
         {
-            this.dbcontext = dbcontext; 
+            this.dbcontext = dbcontext;
         }
         public Submission Add(Submission newSubmission)
         {
             dbcontext.Submissions.Add(newSubmission);
-            Commit(); 
+            Commit();
             return newSubmission;
         }
 
         public void Commit()
         {
-            dbcontext.SaveChanges(); 
+            dbcontext.SaveChanges();
         }
 
         public Submission Find(int Id)
@@ -33,7 +33,7 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
                 .Include(p => p.problem)
                 .Include(p => p.user)
                 .FirstOrDefault(Submission => Submission.SubmissionId == Id);
-            return Submission; 
+            return Submission;
         }
 
         public IList<Submission> List()
@@ -41,7 +41,7 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             return dbcontext.Submissions
                 .Include(p => p.problem)
                 .Include(p => p.user)
-                .ToList(); 
+                .ToList();
         }
 
         public void Remove(int Id)
@@ -50,15 +50,15 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             if (Submission != null)
             {
                 dbcontext.Submissions.Remove(Submission);
-                Commit(); 
+                Commit();
             }
         }
 
-        
+
         public void Update(Submission newSubmission)
         {
-            dbcontext.Submissions.Update(newSubmission); 
-            Commit(); 
+            dbcontext.Submissions.Update(newSubmission);
+            Commit();
         }
 
         public IList<Submission> GetSubmissionSpecific(int Problemtype, string UserName, string ProblemName, string ProblemSource, string ProblemResult, string ProblemLang, int? ContestId)
@@ -66,14 +66,14 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             return dbcontext.Submissions
                .Include(p => p.problem)
                .Include(p => p.user)
-               .Where(s => 
-               s.problem.problemType== Problemtype&&
-               s.user.UserName.Contains(UserName)&&
-               s.problem.problemSourceId.Contains(ProblemName) &&
+               .Where(s =>
+                s.problem.problemType == Problemtype &&
+                (UserName==""? s.user.UserName.Contains(UserName) : s.user.UserName == UserName) &&
+                s.problem.problemSourceId.Contains(ProblemName) &&
                 s.problem.ProblemSource.Contains(ProblemSource) &&
                 s.Verdict.Contains(ProblemResult) &&
-                s.ProgrammingLanguage.Contains(ProblemLang)&&
-                s.contestId==ContestId
+                s.ProgrammingLanguage.Contains(ProblemLang) &&
+                s.contestId == ContestId
                ).ToList();
         }
 
@@ -82,7 +82,7 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             return dbcontext.Submissions
                 .Include(p => p.problem)
                 .Include(p => p.user)
-                .Where(p=> p.userId==Id)
+                .Where(p => p.userId == Id)
                 .ToList();
         }
     }

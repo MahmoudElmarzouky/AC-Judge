@@ -2,6 +2,7 @@
 using GraduationProject.Data.Repositories.Interfaces;
 using GraduationProject.Data.Repositories.IProblemRepository;
 using GraduationProject.ViewModels.ProblemViewsModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -52,6 +53,27 @@ namespace GraduationProject.Controllers.problems
             ViewBag.Pagenum = pagenumber;
             var list = model.ToPagedList(pagenumber, 25);
             return View(list);
+        }
+        [Authorize]
+        [HttpPost]
+        public ActionResult Submit(int ProblemId, string Language,string SubmitText)
+        {
+
+
+            Submission submission = new Submission
+            {
+                MemoryConsumeBytes=1,
+                TimeConsumeMillis=1,
+                Visable=false,
+                CreationTime=DateTime.Now,
+                Verdict="ac",
+                ProgrammingLanguage=Language,
+                userId=user.UserId,
+                ProblemId=ProblemId,
+                SubmissionText=SubmitText
+            };
+            SubmissionRepository.Add(submission);
+            return RedirectToAction("Details", new { id = ProblemId });
         }
         public Boolean CanSeeSubmission(int SubmissionId)
         {
@@ -223,6 +245,8 @@ namespace GraduationProject.Controllers.problems
             {
                 return View("~/Views/Shared/ErrorLink.cshtml");
             }
+            if (login)
+                ViewBag.User = user;
             var model = GetDetailProblem(problem);
             return View(model);
         }

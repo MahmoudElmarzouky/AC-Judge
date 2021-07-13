@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using GraduationProject.ViewModels;
+using X.PagedList;
 
 namespace GraduationProject.Controllers.Blog
 {
@@ -34,7 +35,7 @@ namespace GraduationProject.Controllers.Blog
 
         }
         // GET: HomeController
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
             if (TempData["BlogsByUser"]!=null && TempData["BlogsByUser"].ToString()=="UserBlogs") {
                 TempData["BlogsUser"] = "blogUser";
@@ -43,8 +44,12 @@ namespace GraduationProject.Controllers.Blog
             var list = new List<ViewBlogModel>();
             foreach (var item in blogs.List())
                 list.Add(getViewModelFromBlog(item));
-
-            return View(list);
+            int pagenumber = page ?? 1;
+            ViewBag.TotalPageProblem = (list.Count() / 10) + (list.Count() % 10 == 0 ? 0 : 1);
+            if (pagenumber < 0 || pagenumber > ViewBag.TotalPageProblem) pagenumber = 1;
+            ViewBag.Pagenum = pagenumber;
+           
+            return View(list.ToPagedList(pagenumber, 10));
         }
         public IList<ViewBlogModel> GetBlogsByUser()
         {
@@ -65,6 +70,8 @@ namespace GraduationProject.Controllers.Blog
             if (userBlog.User.UserIdentityId == user.UserIdentityId) {
                 IsOwner = true;
             }
+            var IsFavorite = user.userBlog.FirstOrDefault(userBlog => userBlog.isFavourite == true
+                                 &&userBlog.blogId==blog.blogId);
             var model = new ViewBlogModel
             {
                 blogId = blog.blogId,
@@ -77,7 +84,8 @@ namespace GraduationProject.Controllers.Blog
                 ,UserBlogs=blog.userBlog,
                 CurrentUserId=user.UserId,
                 GroupId=blog.groupId
-                , isOwner = IsOwner
+                , isOwner = IsOwner,
+                isFavorite=(IsFavorite!=null)?true:false
             };
             return model;
         }
@@ -228,21 +236,28 @@ namespace GraduationProject.Controllers.Blog
         {
             var list = new List<ViewBlogModel>();
             
-            if (PrepeardBy.Contains(""))
+            if (PrepeardBy!=null)
             {
                 var _user = userrepository.FindByUserName(PrepeardBy);
-                var userBlog = _user.userBlog.FirstOrDefault(u => u.userId == _user.UserId && u.blogOwenr == true);
-                var listItem = blogs.Search(Title, userBlog);
-                foreach (var item in listItem)
-                    list.Add(getViewModelFromBlog(item));
+                var userBlog = _user.userBlog.Where(u => u.userId == _user.UserId && u.blogOwenr == true);
+               foreach(var item in userBlog){
+                    var listItem = blogs.Search(Title, item);
+                    if (listItem != null)
+                        foreach (var itemList in listItem)
+                            list.Add(getViewModelFromBlog(itemList));
+                }
+                
             }else
             {
                 var listItem = blogs.Search(Title, null);
+             if(listItem!=null)
                 foreach (var item in listItem)
                     list.Add(getViewModelFromBlog(item));
             }
-
-            return View("Index",list);
+            if(list.Count>0)
+                return View("Index",list);
+            else
+                return View("Index");
         }
 
         public ActionResult UpVote(int id)
@@ -302,7 +317,7 @@ namespace GraduationProject.Controllers.Blog
 
                 blogs.UpdateFavourite(model.blogId, user.UserId);
 
-                return RedirectToAction("Details", new { id = model.blogId });
+                return RedirectToAction(nameof(Index));
             }
             catch
             {

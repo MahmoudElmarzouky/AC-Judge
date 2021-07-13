@@ -46,6 +46,7 @@ namespace GraduationProject.Controllers
                 _httpContextAccessor = httpContextAccessor;
                 var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 user = users.Find(userId);
+                users.Find(user.UserId);
                 ListMysubmission = user.submissions;
                 ListMyfavorite = user.ProblemUsers;
             }
