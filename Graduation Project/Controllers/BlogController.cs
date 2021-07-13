@@ -20,15 +20,18 @@ namespace GraduationProject.Controllers.Blog
         private readonly IBlogRepository<Data.Models.Blog> blogs;
         private readonly IUserRepository<User> userrepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IRepository<Comment> comments;
         private User user;
         public BlogController(IBlogRepository<GraduationProject.Data.Models.Blog> blogs
             , IUserRepository<User> Userrepository
-            , IHttpContextAccessor httpContextAccessor
+            , IHttpContextAccessor httpContextAccessor,
+            IRepository<Comment>comments
             )
         {
             this.blogs = blogs;
             userrepository = Userrepository;
             _httpContextAccessor = httpContextAccessor;
+            this.comments = comments;
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             user = userrepository.Find(userId);
@@ -98,12 +101,38 @@ namespace GraduationProject.Controllers.Blog
             return View(getViewModelFromBlog(blog));
         }
 
-        public ActionResult Comments (int id)
+        public ActionResult CreateComment (int id,string CommentContent)
         {
-            TempData["mydata"] = id;
-            return RedirectToAction("Create", "Comment");
+            var newComment = new Comment
+            {
+                content = CommentContent,
+                upvote = 0
+                    ,
+                downvote = 0,
+                creationTime = DateTime.Now,
+                blogId = id
+            };
+            comments.Add(newComment);
+            int userId = user.UserId;
+            int commentId = newComment.blogId;
+            var commentVotes = CreateCommentRelation(userId, commentId);
+            newComment.CommentVotes.Add(commentVotes);
+            comments.Update(newComment);
+            return RedirectToAction("Details",new { id=id});
         }
-
+        private commentVote CreateCommentRelation(int userId, int commentId)
+        {
+            var commentVotes = new commentVote
+            {
+                commentId = commentId,
+                userId = userId
+              ,
+                isFavourite = false,
+                value = 0,
+                User = user
+            };
+            return commentVotes;
+        }
         // GET: HomeController/Create
         public ActionResult Create(int? id)
         {

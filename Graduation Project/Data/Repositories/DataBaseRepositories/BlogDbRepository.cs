@@ -33,6 +33,7 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             var blog = dbcontext.Blogs.Include(userBlog => userBlog.userBlog)
                 .ThenInclude(user=>user.User)
                 .Include(comment=>comment.Comments)
+                .ThenInclude(commentvote=>commentvote.CommentVotes)
                 .Include(group=>group.group)
                 .FirstOrDefault(blog => blog.blogId == Id);
             return blog;
@@ -43,6 +44,7 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             return dbcontext.Blogs.Include(userBlog=>userBlog.userBlog)
                  .ThenInclude(user => user.User)
                 .Include(comment => comment.Comments)
+                .ThenInclude(commentvote => commentvote.CommentVotes)
                 .Include(group=>group.group)
                 .ToList();
         }

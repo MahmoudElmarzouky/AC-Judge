@@ -1,74 +1,98 @@
 ﻿@model GraduationProject.ViewModels.ViewBlogModel
 
 @{
-    ViewData["Title"] = "Details";
+	ViewData["Title"] = "Details";
 }
-<div class="container">
-	<h2>Details</h2>
-
-	<div>
-		<h4>Blog</h4>
-		<hr />
-		<dl class="dl-horizontal">
-			<dt>
-				@Html.DisplayNameFor(model => model.blogId)
-			</dt>
-			<dd>
-				@Html.DisplayFor(model => model.blogId)
-			</dd>
-			<dt>
-				@Html.DisplayNameFor(model => model.blogtitle)
-			</dt>
-			<dd>
-				@Html.DisplayFor(model => model.blogtitle)
-			</dd>
-			<dt>
-				@Html.DisplayNameFor(model => model.blogcontent)
-			</dt>
-			<dd>
-				@Html.DisplayFor(model => model.blogcontent)
-			</dd>
-			<dt>
-				@Html.DisplayNameFor(model => model.blogvote)
-			</dt>
-			<dd>
-				@Html.DisplayFor(model => model.blogvote)
-				@{
-					var userblog = Model.UserBlogs.FirstOrDefault(u => u.userId == Model.CurrentUserId);
-					if (userblog != null && userblog.VoteValue != 0)
-					{
-                      // Error 
-					}
-				
-						<a asp-action="UpVote" asp-route-id="@Model.blogId" disable class="btn btn-default">Up</a>
-						<a asp-action="DownVote" asp-route-id="@Model.blogId" disable class="btn btn-default">Down</a>
-					
-				}
-
-			</dd>
-			<dt>
-				@Html.DisplayNameFor(model => model.creationTime)
-			</dt>
-			<dd>
-				@Html.DisplayFor(model => model.creationTime)
-			</dd>
-
-			<dt>
-				Comments :     @Model.Comments.Count
-			</dt>
-			@foreach (var item in Model.Comments)
-			{
-
-				<h4> @item.content</h4>
+<section class="show-blog-page">
+	@{
+		var userblog = Model.UserBlogs.FirstOrDefault(u => u.userId == Model.CurrentUserId);
+		var user = Model.UserBlogs.FirstOrDefault(u => u.blogOwenr==true&&u.blogId==Model.blogId).User;
+	<div class="container">
+		<div class="page-header">
+			
+			<h1>Blog <span class="text-muted">@Model.blogtitle</span></h1>
+			@if(Model.isOwner){
+			<div>
+				<a class="btn btn-success" asp-action="Edit" asp-route-id="@Model.blogId"><i class="fas fa-edit"></i> Edit</a> <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.blogId"><i class="fas fa-times"></i> Delete</a>
+			</div>
 			}
-		</dl>
+		</div>
+		<div class="row">
+			<div class="col-sm-2">
+				<div class="owner-blog text-center">
+					@if (user.PhotoUrl == null)
+					{
+						<img class="img-thumbnail img-circle img-responsive" src="~/img/Profile/avatar-male.jpg" alt="Profile Picture" />
+					}
+					else
+					{
+						<img class="img-thumbnail img-circle img-responsive" src="~/img/Profile/@user.PhotoUrl" alt="Profile Picture" />
+
+					}
+					<h4><a asp-controller="User" asp-action="Details" asp-route-id="@user.UserId">@user.UserName</a></h4>
+					<p class="">
+						<i class="far fa-clock"></i> <span class="text-muted">@Model.creationTime.ToString("MMMM dd, yyyy")</span>
+					</p>
+				</div>
+			</div>
+			<div class="col-sm-9 data-blog">
+				<p class="blog-content">
+					@Model.blogcontent
+				</p>
+				<div class="well well-sm">
+
+					<div>
+						<a asp-action="UpVote" asp-route-id="@Model.blogId" class="fas fa-caret-up text-success"></a> <span class="text-primary">@Model.blogvote</span> <a asp-action="DownVote" asp-route-id="@Model.blogId" class="fas fa-caret-down text-danger"></a>
+					</div>
+					<div>
+						<a asp-action="Favourite" asp-route-id="@Model.blogId" class="fas fa-heart @(Model.isFavorite == true ? "active" : "")" data-favorite="IconFav"></a>
+					</div>
+					<div>
+						<i class="far fa-comment"></i>  @Model.Comments.Count
+					</div>
+				</div>
+				@foreach (var item in Model.Comments)
+				{
+				
+						var userComment = item.CommentVotes.FirstOrDefault(u=>u.commentId==item.commentId);
+					
+					<div class="blog-comment">
+						<div class="media">
+							<div class="media-left owner-comment text-center">
+								@if (userComment == null)
+								{
+									<img class="media-object img-rounded" src="~/img/Profile/avatar-male.jpg" width="80" alt="@userComment.User.UserName">
+								}
+								else
+								{
+									<img class="media-object img-rounded" src="~/img/Profile/@userComment.User.PhotoUrl" width="80" alt="@userComment.User.UserName">
+
+								}
+								<h5><a asp-controller="User" asp-action="Details" asp-route-id="@userComment.User.UserId">@userComment.User.UserName</a></h5>
+
+							</div>
+							<p class="media-body">
+								@item.content
+							</p>
+						</div>
+					</div>
+
+					}
+			</div>
+		</div>
+		<div class="row Comment-new">
+			<div class="col-sm-7 col-sm-offset-3">
+				<form class="form-horizontal" asp-action="CreateComment" method="POST" >
+					<input name="Id" type="hidden" value="@Model.blogId"/>
+					<div class="form-group">
+						<textarea rows="8" name="CommentContent" class="form-control" placeholder="Write Comment"></textarea>
+					</div>
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary" ><i class="fas fa-plus"></i> New Comment</button>
+					</div>
+				</form>
+			</div>
+		</div>
 	</div>
-	<div>
-		@if (Model.isOwner)
-		{
-			@Html.ActionLink("Delete", "Delete", new { id = Model.blogId })
-			@Html.ActionLink("Edit", "Edit", new { id = Model.blogId })
-		} |
-		@Html.ActionLink("Create Coment", "Comments", new { id = Model.blogId })
-	</div>
-</div>
+		}
+</section>
