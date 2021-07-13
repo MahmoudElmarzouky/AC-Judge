@@ -57,12 +57,12 @@
                         }
 
                     }
-                    <li role="presentation" class="dropdown pull-right">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                            Control <span class="caret"></span>
-                        </a>
-                        @if ((Model.groupId != null) || Model.IsCurrentUserOwner)
-                        {
+                    @if ((Model.groupId != null) || Model.IsCurrentUserOwner)
+                    {
+                        <li role="presentation" class="dropdown pull-right">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                Control <span class="caret"></span>
+                            </a>
                             <ul class="dropdown-menu">
                                 @if (Model.groupId != null)
                                 {
@@ -74,9 +74,10 @@
                                     <li><a asp-action="Delete" asp-route-id="@Model.contestId">Delete Contest</a></li>
                                 }
                             </ul>
-                        }
-                    </li>
-                </ul>
+                            
+                        </li>
+                    }
+                    </ul>
             </section>
 
             <partial name="@partialName" for="@Model" />

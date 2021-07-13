@@ -22,7 +22,7 @@ namespace GraduationProject.Controllers.Contest
         readonly private IGroupRepository<GraduationProject.Data.Models.Group> groups;
         private readonly ISubmissionRepository<Submission> Submissions;
         readonly private User user; 
-        readonly private int NumberOfItemsForPage = 12; 
+        readonly private int NumberOfItemsForPage = 8; 
         public ContestController(IContestRepository<GraduationProject.Data.Models.Contest> contests
             , IUserRepository<User> Userrepository
             , IHttpContextAccessor httpContextAccessor
@@ -203,13 +203,14 @@ namespace GraduationProject.Controllers.Contest
             }
         }
 
-        public ActionResult Standing(int Id)
+        public ActionResult Standing(int Id, int PageNumber)
         {
             try
             {
                 if (!CanAccessTheContest(Id, user.UserId))
                     return RedirectToAction("Index");
-                return View(CreateStandingView(Id));
+                var model = CreateStandingView(Id, PageNumber);
+                return View(model);
             }catch
             {
                 return View("ErrorLink");
@@ -269,7 +270,7 @@ namespace GraduationProject.Controllers.Contest
 
         // This is For Problem 
         
-        public ActionResult Status(int Id)
+        public ActionResult Status(int Id, int PageNumber = 0)
         {
             try
             {
@@ -277,17 +278,16 @@ namespace GraduationProject.Controllers.Contest
                     return RedirectToAction("Index");
                 var contest = contests.Find(Id);
                 var model = getContestViewModelFromContest(contest);
-                model.Submissions = model.Submissions.OrderByDescending(u => u.CreationTime).ToList(); 
+                model.Submissions = getPageItems(model.Submissions.OrderByDescending(u => u.CreationTime).ToList(), PageNumber);
                 return View("Details", model);
             }
             catch
             {
                 return View("ErrorLink");
             }
-
         }
         
-        public ActionResult MySubmission(int Id)
+        public ActionResult MySubmission(int Id, int PageNumber = 0)
         {
             try
             {
@@ -295,7 +295,7 @@ namespace GraduationProject.Controllers.Contest
                     return RedirectToAction("Index");
                 var contest = contests.Find(Id);
                 var model = getContestViewModelFromContest(contest);
-                model.Submissions = model.Submissions.Where(u => u.userId == user.UserId).OrderByDescending(u=>u.CreationTime).ToList(); 
+                model.Submissions = getPageItems(model.Submissions.Where(u => u.userId == user.UserId).OrderByDescending(u=>u.CreationTime).ToList(), PageNumber); 
                 return View("Details", model);
             }
             catch
@@ -386,7 +386,7 @@ namespace GraduationProject.Controllers.Contest
                 var newProblem = new ProblemInfo();
                 newProblem.ProblemId = item.problemId;
                 newProblem.Origin = item.PlatForm;
-                newProblem.OriginName = item.ProblemSourceId; 
+                newProblem.OriginName = item.problem.problemTitle; 
                 newProblem.PropblemTitle = item.Alias == ""? item.ProblemSourceId: item.Alias;
                 newProblem.Solved = contest.Submissions.FirstOrDefault
                     (u => u.userId == user.UserId && 
@@ -420,19 +420,20 @@ namespace GraduationProject.Controllers.Contest
                 IsFavourite = currentUser != null? currentUser.isFavourite: false,
                 PreparedBy = owner.UserName, 
                 PreparedById = owner.UserId,
-                IsCurrentUserOwner = (owner.UserId == user.UserId)
+                IsCurrentUserOwner = (owner.UserId == user.UserId),
+                currentUserId = user.UserId
             };
         }
-        private StandingViewModel CreateStandingView(int contestId)
+        private StandingViewModel CreateStandingView(int contestId, int PageNumber)
         {
-            IList<UserInStanding> users = new List<UserInStanding>();
+            List<UserInStanding> users = new List<UserInStanding>();
             int PenalityForWrongAnswer = 10;
             var contest = contests.Find(contestId);
             var usersInContest = contest.UserContest.Where(u=>u.isRegistered == true).Select(u=>u.User);
             int NumberOfProblems = contest.ContestProblems.Count();
             int NumberOfUsers = usersInContest.Count();
             var problemsInContest = contest.ContestProblems.ToList().OrderBy(u => u.order);
-            var submissions = contest.Submissions.ToList().OrderBy(u => u.CreationTime);
+            var submissions = contest.Submissions.ToList().Where(u=>u.CreationTime <= contest.contestStartTime.AddMinutes(contest.contestDuration)).OrderBy(u => u.CreationTime);
             Boolean FirstAccepted = false;
 
             foreach (var u in usersInContest)
@@ -489,16 +490,33 @@ namespace GraduationProject.Controllers.Contest
                 groupId = contest.groupId,
                 IsCurrentUserOwner = ownerId == user.UserId
             };
-
+            users = users.OrderBy(u => -u.NumberOfSolvedProblems).ThenBy(u => u.TotalPenality).ToList();
+            int Rank = 1;
+            for (int i = 0; i < users.Count; i++)
+            {
+                int j = i + 1;
+                while (j < users.Count &&
+                    (users[i].NumberOfSolvedProblems == users[j].NumberOfSolvedProblems) &&
+                    (users[i].TotalPenality == users[j].TotalPenality))
+                    j++;
+                while(i < j)
+                {
+                    users[i].Rank = Rank;
+                    i++; 
+                }
+                Rank++;
+                i = j - 1; 
+            }
+            users = getPageItems(users, PageNumber); 
             return new StandingViewModel
             {
                 contestId = contestId,
                 NumberOfProblems = NumberOfProblems,
                 NumberOfUsers = NumberOfUsers,
-                users = users.OrderBy(u => -u.NumberOfSolvedProblems).ThenBy(u => u.TotalPenality).ToList(),
-                NavInfo = navinfo
-                
+                users = users,
+                NavInfo = navinfo    
             };
+
         }
         private CreateContestModel CreateContestView()
         {
@@ -574,7 +592,7 @@ namespace GraduationProject.Controllers.Contest
                 contestId = contest.contestId
             };
         }
-        private List<ViewContestModel> getPageItems(List<ViewContestModel> list, int PageNumber)
+        private List<T> getPageItems<T>(List<T> list, int PageNumber)
         {
             if (PageNumber < 1 || PageNumber > (list.Count + NumberOfItemsForPage - 1) / NumberOfItemsForPage)
                 PageNumber = 1;
@@ -588,7 +606,7 @@ namespace GraduationProject.Controllers.Contest
                 list.RemoveRange(0, list.Count - NumberOfItemsForPage);
             return list;
         }
-        public ActionResult Page(int PageNumber)
+        public ActionResult ContestPage(int PageNumber)
         {
             try
             {
@@ -599,6 +617,7 @@ namespace GraduationProject.Controllers.Contest
                 return View("Index"); 
             }
         }
+        
         public ActionResult SubmitCode(int contestId, int problemId, string code, string lang)
         {
             
@@ -608,6 +627,7 @@ namespace GraduationProject.Controllers.Contest
                 if (!CanAccessTheContest(contestId, userId))
                     return RedirectToAction("MySubmission", new { contestId });
                 contests.Submit(userId, contestId, problemId, code, lang);
+                RegisterInContest(contestId); 
                 return RedirectToAction("MySubmission", new { id = contestId });
             }
             catch

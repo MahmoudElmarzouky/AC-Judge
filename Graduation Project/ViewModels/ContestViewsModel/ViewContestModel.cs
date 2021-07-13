@@ -35,6 +35,7 @@ namespace GraduationProject.ViewModels.ContestViewsModel
                 return IsFavourite ? "fas fa-heart active" : "fas fa-heart"; 
             } set { } }
         public int contestId { get; set; }
+        public int currentUserId { get; set; }
         public string contestTitle { get; set; }
         public DateTime contestStartTime { get; set; }
         public int contestDuration { get; set; }
@@ -66,5 +67,6 @@ namespace GraduationProject.ViewModels.ContestViewsModel
             }
             set { } }
         public ContestFilter Filter { get; set; }
+
     }
 }
