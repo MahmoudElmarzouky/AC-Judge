@@ -20,7 +20,7 @@ namespace GraduationProject.Controllers.Group
         private readonly IGroupRepository<GraduationProject.Data.Models.Group> groups;
         private readonly IUserRepository<User> users;
         private readonly User user;
-        private readonly int NumberOfItemsForPage = 2; 
+        private readonly int NumberOfItemsForPage = 12; 
        
 
         public GroupController(IGroupRepository<GraduationProject.Data.Models.Group> groups, IUserRepository<User> Userrepository, IHttpContextAccessor httpContextAccessor)
