@@ -40,6 +40,7 @@ namespace GraduationProject.Controllers.Blog
         // GET: HomeController
         public ActionResult Index(int? page)
         {
+            try { 
             if (TempData["BlogsByUser"]!=null && TempData["BlogsByUser"].ToString()=="UserBlogs") {
                 TempData["BlogsUser"] = "blogUser";
                 return View(GetBlogsByUser());
@@ -53,6 +54,11 @@ namespace GraduationProject.Controllers.Blog
             ViewBag.Pagenum = pagenumber;
            
             return View(list.ToPagedList(pagenumber, 10));
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction(nameof(Index));
+            }
         }
         public IList<ViewBlogModel> GetBlogsByUser()
         {
@@ -68,6 +74,7 @@ namespace GraduationProject.Controllers.Blog
         }
         private ViewBlogModel getViewModelFromBlog(GraduationProject.Data.Models.Blog blog)
         {
+
             var userBlog = blog.userBlog.FirstOrDefault(b => b.blogId == blog.blogId&&b.blogOwenr==true);
             bool IsOwner = false;
             if (userBlog.User.UserIdentityId == user.UserIdentityId) {
@@ -97,12 +104,21 @@ namespace GraduationProject.Controllers.Blog
         // GET: HomeController/Details/5
         public ActionResult Details(int id)
         {
-            var blog = blogs.Find(id);
-            return View(getViewModelFromBlog(blog));
+            try
+            {
+                var blog = blogs.Find(id);
+                if (blog != null)
+                    return View(getViewModelFromBlog(blog));
+                else
+                    return RedirectToAction(nameof(Index));
+            }catch(Exception e){
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         public ActionResult CreateComment (int id,string CommentContent)
         {
+            try { 
             var newComment = new Comment
             {
                 content = CommentContent,
@@ -119,6 +135,11 @@ namespace GraduationProject.Controllers.Blog
             newComment.CommentVotes.Add(commentVotes);
             comments.Update(newComment);
             return RedirectToAction("Details",new { id=id});
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction(nameof(Index));
+            }
         }
         private commentVote CreateCommentRelation(int userId, int commentId)
         {
@@ -136,8 +157,14 @@ namespace GraduationProject.Controllers.Blog
         // GET: HomeController/Create
         public ActionResult Create(int? id)
         {
+            try { 
             TempData["GroupID"] = id;
             return View();
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         // POST: HomeController/Create
@@ -186,12 +213,18 @@ namespace GraduationProject.Controllers.Blog
         // GET: HomeController/Edit/5
         public ActionResult Edit(int id)
         {
+            try { 
             if (!CanAccessTheBlog(id, user.UserId))
             {
                 return RedirectToAction(nameof(Index));
             }
             var blog = blogs.Find(id);
             return View(blog);
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         // POST: HomeController/Edit/5
@@ -229,11 +262,17 @@ namespace GraduationProject.Controllers.Blog
         // GET: HomeController/Delete/5
         public ActionResult Delete(int id)
         {
+            try { 
             if (!CanAccessTheBlog(id, user.UserId)) { 
                 return RedirectToAction(nameof(Index));
             }
             var blog = blogs.Find(id);
             return View(blog);
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         // POST: HomeController/Delete/5
@@ -263,6 +302,7 @@ namespace GraduationProject.Controllers.Blog
         }
         public ActionResult Filter(string Title,string PrepeardBy)
         {
+            try { 
             var list = new List<ViewBlogModel>();
             
             if (PrepeardBy!=null)
@@ -287,12 +327,23 @@ namespace GraduationProject.Controllers.Blog
                 return View("Index",list);
             else
                 return View("Index");
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         public ActionResult UpVote(int id)
         {
+            try { 
             var blog = blogs.Find(id);
             return UpVote(blog);
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction(nameof(Index));
+            }
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -312,8 +363,14 @@ namespace GraduationProject.Controllers.Blog
         }
         public ActionResult DownVote(int id)
         {
+            try { 
             var blog = blogs.Find(id);
             return DownVote(blog);
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction(nameof(Index));
+            }
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -334,8 +391,14 @@ namespace GraduationProject.Controllers.Blog
         //--------
         public ActionResult Favourite(int id)
         {
+            try { 
             var blog = blogs.Find(id);
             return Favourite(blog);
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction(nameof(Index));
+            }
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
