@@ -122,25 +122,34 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
         }
         public IList<Blog> Search(string Title, UserBlog PrepeardBy) {
            
-            if (Title.Equals(string.Empty) && PrepeardBy != null)
+            if (Title!=null && PrepeardBy != null)
             {
                 var result = dbcontext.Blogs.Include(userBlog => userBlog.userBlog)
                     .ThenInclude(user => user.User)
                     .Include(comment => comment.Comments)
-                    .Include(group => group.group).Where(blog => blog.blogtitle.Contains(Title) && blog.userBlog == PrepeardBy
+                    .Include(group => group.group).Where(blog => blog.blogtitle.Contains(Title) &&  blog.blogId == PrepeardBy.blogId
                    ).ToList();
                 return result;
 
             }
-            else
+            else if (PrepeardBy == null&& Title != null)
             {
                 var result = dbcontext.Blogs.Include(userBlog => userBlog.userBlog)
                      .ThenInclude(user => user.User)
                      .Include(comment => comment.Comments)
-                     .Include(group => group.group).Where(blog => blog.blogtitle.Contains(Title) || blog.userBlog == PrepeardBy
+                     .Include(group => group.group).Where(blog => blog.blogtitle.Contains(Title) 
                     ).ToList();
                 return result;
-            }
+            }else if(Title == null && PrepeardBy != null)
+            {
+                var result = dbcontext.Blogs.Include(userBlog => userBlog.userBlog)
+                                     .ThenInclude(user => user.User)
+                                     .Include(comment => comment.Comments)
+                                     .Include(group => group.group).Where(blog => blog.blogId== PrepeardBy.blogId
+                                    ).ToList();
+                return result;
+            }else 
+            return null;
         }
     }
 }

@@ -228,21 +228,28 @@ namespace GraduationProject.Controllers.Blog
         {
             var list = new List<ViewBlogModel>();
             
-            if (PrepeardBy.Contains(""))
+            if (PrepeardBy!=null)
             {
                 var _user = userrepository.FindByUserName(PrepeardBy);
-                var userBlog = _user.userBlog.FirstOrDefault(u => u.userId == _user.UserId && u.blogOwenr == true);
-                var listItem = blogs.Search(Title, userBlog);
-                foreach (var item in listItem)
-                    list.Add(getViewModelFromBlog(item));
+                var userBlog = _user.userBlog.Where(u => u.userId == _user.UserId && u.blogOwenr == true);
+               foreach(var item in userBlog){
+                    var listItem = blogs.Search(Title, item);
+                    if (listItem != null)
+                        foreach (var itemList in listItem)
+                            list.Add(getViewModelFromBlog(itemList));
+                }
+                
             }else
             {
                 var listItem = blogs.Search(Title, null);
+             if(listItem!=null)
                 foreach (var item in listItem)
                     list.Add(getViewModelFromBlog(item));
             }
-
-            return View("Index",list);
+            if(list.Count>0)
+                return View("Index",list);
+            else
+                return View("Index");
         }
 
         public ActionResult UpVote(int id)
