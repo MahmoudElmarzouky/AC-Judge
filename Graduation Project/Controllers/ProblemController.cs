@@ -61,20 +61,20 @@ namespace GraduationProject.Controllers.problems
 
             var SubmitText=Request.Form["SubmitText"];
 
-            var result = APi.GetVerdict(problemSourceId, SubmitText, Language);
             Submission submission = new Submission
             {
-                MemoryConsumeBytes="1",
-                TimeConsumeMillis="1",
+                MemoryConsumeBytes="",
+                TimeConsumeMillis="",
                 Visable=false,
                 CreationTime=DateTime.Now,
-                Verdict="ac",
+                Verdict="Inqueue",
                 ProgrammingLanguage=Language,
                 userId=user.UserId,
                 ProblemId=ProblemId,
                 SubmissionText=SubmitText
             };
-            SubmissionRepository.Add(submission);
+            submission = SubmissionRepository.Add(submission);
+            APi.GetVerdict(problemSourceId, SubmitText, Language, submission.SubmissionId);
             return RedirectToAction("Details", new { id = ProblemId });
         }
         public Boolean CanSeeSubmission(int SubmissionId)

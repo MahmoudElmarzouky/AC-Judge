@@ -87,7 +87,7 @@ public static class APi
         wc.QueryString.Add("Language", "GNU G++17 7.3.0");
         wc.QueryString.Add("SubmissionId", SubmissionId.ToString()); 
 
-        var data = wc.UploadValues(URI, "POST", wc.QueryString);
+        wc.UploadValuesAsync(new Uri(URI), "POST", wc.QueryString);
         // check if send ok: next Version 
     }
 }
