@@ -124,13 +124,13 @@ namespace GraduationProject.Data.Models
                 contestId = contestId,
                 CreationTime = DateTime.Now,
                 ProblemId = problemId,
-                MemoryConsumeBytes = 200,
+                MemoryConsumeBytes = "200",
                 ProgrammingLanguage = "C++",
                 Visable = false,
                 userId = userId,
                 Verdict = verdict,
                 SubmissionText = code,
-                TimeConsumeMillis = 3055
+                TimeConsumeMillis = "3055"
             };
             dbcontext.Submissions.Add(sub);
 

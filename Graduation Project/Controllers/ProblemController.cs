@@ -64,8 +64,8 @@ namespace GraduationProject.Controllers.problems
             var result = APi.GetVerdict(problemSourceId, SubmitText, Language);
             Submission submission = new Submission
             {
-                MemoryConsumeBytes=1,
-                TimeConsumeMillis=1,
+                MemoryConsumeBytes="1",
+                TimeConsumeMillis="1",
                 Visable=false,
                 CreationTime=DateTime.Now,
                 Verdict="ac",

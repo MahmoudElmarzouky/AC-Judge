@@ -270,15 +270,13 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             }
             return list; 
         }
-        public string Submit(int userId, int contestId, int problemId, string Code, string lang)
+        public int Submit(int userId, int contestId, int problemId, string Code, string lang)
         {
             var contest = Find(contestId);
             var newSubmisson = CreateNewSubmisson(userId, contestId, problemId, Code, lang);
-            // Submit code To API and Get Result 
-
             contest.Submissions.Add(newSubmisson);
             Commit(); 
-            return "";
+            return newSubmisson.SubmissionId;
         }
         private Submission CreateNewSubmisson(int userId, int contestId, int problemId, string Code, string lang)
         {
@@ -289,7 +287,11 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
                 ProgrammingLanguage = lang, 
                 SubmissionText = Code, 
                 userId = userId, 
-                Visable = false
+                Visable = false,
+                Verdict = "Inqueue",
+                MemoryConsumeBytes = "",
+                TimeConsumeMillis = ""
+                
             };
         }
         public Boolean IsOwner(int contestId, int userId)

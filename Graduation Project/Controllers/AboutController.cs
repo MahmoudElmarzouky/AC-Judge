@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GraduationProject.Data.Models;
+using GraduationProject.Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +11,11 @@ namespace GraduationProject.Controllers.About
 {
     public class AboutController : Controller
     {
+        private readonly ISubmissionRepository<Submission> Submissions;
+        public AboutController(ISubmissionRepository<Submission> Submissions)
+        {
+            this.Submissions = Submissions; 
+        }
         // GET: HomeController
         public ActionResult Index()
         {
@@ -82,6 +89,19 @@ namespace GraduationProject.Controllers.About
             {
                 return View();
             }
+        }
+        public ActionResult GetVerdict(int SubmissionId, string Memory, string Time, string Verdict)
+        {
+            // check some thing 
+            var current = Submissions.Find(SubmissionId);
+            if (current != null)
+            {
+                current.Verdict = Verdict;
+                current.MemoryConsumeBytes = Memory;
+                current.TimeConsumeMillis = Time;
+                Submissions.Update(current);
+            }
+            return View("ErrorLink", "Thank You Yasta");
         }
     }
 }

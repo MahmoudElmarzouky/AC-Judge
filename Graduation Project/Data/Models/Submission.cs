@@ -9,8 +9,8 @@ namespace GraduationProject.Data.Models
     public class Submission
     {
         public int SubmissionId { get; set; }
-        public float MemoryConsumeBytes { get; set; }
-        public float TimeConsumeMillis { get; set; }
+        public string MemoryConsumeBytes { get; set; }
+        public string TimeConsumeMillis { get; set; }
         public Boolean Visable { get; set; }
         public DateTime CreationTime { get; set; }
         public string Verdict { get; set; }

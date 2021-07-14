@@ -75,5 +75,20 @@ public static class APi
 
         return submitInfo;
     }
+    public static void GetVerdict(string ProblemId, string solution, string Language, int SubmissionId)
+    {
+        string URI = "http://95.216.185.187/SUBMIT";
+        WebClient wc = new WebClient();
+
+        var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(solution);
+        var x = System.Convert.ToBase64String(plainTextBytes);
+        wc.QueryString.Add("ProblemId", ProblemId);
+        wc.QueryString.Add("SubmitText", x);
+        wc.QueryString.Add("Language", "GNU G++17 7.3.0");
+        wc.QueryString.Add("SubmissionId", SubmissionId.ToString()); 
+
+        var data = wc.UploadValues(URI, "POST", wc.QueryString);
+        // check if send ok: next Version 
+    }
 }
 

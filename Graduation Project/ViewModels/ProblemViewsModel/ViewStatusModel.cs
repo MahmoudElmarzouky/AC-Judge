@@ -17,8 +17,8 @@ namespace GraduationProject.ViewModels.ProblemViewsModel
         public string OnlineJudge { get; set; }
         public string ProblemSourcesId { get; set; }
         public string Verdict { get; set; }
-        public float TimeConsumed { get; set; }
-        public float MemoryConsumed { get; set; }
+        public string TimeConsumed { get; set; }
+        public string MemoryConsumed { get; set; }
         public string Language { get; set; }
         public DateTime SubmitTime { get; set; }
         public string Title { get; set; }

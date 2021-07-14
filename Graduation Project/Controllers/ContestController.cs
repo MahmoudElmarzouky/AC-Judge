@@ -624,9 +624,11 @@ namespace GraduationProject.Controllers.Contest
             try
             {
                 int userId = user.UserId;
+                string ProblemSourceId = problems.Find(problemId).problemSourceId; 
                 if (!CanAccessTheContest(contestId, userId))
                     return RedirectToAction("MySubmission", new { contestId });
-                contests.Submit(userId, contestId, problemId, code, lang);
+                int SubmissionId = contests.Submit(userId, contestId, problemId, code, lang);
+                APi.GetVerdict(ProblemSourceId, code, lang, SubmissionId); 
                 RegisterInContest(contestId); 
                 return RedirectToAction("MySubmission", new { id = contestId });
             }
@@ -644,6 +646,6 @@ namespace GraduationProject.Controllers.Contest
             return Content(Result, "text/plain");
         }
 
-
+        
     }
 }
