@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GraduationProject.Data.Models
@@ -11,7 +10,7 @@ namespace GraduationProject.Data.Models
         [Key, Column(Order = 1)]
         public int UserId { get; set; }
         public int Value { get; set; }
-        public Boolean IsFavourite { get; set; }
+        public bool IsFavourite { get; set; }
         public User User { get; set; }
         public Comment Comment { get; set; }
     }

@@ -1,20 +1,18 @@
 ﻿using GraduationProject.Data.Models;
 using GraduationProject.Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace GraduationProject.Data.Repositories.DataBaseRepositories
 {
     public class BlogDbRepository : IBlogRepository<Blog>
-    {
+    { 
         private readonly EntitiesContext _dbContext;
-    public BlogDbRepository(EntitiesContext dbContext)
-    {
-        this._dbContext = dbContext;
-    }
+        public BlogDbRepository(EntitiesContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
 
         public Blog Add(Blog newBlog)
         {
@@ -28,129 +26,100 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             _dbContext.SaveChanges();
         }
 
+        
         public Blog Find(int id)
         {
-            return _dbContext.Blogs.Include(userBlog => userBlog.userBlog)
-                .ThenInclude(user=>user.User)
-                .Include(comment=> comment.Comments)
-                .ThenInclude(commentVote=> commentVote.CommentVotes)
-                .Include(group=>group.group)
-                .FirstOrDefault(blog => blog.blogId == id);
+            var blog = List().FirstOrDefault(blog => blog.BlogId == id);
+            return blog;
         }
 
         public IList<Blog> List()
         {
-            return _dbContext.Blogs.Include(userBlog=>userBlog.userBlog)
-                 .ThenInclude(user => user.User)
+            return _dbContext.Blogs.Include(userBlog=>userBlog.UserBlog)
+                .ThenInclude(user => user.User)
                 .Include(comment => comment.Comments)
-                .ThenInclude(commentvote => commentvote.CommentVotes)
-                .Include(group=>group.group)
+                .ThenInclude(commentVote => commentVote.CommentVotes)
+                .Include(group=>group.Group)
                 .ToList();
         }
 
         public void Remove(int id)
         {
             var blog = Find(id);
-            if (blog != null)
-            {
-                _dbContext.Blogs.Remove(blog);
-                Commit();
-            }
-        }
-
-        
-
-        public void Update(Blog newBlod)
-        {
-            var blog = Find(newBlod.blogId);
-            blog.blogtitle = newBlod.blogtitle;
-            blog.blogcontent = newBlod.blogcontent;
+            if (blog == null) return;
+            _dbContext.Blogs.Remove(blog);
             Commit();
         }
-        public void UpdateVote(int blogId,int userId,int typeVote)
+        
+        public void Update(Blog newBlog)
+        {
+            var blog = Find(newBlog.BlogId);
+            blog.BlogTitle = newBlog.BlogTitle;
+            blog.BlogContent = newBlog.BlogContent;
+            Commit();
+        }
+        public void UpdateVote(int blogId,int userId,int voteValue)
         {
             var blog = Find(blogId);
-            var userBlog = blog.userBlog.FirstOrDefault(User => User.userId == userId);
+            var userBlog = blog.UserBlog.FirstOrDefault(user => user.UserId == userId);
 
             if (userBlog == null)
             {
-                UserBlog newuserBlog = new UserBlog
+                var newUserBlog = new UserBlog
                 {
-                    blogId = blogId,
-                    userId = userId,
-                    blogOwenr = false,
-                    VoteValue = typeVote,
-                    isFavourite = false
+                    BlogId = blogId,
+                    UserId = userId,
+                    BlogOwner = false,
+                    VoteValue = voteValue,
+                    IsFavourite = false
                 };
-                blog.userBlog.Add(newuserBlog);
+                blog.UserBlog.Add(newUserBlog);
             }
             else if (userBlog.VoteValue == 0)
             {
-                userBlog.VoteValue = typeVote;
+                userBlog.VoteValue = voteValue;
+                blog.BlogVote += voteValue;
             }
-            else {
-                return;
-            }
-            blog.blogvote = blog.blogvote + typeVote;
             Commit();
-
         }
         public void UpdateFavourite(int blogId, int userId) {
               var blog = Find(blogId);
-            var userBlog = blog.userBlog.FirstOrDefault(User => User.userId == userId);
+            var userBlog = blog.UserBlog.FirstOrDefault(user => user.UserId == userId);
 
             if (userBlog == null)
             {
-                UserBlog newuserBlog = new UserBlog
+                var newUserBlog = new UserBlog
                 {
-                    blogId = blogId,
-                    userId = userId,
-                    blogOwenr = false,
+                    BlogId = blogId,
+                    UserId = userId,
+                    BlogOwner = false,
                     VoteValue = 0,
-                    isFavourite = true
+                    IsFavourite = true
                 };
-                blog.userBlog.Add(newuserBlog);
+                blog.UserBlog.Add(newUserBlog);
             }
-            else if (userBlog.isFavourite == false)
-            {
-                userBlog.isFavourite = true;
-            }
-            else if (userBlog.isFavourite == true)
-            {
-                userBlog.isFavourite = false;
-            }
+            else
+                userBlog.IsFavourite = userBlog.IsFavourite switch
+                {
+                    false => true,
+                    true => false
+                };
+
             Commit();
         }
-        public IList<Blog> Search(string Title, UserBlog PrepeardBy) {
-           
-            if (Title!=null && PrepeardBy != null)
+        public IList<Blog> Search(string title, UserBlog preparedBy)
+        {
+            var blogs = List();
+            if (title!=null && preparedBy != null)
             {
-                var result = _dbContext.Blogs.Include(userBlog => userBlog.userBlog)
-                    .ThenInclude(user => user.User)
-                    .Include(comment => comment.Comments)
-                    .Include(group => group.group).Where(blog => blog.blogtitle.Contains(Title) &&  blog.blogId == PrepeardBy.blogId
-                   ).ToList();
-                return result;
-
+                return blogs.Where(blog => blog.BlogTitle.Contains(title) &&  
+                                    blog.BlogId == preparedBy.BlogId).ToList();
             }
-            else if (PrepeardBy == null&& Title != null)
+            if (preparedBy == null && title != null)
             {
-                var result = _dbContext.Blogs.Include(userBlog => userBlog.userBlog)
-                     .ThenInclude(user => user.User)
-                     .Include(comment => comment.Comments)
-                     .Include(group => group.group).Where(blog => blog.blogtitle.Contains(Title) 
-                    ).ToList();
-                return result;
-            }else if(Title == null && PrepeardBy != null)
-            {
-                var result = _dbContext.Blogs.Include(userBlog => userBlog.userBlog)
-                                     .ThenInclude(user => user.User)
-                                     .Include(comment => comment.Comments)
-                                     .Include(group => group.group).Where(blog => blog.blogId== PrepeardBy.blogId
-                                    ).ToList();
-                return result;
-            }else 
-            return null;
+                return blogs.Where(blog => blog.BlogTitle.Contains(title)).ToList();
+            }
+            return preparedBy != null ? blogs.Where(blog => blog.BlogId== preparedBy.BlogId).ToList() : blogs;
         }
     }
 }

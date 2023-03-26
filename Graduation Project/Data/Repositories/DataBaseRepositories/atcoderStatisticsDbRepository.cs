@@ -1,58 +1,53 @@
 ﻿using GraduationProject.Data.Models;
 using GraduationProject.Data.Repositories.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace GraduationProject.Data.Repositories
+namespace GraduationProject.Data.Repositories.DataBaseRepositories
 {
-    public class atcoderStatisticsDbRepository : IRepository<atcoderStatistics>
+    public class AtCoderStatisticsDbRepository : IRepository<AtcoderStatistics>
     {
-        readonly private EntitiesContext dbcontext;
-        public atcoderStatisticsDbRepository(EntitiesContext dbcontext)
+        private readonly EntitiesContext _dbContext;
+        public AtCoderStatisticsDbRepository(EntitiesContext dbContext)
         {
-            this.dbcontext = dbcontext;
+            _dbContext = dbContext;
         }
 
-        public atcoderStatistics Add(atcoderStatistics newatcoderStatistics)
+        public AtcoderStatistics Add(AtcoderStatistics newAtCoderStatistics)
         {
-            dbcontext.Add(newatcoderStatistics);
+            _dbContext.Add(newAtCoderStatistics);
             Commit();
-            return newatcoderStatistics;
+            return newAtCoderStatistics;
         }
 
         public void Commit()
         {
-            dbcontext.SaveChanges();
+            _dbContext.SaveChanges();
         }
 
-        public atcoderStatistics Find(int Id)
+        public AtcoderStatistics Find(int id)
         {
-            var atcoderstatistics = dbcontext.atcoderStatistics.FirstOrDefault(atcoder => atcoder.atcoderStatisticsId == Id);
-            return atcoderstatistics;
+            var atCoderStatistics = _dbContext.AtCoderStatistics.
+                FirstOrDefault(atCoder => atCoder.AtcoderStatisticsId == id);
+            return atCoderStatistics;
         }
 
-        public IList<atcoderStatistics> List()
+        public IList<AtcoderStatistics> List()
         {
-            return dbcontext.atcoderStatistics.ToList();
+            return _dbContext.AtCoderStatistics.ToList();
         }
 
-        public void Remove(int Id)
+        public void Remove(int id)
         {
-            var atcoder = Find(Id);
-            if (atcoder != null)
-            {
-                dbcontext.atcoderStatistics.Remove(atcoder);
-                Commit();
-            }
+            var atCoderStatistics = Find(id);
+            if (atCoderStatistics == null) return;
+            _dbContext.AtCoderStatistics.Remove(atCoderStatistics);
+            Commit();
         }
-
-       
-
-        public void Update(atcoderStatistics newAtcoderStatistics)
+        
+        public void Update(AtcoderStatistics newAtCoderStatistics)
         {
-            dbcontext.atcoderStatistics.Update(newAtcoderStatistics);
+            _dbContext.AtCoderStatistics.Update(newAtCoderStatistics);
             Commit();
         }
     }
