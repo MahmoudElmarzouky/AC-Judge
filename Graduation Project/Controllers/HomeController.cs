@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using GraduationProject.Data.Models;
+
 namespace GraduationProject.Controllers
 {
     public class HomeController : Controller
@@ -9,7 +10,7 @@ namespace GraduationProject.Controllers
         {
             return View();
         }
-        
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

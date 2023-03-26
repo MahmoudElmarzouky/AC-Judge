@@ -1,22 +1,22 @@
 ﻿@model string 
 
-@{ 
-    string ActionName = Model.Split(":")[0];
-    int Id = Convert.ToInt32(Model.Split(":")[1]); 
+@{
+    string actionName = Model.Split(":")[0];
+    int Id = Convert.ToInt32(Model.Split(":")[1]);
 }
 @if (ViewBag.NumberOfPages != 0)
 {
     <div aria-label="Page navigation" class="text-center">
         <ul class="pagination pagination-lg">
             @{
-                Boolean IsFirstPage = ViewBag.PageNumber == 1;
-                Boolean IsLastPage = ViewBag.PageNumber == ViewBag.NumberOfPages;
+                Boolean isFirstPage = ViewBag.PageNumber == 1;
+                Boolean isLastPage = ViewBag.PageNumber == ViewBag.NumberOfPages;
 
             }
-            @if (!IsFirstPage)
+            @if (!isFirstPage)
             {
                 <li>
-                    <a asp-action="@ActionName" asp-route-id="@Id" asp-route-PageNumber="@(ViewBag.PageNumber - 1)" aria-label="Previous">
+                    <a asp-action="@actionName" asp-route-id="@Id" asp-route-PageNumber="@(ViewBag.PageNumber - 1)" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
@@ -29,28 +29,31 @@
                 for (int i = Math.Min(3, ViewBag.NumberOfPages) + 1; i < ViewBag.NumberOfPages; i *= 2)
                     list.Add(i);
                 list.Add(ViewBag.PageNumber);
-                list.Add(ViewBag.NumberOfPages); 
+                list.Add(ViewBag.NumberOfPages);
                 list.Sort();
                 list = list.Distinct().ToList();
                 for (int i = 0; i < list.Count; i++)
                 {
                     if (list[i] == ViewBag.PageNumber)
                     {
-                        <li class="active"><a>@list[i]</a></li>
+                        <li class="active">
+                            <a>@list[i]</a>
+                        </li>
                     }
                     else
                     {
-                        <li><a asp-action="@ActionName" asp-route-id="@Id" asp-route-PageNumber="@list[i]">@list[i]</a></li>
+                        <li>
+                            <a asp-action="@actionName" asp-route-id="@Id" asp-route-PageNumber="@list[i]">@list[i]</a>
+                        </li>
                     }
                 }
 
             }
 
-
-            @if (!IsLastPage)
+            @if (!isLastPage)
             {
                 <li>
-                    <a asp-action="@ActionName" asp-route-id="@Id" asp-route-PageNumber="@(ViewBag.PageNumber + 1)" aria-label="Next">
+                    <a asp-action="@actionName" asp-route-id="@Id" asp-route-PageNumber="@(ViewBag.PageNumber + 1)" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>

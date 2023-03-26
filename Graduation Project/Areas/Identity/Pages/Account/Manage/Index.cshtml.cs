@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using GraduationProject.Areas.Identity.Data;
 using GraduationProject.Data.Repositories.Interfaces;
@@ -15,28 +14,29 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace GraduationProject.Areas.Identity.Pages.Account.Manage
 {
-    public partial class IndexModel : PageModel
+    public class IndexModel : PageModel
     {
         private readonly UserManager<AuthUser> _userManager;
         private readonly SignInManager<AuthUser> _signInManager;
-        private readonly IUserRepository<GraduationProject.Data.Models.User> userrepository;
-        private readonly IHostingEnvironment hosting;
+        private readonly IUserRepository<GraduationProject.Data.Models.User> _userRepository;
+        private readonly IHostingEnvironment _hosting;
 
         public IndexModel(
             UserManager<AuthUser> userManager,
             SignInManager<AuthUser> signInManager,
-            IUserRepository<GraduationProject.Data.Models.User> Userrepository
-            , IHostingEnvironment hosting)
+            IUserRepository<GraduationProject.Data.Models.User> userRepository,
+            IHostingEnvironment hosting)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            userrepository = Userrepository;
-            this.hosting = hosting;
+            this._userManager = userManager;
+            this._signInManager = signInManager;
+            this._userRepository = userRepository;
+            this._hosting = hosting;
             AddCountries();
         }
 
         public string Username { get; set; }
         public List<string> Countries { get; set; }
+
         void AddCountries()
         {
             Countries = new List<string>();
@@ -49,22 +49,22 @@ namespace GraduationProject.Areas.Identity.Pages.Account.Manage
                     Countries.Add(regionInfo.EnglishName);
                 }
             }
+
             Countries.Remove("Israel");
             Countries.Add("Palastine");
             Countries.Sort();
-
         }
-        [TempData]
-        public string StatusMessage { get; set; }
 
-        [BindProperty]
-        public InputModel Input { get; set; }
+        [TempData] public string StatusMessage { get; set; }
+
+        [BindProperty] public InputModel Input { get; set; }
 
         public class InputModel
         {
             [Required]
             [Display(Name = "First Name")]
             public string FirstName { get; set; }
+
             [Display(Name = "Last Name")]
             [Required]
             public string LastName { get; set; }
@@ -83,25 +83,24 @@ namespace GraduationProject.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
             public IFormFile photoFile { get; set; }
-            
         }
 
         private async Task LoadAsync(AuthUser authUser)
         {
             var userName = await _userManager.GetUserNameAsync(authUser);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(authUser);
-            string UserIdentityID = await _userManager.GetUserIdAsync(authUser);
-            var userTable = userrepository.Find(UserIdentityID);
+            string userIdentityId = await _userManager.GetUserIdAsync(authUser);
+            var userTable = _userRepository.Find(userIdentityId);
             Username = userName;
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
-                ,FirstName=userTable.FirstName,
-                LastName=userTable.LastName,
-                Country=userTable.Country,
-                PhotoUrl=userTable.PhotoUrl,
-                BirthDate=userTable.BirthDateYear
+                PhoneNumber = phoneNumber, FirstName = userTable.FirstName,
+                LastName = userTable.LastName,
+                Country = userTable.Country,
+                PhotoUrl = userTable.PhotoUrl,
+                BirthDate = userTable.BirthDateYear
             };
         }
 
@@ -130,8 +129,9 @@ namespace GraduationProject.Areas.Identity.Pages.Account.Manage
                 await LoadAsync(user);
                 return Page();
             }
-            string UserIdentityID = await _userManager.GetUserIdAsync(user);
-            var userTable = userrepository.Find(UserIdentityID);
+
+            string userIdentityId = await _userManager.GetUserIdAsync(user);
+            var userTable = _userRepository.Find(userIdentityId);
             string firstName = Input.FirstName;
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)
@@ -143,34 +143,35 @@ namespace GraduationProject.Areas.Identity.Pages.Account.Manage
                     return RedirectToPage();
                 }
             }
+
             string imageFullName = null;
-            if(Input.photoFile != null)
-                {
+            if (Input.photoFile != null)
+            {
                 Guid imageGuid = Guid.NewGuid();
                 string extension = Path.GetExtension(Input.photoFile.FileName);
                 imageFullName = imageGuid + extension;
-                string newPath = hosting.WebRootPath + "/img/Profile/" + imageFullName;
+                string newPath = _hosting.WebRootPath + "/img/Profile/" + imageFullName;
                 string oldPath = null;
                 if (Input.PhotoUrl != null)
                 {
-                     oldPath = hosting.WebRootPath + "/img/Profile/" + Input.PhotoUrl;
+                    oldPath = _hosting.WebRootPath + "/img/Profile/" + Input.PhotoUrl;
                 }
+
                 using (FileStream fileStream = new FileStream(newPath, FileMode.Create))
                 {
                     Input.photoFile.CopyTo(fileStream);
-                    if(oldPath!=null)
-                    System.IO.File.Delete(oldPath);
+                    if (oldPath != null)
+                        System.IO.File.Delete(oldPath);
                 }
             }
-            
-            GraduationProject.Data.Models.User newUser=new GraduationProject.Data.Models.User
-            { 
-             UserId=userTable.UserId,
-                UserIdentityId=userTable.UserIdentityId
-                ,FirstName=Input.FirstName,LastName=Input.LastName
-             ,Country=Input.Country,PhotoUrl=imageFullName,BirthDateYear=Input.BirthDate
+
+            GraduationProject.Data.Models.User newUser = new GraduationProject.Data.Models.User
+            {
+                UserId = userTable.UserId,
+                UserIdentityId = userTable.UserIdentityId, FirstName = Input.FirstName, LastName = Input.LastName,
+                Country = Input.Country, PhotoUrl = imageFullName, BirthDateYear = Input.BirthDate
             };
-            userrepository.Update(newUser);
+            _userRepository.Update(newUser);
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();

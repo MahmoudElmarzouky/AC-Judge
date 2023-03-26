@@ -8,35 +8,41 @@
     <div class="table-responsive">
         <table class="table table-bordered text-center">
             <thead class="thead-light">
-                <tr>
-                    <th class="text-center">Run ID</th>
-                    <th class="text-center">User Name</th>
-                    <th class="text-center">Problem</th>
-                    <th class="text-center">Verdict</th>
-                    <th class="text-center">Time</th>
-                    <th class="text-center">Memory</th>
-                    <th class="text-center">Language</th>
-                    <th class="text-center">When</th>
-                    <th class="text-center">TYPE</th>
-                </tr>
+            <tr>
+                <th class="text-center">Run ID</th>
+                <th class="text-center">User Name</th>
+                <th class="text-center">Problem</th>
+                <th class="text-center">Verdict</th>
+                <th class="text-center">Time</th>
+                <th class="text-center">Memory</th>
+                <th class="text-center">Language</th>
+                <th class="text-center">When</th>
+                <th class="text-center">TYPE</th>
+            </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Submissions)
-                {
-                    var verdictClass = item.Verdict == "Accepted" ? "text-success" : "text-danger";
-                    var Type = item.CreationTime > Model.contestStartTime.AddMinutes(Model.contestDuration) ? "offline" : "online";
+            @foreach (var item in Model.Submissions)
+            {
+                var verdictClass = item.Verdict == "Accepted" ? "text-success" : "text-danger";
+                var Type = item.CreationTime > Model.contestStartTime.AddMinutes(Model.contestDuration) ? "offline" : "online";
 
                 <tr>
                     @if ((Model.contestStatus == "Ended" && item.Visible == true) || item.UserId == Model.currentUserId)
                     {
-                        <td><a data-link="@Url.Action("GetTextSubmission")" data-user="@item.User.UserName" data-id="@item.SubmissionId" data-toggle="modal" data-target="#StatusCotntest">@item.SubmissionId</a></td>
+                        <td>
+                            <a data-link="@Url.Action("GetTextSubmission")" data-user="@item.User.UserName" data-id="@item.SubmissionId" data-toggle="modal" data-target="#StatusCotntest">@item.SubmissionId</a>
+                        </td>
                     }
                     else
                     {
                         <td>@item.SubmissionId</td>
                     }
-                    <td> <a asp-action="Details" asp-controller="User" asp-route-id="@item.UserId">@item.User.UserName</a></td>
-                    <td><a asp-action="Details" asp-controller="Problem" asp-route-id="@item.ProblemId"> @item.Problem.ProblemTitle</a></td>
+                    <td>
+                        <a asp-action="Details" asp-controller="User" asp-route-id="@item.UserId">@item.User.UserName</a>
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-controller="Problem" asp-route-id="@item.ProblemId"> @item.Problem.ProblemTitle</a>
+                    </td>
 
                     <td class="@verdictClass">@item.Verdict</td>
                     <td>@item.TimeConsumeMillis</td>
@@ -48,15 +54,15 @@
                     </td>
                     <td>@Type</td>
                 </tr>
-                }
+            }
             </tbody>
         </table>
     </div>
     @{
         string contestIdSTR = Model.contestId.ToString();
-        string Action = "Status:" + contestIdSTR;
+        string action = "Status:" + contestIdSTR;
     }
-    <partial name="SharedFooter" for="@Action">
+    <partial name="SharedFooter" for="@action"/>
 </section>
 <!-- View Status Modal -->
 <section class="modal fade submision-modal" id="StatusCotntest" tabindex="-1" role="dialog" aria-hidden="true">
@@ -76,22 +82,22 @@
                 <div class="table-responsive">
                     <table class="table table-bordered text-center">
                         <thead class="thead-light">
-                            <tr>
-                                <th class="text-center">Problem</th>
-                                <th class="text-center">Verdict</th>
-                                <th class="text-center">Time</th>
-                                <th class="text-center">Memory</th>
-                                <th class="text-center">Language</th>
-                            </tr>
+                        <tr>
+                            <th class="text-center">Problem</th>
+                            <th class="text-center">Verdict</th>
+                            <th class="text-center">Time</th>
+                            <th class="text-center">Memory</th>
+                            <th class="text-center">Language</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td></td>
-                                <td class=""></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                        <tr>
+                            <td></td>
+                            <td class=""></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
