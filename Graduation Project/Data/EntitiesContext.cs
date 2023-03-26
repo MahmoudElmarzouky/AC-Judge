@@ -42,8 +42,8 @@ namespace GraduationProject.Data
             .HasKey(p => new { p.contestId, p.problemId });
             modelBuilder.Entity<UserBlog>()
             .HasKey(p => new { p.userId, p.blogId });
-            modelBuilder.Entity<commentVote>()
-            .HasKey(p => new { p.commentId, p.userId });
+            modelBuilder.Entity<CommentVote>()
+            .HasKey(p => new { p.CommentId, p.UserId });
 
 
             modelBuilder.Entity<ProblemUser>().HasKey(pu => new

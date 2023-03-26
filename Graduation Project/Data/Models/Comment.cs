@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GraduationProject.Data.Models
 {
@@ -10,7 +8,7 @@ namespace GraduationProject.Data.Models
     {
         public Comment()
         {
-            CommentVotes = new HashSet<commentVote>();
+            CommentVotes = new HashSet<CommentVote>();
         }
         public int commentId { get; set; }
         [MaxLength(50)]
@@ -20,6 +18,6 @@ namespace GraduationProject.Data.Models
         public DateTime creationTime { get; set; }
         public int blogId { get; set; }
         public Blog blog { get; set; }
-        public virtual ICollection<commentVote> CommentVotes { get; set; }
+        public ICollection<CommentVote> CommentVotes { get; set; }
     }
 }

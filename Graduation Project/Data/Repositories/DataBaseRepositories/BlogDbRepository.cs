@@ -10,38 +10,37 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
 {
     public class BlogDbRepository : IBlogRepository<Blog>
     {
-        readonly private EntitiesContext dbcontext;
-    public BlogDbRepository(EntitiesContext dbcontext)
+        private readonly EntitiesContext _dbContext;
+    public BlogDbRepository(EntitiesContext dbContext)
     {
-        this.dbcontext = dbcontext;
+        this._dbContext = dbContext;
     }
 
         public Blog Add(Blog newBlog)
         {
-            dbcontext.Add(newBlog);
+            _dbContext.Add(newBlog);
             Commit();
             return newBlog;
         }
 
         public void Commit()
         {
-            dbcontext.SaveChanges();
+            _dbContext.SaveChanges();
         }
 
-        public Blog Find(int Id)
+        public Blog Find(int id)
         {
-            var blog = dbcontext.Blogs.Include(userBlog => userBlog.userBlog)
+            return _dbContext.Blogs.Include(userBlog => userBlog.userBlog)
                 .ThenInclude(user=>user.User)
-                .Include(comment=>comment.Comments)
-                .ThenInclude(commentvote=>commentvote.CommentVotes)
+                .Include(comment=> comment.Comments)
+                .ThenInclude(commentVote=> commentVote.CommentVotes)
                 .Include(group=>group.group)
-                .FirstOrDefault(blog => blog.blogId == Id);
-            return blog;
+                .FirstOrDefault(blog => blog.blogId == id);
         }
 
         public IList<Blog> List()
         {
-            return dbcontext.Blogs.Include(userBlog=>userBlog.userBlog)
+            return _dbContext.Blogs.Include(userBlog=>userBlog.userBlog)
                  .ThenInclude(user => user.User)
                 .Include(comment => comment.Comments)
                 .ThenInclude(commentvote => commentvote.CommentVotes)
@@ -49,12 +48,12 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
                 .ToList();
         }
 
-        public void Remove(int Id)
+        public void Remove(int id)
         {
-            var blog = Find(Id);
+            var blog = Find(id);
             if (blog != null)
             {
-                dbcontext.Blogs.Remove(blog);
+                _dbContext.Blogs.Remove(blog);
                 Commit();
             }
         }
@@ -126,7 +125,7 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
            
             if (Title!=null && PrepeardBy != null)
             {
-                var result = dbcontext.Blogs.Include(userBlog => userBlog.userBlog)
+                var result = _dbContext.Blogs.Include(userBlog => userBlog.userBlog)
                     .ThenInclude(user => user.User)
                     .Include(comment => comment.Comments)
                     .Include(group => group.group).Where(blog => blog.blogtitle.Contains(Title) &&  blog.blogId == PrepeardBy.blogId
@@ -136,7 +135,7 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
             }
             else if (PrepeardBy == null&& Title != null)
             {
-                var result = dbcontext.Blogs.Include(userBlog => userBlog.userBlog)
+                var result = _dbContext.Blogs.Include(userBlog => userBlog.userBlog)
                      .ThenInclude(user => user.User)
                      .Include(comment => comment.Comments)
                      .Include(group => group.group).Where(blog => blog.blogtitle.Contains(Title) 
@@ -144,7 +143,7 @@ namespace GraduationProject.Data.Repositories.DataBaseRepositories
                 return result;
             }else if(Title == null && PrepeardBy != null)
             {
-                var result = dbcontext.Blogs.Include(userBlog => userBlog.userBlog)
+                var result = _dbContext.Blogs.Include(userBlog => userBlog.userBlog)
                                      .ThenInclude(user => user.User)
                                      .Include(comment => comment.Comments)
                                      .Include(group => group.group).Where(blog => blog.blogId== PrepeardBy.blogId
