@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GraduationProject.Data.Models;
+﻿using GraduationProject.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace GraduationProject.Data
@@ -26,7 +22,7 @@ namespace GraduationProject.Data
       
 
         public DbSet<Handle> Handles { get; set; }
-        public DbSet<atcoderStatistics> atcoderStatistics { get; set; }
+        public DbSet<AtcoderStatistics> AtCoderStatistics { get; set; }
         public DbSet<CodeforcesStatistics> CodeforcesStatistics { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -39,11 +35,11 @@ namespace GraduationProject.Data
             modelBuilder.Entity<BlogTag>()
             .HasKey(p => new { p.BlogId, p.TagId });
             modelBuilder.Entity<ContestProblem>()
-            .HasKey(p => new { p.contestId, p.problemId });
+            .HasKey(p => new { contestId = p.ContestId, problemId = p.ProblemId });
             modelBuilder.Entity<UserBlog>()
-            .HasKey(p => new { p.userId, p.blogId });
+            .HasKey(p => new { userId = p.UserId, blogId = p.BlogId });
             modelBuilder.Entity<CommentVote>()
-            .HasKey(p => new { p.CommentId, p.UserId });
+            .HasKey(p => new { commentId = p.CommentId, userId = p.UserId });
 
 
             modelBuilder.Entity<ProblemUser>().HasKey(pu => new
