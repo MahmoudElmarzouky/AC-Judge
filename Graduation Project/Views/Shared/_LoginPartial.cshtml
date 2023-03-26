@@ -1,14 +1,13 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using GraduationProject.Areas.Identity.Data
 
-
 @inject SignInManager<AuthUser> SignInManager
 @inject UserManager<AuthUser> UserManager
 
 @if (SignInManager.IsSignedIn(User))
 {
     <form class="navbar-form navbar-right text-center nav-sign-out" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })" method="post" id="logoutForm">
-        <a class="btn btn-info" asp-controller="User" asp-action="MyProfile"  title="Manage">
+        <a class="btn btn-info" asp-controller="User" asp-action="MyProfile" title="Manage">
             <i class="fas fa-user-circle"></i>@UserManager.GetUserName(User)
         </a>
         <button type="submit" class="btn btn-danger">
@@ -27,4 +26,3 @@ else
         </a>
     </div>
 }
-

@@ -240,5 +240,10 @@ namespace GraduationProject.Controllers
             _blogs.UpdateFavourite(blogId, userId);
             return RedirectToAction(nameof(Favorite), new { id = _user.UserId });
         }
+
+        public ActionResult MyProfile()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

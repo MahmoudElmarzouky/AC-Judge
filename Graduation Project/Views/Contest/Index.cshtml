@@ -13,64 +13,72 @@
         <section class="contest-table">
             <div class="panel panel-info">
                 <!--Here-->
-                <partial name="ContestFilter" />
+                <partial name="ContestFilter"/>
                 <div class="table-responsive">
                     <table class="table table-bordered text-center">
                         <thead>
-                            <tr class="active">
-                                <th class="text-center">#</th> <!-- visibility -->
-                                <th class="text-center">Status</th>
-                                <th class="text-center">Favorite</th>
-                                <th class="text-center">Title</th>
-                                <th class="text-center">Start Time</th>
-                                <th class="text-center">Length</th>
-                                <th class="text-center">Prepeard By</th>
-                            </tr>
+                        <tr class="active">
+                            <th class="text-center">#</th> <!-- visibility -->
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Favorite</th>
+                            <th class="text-center">Title</th>
+                            <th class="text-center">Start Time</th>
+                            <th class="text-center">Length</th>
+                            <th class="text-center">Prepeard By</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            @if (Model.Count() > 0)
-                            {
-                                @foreach (var contest in Model)
-                                {
-                                    <tr>
-                                        <td><i class="@contest.VisableClass" data-toggle="tooltip" data-placement="top" title="@contest.contestVisabilty"></i></td>
-                                        <td class="@contest.contestStatusClass">@contest.contestStatus</td>
-                                        <td><a asp-action="FlipFavourite" asp-route-id="@contest.contestId" class="@contest.FavouuriteClass" data-favorite="IconFav"></a></td>
-                                        <td><a asp-action="Details" asp-route-id="@contest.contestId">@contest.contestTitle</a></td>
-                                        <td class="start-time">
-                                            <a href="@contest.GlobalTime" target="_blank">
-                                                <div>@contest.contestStartTime.ToString("MM/dd/yyyy")</div>
-                                                <div>@contest.contestStartTime.ToString("HH:mm")</div>
-                                            </a>
-                                        </td>
-                                        @{
-                                            var hours = contest.contestDuration / 60;
-                                            var minutes = contest.contestDuration % 60;
-                                        }
-                                        <td> @hours.ToString("00"):@minutes.ToString("00") </td>
-                                        <td><a asp-controller="User" asp-action="Details" asp-route-id="@contest.PreparedById">@contest.PreparedBy</a></td>
-                                    </tr>
-                                }
-                            }
-                            else
+                        @if (Model.Any())
+                        {
+                            @foreach (var contest in Model)
                             {
                                 <tr>
-                                    <td colspan="7">No Matching Records</td>
+                                    <td>
+                                        <i class="@contest.VisableClass" data-toggle="tooltip" data-placement="top" title="@contest.contestVisabilty"></i>
+                                    </td>
+                                    <td class="@contest.contestStatusClass">@contest.contestStatus</td>
+                                    <td>
+                                        <a asp-action="FlipFavourite" asp-route-id="@contest.contestId" class="@contest.FavouuriteClass" data-favorite="IconFav"></a>
+                                    </td>
+                                    <td>
+                                        <a asp-action="Details" asp-route-id="@contest.contestId">@contest.contestTitle</a>
+                                    </td>
+                                    <td class="start-time">
+                                        <a href="@contest.GlobalTime" target="_blank">
+                                            <div>@contest.contestStartTime.ToString("MM/dd/yyyy")</div>
+                                            <div>@contest.contestStartTime.ToString("HH:mm")</div>
+                                        </a>
+                                    </td>
+                                    @{
+                                        var hours = contest.contestDuration / 60;
+                                        var minutes = contest.contestDuration % 60;
+                                    }
+                                    <td> @hours.ToString("00"):@minutes.ToString("00") </td>
+                                    <td>
+                                        <a asp-controller="User" asp-action="Details" asp-route-id="@contest.PreparedById">@contest.PreparedBy</a>
+                                    </td>
                                 </tr>
                             }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="7">No Matching Records</td>
+                            </tr>
+                        }
                         </tbody>
                     </table>
                 </div>
             </div>
-            @{ 
-                string Action = "ContestPage:0"; 
+            @{
+                string action = "ContestPage:0";
             }
-            <partial name="SharedFooter" for="@Action">
+            <partial name="SharedFooter" for="@action"/>
         </section>
     </div>
 </section>
 
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }
