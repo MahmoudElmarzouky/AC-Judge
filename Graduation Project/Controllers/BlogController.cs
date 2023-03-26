@@ -141,15 +141,15 @@ namespace GraduationProject.Controllers.Blog
                 return RedirectToAction(nameof(Index));
             }
         }
-        private commentVote CreateCommentRelation(int userId, int commentId)
+        private CommentVote CreateCommentRelation(int userId, int commentId)
         {
-            var commentVotes = new commentVote
+            var commentVotes = new CommentVote
             {
-                commentId = commentId,
-                userId = userId
+                CommentId = commentId,
+                UserId = userId
               ,
-                isFavourite = false,
-                value = 0,
+                IsFavourite = false,
+                Value = 0,
                 User = user
             };
             return commentVotes;
@@ -158,8 +158,8 @@ namespace GraduationProject.Controllers.Blog
         public ActionResult Create(int? id)
         {
             try { 
-            TempData["GroupID"] = id;
-            return View();
+                TempData["GroupID"] = id;
+                return View();
             }
             catch (Exception e)
             {
