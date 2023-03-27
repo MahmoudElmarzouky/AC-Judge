@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using ACJudge.Data.Models;
 using ACJudge.Data.Repositories.Interfaces;
+using ACJudge.ExtensionMethods;
 using ACJudge.ViewModels;
 using X.PagedList;
 
@@ -43,15 +44,14 @@ namespace ACJudge.Controllers
                     TempData["BlogsUser"] = "blogUser";
                     return View(GetBlogsByUser());
                 }
-                var list = new List<ViewBlogModel>();
-                foreach (var item in _blogs.List())
-                    list.Add(GetViewModelFromBlog(item));
+
+                var list = _blogs.List().Select(GetViewModelFromBlog).ToList();
+                
                 var pageNumber = page ?? 1;
-                if (pageNumber < 0 || pageNumber > ViewBag.TotalPageProblem) pageNumber = 1;
-                // ceil of number of blogs over 10
-                ViewBag.TotalPageProblem = (list.Count + BlogsPerPage - 1 )/ BlogsPerPage;
+                ViewBag.TotalPageProblem = Math.Ceiling((decimal)list.Count / BlogsPerPage);
                 ViewBag.Pagenum = pageNumber;
-                return View(list.ToPagedList(pageNumber, BlogsPerPage));
+                var currentPage = list.Paginate(pageNumber, BlogsPerPage);
+                return View(currentPage);
             }
             catch (Exception e)
             {
@@ -60,20 +60,16 @@ namespace ACJudge.Controllers
         }
         public IList<ViewBlogModel> GetBlogsByUser()
         {
-            var list = new List<ViewBlogModel>();
-            var blog = _blogs.List();
-            foreach (var item in blog) {
-                var userBlog = item.UserBlog.FirstOrDefault(userBlog=> userBlog.UserId==_user.UserId
-                                                                       &&userBlog.BlogOwner);
-                if (userBlog != null)
-                    list.Add(GetViewModelFromBlog(item));
-            }
-            return list;
+            var userBlogs = _blogs.List().
+                Where(blog => blog.UserBlog.
+                    FirstOrDefault(ub=>ub.UserId == _user.UserId && ub.BlogOwner) != null).
+                Select(GetViewModelFromBlog).ToList();
+            return userBlogs;
         }
         private ViewBlogModel GetViewModelFromBlog(Blog blog)
         {
             var userBlog = blog.UserBlog.FirstOrDefault(b => b.BlogOwner);
-            var isOwner = userBlog.User.UserIdentityId == _user.UserIdentityId;
+            var isOwner = userBlog?.User.UserIdentityId == _user.UserIdentityId;
             var isFavorite = _user.UserBlogs.
                 FirstOrDefault(innerUserBlog => innerUserBlog.IsFavourite 
                                                 && innerUserBlog.BlogId==blog.BlogId) != null;
@@ -81,15 +77,15 @@ namespace ACJudge.Controllers
             {
                 blogId = blog.BlogId,
                 blogtitle = blog.BlogTitle,
-                blogOwner = userBlog.User.UserName,
+                blogOwner = userBlog?.User.UserName,
                 blogcontent = blog.BlogContent,
-                blogvote = blog.BlogVote
-                , creationTime = blog.CreationTime
-                , Comments = blog.Comments
-                ,UserBlogs=blog.UserBlog,
+                blogvote = blog.BlogVote, 
+                creationTime = blog.CreationTime, 
+                Comments = blog.Comments,
+                UserBlogs=blog.UserBlog,
                 CurrentUserId=_user.UserId,
-                GroupId=blog.GroupId
-                , isOwner = isOwner,
+                GroupId=blog.GroupId, 
+                isOwner = isOwner,
                 isFavorite=isFavorite
             };
             return model;
@@ -294,30 +290,7 @@ namespace ACJudge.Controllers
         {
             try
             {
-                var list = new List<ViewBlogModel>();
-                if (preparedBy!=null)
-                {
-                    var user = _userRepository.FindByUserName(preparedBy);
-                    var userBlog = user.UserBlogs.Where(u => u.BlogOwner);
-                    foreach(var item in userBlog){
-                        var listItem = _blogs.Search(title, item);
-                        if (listItem == null) continue;
-                        foreach (var itemList in listItem)
-                        {
-                            list.Add(GetViewModelFromBlog(itemList));
-                        }
-                    }
-                }else
-                {
-                    var listItem = _blogs.Search(title, null);
-                    if (listItem != null)
-                    {
-                        foreach (var item in listItem)
-                        {
-                            list.Add(GetViewModelFromBlog(item));
-                        }
-                    }
-                }
+                var list = _blogs.Search(title, preparedBy).Select(GetViewModelFromBlog);
                 return View("Index", list);
             }
             catch (Exception e)

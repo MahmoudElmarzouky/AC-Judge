@@ -13,6 +13,6 @@ namespace ACJudge.Data.Repositories.Interfaces
         T Find(int id);
         void UpdateVote(int blogId, int userId, int voteValue);
         void UpdateFavourite(int blogId, int userId);
-        IList<T> Search(string title, UserBlog preparedBy);
+        IList<T> Search(string title, string preparedBy);
     }
 }

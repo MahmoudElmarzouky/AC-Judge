@@ -107,19 +107,12 @@ namespace ACJudge.Data.Repositories.DataBaseRepositories
 
             Commit();
         }
-        public IList<Blog> Search(string title, UserBlog preparedBy)
+        public IList<Blog> Search(string title, string preparedBy)
         {
-            var blogs = List();
-            if (title!=null && preparedBy != null)
-            {
-                return blogs.Where(blog => blog.BlogTitle.Contains(title) &&  
-                                    blog.BlogId == preparedBy.BlogId).ToList();
-            }
-            if (preparedBy == null && title != null)
-            {
-                return blogs.Where(blog => blog.BlogTitle.Contains(title)).ToList();
-            }
-            return preparedBy != null ? blogs.Where(blog => blog.BlogId== preparedBy.BlogId).ToList() : blogs;
+            var blogs = List().Where(blog => blog.BlogTitle.Contains(title) && 
+                                             blog.UserBlog.FirstOrDefault(ub=>ub.BlogOwner)!.
+                                                 User.FirstName.Contains(preparedBy)).ToList();
+            return blogs;
         }
     }
 }
