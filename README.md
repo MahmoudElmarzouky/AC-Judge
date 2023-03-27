@@ -10,6 +10,6 @@ Create and Run a Contest for each topic or for competition.
 
 This app support authorization and authentication using Identity Framework in # ASP.NET CORE
 
-## technologies used 
+## Technologies used 
 - [ASP.NET CORE](https://learn.microsoft.com/en-us/aspnet/core/?view=aspnetcore-6.0)
 
