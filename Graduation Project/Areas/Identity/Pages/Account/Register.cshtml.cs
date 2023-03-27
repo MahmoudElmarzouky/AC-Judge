@@ -27,7 +27,7 @@ namespace GraduationProject.Areas.Identity.Pages.Account
         private readonly UserManager<AuthUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly IUserRepository<User> _userrepository;
+        private readonly IUserRepository<User> _userRepository;
         public List<string> Countries { get; set; }
 
         public RegisterModel(
@@ -35,13 +35,13 @@ namespace GraduationProject.Areas.Identity.Pages.Account
             SignInManager<AuthUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            IUserRepository<User> userrepository)
+            IUserRepository<User> userRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-            _userrepository = userrepository;
+            _userRepository = userRepository;
             AddCountries();
         }
 
@@ -63,7 +63,8 @@ namespace GraduationProject.Areas.Identity.Pages.Account
             Countries.Sort();
         }
 
-        [BindProperty] public InputModel Input { get; set; }
+        [BindProperty] 
+        public InputModel Input { get; set; }
 
         public string ReturnUrl { get; set; }
 
@@ -156,14 +157,14 @@ namespace GraduationProject.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private void AddUserToEntity(string Id, InputModel Input)
+        private void AddUserToEntity(string id, InputModel inputModel)
         {
             var newUser = new User
             {
-                UserIdentityId = Id, UserName = Input.UserName, Country = Input.Country,
-                BirthDateYear = Input.BirthDate, FirstName = Input.UserName
+                UserIdentityId = id, UserName = inputModel.UserName, Country = inputModel.Country,
+                BirthDateYear = inputModel.BirthDate, FirstName = inputModel.UserName
             };
-            _userrepository.Add(newUser);
+            _userRepository.Add(newUser);
         }
     }
 }
