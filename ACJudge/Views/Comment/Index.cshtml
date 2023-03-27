@@ -1,0 +1,54 @@
+﻿@model IEnumerable<ACJudge.ViewModels.ViewCommentModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="container">
+	<table class="table">
+		<thead>
+			<tr>
+				<th>
+					@Html.DisplayNameFor(model => model.content)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.commentOwner)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.vote)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.creationTime)
+				</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.content)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.commentOwner)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.vote)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.creationTime)
+				</td>
+				<td>
+					@if (item.isOwner)
+					{
+						@Html.ActionLink("Edit", "Edit", new { id = item.commentId })
+						@Html.ActionLink("Delete", "Delete", new { id = item.commentId })
+
+					}
+				
+				</td>
+			</tr>
+			}
+		</tbody>
+	</table>
+</div>

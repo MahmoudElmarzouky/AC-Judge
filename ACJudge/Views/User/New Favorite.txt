@@ -1,0 +1,255 @@
+﻿@model ACJudge.ViewModels.User.FavoriteViewModel
+@{
+    ViewData["Title"] = "Favorite";
+}
+
+<section class="main-user-view">
+    <div class="container">
+        <div class="row">
+            <section class="col-md-3 user-info">
+                <div class="thumbnail">
+                    @if (ViewBag.USER.PhotoUrl != null)
+                    {
+                        <img class="img-responsive img-rounded" src="~/img/Profile/@ViewBag.USER.PhotoUrl" alt="@ViewBag.USER.UserName" />
+                    }
+                    else
+                    {
+                        <img class="img-responsive img-rounded" src="~/img/Profile/avatar-male.jpg" alt="@ViewBag.USER.UserName" />
+                    }
+                    <div class="caption text-center">
+                        <p>
+                            <h4 class="user-name">@ViewBag.USER.UserName</h4>
+                            <span class="text-muted">@ViewBag.USER.FirstName @ViewBag.USER.LastName</span>, <a href="#" data-toggle="tooltip" data-placement="top" title="Country">@ViewBag.USER.Country</a><!-- Ranking Page Search Country -->
+                        </p>
+                        <p>
+                            <span class="type">Birth Year:</span> <a href="#">@ViewBag.USER.BirthDate</a> <!-- Ranking Page Search Year -->
+                        </p>
+                        <p>
+                            <span class="type">Gender:</span> @ViewBag.USER.Gender
+                        </p>
+                        <p class="joined">
+                            <i class="far fa-clock"></i> <span>Joined @ViewBag.USER.DateOfJoin</span>
+                        </p>
+
+                    </div>
+                </div>
+            </section>
+            <section class="col-md-9">
+                <nav class="navbar navbar-default">
+                    <div class="container-fluid">
+
+                        <div class="navbar-header">
+                            <a class="navbar-brand" href="#">Profile</a>
+                        </div>
+
+                        <ul class="nav navbar-nav">
+                            <li><a asp-action="MySubmission" asp-route-id="@ViewBag.USER.UserId" class="active">Submission</a></li>
+                            <li><a asp-action="OpenContest" asp-route-id="@ViewBag.USER.UserId">Contest</a></li>
+                            <li><a asp-action="OpenBlog">Blog</a></li>
+                            <li><a asp-action="Favorite" asp-route-id="@ViewBag.USER.UserId">Favorite</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a asp-area="Identity" asp-page="/Account/Manage/Index">General Setting</a></li>
+                                    <li><a id="email" asp-area="Identity" asp-page="/Account/Manage/Email">Edit Email</a></li>
+                                    <li><a id="change-password" asp-area="Identity" asp-page="/Account/Manage/ChangePassword">Change Password</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    </div>
+                </nav>
+                <section class="user-favorit">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                          <h2 class="panel-title">Problem</h2>
+                          <i class="fas fa-plus" data-toggle="OpenClosePanel"></i>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center">
+                                <thead>
+                                    <tr class="table-active">
+                                        <td>Status</td>
+                                        <td>Online Judge</td>
+                                        <td>Problem</td>
+                                        <td>Title</td>
+                                        <td>Rating</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.pu.Count() == 0)
+                                    {
+                                        <tr>
+                                            <!-- if Not Result -->
+                                            <td colspan="5">No Favorit Item</td>
+                                        </tr>
+                                    }
+                                    @foreach (var item in Model.pu)
+                                    {
+                                        <tr>
+                                            <td class="text-@(item.Status == "Solved" ? "success" : "danger")">@item.Status</td>
+                                            <td>@item.OnlineJudge</td>
+                                            <td><a href="@item.UrlSource" target="_blank">@item.ProblemSourceId</a></td>
+                                            <td><a asp-controller="Problem" asp-action="Details" asp-route-id="@item.ProblemId">@item.Title</a></td>
+                                            <td>@(item.rating==null?"Null":item.rating)</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                          <h2 class="panel-title">Contest</h2>
+                          <i class="fas fa-plus" data-toggle="OpenClosePanel"></i>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center">
+                                <thead>
+                                    <tr class="active">
+                                        <td>Status</td>
+                                        <td>Title</td>
+                                        <td>Start Time</td>
+                                        <td>Length</td>
+                                        <td>Prepeard By</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.uc.Count() == 0)
+                                    {
+                                        <tr>
+                                            <!-- if Not Result -->
+                                            <td colspan="5">No Favorit Item</td>
+                                        </tr>
+                                    }
+                                    @foreach (var item in Model.uc)
+                                    {
+                                        <tr>
+                                            @{
+                                                var status = "";
+                                                if (item.Contest.contestStatus == 0)
+                                                    status = "Running";
+                                                else if (item.Contest.contestStatus == -1)
+                                                    status = "Upcoming";
+                                                else
+                                                    status = "Ended";
+                                                var GlobalTime = string.Format("https://www.timeanddate.com/worldclock/fixedtime.html?day={0}&month={1}&year={2}&hour={3}&min={4}&sec={5}&p1=166", item.Contest.contestStartTime.Day, item.Contest.contestStartTime.Month, item.Contest.contestStartTime.Year, item.Contest.contestStartTime.Hour, item.Contest.contestStartTime.Minute, item.Contest.contestStartTime.Second);
+                                            }
+                                            <td class="@status">@status</td>
+                                            <td><a asp-controller="Contest" asp-action="Details" asp-route-id="@item.Contest.contestId">@item.Contest.contestTitle</a></td>
+                                            <td class="starte-time">
+                                                <a href="@GlobalTime" target="_blank">
+                                                    <div>@item.Contest.contestStartTime.ToString("MM/dd/yyyy")</div>
+                                                    <div>@item.Contest.contestStartTime.ToString("HH:mm")</div>
+                                                </a>
+                                            </td>
+                                            @{
+                                                var hours = item.Contest.contestDuration / 60;
+                                                var minutes = item.Contest.contestDuration % 60;
+                                            }
+                                            <td> @hours.ToString("00"):@minutes.ToString("00") </td>
+                                            <td><a asp-controller="User" asp-action="Details" asp-route-id="@item.Contest.PreparedById">@item.Contest.PreparedBy</a></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                          <h2 class="panel-title">Group</h2>
+                          <i class="fas fa-plus" data-toggle="OpenClosePanel"></i>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center">
+                                <thead>
+                                    <tr class="active">
+                                        <td>Title</td>
+                                        <td>Create Time</td>
+                                        <td>Prepeard By</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.ug.Count() == 0)
+                                    {
+                                        <tr>
+                                            <!-- if Not Result -->
+                                            <td colspan="3">No Favorit Item</td>
+                                        </tr>
+                                    }
+                                    @foreach (var item in Model.ug)
+                                    {
+                                        <tr>
+                                            @{
+                                                var GlobalTime = string.Format("https://www.timeanddate.com/worldclock/fixedtime.html?day={0}&month={1}&year={2}&hour={3}&min={4}&sec={5}&p1=166", item.Group.creationTime.Day, item.Group.creationTime.Month, item.Group.creationTime.Year, item.Group.creationTime.Hour, item.Group.creationTime.Minute, item.Group.creationTime.Second);
+                                            }
+                                            <td><a asp-controller="Group" asp-action="Details" asp-route-id="@item.Group.GroupId">@item.Group.GroupTitle</a></td>
+                                            <td class="starte-time">
+                                                <a href="@GlobalTime" target="_blank">
+                                                    <div>@item.Group.creationTime.ToString("MM/dd/yyyy")</div>
+                                                    <div>@item.Group.creationTime.ToString("HH:mm")</div>
+                                                </a>
+                                            </td>
+                                            <td><a asp-controller="User" asp-action="Details" asp-route-id="@item.Group.PreparedById">@item.Group.PreparedBy</a></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                          <h2 class="panel-title">Blog</h2>
+                          <i class="fas fa-plus" data-toggle="OpenClosePanel"></i>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center">
+                                <thead>
+                                    <tr class="active">
+                                        <td>Title</td>
+                                        <td>Create Time</td>
+                                        <td>Vote</td>
+                                        <td>Prepeard By</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.ub.Count() == 0)
+                                    {
+                                        <tr>
+                                            <!-- if Not Result -->
+                                             <td colspan="4">No Favorit Item</td>
+                                        </tr>
+                                    }
+                                    @foreach (var item in Model.ub)
+                                    {
+
+                                        <tr>
+                                            @{
+                                                var GlobalTime = string.Format("https://www.timeanddate.com/worldclock/fixedtime.html?day={0}&month={1}&year={2}&hour={3}&min={4}&sec={5}&p1=166", item.blog.creationTime.Day, item.blog.creationTime.Month, item.blog.creationTime.Year, item.blog.creationTime.Hour, item.blog.creationTime.Minute, item.blog.creationTime.Second);
+                                            }
+                                            <td><a asp-controller="Blog" asp-action="Details" asp-route-id="@item.blog.blogId">@item.blog.blogtitle</a></td>
+                                            <td class="starte-time">
+                                                <a href="@GlobalTime" target="_blank">
+                                                    <div>@item.blog.creationTime.ToString("MM/dd/yyyy")</div>
+                                                    <div>@item.blog.creationTime.ToString("HH:mm")</div>
+                                                </a>
+                                            </td>
+                                            <td>@item.blog.blogvote</td>
+                                            <td><a href="">SuperMari000</a></td>
+                                        </tr>
+                                    }
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </section>
+        </div>
+    </div>
+</section>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

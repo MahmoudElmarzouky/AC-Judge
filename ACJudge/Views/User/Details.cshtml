@@ -1,0 +1,100 @@
+@model ACJudge.Data.Models.User
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<section class="main-user-view">
+    <div class="container">
+        <div class="row">
+            <section class="col-md-3 user-info">
+                <div class="thumbnail">
+                    @if (Model.PhotoUrl != null)
+                    {
+                        <img class="img-responsive img-rounded" src="~/img/Profile/@Model.PhotoUrl" alt="@Model.UserName" />
+                    }
+                    else
+                    {
+                        <img class="img-responsive img-rounded" src="~/img/Profile/avatar-male.jpg" alt="@Model.UserName" />
+                    }
+                    <div class="caption text-center">
+                        <p>
+                            <h4 class="user-name">@Model.UserName</h4>
+                            <span class="text-muted">@Model.FirstName @Model.LastName</span>, <a href="#" data-toggle="tooltip" data-placement="top" title="Country">@Model.Country</a><!-- Ranking Page Search Country -->
+                        </p>
+                        <p>
+                            <span class="type">Birth Year:</span> <a href="#">@Model.BirthDateYear</a> <!-- Ranking Page Search Year -->
+                        </p>
+                       
+                        @if (@Model.Gender == false)
+						{<p>
+                            <span class="type">Gender: </span>Male 
+                        </p>}
+						else { 
+					<p>
+						<span class="type">Gender: </span>Female
+					</p>
+                        }
+                        <p class="joined">
+                            <i class="far fa-clock"></i> <span>Joined @Model.DateOfJoin.ToString("MMMM yyyy")</span>
+                        </p>
+
+                    </div>
+                </div>
+            </section>
+            <section class="col-md-9">
+                <nav class="navbar navbar-default">
+                    <div class="container-fluid">
+
+                        @{
+                            string userIdentity = (string)TempData["userIdentity"];
+                            if (userIdentity == Model.UserIdentityId)
+                            {
+                                <div class="navbar-header">
+                                    <a class="navbar-brand" href="#">Profile</a>
+                                </div>
+                                <ul class="nav navbar-nav">
+                                    <li><a asp-action="MySubmission" asp-route-id="@Model.UserId">Submission</a></li>
+                                    <li><a asp-action="OpenContest" asp-route-id="@Model.UserId">Contest</a></li>
+                                    <li><a asp-action="OpenBlog">Blog</a></li>
+
+                                    <li><a asp-action="Favorite" asp-route-id="@Model.UserId">Favorite</a></li>
+
+                                </ul>
+
+                                <ul class="nav navbar-nav navbar-right">
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a asp-area="Identity" asp-page="/Account/Manage/Index">General Setting</a></li>
+                                            <li><a id="email" asp-area="Identity" asp-page="/Account/Manage/Email">Edit Email</a></li>
+                                            <li><a id="change-password" asp-area="Identity" asp-page="/Account/Manage/ChangePassword">Change Password</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            }
+                            else
+                            {
+                                <div class="navbar-header">
+                                    <a class="navbar-brand" href="#">@Model.UserName</a>
+                                </div>
+                            }
+
+                        }
+
+
+                    </div>
+                </nav>
+                <section class="user-statistics">
+                    <h1 class="text-center">user statistics</h1>
+                </section>
+            </section>
+        </div>
+
+    </div>
+</section>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
