@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using ACJudge.Data.Models;
 using ACJudge.Data.Repositories.Interfaces;
+using ACJudge.ExtensionMethods;
 using ACJudge.ViewModels;
 using ACJudge.ViewModels.GroupViewsModel;
 
@@ -40,7 +41,7 @@ namespace ACJudge.Controllers
         {
             try
             {
-                var list = _getPageItems(_getAllowedGroups(), pageNumber);
+                var list = _getAllowedGroups().Paginate(pageNumber, NumberOfItemsForPage);
                 return View("Index", list);
             }
             catch
@@ -53,7 +54,7 @@ namespace ACJudge.Controllers
         {
             try
             {
-                var list = _getPageItems(_getAllowedGroups(true), 1);
+                var list = _getAllowedGroups(true).Paginate(1, NumberOfItemsForPage);
                 return View("Index", list);
             }
             catch
@@ -369,8 +370,8 @@ namespace ACJudge.Controllers
                     list.Add(newItem);
                 }
 
-                list = _getPageItems(list, 1);
-                return View("Index", list);
+                var pageOne = list.Paginate(1, NumberOfItemsForPage);
+                return View("Index", pageOne);
             }
             catch
             {
@@ -438,24 +439,7 @@ namespace ACJudge.Controllers
             }
         }
 
-        private List<T> _getPageItems<T>(List<T> list, int pageNumber)
-        {
-            var totalPages = (list.Count + NumberOfItemsForPage - 1) / NumberOfItemsForPage;
-            if (pageNumber < 1 || pageNumber > totalPages) pageNumber = 1;
-            ViewBag.NumberOfPages = totalPages;
-            ViewBag.PageNumber = pageNumber;
-            var upperBound = pageNumber * NumberOfItemsForPage;
-            // if list contains more than the upper bound limit we remove items from the end 
-            if (list.Count > upperBound)
-                list.RemoveRange(upperBound, list.Count - upperBound);
-            // so here we fixed the end part of items If there is more than items 
-            // it must be in the beginning of the list 
-            if (list.Count > NumberOfItemsForPage)
-                list.RemoveRange(0, list.Count - NumberOfItemsForPage);
-            return list;
-        }
-
-        private List<ViewGroupModel> _getAllowedGroups(bool mine = false)
+        private IEnumerable<ViewGroupModel> _getAllowedGroups(bool mine = false)
         {
             var list = new List<ViewGroupModel>();
             var userId = _user.UserId;
@@ -464,7 +448,7 @@ namespace ACJudge.Controllers
             foreach (var item in groups)
             {
                 var rel = item.UserGroup.FirstOrDefault(u => u.UserId == userId);
-                if ((item.Visible == true) || (rel != null))
+                if (item.Visible || rel != null)
                 {
                     var newItem = _getViewModelFromGroup(item);
                     if (newItem != null)
