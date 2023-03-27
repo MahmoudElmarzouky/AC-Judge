@@ -1,0 +1,73 @@
+﻿
+@model ACJudge.ViewModels.CreateGroupModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="create-group-page">
+    <div class="container">
+        <h1 class="static-main-title">Create Group</h1>
+
+        <form class="form-horizontal" asp-action="Create" method="POST">
+            <div class="form-group row">
+                <label class="control-label col-md-2">Group Title</label>
+                <div class="col-md-9">
+                    <input type="text" asp-for="GroupTitle" class="form-control" placeholder="Group Title Show Pepole" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="control-label col-md-2">Password</label>
+                <div class="col-md-9">
+                    <input type="password" asp-for="Password" name="password" class="form-control" placeholder="Password To Member Join" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="control-label col-md-2">Description</label>
+                <div class="col-md-9">
+                    <textarea rows="5" asp-for ="GroupDescription" class="form-control" placeholder="Less Than 100 Characters" ></textarea>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="control-label col-md-2">Visibility</label>
+                <div class="radio-btn-change col-md-9">
+                    <div class="btn-group">
+                        <!--This radio not working yet-->
+                        
+                        <label class="btn btn-default active">
+                            
+                            <input asp-for="@Model.visable" type="radio" value="1"  checked />
+                            Public
+                        </label>
+                        <label class="btn btn-default">
+                            <input asp-for="@Model.visable" type="radio" value="0" />
+                            Private
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-offset-2 col-md-9">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> New Group</button>
+                </div>
+            </div>
+        </form>
+        <div id="user-error-msg" class="col-sm-4 col-md-offset-8 alert alert-danger fade in">
+            <span asp-validation-for="GroupTitle"></span>
+            <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        </div>
+        <div id="user-error-msg" class="col-sm-4 col-md-offset-8 alert alert-danger fade in">
+            <span asp-validation-for="Password"></span>
+            <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        </div>
+        <div id="user-error-msg" class="col-sm-4 col-md-offset-8 alert alert-danger fade in">
+            <span asp-validation-for="GroupDescription"></span>
+            <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

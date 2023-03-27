@@ -1,0 +1,157 @@
+﻿@model ACJudge.ViewModels.ProblemViewsModel.ViewProblemDetails
+
+@{
+    ViewData["Title"] = "Details";
+}
+<link href="~/css/CodeforcessStyleSheet.css" rel="stylesheet" />
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {inlineMath: [['$$$','$$$']], displayMath: [['$$$$$$','$$$$$$']]}
+    });
+
+</script>
+<script type="text/javascript" async
+        src="https://mathjax.codeforces.org/MathJax.js?config=TeX-AMS_HTML-full">
+</script>
+<!-- /MathJax -->
+<section class="show-problem-page">
+    <div class="container">
+        <ul class="nav nav-pills">
+            <li role="presentation"><a asp-action="Index">Problems</a></li>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <li role="presentation"><a href="" data-toggle="modal" data-target="#SubmitProblmeMain">Submit</a></li>
+                <li role="presentation"><a asp-action="FilterStatus" asp-route-ProblemName="@Model.problemsourceId" asp-route-ProblemSource="@Model.problemSource" asp-route-UserName="@ViewBag.User.UserName">My Submision</a></li>
+            }
+            <li role="presentation"><a asp-action="FilterStatus" asp-route-ProblemName="@Model.problemsourceId" asp-route-ProblemSource="@Model.problemSource">Status</a></li>
+            <li role="presentation"><a href="#">Custom Test</a></li>
+        </ul>
+        <div class="all-data-problem">
+            <div class="row">
+                <div class="col-md-3 problem-info">
+                    <section class="panel panel-info text-center">
+                        <div class="panel-heading">
+                            <a href="@Model.urlSource" target="_blank">
+                                @Model.problemSource - @Model.problemsourceId <!-- source - problemID -->
+                            </a>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <span>Time Limit:</span> <span data-refere="TimeLimit"></span>
+                            </li>
+                            <li class="list-group-item">
+                                <span>Memory Limit:</span> <span data-refere="MemoryLimit"></span>
+                            </li>
+                            <li class="list-group-item">
+                                <span>Input File:</span> <span data-refere="InputFile"></span>
+                            </li>
+                            <li class="list-group-item">
+                                <span>Output File:</span> <span data-refere="OutputFile"></span>
+                            </li>
+                            <li class="list-group-item" data-refere="Tags">
+                                <span>Tags:</span> @foreach (var item in Model.problemTag)
+                                {
+                                    @(item + " ")
+                                }
+                            </li>
+                            <li class="list-group-item" data-refere="Rate">
+                                <span>Rate:</span> @Model.Rating
+                            </li>
+                        </ul>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <div class="panel-footer">
+                                <a asp-action="FlipFavouriteDetails" asp-route-id="@Model.problemId"><i class="fas fa-heart @(Model.IsFavorite == true ? "active" : "")" data-favorite="IconFav"></i></a>
+                            </div>
+                        }
+                    </section>
+                    <section class="panel panel-info text-center statistics">
+                        <div class="panel-heading">
+                            Statistics
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <!-- Number of users Solved -->
+                                <i class="fas fa-users"></i>
+                                @Model.NumberAc
+                            </li>
+                            <li class="list-group-item">
+                                <!-- All Number of Submisin -->
+                                <i class="fas fa-paper-plane"></i>
+                                @Model.Numbersubmission
+                            </li>
+                        </ul>
+                    </section>
+                </div>
+                <div class="col-md-9">
+                    <div id="CodeforcesProblemContent">
+                        <div class="ttypography">
+                            @Html.Raw(HttpUtility.HtmlDecode(Model.Problemhtml))
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <!-- View Modal Submit-->
+            <section class="modal fade" id="SubmitProblmeMain" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <form class="modal-content" method="Post" asp-action="Submit">
+                        <div class="modal-header">
+                            <div class="model-header-flex">
+                                <h3 class="modal-title">
+                                    Submit Solution
+                                </h3>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="modal-body form-horizontal">
+                            <div class="form-group row">
+                                <label class="control-label col-sm-2">Problem</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static">
+                                        <!-- Problem Title -->
+                                        @Model.problemtitle
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-sm-2">Language</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" name="Language">
+                                        <option value="c++11">C++ 11</option>
+                                        <option value="c++17">C++ 17</option>
+                                        <option value="java">Java</option>
+                                        <option value="python">Python</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-sm-2">Solution</label>
+                                <div class="col-sm-10">
+                                    <textarea name="SubmitText" class="form-control" rows="15" placeholder="At Least 50 Characters"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input hidden name="ProblemId" value="@Model.problemId"/>
+                            <input hidden name="problemSourceId" value="@Model.problemsourceId"/>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-info">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        }
+    </div>
+</section>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

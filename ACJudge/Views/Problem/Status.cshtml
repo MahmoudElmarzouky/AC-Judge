@@ -1,0 +1,243 @@
+﻿@model IEnumerable<ACJudge.ViewModels.ProblemViewsModel.ViewStatusModel>
+@{
+    ViewData["Title"] = "Status";
+}
+
+    <section class="status-page">
+        <div class="container">
+            <div class="page-header">
+                <h2>Status <span class="text-muted">All Submissions</span></h2>
+                <a asp-action="Index" class="btn btn-info"><i class="far fa-lightbulb"></i> Problems</a>
+            </div>
+            <section class="status-table">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <i class="fas fa-filter"></i> Filter
+                        </div>
+                        <i class="fas fa-angle-down" data-toggle="OpenFilterPanel"></i>
+                    </div>
+                    <div class="panel-body">
+                        <form class="form-horizontal" asp-action="FilterStatus" method="POST">
+                            <div class="form-group row">
+                                <label class="control-label col-md-2">User Name</label>
+                                <div class="col-md-8">
+                                    <input type="text" name="UserName" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-md-2">Problem</label>
+                                <div class="col-md-8">
+                                    <input type="text" name="ProblemName" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-md-2">Online Judge</label>
+                                <div class="col-md-8">
+                                    <select class="form-control" name="ProblemSource">
+                                        <option value="All">All</option>
+                                        <option value="Codeforces">Codeforces</option>
+                                        <option value="Atcoder">Atcoder</option>
+                                        <option value="SPOJ">SPOJ</option>
+                                        <option value="UVA">UVA</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-md-2">Verdict</label>
+                                <div class="col-md-8">
+                                    <select class="form-control" name="ProblemResult">
+                                        <option value="All">All</option>
+                                        <option value="Accepted">Accepted</option>
+                                        <option value="Time limit exceeded">Time limit exceeded</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-md-2">Language</label>
+                                <div class="col-md-8">
+                                    <select class="form-control" name="ProblemLang">
+                                        <option value="All">All</option>
+                                        <option value="C++">C++</option>
+                                        <option value="Java">Java</option>
+                                        <option value="C#">C#</option>
+                                        <option value="Python">Python</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-offset-2 col-md-8">
+                                    <input type="reset" value="Reset" class="btn btn-secondary" />
+                                    <input type="submit" value="Search" class="btn btn-success" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th class="text-center">Run ID</th>
+                                    <th class="text-center">User Name</th>
+                                    <th class="text-center">Online Judge</th>
+                                    <th class="text-center">Problem</th>
+                                    <th class="text-center">Verdict</th>
+                                    <th class="text-center">Time</th>
+                                    <th class="text-center">Memory</th>
+                                    <th class="text-center">Language</th>
+                                    <th class="text-center">When</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.Count() == 0)
+                                {
+                                    <tr>
+                                        <td colspan="9">No Matching Records</td>
+                                    </tr>
+                                }
+
+                                @foreach (var item in Model)
+                                {
+
+                                <tr>
+                                    @if (item.Visiable == true)
+                                    {
+                                        <td><a href="" data-link="@Url.Action("GetTextSubmission")" data-user="@item.UserName" data-id="@item.RunID" data-toggle="modal" data-target="#ShowSubmisionStatusModal">@item.RunID</a></td>  
+                                    }
+                                    else
+                                    {
+                                        <td>@item.RunID</td>
+                                    }
+    
+                                    <td><a asp-controller="User" asp-action="Details" asp-route-id="@item.UserId">@item.UserName</a></td>
+                                    <td>@item.OnlineJudge</td>
+                                    <td><a href="#" data-toggle="tooltip" data-placement="top" title="@item.Title">@item.ProblemSourcesId</a></td>
+                                    <td class="text-@(@item.Verdict=="Accepted"?"success":"danger")">@item.Verdict</td>
+                                    <td>@item.TimeConsumed ms</td>
+                                    <td>@item.MemoryConsumed KB</td>
+                                    <td>@item.Language</td>
+                                    <td>
+                                        <div>@item.SubmitTime.ToShortDateString()</div>
+                                        <div>@item.SubmitTime.ToShortTimeString()</div>
+                                    </td>
+                                </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div aria-label="Page navigation" class="text-center">
+                    <ul class="pagination pagination-lg">
+                        @{
+                            if (ViewBag.Pagenum > 1)
+                            {
+
+                                @if (ViewBag.function == "FilterStatus")
+                                {
+                                    <li>
+                                        <a asp-action="FilterStatus" asp-route-page="@(ViewBag.Pagenum-1)" asp-route-UserName="@ViewBag.username" asp-route-ProblemName="@ViewBag.problemName" asp-route-ProblemSource="@ViewBag.problemSource" asp-route-ProblemResult="@ViewBag.problemResult" asp-route-ProblemLang="@ViewBag.problemLang" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <a asp-action="Status" asp-route-page="@(ViewBag.Pagenum-1)" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                }
+
+                            }
+                            for (int i = 1; i <= ViewBag.TotalPageProblem; i++)
+                            {
+                                if (ViewBag.function == "FilterStatus")
+                                {
+                                    <li class="@(ViewBag.Pagenum==i?"active":"")"><a asp-action="FilterStatus" asp-route-page="@i" asp-route-UserName="@ViewBag.username" asp-route-ProblemName="@ViewBag.problemName" asp-route-ProblemSource="@ViewBag.problemSource" asp-route-ProblemResult="@ViewBag.problemResult" asp-route-ProblemLang="@ViewBag.problemLang">@i</a></li>
+                                }
+                                else
+                                {
+                                    <li class="@(ViewBag.Pagenum==i?"active":"")"><a asp-action="Status" asp-route-page="@i">@i</a></li>
+                                }
+
+                            }
+                            if (ViewBag.Pagenum < ViewBag.TotalPageProblem)
+                            {
+
+                                @if (ViewBag.function == "FilterStatus")
+                                {
+                                    <li>
+                                        <a asp-action="FilterStatus" asp-route-page="@(ViewBag.Pagenum+1)" asp-route-page="@(ViewBag.Pagenum-1)" asp-route-UserName="@ViewBag.username" asp-route-ProblemName="@ViewBag.problemName" asp-route-ProblemSource="@ViewBag.problemSource" asp-route-ProblemResult="@ViewBag.problemResult" asp-route-ProblemLang="@ViewBag.problemLang" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <a asp-action="Status" asp-route-page="@(ViewBag.Pagenum+1)" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                }
+
+                            }
+
+                        }
+                    </ul>
+                </div>
+            </section>
+            <!-- View Page Modal -->
+            <section class="modal fade submision-modal" id="ShowSubmisionStatusModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="model-header-flex">
+                                <h4 class="modal-title">
+                                    Solution By <span>SuperMari000</span>
+                                </h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered text-center">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th class="text-center">Problem</th>
+                                            <th class="text-center">Verdict</th>
+                                            <th class="text-center">Time</th>
+                                            <th class="text-center">Memory</th>
+                                            <th class="text-center">Language</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td class=""></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="submision">
+                                <button class="btn btn-secondary">Copy</button>
+                                <pre class="prettyprint"></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </section>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,18 @@
+﻿@model ACJudge.Data.Models.Problem 
+<tr>
+    <td>
+        @Model.ProblemSource
+    </td>
+    <td>
+        @Model.ProblemSourceId
+    </td>
+    <td>
+        @Model.ProblemTitle
+    </td>
+    <td>
+       @Model.Rating
+    </td>
+    <td>
+        <a asp-controller="Problem" asp-action="Details" asp-route-id="@Model.ProblemId">Details</a> |
+    </td>
+</tr>
