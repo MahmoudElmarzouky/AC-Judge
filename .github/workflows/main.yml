@@ -1,9 +1,6 @@
 name: Publish 🚀
 
-on:
-  workflow_dispatch:
-  push:
-  fork:
+on: [push, fork]
 
 jobs:
   publish:
