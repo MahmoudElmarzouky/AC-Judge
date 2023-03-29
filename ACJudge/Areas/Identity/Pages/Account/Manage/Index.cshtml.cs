@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 using ACJudge.Areas.Identity.Data;
 using ACJudge.Data.Models;
 using ACJudge.Data.Repositories.Interfaces;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace ACJudge.Areas.Identity.Pages.Account.Manage
 {
