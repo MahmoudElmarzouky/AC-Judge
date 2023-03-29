@@ -1,11 +1,6 @@
 name: Publish 🚀
 
-on:
-  workflow_dispatch:
-  push:
-    branches: [ "master" ]
-    pull_request:
-      branches: [ "master" ]
+on: [push, fork, pull_request]
 
 jobs:
   publish:
