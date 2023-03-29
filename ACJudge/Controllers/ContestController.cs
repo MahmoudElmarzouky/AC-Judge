@@ -39,6 +39,8 @@ namespace ACJudge.Controllers
         {
             try
             {
+                ViewBag.NumberOfPages = _getAllContests().Count;
+                ViewBag.PageNumber = 1;
                 return View(_getPageItems(_getAllContests(), 1));
             }
             catch
@@ -265,6 +267,8 @@ namespace ACJudge.Controllers
                 model.UserId = _user.UserId;
                 foreach (var c in _contests.Filter(model))
                     list.Add(_getContestViewModelFromContest(c));
+                ViewBag.NumberOfPages = list.Count;
+                ViewBag.PageNumber = 1;
                 return View("Index", _getPageItems(list, 1));
             }
             catch
@@ -284,6 +288,8 @@ namespace ACJudge.Controllers
                 var model = _getContestViewModelFromContest(contest);
                 model.Submissions = _getPageItems(model.Submissions.OrderByDescending(u => u.CreationTime).ToList(),
                     pageNumber);
+                ViewBag.NumberOfPages = model.Submissions.OrderByDescending(u => u.CreationTime).Count();
+                ViewBag.PageNumber = pageNumber;
                 return View("Details", model);
             }
             catch
@@ -446,7 +452,8 @@ namespace ACJudge.Controllers
 
             var users = _buildStandingSubmissions(contest);
             users = _getPageItems(users, pageNumber);
-
+            ViewBag.NumberOfPages = users.Count;
+            ViewBag.PageNumber = pageNumber;
             var navInfo = new NavInfo
             {
                 contestDuration = contest.ContestDuration,
@@ -662,6 +669,8 @@ namespace ACJudge.Controllers
             try
             {
                 var list = _getPageItems(_getAllContests(), pageNumber);
+                ViewBag.NumberOfPages = list.Count();
+                ViewBag.PageNumber = pageNumber;
                 return View("Index", list);
             }
             catch
@@ -692,9 +701,9 @@ namespace ACJudge.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetTextSubmission(int submisionId)
+        public ActionResult GetTextSubmission(int submissionId)
         {
-            var result = _submissions.Find(submisionId).SubmissionText;
+            var result = _submissions.Find(submissionId).SubmissionText;
             return Content(result, "text/plain");
         }
     }
