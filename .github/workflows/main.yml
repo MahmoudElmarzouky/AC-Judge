@@ -1,6 +1,7 @@
 name: Publish 🚀
 
-on: [push, fork]
+on:
+  push
 
 jobs:
   publish:
