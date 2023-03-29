@@ -9,7 +9,6 @@ using ACJudge.Data.Models;
 using ACJudge.Data.Repositories.Interfaces;
 using ACJudge.ExtensionMethods;
 using ACJudge.ViewModels;
-using X.PagedList;
 
 namespace ACJudge.Controllers
 {
@@ -17,7 +16,6 @@ namespace ACJudge.Controllers
     public class BlogController : Controller
     {
         private readonly IBlogRepository<Blog> _blogs;
-        private readonly IUserRepository<User> _userRepository;
         private readonly IRepository<Comment> _comments;
         private readonly User _user;
         private const int BlogsPerPage = 10;
@@ -29,35 +27,40 @@ namespace ACJudge.Controllers
             )
         {
             _blogs = blogs;
-            _userRepository = userRepository;
             _comments = comments;
-            var userId = httpContextAccessor.HttpContext.User.
-                FindFirst(ClaimTypes.NameIdentifier).Value;
-            _user = _userRepository.Find(userId);
+            var userId = httpContextAccessor.HttpContext?.User.
+                FindFirst(ClaimTypes.NameIdentifier)
+                ?.Value;
+            _user = userRepository.Find(userId);
         }
         // GET: HomeController
         public ActionResult Index(int? page)
         {
-            try 
-            { 
+            try
+            {
+                var userBlogs = false;
                 if (TempData["BlogsByUser"]!=null && TempData["BlogsByUser"].ToString()=="UserBlogs") {
                     TempData["BlogsUser"] = "blogUser";
-                    return View(GetBlogsByUser());
+                    userBlogs = true;
                 }
-
-                var list = _blogs.List().Select(GetViewModelFromBlog).ToList();
-                
                 var pageNumber = page ?? 1;
-                ViewBag.TotalPageProblem = Math.Ceiling((decimal)list.Count / BlogsPerPage);
+                var blogs = userBlogs? GetBlogsByUser(): GetAllBlogs();
+                ViewBag.TotalPageProblem = Math.Ceiling((decimal)blogs.Count / BlogsPerPage);
                 ViewBag.Pagenum = pageNumber;
-                var currentPage = list.Paginate(pageNumber, BlogsPerPage);
+                var currentPage = blogs.Paginate(pageNumber, BlogsPerPage);
                 return View(currentPage);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return RedirectToAction(nameof(Index));
             }
         }
+
+        public List<ViewBlogModel> GetAllBlogs()
+        {
+            return _blogs.List().Select(GetViewModelFromBlog).ToList();
+        }
+
         public IList<ViewBlogModel> GetBlogsByUser()
         {
             var userBlogs = _blogs.List().
@@ -101,7 +104,7 @@ namespace ACJudge.Controllers
                 if (blog != null)
                     return View(GetViewModelFromBlog(blog));
                 return RedirectToAction(nameof(Index));
-            }catch(Exception e){
+            }catch(Exception){
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -124,7 +127,7 @@ namespace ACJudge.Controllers
                 _comments.Update(newComment);
                 return RedirectToAction("Details",new { id = blogId});
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return RedirectToAction(nameof(Index));
             }
@@ -148,7 +151,7 @@ namespace ACJudge.Controllers
                 TempData["GroupID"] = groupId;
                 return View();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return RedirectToAction(nameof(Index));
             }
@@ -207,7 +210,7 @@ namespace ACJudge.Controllers
                 var blog = _blogs.Find(id);
                 return View(blog);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return RedirectToAction(nameof(Index));
             }
@@ -255,7 +258,7 @@ namespace ACJudge.Controllers
                 var blog = _blogs.Find(id);
                 return View(blog);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return RedirectToAction(nameof(Index));
             }
@@ -293,7 +296,7 @@ namespace ACJudge.Controllers
                 var list = _blogs.Search(title, preparedBy).Select(GetViewModelFromBlog);
                 return View("Index", list);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return RedirectToAction(nameof(Index));
             }
@@ -305,7 +308,7 @@ namespace ACJudge.Controllers
                 var blog = _blogs.Find(id);
                 return UpVote(blog);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return RedirectToAction(nameof(Index));
             }
@@ -330,7 +333,7 @@ namespace ACJudge.Controllers
                 var blog = _blogs.Find(id);
                 return DownVote(blog);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return RedirectToAction(nameof(Index));
             }
@@ -355,7 +358,7 @@ namespace ACJudge.Controllers
                 var blog = _blogs.Find(id);
                 return Favourite(blog);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return RedirectToAction(nameof(Index));
             }

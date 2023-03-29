@@ -41,6 +41,8 @@ namespace ACJudge.Controllers
         {
             try
             {
+                ViewBag.NumberOfPages = _getAllowedGroups().Count();
+                ViewBag.PageNumber = 1;
                 var list = _getAllowedGroups().Paginate(pageNumber, NumberOfItemsForPage);
                 return View("Index", list);
             }
@@ -55,6 +57,8 @@ namespace ACJudge.Controllers
             try
             {
                 var list = _getAllowedGroups(true).Paginate(1, NumberOfItemsForPage);
+                ViewBag.NumberOfPages = _getAllowedGroups(true).Count();
+                ViewBag.PageNumber = 1;
                 return View("Index", list);
             }
             catch
@@ -369,7 +373,8 @@ namespace ACJudge.Controllers
                     var newItem = _getViewModelFromGroup(item);
                     list.Add(newItem);
                 }
-
+                ViewBag.NumberOfPages = list.Count;
+                ViewBag.PageNumber = 1;
                 var pageOne = list.Paginate(1, NumberOfItemsForPage);
                 return View("Index", pageOne);
             }
