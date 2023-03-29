@@ -1,0 +1,28 @@
+name: Publish 🚀
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - master
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+  
+    steps:
+        - uses: actions/checkout@v3
+
+        - name: Setup .NET
+          uses: actions/setup-dotnet@v3
+          with:
+            dotnet-version: '6.0.x'
+
+        - name: Restore
+          run: dotnet restore ./ACJudge.sln
+
+        - name: Build
+          run: dotnet build ./ACJudge.sln --configuration Release --no-restore
+
+        - name: Publish
+          run: dotnet publish ./ACJudge.sln --configuration Release --no-build
