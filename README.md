@@ -1,15 +1,15 @@
 # AC-Judge
-This is a web application like Vjudge which is a virtual judge for practicing in problem solving, you can add problems from sites like [codeforces, atCoder]
-and solve the problem via this app and see the result, 
 
-you can Also,
+• AC Judge is an online platform that accurately simulates a real judge like [[codeforce](https://codeforces.com/), [atcoder](https://atcoder.jp/home), [leetcode](https://leetcode.com/)]
 
-Create a Group for each community. 
+• By accessing problems from various online judges, AC Judge mimics the submission process of a typical online judge.
 
-Create and Run a Contest for each topic or for competition.
-
-This app support authorization and authentication using Identity Framework in # ASP.NET CORE
+• AC Judge monitors your problem-solving performance and provides comprehensive statistics across all other online judges you have used.
 
 ## Technologies used 
 - [ASP.NET CORE](https://learn.microsoft.com/en-us/aspnet/core/?view=aspnetcore-6.0)
+
+- [Entity FrameWork Core](https://learn.microsoft.com/en-us/ef/)
+
+
 
