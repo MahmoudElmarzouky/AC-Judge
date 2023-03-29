@@ -68,19 +68,6 @@ namespace ACJudge.Data.Repositories.DataBaseRepositories
         {
             return _dbContext.Contests.ToList();
         }
-        public IList<Contest> PublicContests()
-        {
-            var allPublicContests = _dbContext.Contests.Where(u => u.ContestVisibility == "Public").ToList();
-            var notInGroupContests = new List<Contest>();
-            foreach (var contest in allPublicContests)
-            {
-                if (contest.InGroup == false)
-                    notInGroupContests.Add(contest);
-            }
-
-            return notInGroupContests;
-        }
-
         public void Remove(int id)
         {
             var contest = Find(id);

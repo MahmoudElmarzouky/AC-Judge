@@ -6,7 +6,6 @@ namespace ACJudge.Data.Repositories.Interfaces
     public interface IContestRepository<T>
     {
         IList<T> List();
-        IList<T> PublicContests(); 
         T Add(T entity);
         void Update(T entity);
         void Remove(int id);

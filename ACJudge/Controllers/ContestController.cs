@@ -4,6 +4,7 @@ using System.Security.Claims;
 using ACJudge.Data.API;
 using ACJudge.Data.Models;
 using ACJudge.Data.Repositories.Interfaces;
+using ACJudge.ExtensionMethods;
 using ACJudge.ViewModels.ContestViewsModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -26,7 +27,7 @@ namespace ACJudge.Controllers
             IProblemRepository<Problem> problems,
             IGroupRepository<Group> groups, ISubmissionRepository<Submission> submissions)
         {
-            var userId = httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userId = httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             _user = userRepository.Find(userId);
             _contests = contests;
             _problems = problems;
@@ -41,7 +42,8 @@ namespace ACJudge.Controllers
             {
                 ViewBag.NumberOfPages = _getAllContests().Count;
                 ViewBag.PageNumber = 1;
-                return View(_getPageItems(_getAllContests(), 1));
+                var list = _getAllContests().Paginate(1, NumberOfItemsForPage);
+                return View(list);
             }
             catch
             {
@@ -51,12 +53,10 @@ namespace ACJudge.Controllers
 
         private List<ViewContestModel> _getAllContests()
         {
-            var list = new List<ViewContestModel>();
-            foreach (var c in _contests.PublicContests())
-            {
-                if (CanAccessTheContest(c.ContestId, _user.UserId))
-                    list.Add(_getContestViewModelFromContest(c));
-            }
+            var list = _contests.List().Where(contest => contest.ContestVisibility == "Public"
+                                                             && !contest.InGroup
+                                                             && CanAccessTheContest(contest.ContestId, _user.UserId))
+                                                                    .Select(_getContestViewModelFromContest).ToList();
 
             return list;
         }
@@ -263,13 +263,15 @@ namespace ACJudge.Controllers
             {
                 if (model.Reset == "Reset")
                     return RedirectToAction("Index");
-                var list = new List<ViewContestModel>();
+
+
                 model.UserId = _user.UserId;
-                foreach (var c in _contests.Filter(model))
-                    list.Add(_getContestViewModelFromContest(c));
+
+                var list = _contests.Filter(model).Select(_getContestViewModelFromContest).ToList();
                 ViewBag.NumberOfPages = list.Count;
                 ViewBag.PageNumber = 1;
-                return View("Index", _getPageItems(list, 1));
+                var currentPage = list.Paginate(1, NumberOfItemsForPage);
+                return View("Index", currentPage);
             }
             catch
             {
@@ -286,8 +288,9 @@ namespace ACJudge.Controllers
                     return RedirectToAction("Index");
                 var contest = _contests.Find(id);
                 var model = _getContestViewModelFromContest(contest);
-                model.Submissions = _getPageItems(model.Submissions.OrderByDescending(u => u.CreationTime).ToList(),
-                    pageNumber);
+
+                model.Submissions = model.Submissions.OrderByDescending(u => u.CreationTime).ToList()
+                    .Paginate(pageNumber, NumberOfItemsForPage).ToList();
                 ViewBag.NumberOfPages = model.Submissions.OrderByDescending(u => u.CreationTime).Count();
                 ViewBag.PageNumber = pageNumber;
                 return View("Details", model);
@@ -306,10 +309,9 @@ namespace ACJudge.Controllers
                     return RedirectToAction("Index");
                 var contest = _contests.Find(id);
                 var model = _getContestViewModelFromContest(contest);
-                model.Submissions =
-                    _getPageItems(
-                        model.Submissions.Where(u => u.UserId == _user.UserId).OrderByDescending(u => u.CreationTime)
-                            .ToList(), pageNumber);
+                model.Submissions = model.Submissions.Where(u => u.UserId == _user.UserId)
+                    .OrderByDescending(u => u.CreationTime).Paginate(pageNumber, NumberOfItemsForPage).
+                    ToList();
                 return View("Details", model);
             }
             catch
@@ -451,9 +453,10 @@ namespace ACJudge.Controllers
             var numberOfProblems = contest.ContestProblems.Count;
 
             var users = _buildStandingSubmissions(contest);
-            users = _getPageItems(users, pageNumber);
             ViewBag.NumberOfPages = users.Count;
             ViewBag.PageNumber = pageNumber;
+            users = users.Paginate(pageNumber, NumberOfItemsForPage).ToList();
+            
             var navInfo = new NavInfo
             {
                 contestDuration = contest.ContestDuration,
@@ -599,41 +602,34 @@ namespace ACJudge.Controllers
             };
         }
 
-        private List<ContestProblem> _getContestProblems(IList<ProblemData> modelproblems)
+        private List<ContestProblem> _getContestProblems(IList<ProblemData> modelProblems)
         {
-            var list = new List<ContestProblem>();
             var order = 0;
-            foreach (var p in modelproblems)
-            {
-                var current = _problems.FindByName(p.PlatForm, p.problemId);
-
-                if (current == null) continue;
-                list.Add(
+            var foundProblems = modelProblems.Where(problem =>
+                    _problems.FindByName(problem.PlatForm, problem.problemId) != null)
+                .Select(problem => (problem, _problems.FindByName(problem.PlatForm, problem.problemId)));
+            var contestProblems = foundProblems.Select(pair =>
                     new ContestProblem
                     {
-                        ProblemId = current.ProblemId,
+                        ProblemId = pair.Item2.ProblemId,
+                        // ReSharper disable once AccessToModifiedClosure
                         Order = order++,
-                        Alias = p.Alias,
-                        PlatForm = p.PlatForm,
-                        ProblemSourceId = p.problemId
-                    });
-            }
-
-            return list;
+                        Alias = pair.problem.Alias,
+                        PlatForm = pair.problem.PlatForm,
+                        ProblemSourceId = pair.problem.problemId
+                    }).ToList();
+            return contestProblems;
         }
 
         private static CreateContestModel _getCreateContestModel(Contest contest)
         {
-            var problems = new List<ProblemData>();
-            foreach (var cp in contest.ContestProblems)
+            var problems = contest.ContestProblems.Select(contestProblem => new ProblemData
             {
-                problems.Add(new ProblemData
-                {
-                    PlatForm = cp.PlatForm,
-                    Alias = cp.Alias,
-                    problemId = cp.ProblemSourceId
-                });
-            }
+                PlatForm = contestProblem.PlatForm,
+                Alias = contestProblem.Alias,
+                problemId = contestProblem.ProblemSourceId
+            }).ToList();
+            
 
             return new CreateContestModel
             {
@@ -646,31 +642,13 @@ namespace ACJudge.Controllers
                 contestId = contest.ContestId
             };
         }
-
-        private List<T> _getPageItems<T>(List<T> list, int pageNumber)
-        {
-            var totalPages = (list.Count + NumberOfItemsForPage - 1) / NumberOfItemsForPage;
-            if (pageNumber < 1 || pageNumber > totalPages) pageNumber = 1;
-            ViewBag.NumberOfPages = totalPages;
-            ViewBag.PageNumber = pageNumber;
-            var upperBound = pageNumber * NumberOfItemsForPage;
-            // if list contains more than the upper bound limit we remove items from the end 
-            if (list.Count > upperBound)
-                list.RemoveRange(upperBound, list.Count - upperBound);
-            // so here we fixed the end part of items If there is more than items 
-            // it must be in the beginning of the list 
-            if (list.Count > NumberOfItemsForPage)
-                list.RemoveRange(0, list.Count - NumberOfItemsForPage);
-            return list;
-        }
-
         public ActionResult ContestPage(int pageNumber)
         {
             try
             {
-                var list = _getPageItems(_getAllContests(), pageNumber);
-                ViewBag.NumberOfPages = list.Count();
+                ViewBag.NumberOfPages = _getAllContests().Count;
                 ViewBag.PageNumber = pageNumber;
+                var list = _getAllContests().Paginate(pageNumber, NumberOfItemsForPage);
                 return View("Index", list);
             }
             catch
