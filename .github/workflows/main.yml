@@ -1,9 +1,9 @@
-name: Publish 🚀
+name: Build 💡
 
 on: [push, fork, pull_request]
 
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
   
     steps:
@@ -19,6 +19,3 @@ jobs:
 
         - name: Build
           run: dotnet build ./ACJudge.sln --configuration Release --no-restore
-
-        - name: Publish
-          run: dotnet publish ./ACJudge.sln --configuration Release --no-build
