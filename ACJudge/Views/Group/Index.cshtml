@@ -65,7 +65,6 @@
                 @{
                     Boolean IsFirstPage = ViewBag.PageNumber == 1;
                     Boolean IsLastPage = ViewBag.PageNumber == ViewBag.NumberOfPages;
-
                 }
                 @if (!IsFirstPage)
                 {
@@ -96,7 +95,6 @@
                             <li><a asp-action="Page" asp-route-PageNumber="@list[i]">@list[i]</a></li>
                         }
                     }
-
                 }
 
 

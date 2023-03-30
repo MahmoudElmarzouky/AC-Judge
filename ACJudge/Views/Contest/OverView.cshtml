@@ -7,7 +7,6 @@
     Boolean ContestEnded = Model.contestStatus == "Ended";
     Boolean ShowOrigin = Model.IsCurrentUserOwner || ContestEnded;
     Boolean ShowProblems = Model.IsCurrentUserOwner || ContestEnded || (Model.contestStartTime <= DateTime.Now);
-    
 }
 <section class="table-problem">
     <div class="table-responsive">

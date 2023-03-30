@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using ACJudge.Data.API;
@@ -40,10 +41,11 @@ namespace ACJudge.Controllers
         {
             try
             {
-                ViewBag.NumberOfPages = _getAllContests().Count;
-                ViewBag.PageNumber = 1;
-                var list = _getAllContests().Paginate(1, NumberOfItemsForPage);
-                return View(list);
+                var allContests = _getAllContests();
+                ViewBag.NumberOfPages = (int)Math.Ceiling((decimal)allContests.Count / NumberOfItemsForPage);
+                ViewBag.pageNumber = 1;
+                var firstPage = allContests.Paginate(1, NumberOfItemsForPage);
+                return View(firstPage);
             }
             catch
             {
@@ -53,10 +55,10 @@ namespace ACJudge.Controllers
 
         private List<ViewContestModel> _getAllContests()
         {
-            var list = _contests.List().Where(contest => contest.ContestVisibility == "Public"
-                                                             && !contest.InGroup
-                                                             && CanAccessTheContest(contest.ContestId, _user.UserId))
-                                                                    .Select(_getContestViewModelFromContest).ToList();
+            var list = _contests.List().Where(contest => contest.ContestVisibility == "Public" 
+                                        && !contest.InGroup
+                                        && CanAccessTheContest(contest.ContestId, _user.UserId))
+                                        .Select(_getContestViewModelFromContest).ToList();
 
             return list;
         }
@@ -84,11 +86,9 @@ namespace ACJudge.Controllers
             try
             {
                 var createContestView = CreateContestView();
-                if (_groups.Find(id) != null)
-                {
-                    createContestView.CreateFromGroup = "1";
-                    createContestView.groupId = id;
-                }
+                if (_groups.Find(id) == null) return View(createContestView);
+                createContestView.CreateFromGroup = "1";
+                createContestView.groupId = id;
 
                 return View(createContestView);
             }
@@ -266,11 +266,11 @@ namespace ACJudge.Controllers
 
 
                 model.UserId = _user.UserId;
-
                 var list = _contests.Filter(model).Select(_getContestViewModelFromContest).ToList();
-                ViewBag.NumberOfPages = list.Count;
+                ViewBag.NumberOfPages = (int)Math.Ceiling((decimal)list.Count / NumberOfItemsForPage);
                 ViewBag.PageNumber = 1;
                 var currentPage = list.Paginate(1, NumberOfItemsForPage);
+                
                 return View("Index", currentPage);
             }
             catch
@@ -288,10 +288,9 @@ namespace ACJudge.Controllers
                     return RedirectToAction("Index");
                 var contest = _contests.Find(id);
                 var model = _getContestViewModelFromContest(contest);
-
-                model.Submissions = model.Submissions.OrderByDescending(u => u.CreationTime).ToList()
-                    .Paginate(pageNumber, NumberOfItemsForPage).ToList();
-                ViewBag.NumberOfPages = model.Submissions.OrderByDescending(u => u.CreationTime).Count();
+                var submissions = model.Submissions.OrderByDescending(u => u.CreationTime).ToList();
+                model.Submissions = submissions.Paginate(pageNumber, NumberOfItemsForPage).ToList();
+                ViewBag.NumberOfPages = (int)Math.Ceiling((decimal)submissions.Count / NumberOfItemsForPage);
                 ViewBag.PageNumber = pageNumber;
                 return View("Details", model);
             }
@@ -453,7 +452,7 @@ namespace ACJudge.Controllers
             var numberOfProblems = contest.ContestProblems.Count;
 
             var users = _buildStandingSubmissions(contest);
-            ViewBag.NumberOfPages = users.Count;
+            ViewBag.NumberOfPages = (int)Math.Ceiling((decimal)users.Count / NumberOfItemsForPage);
             ViewBag.PageNumber = pageNumber;
             users = users.Paginate(pageNumber, NumberOfItemsForPage).ToList();
             
@@ -645,11 +644,12 @@ namespace ACJudge.Controllers
         public ActionResult ContestPage(int pageNumber)
         {
             try
-            {
-                ViewBag.NumberOfPages = _getAllContests().Count;
+            { 
+                var allContests = _getAllContests();
+                ViewBag.NumberOfPages = (int)Math.Ceiling((decimal)allContests.Count / NumberOfItemsForPage);
                 ViewBag.PageNumber = pageNumber;
-                var list = _getAllContests().Paginate(pageNumber, NumberOfItemsForPage);
-                return View("Index", list);
+                var currentPage = allContests.Paginate(pageNumber, NumberOfItemsForPage);
+                return View("Index", currentPage);
             }
             catch
             {

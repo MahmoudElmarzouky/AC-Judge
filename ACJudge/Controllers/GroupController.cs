@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -41,8 +42,8 @@ namespace ACJudge.Controllers
         {
             try
             {
-                ViewBag.NumberOfPages = _getAllowedGroups().Count();
-                ViewBag.PageNumber = 1;
+                ViewBag.NumberOfPages = (int)Math.Ceiling((decimal)_getAllowedGroups().Count() / NumberOfItemsForPage);
+                ViewBag.PageNumber = pageNumber;
                 var list = _getAllowedGroups().Paginate(pageNumber, NumberOfItemsForPage);
                 return View("Index", list);
             }
@@ -57,7 +58,7 @@ namespace ACJudge.Controllers
             try
             {
                 var list = _getAllowedGroups(true).Paginate(1, NumberOfItemsForPage);
-                ViewBag.NumberOfPages = _getAllowedGroups(true).Count();
+                ViewBag.NumberOfPages = (int)Math.Ceiling((decimal)_getAllowedGroups(true).Count() / NumberOfItemsForPage);
                 ViewBag.PageNumber = 1;
                 return View("Index", list);
             }
@@ -373,7 +374,7 @@ namespace ACJudge.Controllers
                     var newItem = _getViewModelFromGroup(item);
                     list.Add(newItem);
                 }
-                ViewBag.NumberOfPages = list.Count;
+                ViewBag.NumberOfPages = (int)Math.Ceiling((decimal)list.Count / NumberOfItemsForPage);;
                 ViewBag.PageNumber = 1;
                 var pageOne = list.Paginate(1, NumberOfItemsForPage);
                 return View("Index", pageOne);
@@ -449,6 +450,7 @@ namespace ACJudge.Controllers
             var list = new List<ViewGroupModel>();
             var userId = _user.UserId;
             var numberOfGroupInvitations = 0;
+            // [TODO] fix links when select my groups [1, 2 3, . . . ] should take him to myGroup next
             var groups = mine ? _groups.MyGroups(userId) : _groups.List();
             foreach (var item in groups)
             {

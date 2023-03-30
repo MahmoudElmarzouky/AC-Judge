@@ -45,7 +45,7 @@ namespace ACJudge.Controllers
                 }
                 var pageNumber = page ?? 1;
                 var blogs = userBlogs? GetBlogsByUser(): GetAllBlogs();
-                ViewBag.TotalPageProblem = Math.Ceiling((decimal)blogs.Count / BlogsPerPage);
+                ViewBag.TotalPageProblem = (int)Math.Ceiling((decimal)blogs.Count / BlogsPerPage);
                 ViewBag.Pagenum = pageNumber;
                 var currentPage = blogs.Paginate(pageNumber, BlogsPerPage);
                 return View(currentPage);
