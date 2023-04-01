@@ -148,15 +148,24 @@ namespace ACJudge.Controllers
             return commentVotes;
         }
         // GET: HomeController/Create
-        public ActionResult Create(int? groupId)
+        public ActionResult Create()
         {
+            
             try { 
-                TempData["GroupID"] = groupId;
-                return View();
+                // create a blog from a group ,, trying to read the group Id
+                var groupId = int.Parse((string)RouteData.Values["id"] ?? string.Empty);
+                return View(new Blog
+                {
+                    GroupId = groupId
+                });
             }
             catch (Exception)
             {
-                return RedirectToAction(nameof(Index));
+                // Create a normal blog
+                return View(new Blog
+                {
+                    GroupId = null
+                });
             }
         }
 
@@ -167,13 +176,13 @@ namespace ACJudge.Controllers
         {
             try
             {
-                var groupId = (int?)TempData["GroupID"];
+                var isGroupBlog = model.GroupId != null;
                 var newBlog = new Blog
                 {
                     BlogTitle = model.BlogTitle,
                     BlogContent = model.BlogContent,
-                    GroupId = groupId,
-                    BlogVisibility = (groupId == null),
+                    GroupId = model.GroupId,
+                    BlogVisibility = !isGroupBlog,
                     BlogVote = 0
                 };
                 _blogs.Add(newBlog);
@@ -182,8 +191,8 @@ namespace ACJudge.Controllers
                 var userBlog= _createUserBlogRelation(userId, blogId);
                 newBlog.UserBlog.Add(userBlog);
                 _blogs.Update(newBlog);
-                // if groupId is null, this means it's public blog
-                return groupId==null ? RedirectToAction(nameof(Index)) : RedirectToAction("Details", "Group", new { id = groupId });
+               
+                return !isGroupBlog ? RedirectToAction(nameof(Index)) : RedirectToAction("Details", "Group", new { id = model.GroupId });
             }
             catch
             {
