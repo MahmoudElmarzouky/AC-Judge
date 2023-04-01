@@ -39,13 +39,8 @@ namespace ACJudge.Controllers
         {
             try
             {
-                var userBlogs = false;
-                if (TempData["BlogsByUser"]!=null && TempData["BlogsByUser"].ToString()=="UserBlogs") {
-                    TempData["BlogsUser"] = "blogUser";
-                    userBlogs = true;
-                }
                 var pageNumber = page ?? 1;
-                var blogs = userBlogs? GetBlogsByUser(): GetAllBlogs();
+                var blogs = GetAllBlogs();
                 var numberOfPages = (int)Math.Ceiling((decimal)blogs.Count / BlogsPerPage);
                 var currentPage = blogs.Paginate(pageNumber, BlogsPerPage);
                 var blogPage = new BlogPage(currentPage, pageNumber, Enumerable.Range(1, numberOfPages));
@@ -301,10 +296,17 @@ namespace ACJudge.Controllers
         {
             try
             {
+                title ??= "";
+                preparedBy ??= "";
                 var list = _blogs.Search(title, preparedBy).Select(GetViewModelFromBlog).ToList();
-                var numberOfPages = (int)Math.Ceiling((decimal)list.Count() / BlogsPerPage);
+                var numberOfPages = (int)Math.Ceiling((decimal)list.Count / BlogsPerPage);
                 var currentPage = list.Paginate(page, BlogsPerPage);
-                var blogPage = new BlogPage(currentPage, page, Enumerable.Range(1, numberOfPages));
+                var blogPage = new BlogPage(currentPage, page, Enumerable.Range(1, numberOfPages), 
+                    new Filter
+                    {
+                        Title = title,
+                        PreparedBy = preparedBy
+                    });
                 
                 return View("Index", blogPage);
             }

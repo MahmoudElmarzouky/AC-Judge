@@ -1,0 +1,32 @@
+@model ACJudge.ViewModels.BlogViewModel.ViewBlogModel
+
+<tr>
+    <td>
+        <a asp-action="Favourite" asp-route-id="@Model.BlogId" class="fas fa-heart @(Model.IsFavorite ? "active" : "")" data-favorite="IconFav">
+        </a>
+    </td>
+    <td>
+        <a asp-action="Details" asp-route-id="@Model.BlogId">
+            @Html.DisplayFor(modelModel => Model.BlogTitle)
+        </a>
+    </td>
+    <td class="creat-time">
+        <div>@Model.CreationTime.ToString("MM/dd/yyyy")</div>
+        <div>@Model.CreationTime.ToString("HH:mm")</div>
+    </td>
+    <td>
+        @Html.DisplayFor(modelModel => Model.BlogVote)
+    </td>
+    @{
+        var userName = Model.BlogOwner.UserName;
+        var userId = Model.BlogOwner.Id;
+        if (userName != null)
+        {
+            <td>
+                <a asp-controller="User" asp-action="Details" asp-route-id="@userId">
+                    @userName
+                </a>
+            </td>
+        }
+    }
+</tr>

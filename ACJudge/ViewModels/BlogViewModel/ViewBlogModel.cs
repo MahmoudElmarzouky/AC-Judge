@@ -6,14 +6,14 @@ namespace ACJudge.ViewModels.BlogViewModel
 {
     public class BlogOwner
     {
-        private readonly string _defaultPhotoUrl = "avatar-male.jpg";
+        private const string DefaultPhotoUrl = "avatar-male.jpg";
         private string _photoUrl = "";
         public int Id { get; set; }
         public string UserName { get; set; }
 
         public string PhotoUrl
         {
-            get => String.IsNullOrEmpty(_photoUrl) ? _defaultPhotoUrl : _photoUrl;
+            get => String.IsNullOrEmpty(_photoUrl) ? DefaultPhotoUrl : _photoUrl;
             set => _photoUrl = value;
         }
     }
@@ -32,17 +32,23 @@ namespace ACJudge.ViewModels.BlogViewModel
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
     }
 
+    public class Filter
+    {
+        public string PreparedBy { get; set; } = "";
+        public string Title { get; set; } = "";
+    }
     public class BlogPage
     {
-        
         public IEnumerable<ViewBlogModel> Blogs;
         public int PageNumber { get; set; }
         public IEnumerable<int> Pages { get; set; }
-        public BlogPage(IEnumerable<ViewBlogModel> blogs, int pageNumber, IEnumerable<int> pages)
+        public Filter Filter { get; set; }
+        public BlogPage(IEnumerable<ViewBlogModel> blogs, int pageNumber, IEnumerable<int> pages, Filter filter = null)
         {
             Blogs = blogs;
             PageNumber = pageNumber;
             Pages = pages;
+            Filter = filter ?? new Filter();
         }
     }
 }
