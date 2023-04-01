@@ -9,6 +9,7 @@ using ACJudge.Data.Models;
 using ACJudge.Data.Repositories.Interfaces;
 using ACJudge.ExtensionMethods;
 using ACJudge.ViewModels;
+using ACJudge.ViewModels.BlogViewModel;
 
 namespace ACJudge.Controllers
 {
@@ -45,10 +46,10 @@ namespace ACJudge.Controllers
                 }
                 var pageNumber = page ?? 1;
                 var blogs = userBlogs? GetBlogsByUser(): GetAllBlogs();
-                ViewBag.TotalPageProblem = (int)Math.Ceiling((decimal)blogs.Count / BlogsPerPage);
-                ViewBag.Pagenum = pageNumber;
+                var numberOfPages = (int)Math.Ceiling((decimal)blogs.Count / BlogsPerPage);
                 var currentPage = blogs.Paginate(pageNumber, BlogsPerPage);
-                return View(currentPage);
+                var blogPage = new BlogPage(currentPage, pageNumber, Enumerable.Range(1, numberOfPages));
+                return View(blogPage);
             }
             catch (Exception)
             {
@@ -71,25 +72,32 @@ namespace ACJudge.Controllers
         }
         private ViewBlogModel GetViewModelFromBlog(Blog blog)
         {
-            var userBlog = blog.UserBlog.FirstOrDefault(b => b.BlogOwner);
-            var isOwner = userBlog?.User.UserIdentityId == _user.UserIdentityId;
+            var blogOwner = blog.UserBlog.First(b => b.BlogOwner).User;
+            
+            var isOwner = blogOwner?.UserIdentityId == _user.UserIdentityId;
             var isFavorite = _user.UserBlogs.
                 FirstOrDefault(innerUserBlog => innerUserBlog.IsFavourite 
                                                 && innerUserBlog.BlogId==blog.BlogId) != null;
+            
+            var blogOwnerObject = new BlogOwner
+            {
+                Id = blogOwner.UserId,
+                UserName = blogOwner.UserName,
+                PhotoUrl = blogOwner.PhotoUrl
+            };
             var model = new ViewBlogModel
             {
-                blogId = blog.BlogId,
-                blogtitle = blog.BlogTitle,
-                blogOwner = userBlog?.User.UserName,
-                blogcontent = blog.BlogContent,
-                blogvote = blog.BlogVote, 
-                creationTime = blog.CreationTime, 
+                BlogId = blog.BlogId,
+                BlogTitle = blog.BlogTitle,
+                BlogOwner = blogOwnerObject,
+                BlogContent = blog.BlogContent,
+                BlogVote = blog.BlogVote, 
+                CreationTime = blog.CreationTime, 
                 Comments = blog.Comments,
-                UserBlogs=blog.UserBlog,
                 CurrentUserId=_user.UserId,
                 GroupId=blog.GroupId, 
-                isOwner = isOwner,
-                isFavorite=isFavorite
+                IsOwner = isOwner,
+                IsFavorite=isFavorite
             };
             return model;
         }
@@ -289,12 +297,16 @@ namespace ACJudge.Controllers
             var rel = blog.UserBlog.FirstOrDefault(u => u.UserId == userId&&u.BlogOwner);
             return  rel != null;
         }
-        public ActionResult Filter(string title, string preparedBy)
+        public ActionResult Filter(string title, string preparedBy, int page = 1)
         {
             try
             {
-                var list = _blogs.Search(title, preparedBy).Select(GetViewModelFromBlog);
-                return View("Index", list);
+                var list = _blogs.Search(title, preparedBy).Select(GetViewModelFromBlog).ToList();
+                var numberOfPages = (int)Math.Ceiling((decimal)list.Count() / BlogsPerPage);
+                var currentPage = list.Paginate(page, BlogsPerPage);
+                var blogPage = new BlogPage(currentPage, page, Enumerable.Range(1, numberOfPages));
+                
+                return View("Index", blogPage);
             }
             catch (Exception)
             {
