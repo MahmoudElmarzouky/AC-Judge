@@ -30,12 +30,12 @@ namespace ACJudge.Data.Repositories.DataBaseRepositories
         public Group Find(int id)
         {
             var group = _dbContext.Groups.FirstOrDefault(group => group.GroupId == id);
+            LoadCurrentGroup(group);
             return group;
         }
 
         public IList<Group> List()
         {
-            var list = _dbContext.Groups;
             return _dbContext.Groups.ToList();
         }
 

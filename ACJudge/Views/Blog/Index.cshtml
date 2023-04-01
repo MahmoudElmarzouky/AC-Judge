@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ACJudge.ViewModels.ViewBlogModel>
+﻿@model ACJudge.ViewModels.BlogViewModel.BlogPage
 
 @{
 	ViewData["Title"] = "Blog Page";
@@ -20,22 +20,23 @@
 				</div>
 				<div class="panel-body" hidden>
 					<form class="form-horizontal" asp-action="Filter" method="POST">
+						<input type="hidden" name="page" class="form-control" value ="1"/>
 						<div class="form-group row">
 							<label class="control-label col-md-2">Blog Title</label>
 							<div class="col-md-8">
-								<input type="text" name="Title" class="form-control" />
+								<input type="text" name="Title" class="form-control" value="@Model.Filter.Title"/>
 							</div>
 						</div>
 						<div class="form-group row">
 							<label class="control-label col-md-2">Prepeard By</label>
 							<div class="col-md-8">
-								<input type="text" name="PrepeardBy" class="form-control" />
+								<input type="text" name="preparedBy" class="form-control" value="@Model.Filter.PreparedBy"/>
 							</div>
 						</div>
 						<div class="form-group row">
 							<div class="col-md-offset-2 col-md-8">
-								<input type="reset" value="Reset" class="btn btn-secondary" />
-								<input type="submit" value="Search" class="btn btn-default" />
+								<a href="@Url.Action("Index", "Blog")" class="btn btn-secondary">Reset</a>
+								<input type="submit" value="Search" class="btn btn-default"/>
 							</div>
 						</div>
 					</form>
@@ -43,55 +44,21 @@
 				<div class="table-responsive">
 					<table class="table table-bordered text-center">
 						<thead>
-							<tr class="active">
-								<th class="text-center">Favorite</th>
-								<th class="text-center">Title</th>
-								<th class="text-center">Create Time</th>
-								<th class="text-center">Vote</th>
-								<th class="text-center">Prepeard By</th>
-							</tr>
+						<tr class="active">
+							<th class="text-center">Favorite</th>
+							<th class="text-center">Title</th>
+							<th class="text-center">Create Time</th>
+							<th class="text-center">Vote</th>
+							<th class="text-center">Prepeard By</th>
+						</tr>
 						</thead>
 						<tbody>
-						@if (Model.Any())
+						@if (Model.Blogs.Any())
 						{
-							@foreach (var item in Model)
+							@foreach (var item in Model.Blogs)
 							{
-								@if ((TempData["BlogsUser"] != null && TempData["BlogsUser"].ToString() == "blogUser") || item.GroupId == null)
-								{
-									<tr>
-										<td>
-											<a asp-action="Favourite" asp-route-id="@item.blogId" class="fas fa-heart @(item.isFavorite ? "active" : "")" data-favorite="IconFav">
-
-											</a>
-										</td>
-										<td>
-											<a asp-action="Details" asp-route-id="@item.blogId">
-												@Html.DisplayFor(modelItem => item.blogtitle)
-											</a>
-										</td>
-										<td class="creat-time">
-											<div>@item.creationTime.ToString("MM/dd/yyyy")</div>
-											<div>@item.creationTime.ToString("HH:mm")</div>
-										</td>
-										<td>
-											@Html.DisplayFor(modelItem => item.blogvote)
-										</td>
-										@{
-											var userName = item.UserBlogs.FirstOrDefault(u => u.BlogOwner).User.UserName;
-											var userId = item.UserBlogs.FirstOrDefault(u => u.BlogOwner).User.UserId;
-											if (userName != null)
-											{
-												<td>
-													<a asp-controller="User" asp-action="Details" asp-route-id="@userId">
-														@userName
-													</a>
-												</td>
-											}
-										}
-									</tr>
-
-								}
-							}	
+								@await Html.PartialAsync("BlogRowPartial", item)
+							}
 						}
 						else
 						{
@@ -103,39 +70,39 @@
 					</table>
 				</div>
 			</div>
-			<div aria-label="Page navigation" class="text-center">
-				<ul class="pagination pagination-lg">
-					@{
-						if (ViewBag.Pagenum > 1)
-						{
+			@if (Model.Blogs.Any())
+			{
+				<div aria-label="Page navigation" class="text-center">
+					<ul class="pagination pagination-lg">
+						@{
+							if (Model.PageNumber > 1)
+							{
 								<li>
-									<a asp-action="Index" asp-route-page="@(ViewBag.Pagenum-1)" aria-label="Previous">
+									<a asp-action="Filter" asp-route-title="@Model.Filter.Title" asp-route-preparedBy="@Model.Filter.PreparedBy" asp-route-page="@(Model.PageNumber - 1)" aria-label="Previous">
 										<span aria-hidden="true">&laquo;</span>
 									</a>
 								</li>
-
-						}
-						for (int i = 1; i <= ViewBag.TotalPageProblem; i++)
-						{	
-							<li class="@(ViewBag.Pagenum == i ? "active" : "")">
-								<a asp-action="Index" asp-route-page="@i">
-									@i
-								</a>
-							</li>
-
-						}
-						if (ViewBag.Pagenum < ViewBag.TotalPageProblem)
-						{
+							}
+							foreach (var pageNumber in Model.Pages)
+							{
+								<li class="@(Model.PageNumber == pageNumber ? "active" : "")">
+									<a asp-action="Filter"  asp-route-title="@Model.Filter.Title" asp-route-preparedBy="@Model.Filter.PreparedBy" asp-route-page="@pageNumber">
+										@pageNumber
+									</a>
+								</li>
+							}
+							if (Model.PageNumber != Model.Pages.Last())
+							{
 								<li>
-									<a asp-action="Index" asp-route-page="@(ViewBag.Pagenum+1)" aria-label="Next">
+									<a asp-action="Filter"  asp-route-title="@Model.Filter.Title" asp-route-preparedBy="@Model.Filter.PreparedBy" asp-route-page="@(Model.PageNumber + 1)" aria-label="Next">
 										<span aria-hidden="true">&raquo;</span>
 									</a>
 								</li>
+							}
 						}
-					}
-
-				</ul>
-			</div>
+					</ul>
+				</div>
+			}
 		</section>
 	</div>
 </section>

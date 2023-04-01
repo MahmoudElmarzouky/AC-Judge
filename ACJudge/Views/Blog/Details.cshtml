@@ -1,51 +1,41 @@
-﻿@model ACJudge.ViewModels.ViewBlogModel
+﻿@model ACJudge.ViewModels.BlogViewModel.ViewBlogModel
 
 @{
 	ViewData["Title"] = "Details";
 }
 <section class="show-blog-page">
 	@{
-		var userblog = Model.UserBlogs.FirstOrDefault(u => u.UserId == Model.CurrentUserId);
-		var user = Model.UserBlogs.FirstOrDefault(u => u.BlogOwner==true&&u.BlogId==Model.blogId).User;
-	<div class="container">
+		<div class="container">
 		<div class="page-header">
 			
-			<h1>Blog <span class="text-muted">@Model.blogtitle</span></h1>
-			@if(Model.isOwner){
+			<h1>Blog <span class="text-muted">@Model.BlogTitle</span></h1>
+			@if(Model.IsOwner){
 			<div>
-				<a class="btn btn-success" asp-action="Edit" asp-route-id="@Model.blogId"><i class="fas fa-edit"></i> Edit</a> <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.blogId"><i class="fas fa-times"></i> Delete</a>
+				<a class="btn btn-success" asp-action="Edit" asp-route-id="@Model.BlogId"><i class="fas fa-edit"></i> Edit</a> <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.BlogId"><i class="fas fa-times"></i> Delete</a>
 			</div>
 			}
 		</div>
 		<div class="row">
 			<div class="col-sm-2">
 				<div class="owner-blog text-center">
-					@if (user.PhotoUrl == null)
-					{
-						<img class="img-thumbnail img-circle img-responsive" src="~/img/Profile/avatar-male.jpg" alt="Profile Picture" />
-					}
-					else
-					{
-						<img class="img-thumbnail img-circle img-responsive" src="~/img/Profile/@user.PhotoUrl" alt="Profile Picture" />
-
-					}
-					<h4><a asp-controller="User" asp-action="Details" asp-route-id="@user.UserId">@user.UserName</a></h4>
+					<img class="img-thumbnail img-circle img-responsive" src="~/img/Profile/@Model.BlogOwner.PhotoUrl" alt="Profile Picture" />
+					<h4><a asp-controller="User" asp-action="Details" asp-route-id="@Model.BlogOwner.Id">@Model.BlogOwner.UserName</a></h4>
 					<p class="">
-						<i class="far fa-clock"></i> <span class="text-muted">@Model.creationTime.ToString("MMMM dd, yyyy")</span>
+						<i class="far fa-clock"></i> <span class="text-muted">@Model.CreationTime.ToString("MMMM dd, yyyy")</span>
 					</p>
 				</div>
 			</div>
 			<div class="col-sm-9 data-blog">
 				<p class="blog-content">
-					@Model.blogcontent
+					@Model.BlogContent
 				</p>
 				<div class="well well-sm">
 
 					<div>
-						<a asp-action="UpVote" asp-route-id="@Model.blogId" class="fas fa-caret-up text-success"></a> <span class="text-primary">@Model.blogvote</span> <a asp-action="DownVote" asp-route-id="@Model.blogId" class="fas fa-caret-down text-danger"></a>
+						<a asp-action="UpVote" asp-route-id="@Model.BlogId" class="fas fa-caret-up text-success"></a> <span class="text-primary">@Model.BlogVote</span> <a asp-action="DownVote" asp-route-id="@Model.BlogId" class="fas fa-caret-down text-danger"></a>
 					</div>
 					<div>
-						<a asp-action="Favourite" asp-route-id="@Model.blogId" class="fas fa-heart @(Model.isFavorite == true ? "active" : "")" data-favorite="IconFav"></a>
+						<a asp-action="Favourite" asp-route-id="@Model.BlogId" class="fas fa-heart @(Model.IsFavorite == true ? "active" : "")" data-favorite="IconFav"></a>
 					</div>
 					<div>
 						<i class="far fa-comment"></i>  @Model.Comments.Count
@@ -83,7 +73,7 @@
 		<div class="row Comment-new">
 			<div class="col-sm-7 col-sm-offset-3">
 				<form class="form-horizontal" asp-action="CreateComment" method="POST" >
-					<input name="Id" type="hidden" value="@Model.blogId"/>
+					<input name="Id" type="hidden" value="@Model.BlogId"/>
 					<div class="form-group">
 						<textarea rows="8" name="CommentContent" class="form-control" placeholder="Write Comment"></textarea>
 					</div>
