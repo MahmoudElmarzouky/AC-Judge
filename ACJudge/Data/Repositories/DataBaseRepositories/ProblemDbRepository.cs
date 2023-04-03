@@ -51,7 +51,6 @@ namespace ACJudge.Data.Repositories.DataBaseRepositories
 
         public IList<Problem> Search(int x, IList<string> list)
         {
-            _addProblemFromOnlineJudge(list[3],list[1]);
             var items = new List<Problem>();
             switch (x)
             {
@@ -63,19 +62,25 @@ namespace ACJudge.Data.Repositories.DataBaseRepositories
                 }
                 case 2:
                 {
-                    var type = int.Parse(list[0]);
-                    var problemId = list[1];
-                    var problemName = list[2];
-                    var problemSource = (list[3] == "All" ? "" : list[3]);
-                    problemId ??= "";
-                    problemName ??= "";
-                    problemSource ??= "";
-                    items = _dbContext.Problems.Where(item =>
-                        item.ProblemType == type
-                        && item.ProblemSourceId.Contains(problemId)
-                        && item.ProblemTitle.Contains(problemName)
-                        && item.ProblemSource.Contains(problemSource)
-                    ).ToList();
+                    
+                    for (int i = 0; i < 2; i++)
+                    {
+                        var type = int.Parse(list[0]);
+                        var problemId = list[1];
+                        var problemName = list[2];
+                        var problemSource = (list[3] == "All" ? "" : list[3]);
+                        problemId ??= "";
+                        problemName ??= "";
+                        problemSource ??= "";
+                        items = _dbContext.Problems.Where(item =>
+                            item.ProblemType == type
+                            && item.ProblemSourceId.Contains(problemId)
+                            && item.ProblemTitle.Contains(problemName)
+                            && item.ProblemSource.Contains(problemSource)
+                        ).ToList();
+                        if (items.Count != 0) break;
+                        _addProblemFromOnlineJudge(list[3],list[1]);
+                    }
                     break;
                 }
             }
