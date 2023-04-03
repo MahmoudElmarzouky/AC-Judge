@@ -28,26 +28,30 @@ namespace ACJudge.Data
         {
             modelBuilder.Entity<ProblemTag>()
             .HasKey(p => new { p.ProblemId, p.TagId });
+            
             modelBuilder.Entity<UserContest>()
             .HasKey(p => new { p.UserId, p.ContestId });
+            
             modelBuilder.Entity<UserGroup>()
            .HasKey(p => new { p.UserId, p.GroupId });
+            
             modelBuilder.Entity<BlogTag>()
             .HasKey(p => new { p.BlogId, p.TagId });
+            
             modelBuilder.Entity<ContestProblem>()
             .HasKey(p => new { contestId = p.ContestId, problemId = p.ProblemId });
+            
             modelBuilder.Entity<UserBlog>()
             .HasKey(p => new { userId = p.UserId, blogId = p.BlogId });
+            
             modelBuilder.Entity<CommentVote>()
             .HasKey(p => new { commentId = p.CommentId, userId = p.UserId });
-
-
+            
             modelBuilder.Entity<ProblemUser>().HasKey(pu => new
             {
                 pu.UserId,
                 pu.ProblemId
             });
-
         }
     }
 }

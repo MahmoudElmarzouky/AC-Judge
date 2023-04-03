@@ -80,7 +80,7 @@ namespace ACJudge.Data.Models
                             c = c.ToUpper();
                             // ------------------------------------------------------------------
 
-                            var p = APi.GetProblem(OnlineJudge, id, c);
+                            var p = APi.GetProblem(OnlineJudge, id, c).Result;
 
                             if (p == null) continue;
                             var newProblem = new Problem()

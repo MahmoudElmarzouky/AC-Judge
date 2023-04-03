@@ -10,6 +10,7 @@ using ACJudge.ViewModels.ContestViewsModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProblemInfo = ACJudge.ViewModels.ContestViewsModel.ProblemInfo;
 
 namespace ACJudge.Controllers
 {

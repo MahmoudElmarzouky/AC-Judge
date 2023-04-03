@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ACJudge.Data.API
 {
-    public class ProblemIfo
+    public class ProblemInfo
     {
         public string Title { get; set; }
         public string Source { get; set; }
