@@ -51,6 +51,7 @@ namespace ACJudge.Data.Repositories.DataBaseRepositories
 
         public IList<Problem> Search(int x, IList<string> list)
         {
+            _addProblemFromOnlineJudge(list[3],list[1]);
             var items = new List<Problem>();
             switch (x)
             {
@@ -107,9 +108,10 @@ namespace ACJudge.Data.Repositories.DataBaseRepositories
             var problemIdentifiers = _getProblemIdentifiers(problemSourceId);
             var id = problemIdentifiers[0];
             var c = problemIdentifiers[1];
-            var p = APi.GetProblem(onlineJudge, id, c);
+            var p = APi.GetProblem(onlineJudge, id, c).Result;
             
             if (p == null) return;
+            
             var newProblem = new Problem()
             {
                 ProblemSource = p.Source,

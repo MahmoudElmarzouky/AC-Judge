@@ -1,40 +1,38 @@
 ﻿using System;
 using System.Net;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace ACJudge.Data.API;
 
 public static class APi
 {
-    private static ProblemIfo GetCodeForcesProblem(string contestId, string problemIndex)
-    {
-        var url = "http://95.216.185.187/cf/" + contestId + "/" + problemIndex;
-        var json = GetPageContent(url);
-        var problemInfo = JsonConvert.DeserializeObject<ProblemIfo>(json);
-        return problemInfo.Problem != null? problemInfo: null;
-    }
-    public static ProblemIfo GetProblem(string onlineJudge, string contestId, string problemIndex)
+    public static ProblemInfo GetProblemData(string onlineJudge, string url)
     {
         return onlineJudge switch
         {
-            "CodeForces" => GetCodeForcesProblem(contestId, problemIndex),
+            "CodeForces" => new CodeForcesGetProblemApi().GetProblem(url),
             _ => null
         };
     }
-    private static string GetPageContent(string url)
+    public static async Task<ProblemInfo> GetProblem(string onlineJudge, string contestId, string problemIndex)
     {
-        var content = "";
-        using var client = new WebClient();
-        try
-        {
-            content = client.DownloadString(url);
-        }
-        catch (Exception)
-        {
-            return null;
-        }
-        return content;
+        var url = $@"https://localhost:7222/Api?contestId={contestId}&problemId={problemIndex}";
+        
+        HttpClient client = new HttpClient();
+        
+        // Make the GET request and get the response
+        HttpResponseMessage response = await client.GetAsync(url);
+
+        // Get the response content as a string
+        var responseContent = await response.Content.ReadAsStringAsync();
+
+        // Deserialize the JSON response to a C# object
+        var problem = JsonConvert.DeserializeObject<ProblemInfo>(responseContent);
+
+        return problem;
     }
     public static SubmitInfo GetVerdict(string problemId, string solution, string language)
     {
