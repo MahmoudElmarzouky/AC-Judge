@@ -8,6 +8,7 @@ using System.Security.Claims;
 using ACJudge.Data.API;
 using ACJudge.Data.Models;
 using ACJudge.Data.Repositories.Interfaces;
+using ACJudge.ExtensionMethods;
 using ACJudge.ViewModels.ProblemViewsModel;
 using X.PagedList;
 
@@ -21,14 +22,14 @@ namespace ACJudge.Controllers
         private readonly bool _login;
         private readonly IEnumerable<Submission> _listMySubmission;
         private readonly IEnumerable<ProblemUser> _listMyFavorite;
-
+        private const int PageSize = 25;
         public ProblemController(ISubmissionRepository<Submission> submissionRepository,
             IUserRepository<User> userRepository,
             IProblemRepository<Problem> problemRepository,
             IHttpContextAccessor httpContextAccessor)
         {
             _submissionRepository = submissionRepository;
-            this._problemRepository = problemRepository;
+            _problemRepository = problemRepository;
             var isAuthenticated = httpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated;
             if (isAuthenticated is true)
             {
@@ -47,16 +48,16 @@ namespace ACJudge.Controllers
 
         public ActionResult Index(int? page)
         {
-            ViewBag.function = "Index";
-            var pageNumber = page ?? 1;
-            var listProblems = _problemRepository.Search(1, new List<string> { "1" });
-            var model = GetAllModel(listProblems);
-            const int pageSize = 25;
-            ViewBag.TotalPageProblem = (model.Count / pageSize) + (model.Count % pageSize == 0 ? 0 : 1);
-            if (pageNumber < 0 || pageNumber > ViewBag.TotalPageProblem) pageNumber = 1;
-            ViewBag.Pagenum = pageNumber;
-            var list = model.ToPagedList(pageNumber, pageSize);
-            return View(list);
+            // TODO Push pass ProblemFilter to Search method 
+            page ??= 1;
+            var allProblems = _problemRepository.Search(1, new List<string> { "1" });
+            var totalPages = (int)Math.Ceiling((decimal)allProblems.Count / PageSize);
+            if (page < 1 || page > totalPages) page = 1;
+
+            var list = allProblems.Paginate((int)page, PageSize).
+                Select(GetProblemModelView);
+            var problemPage = new ProblemPageView<ViewProblemModel, ProblemFilter>(list, (int)page, totalPages, new ProblemFilter(), _login);
+            return View(problemPage);
         }
 
         [Authorize]
@@ -85,62 +86,56 @@ namespace ACJudge.Controllers
         public bool CanSeeSubmission(int submissionId)
         {
             var submission = _submissionRepository.Find(submissionId);
-            if (submission.Visible)
-                return true;
-            return _login && submission.UserId == _user.UserId;
+            return submission.Visible || (_login && submission.UserId == _user.UserId);
         }
 
         public ActionResult Status(int? page)
         {
-            var pageNumber = page ?? 1;
-            ViewBag.function = "Status";
             var submissions = _submissionRepository.GetSpecificSubmission(1,
                 "",
                 "",
                 "",
                 "",
                 "",
-                null).OrderByDescending(s => s.SubmissionId);
-            var list = GetAllStatus(submissions);
-            const int pageSize = 25;
-            ViewBag.TotalPageProblem = (list.Count / pageSize) + (list.Count % pageSize == 0 ? 0 : 1);
-            if (pageNumber < 0 || pageNumber > ViewBag.TotalPageProblem) pageNumber = 1;
-            ViewBag.Pagenum = pageNumber;
-            var newList = list.ToPagedList(pageNumber, pageSize);
-            return View(newList);
+                null).OrderByDescending(s => s.SubmissionId).
+                Select(GetViewStatusModel).ToList();
+
+            var totalPages = (int)Math.Ceiling((decimal)submissions.Count / PageSize);
+            if (page < 1 || page > totalPages) page = 1;
+            
+            var problemPage = new ProblemPageView<ViewStatusModel, StatusFilter>(submissions, (int)page, totalPages, new StatusFilter(), _login);
+            
+            return View(problemPage);
+            
         }
 
         [HttpPost]
         public ActionResult GetTextSubmission(int submissionId)
         {
             var result = _submissionRepository.Find(submissionId).SubmissionText;
-            return Content(result, "text/plain");
+            return Content(CanSeeSubmission(submissionId) ? result : "", "text/plain");
         }
 
-        public ActionResult Filter(int? page, string problemId, string problemName, string problemSource)
+        public ActionResult Filter(int page, ProblemFilter problemFilter)
         {
-            var pageNumber = page ?? 1;
-            ViewBag.problemid = problemId;
-            ViewBag.problemname = problemName;
-            ViewBag.Problemsource = problemSource;
-            ViewBag.function = "Filter";
-            var listProblems = _problemRepository.Search(2, new List<string>
-                { "1", problemId, problemName, problemSource });
-            var model = GetAllModel(listProblems);
-            const int pageSize = 25;
-            ViewBag.TotalPageProblem = (model.Count / pageSize) + (model.Count % pageSize == 0 ? 0 : 1);
-            if (pageNumber < 0 || pageNumber > ViewBag.TotalPageProblem) pageNumber = 1;
-            ViewBag.Pagenum = pageNumber;
-            var list = model.ToPagedList(pageNumber, pageSize);
-            return View("Index", list);
+            // TODO pass ProblemFilter to Search method 
+            var allProblems = _problemRepository.Search(2, new List<string>
+                { "1", problemFilter.ProblemId, problemFilter.ProblemName, problemFilter.ProblemSource });
+            
+            var totalPages = (int)Math.Ceiling((decimal)allProblems.Count / PageSize);
+            if (page < 1 || page > totalPages) page = 1;
+
+            var list = allProblems.Paginate(page, PageSize).
+                Select(GetProblemModelView);
+            var problemPage = new ProblemPageView<ViewProblemModel, ProblemFilter>(list, page, totalPages, problemFilter, _login);
+            return View("Index", problemPage);
         }
 
         public ActionResult FilterStatus(int? page, string userName,
             string problemName, string problemSource, string problemResult,
             string problemLanguage, int? contestId = null)
         {
-            var pageNumber = page ?? 1;
-            ViewBag.function = "FilterStatus";
+            // TODO Pass StatusFilter to GetSpecificSubmission method 
             userName ??= "";
             problemName ??= "";
             problemSource = ((problemSource == null || problemSource == "All") ? "" : problemSource);
@@ -159,18 +154,20 @@ namespace ACJudge.Controllers
                 problemSource,
                 problemResult,
                 problemLanguage,
-                contestId).OrderByDescending(s => s.SubmissionId);
-            IEnumerable<ViewStatusModel> list = GetAllStatus(submissions);
-            const int pageSize = 25;
-            ViewBag.TotalPageProblem = (list.Count() / pageSize) + (list.Count() % pageSize == 0 ? 0 : 1);
-            if (pageNumber < 0 || pageNumber > ViewBag.TotalPageProblem) pageNumber = 1;
-            ViewBag.Pagenum = pageNumber;
-            var model = list.ToPagedList(pageNumber, pageSize);
-            return View("Status", model);
+                contestId).OrderByDescending(s => s.SubmissionId)
+                .Select(GetViewStatusModel).ToList();
+            var totalPages = (int)Math.Ceiling((decimal)submissions.Count / PageSize);
+            
+            if (page < 1 || page > totalPages) page = 1;
+            
+            var problemPage = new ProblemPageView<ViewStatusModel, StatusFilter>(submissions, (int)page, totalPages, new StatusFilter(), _login);
+            
+            return View("Status", problemPage);
         }
 
         public ActionResult FlipFavourite(int id)
         {
+            if (!_login) return View("ErrorLink");
             var p = _problemRepository.Find(id);
             if (p == null)
             {
@@ -180,79 +177,63 @@ namespace ACJudge.Controllers
             _flipFavorite(p);
             return RedirectToAction(nameof(Index));
         }
-
-        public List<ViewProblemModel> GetAllModel(IList<Problem> listProblems)
+        
+        public ViewProblemModel GetProblemModelView(Problem problem)
         {
-            var model = new List<ViewProblemModel>();
-            foreach (var p in listProblems)
+            var problemViewModel = new ViewProblemModel()
             {
-                var item = new ViewProblemModel()
-                {
-                    ProblemId = p.ProblemId,
-                    OnlineJudge = p.ProblemSource,
-                    ProblemSourceId = p.ProblemSourceId,
-                    Title = p.ProblemTitle,
-                    rating = p.Rating,
-                    UrlSource = p.UrlSource
-                };
-                if (_login)
-                {
-                    var acSubmission = _listMySubmission.FirstOrDefault(s => s.ProblemId == p.ProblemId
-                                                                             && s.Verdict == "Accepted");
-                    if (acSubmission != null)
-                    {
-                        item.Status = "Solved";
-                    }
-                    else
-                    {
-                        var wrSubmission = _listMySubmission.FirstOrDefault(s => s.ProblemId == p.ProblemId
-                            && s.Verdict == "Wrong");
-                        item.Status = wrSubmission != null ? "Attempted" : "";
-                    }
-
-                    var isFavorite = _listMyFavorite.FirstOrDefault(f => f.IsFavourite && f.ProblemId == p.ProblemId);
-                    item.Favorite = isFavorite != null;
-                }
-                else
-                {
-                    item.Favorite = false;
-                    item.Status = "";
-                }
-
-                model.Add(item);
+                ProblemId = problem.ProblemId,
+                OnlineJudge = problem.ProblemSource,
+                ProblemSourceId = problem.ProblemSourceId,
+                Title = problem.ProblemTitle,
+                Rating = problem.Rating,
+                UrlSource = problem.UrlSource
+            };
+            
+            
+            if (_login)
+            {
+                var isSolved = _listMySubmission.FirstOrDefault(s => s.ProblemId == problem.ProblemId
+                                                                     && s.Verdict == "Accepted") != null;
+                var isWrong = (!isSolved && _listMySubmission.FirstOrDefault(s => s.ProblemId == problem.ProblemId
+                    && s.Verdict == "Wrong") != null);
+                
+                var isFavorite = _listMyFavorite.FirstOrDefault(f => f.IsFavourite && f.ProblemId == problem.ProblemId) != null;
+                
+                problemViewModel.Status = (isSolved ? "Solved" : isWrong ? "Attempted" : "");
+                problemViewModel.Favorite = isFavorite;
+            }
+            else
+            {
+                problemViewModel.Favorite = false;
+                problemViewModel.Status = "";
             }
 
-            return model;
+            return problemViewModel;
         }
-
-        public IList<ViewStatusModel> GetAllStatus(IEnumerable<Submission> submissions)
+        
+        private ViewStatusModel GetViewStatusModel(Submission item)
         {
-            IList<ViewStatusModel> list = new List<ViewStatusModel>();
-            foreach (var item in submissions)
+            var temp = new ViewStatusModel
             {
-                var temp = new ViewStatusModel
-                {
-                    RunID = item.SubmissionId,
-                    UserId = item.User.UserId,
-                    UserName = item.User.FirstName,
-                    ProblemId = item.Problem.ProblemId,
-                    OnlineJudge = item.Problem.ProblemSource,
-                    ProblemSourcesId = item.Problem.ProblemSourceId,
-                    Verdict = item.Verdict,
-                    TimeConsumed = item.TimeConsumeMillis,
-                    MemoryConsumed = item.MemoryConsumeBytes,
-                    Language = item.ProgrammingLanguage,
-                    SubmitTime = item.CreationTime,
-                    contestId = item.ContestId
-                };
-                if (item.Visible || (_login && item.User.UserId == _user.UserId))
-                    temp.Visiable = true;
-                else
-                    item.Visible = false;
-                list.Add(temp);
-            }
-
-            return list;
+                RunID = item.SubmissionId,
+                UserId = item.User.UserId,
+                UserName = item.User.FirstName,
+                ProblemId = item.Problem.ProblemId,
+                OnlineJudge = item.Problem.ProblemSource,
+                ProblemSourcesId = item.Problem.ProblemSourceId,
+                Verdict = item.Verdict,
+                TimeConsumed = item.TimeConsumeMillis,
+                MemoryConsumed = item.MemoryConsumeBytes,
+                Language = item.ProgrammingLanguage,
+                SubmitTime = item.CreationTime,
+                contestId = item.ContestId
+            };
+            if (item.Visible || (_login && item.User.UserId == _user.UserId))
+                temp.Visiable = true;
+            else
+                item.Visible = false;
+            return temp;
         }
 
         public ActionResult FlipFavouriteDetails(int id)
@@ -273,7 +254,7 @@ namespace ACJudge.Controllers
             var problem = _problemRepository.Find(id);
             if (problem == null)
             {
-                return View("~/Views/Shared/ErrorLink.cshtml");
+                return View("ErrorLink");
             }
 
             var model = GetDetailProblem(problem);
@@ -282,6 +263,7 @@ namespace ACJudge.Controllers
 
         private ViewProblemDetails GetDetailProblem(Problem problem)
         {
+            // TODO Fix Details 
             var model = new ViewProblemDetails()
             {
                 problemId = problem.ProblemId,
@@ -292,22 +274,14 @@ namespace ACJudge.Controllers
                 Problemhtml = problem.ProblemInHtmlForm,
                 Rating = problem.Rating,
                 NumberAc = problem.Submissions.Count(p => p.Verdict == "Accepted"),
-                Numbersubmission = problem.Submissions.Count
+                Numbersubmission = problem.Submissions.Count,
+                userName = _user.UserName
             };
-            if (_login)
-            {
-                var isFavorite = _listMyFavorite.FirstOrDefault(f => f.IsFavourite && f.ProblemId == problem.ProblemId);
-                model.IsFavorite = isFavorite != null;
-            }
-
-            var tags = new List<string>();
-
-            foreach (var item in problem.ProblemTag)
-            {
-                tags.Add(item.Tag.TagName);
-            }
-
-            model.problemTag = tags;
+            model.IsFavorite = _login &&
+                                _listMyFavorite.FirstOrDefault(f =>
+                                    f.IsFavourite && f.ProblemId == problem.ProblemId) != null;
+            
+            model.problemTag = problem.ProblemTag.Select(problemTag => problemTag.Tag.TagName).ToList();
             return model;
         }
 

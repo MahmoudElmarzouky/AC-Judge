@@ -163,7 +163,7 @@ namespace ACJudge.Controllers
                     OnlineJudge = p.ProblemSource,
                     ProblemSourceId = p.ProblemSourceId,
                     Title = p.ProblemTitle,
-                    rating = p.Rating,
+                    Rating = p.Rating,
                     UrlSource = p.UrlSource
                 };
                 if (_login)
