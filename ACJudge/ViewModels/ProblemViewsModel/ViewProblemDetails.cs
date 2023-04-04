@@ -23,5 +23,6 @@ namespace ACJudge.ViewModels.ProblemViewsModel
         public int NumberAc { get; set; }
         public int Numbersubmission { get; set; }
         public Boolean IsFavorite { get; set; }
+        public string userName { get; set; }
     }
 }
