@@ -48,6 +48,11 @@ namespace ACJudge.ViewModels.ProblemViewsModel
         public IEnumerable<T> Items { get; set; }
         public int PageNumber { get; set; }
         public int TotalNumberOfPages;
+
+        public ProblemPageView()
+        {
+        }
+
         public TFilter Filter { get; set; }
         public bool IsLogin { set; get; }
     }
