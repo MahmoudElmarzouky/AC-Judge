@@ -23,19 +23,19 @@
                         <div class="form-group row">
                             <label class="control-label col-md-2">Problem</label>
                             <div class="col-md-8">
-                                <input type="text" name="problemID" class="form-control" placeholder="EX: cf/123A , Spoj/GSS1" />
+                                <input type="text" asp-for="@Model.Filter.ProblemId" class="form-control" placeholder="EX: cf/123A , Spoj/GSS1" />
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="control-label col-md-2">Title</label>
                             <div class="col-md-8">
-                                <input type="text" name="problemName" class="form-control" placeholder="Problem Title Show In Website" />
+                                <input type="text" asp-for="@Model.Filter.ProblemName" class="form-control" placeholder="Problem Title Show In Website" />
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="control-label col-md-2">Online Judge</label>
                             <div class="col-md-8">
-                                <select class="form-control" name="ProblemSource">
+                                <select class="form-control" asp-for="@Model.Filter.ProblemSource">
                                     <option value="All">All</option>
                                     <option value="CodeForces">Codeforces</option>
                                 </select>
