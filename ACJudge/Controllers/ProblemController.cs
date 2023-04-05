@@ -48,9 +48,12 @@ namespace ACJudge.Controllers
 
         public ActionResult Index(int? page)
         {
-            // TODO Push pass ProblemFilter to Search method 
+            var problemFilter = new ProblemFilter
+            {
+                Type = ProblemFilter.ProblemType.Practice
+            };
             page ??= 1;
-            var allProblems = _problemRepository.Search(1, new List<string> { "1" });
+            var allProblems = _problemRepository.Search(problemFilter);
             var totalPages = (int)Math.Ceiling((decimal)allProblems.Count / PageSize);
             if (page < 1 || page > totalPages) page = 1;
 
@@ -89,15 +92,10 @@ namespace ACJudge.Controllers
             return submission.Visible || (_login && submission.UserId == _user.UserId);
         }
 
-        public ActionResult Status(int? page)
+        public ActionResult Status(int? page, ProblemPageView<ViewStatusModel, StatusFilter> model = null)
         {
-            var submissions = _submissionRepository.GetSpecificSubmission(1,
-                "",
-                "",
-                "",
-                "",
-                "",
-                null).OrderByDescending(s => s.SubmissionId).
+            var filter = model?.Filter ?? new StatusFilter();
+            var submissions = _submissionRepository.GetSpecificSubmission(filter).OrderByDescending(s => s.SubmissionId).
                 Select(GetViewStatusModel).ToList();
 
             var totalPages = (int)Math.Ceiling((decimal)submissions.Count / PageSize);
@@ -118,10 +116,9 @@ namespace ACJudge.Controllers
 
         public ActionResult Filter(int page, ProblemPageView<ViewProblemModel, ProblemFilter> model = null)
         {
-            // TODO pass ProblemFilter to Search method 
-            var problemFilter = model.Filter;
-            var allProblems = _problemRepository.Search(2, new List<string>
-                { "1", problemFilter.ProblemId, problemFilter.ProblemName, problemFilter.ProblemSource });
+            
+            var problemFilter = model?.Filter ?? new ProblemFilter();
+            var allProblems = _problemRepository.Search(problemFilter);
             
             var totalPages = (int)Math.Ceiling((decimal)allProblems.Count / PageSize);
             if (page < 1 || page > totalPages) page = 1;
@@ -132,36 +129,19 @@ namespace ACJudge.Controllers
             return View("Index", problemPage);
         }
 
-        public ActionResult FilterStatus(int? page, string userName,
-            string problemName, string problemSource, string problemResult,
-            string problemLanguage, int? contestId = null)
+        public ActionResult FilterStatus(int? page, ProblemPageView<ViewStatusModel, StatusFilter> model = null)
         {
-            // TODO Pass StatusFilter to GetSpecificSubmission method 
-            userName ??= "";
-            problemName ??= "";
-            problemSource = ((problemSource == null || problemSource == "All") ? "" : problemSource);
-            problemResult = ((problemResult == null || problemResult == "All") ? "" : problemResult);
-            problemLanguage = ((problemLanguage == null || problemLanguage == "All") ? "" : problemLanguage);
-            ViewBag.username = userName;
-            ViewBag.problemName = problemName;
-            ViewBag.problemSource = problemSource;
-            ViewBag.problemResult = problemResult;
-            ViewBag.problemLang = problemLanguage;
+            var filter = model?.Filter ?? new StatusFilter();
 
-            var submissions = _submissionRepository.GetSpecificSubmission(
-                1,
-                userName,
-                problemName,
-                problemSource,
-                problemResult,
-                problemLanguage,
-                contestId).OrderByDescending(s => s.SubmissionId)
+            // TODO Pass StatusFilter to GetSpecificSubmission method 
+            var submissions = _submissionRepository.GetSpecificSubmission(filter).
+                OrderByDescending(s => s.SubmissionId)
                 .Select(GetViewStatusModel).ToList();
             var totalPages = (int)Math.Ceiling((decimal)submissions.Count / PageSize);
             
             if (page < 1 || page > totalPages) page = 1;
             
-            var problemPage = new ProblemPageView<ViewStatusModel, StatusFilter>(submissions, (int)page, totalPages, new StatusFilter(), _login);
+            var problemPage = new ProblemPageView<ViewStatusModel, StatusFilter>(submissions, (int)page, totalPages, filter, _login);
             
             return View("Status", problemPage);
         }
