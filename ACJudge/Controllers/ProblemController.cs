@@ -116,9 +116,10 @@ namespace ACJudge.Controllers
             return Content(CanSeeSubmission(submissionId) ? result : "", "text/plain");
         }
 
-        public ActionResult Filter(int page, ProblemFilter problemFilter)
+        public ActionResult Filter(int page, ProblemPageView<ViewProblemModel, ProblemFilter> model = null)
         {
             // TODO pass ProblemFilter to Search method 
+            var problemFilter = model.Filter;
             var allProblems = _problemRepository.Search(2, new List<string>
                 { "1", problemFilter.ProblemId, problemFilter.ProblemName, problemFilter.ProblemSource });
             
