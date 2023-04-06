@@ -100,22 +100,29 @@ namespace ACJudge.Data.Repositories.DataBaseRepositories
             var id = problemIdentifiers[0];
             var c = problemIdentifiers[1];
             // TODO check if id, c are correct before call API 
-            var p = APi.GetProblem(onlineJudge, id, c).Result;
-            
-            if (p == null) return;
-            
-            var newProblem = new Problem()
+            try
             {
-                ProblemSource = p.Source,
-                ProblemSourceId = p.ProblemId,
-                ProblemTitle = p.Title[2..],
-                ProblemType = 1,
-                ProblemInHtmlForm = p.Problem,
-                Rating = p.Rate,
-                UrlSource = "https://codeforces.com/problemset/problem/" + id + "/" + c
-            };
-            Add(newProblem);
-            _addProblemTags(newProblem.ProblemId, p.Tags);
+                var p = APi.GetProblem(onlineJudge, id, c).Result;
+
+                if (p == null) return;
+
+                var newProblem = new Problem()
+                {
+                    ProblemSource = p.Source,
+                    ProblemSourceId = p.ProblemId,
+                    ProblemTitle = p.Title[2..],
+                    ProblemType = 1,
+                    ProblemInHtmlForm = p.Problem,
+                    Rating = p.Rate,
+                    UrlSource = "https://codeforces.com/problemset/problem/" + id + "/" + c
+                };
+                Add(newProblem);
+                _addProblemTags(newProblem.ProblemId, p.Tags);
+            }
+            catch
+            {
+                return;
+            }
         }
 
         private void _addProblemTags(int problemId, IList<string> tags)

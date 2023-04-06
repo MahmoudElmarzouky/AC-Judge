@@ -15,7 +15,7 @@ namespace ACJudge.Data.Repositories.DataBaseRepositories
         }
         public User Add(User newUser)
         {
-            _dbContext.Users.Add(newUser);
+            _dbContext.UsersProfile.Add(newUser);
             Commit();
             return newUser; 
         }
@@ -31,7 +31,7 @@ namespace ACJudge.Data.Repositories.DataBaseRepositories
         }
         public IList<User> List()
         {
-            return _dbContext.Users
+            return _dbContext.UsersProfile
                 .Include(s => s.Submissions)
                 .Include(pu => pu.UserProblems)
                 .ThenInclude(pu => pu.Problem)
@@ -48,7 +48,7 @@ namespace ACJudge.Data.Repositories.DataBaseRepositories
         {
             var user = Find(id);
             if (user == null) return;
-            _dbContext.Users.Remove(user);
+            _dbContext.UsersProfile.Remove(user);
             Commit();
         }
 

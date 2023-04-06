@@ -35,7 +35,7 @@ namespace ACJudge.Data.Models
                 "}";
 
             string[] verdicts = { "Accepted", "Wrong Answer", "Time limit exceeded" };
-            var users = _dbContext.Users;
+            var users = _dbContext.UsersProfile;
             var problems = _dbContext.Problems;
                 foreach(var p in problems)
                 {
