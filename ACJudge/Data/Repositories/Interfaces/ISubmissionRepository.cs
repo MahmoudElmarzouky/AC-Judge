@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ACJudge.ViewModels.ProblemViewsModel;
 
 namespace ACJudge.Data.Repositories.Interfaces
 {
@@ -20,7 +21,6 @@ namespace ACJudge.Data.Repositories.Interfaces
          * ProblemLang c++ , java etc
          * ContestId can be null or assign to contest id
          */
-        IList<T> GetSpecificSubmission(int problemType, string userName, string problemName, 
-            string problemSource, string problemResult, string problemLanguage, int? contestId);
+        IList<T> GetSpecificSubmission(StatusFilter filter);
     }
 }

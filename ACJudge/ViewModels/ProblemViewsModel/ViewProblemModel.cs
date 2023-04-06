@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ACJudge.Data.Models;
 
 namespace ACJudge.ViewModels.ProblemViewsModel
 {
@@ -22,6 +23,13 @@ namespace ACJudge.ViewModels.ProblemViewsModel
     }
     public class ProblemFilter
     {
+        public enum ProblemType
+        {
+            Practice,
+            Interview
+        };
+
+        public ProblemType Type { get; set; } = 0;
         public string ProblemId { get; set; } = "";
         public string ProblemName { get; set; } = "";
         public string ProblemSource { set; get; } = "";
@@ -29,7 +37,17 @@ namespace ACJudge.ViewModels.ProblemViewsModel
 
     public class StatusFilter
     {
-        
+        public string UserName { get; set; } = "";
+        public string ProblemName { get; set; } = "";
+        public string ProblemSource { get; set; } = "";
+        public string ProblemResult { get; set; } = "";
+        public string ProblemLanguage { get; set; } = "";
+        public int ContestId { get; set; } = 0;
+
+        public bool Valid(Submission submission)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 

@@ -1,3 +1,4 @@
+using ACJudge.Areas.Identity.Data;
 using ACJudge.Data;
 using ACJudge.Dependency;
 using Microsoft.AspNetCore.Builder;
@@ -28,6 +29,9 @@ namespace ACJudge
                 {
                     options.UseSqlServer(Configuration.GetConnectionString("UserAccountsContextConnection"));
                 });
+            services.AddDefaultIdentity<AuthUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddEntityFrameworkStores<EntitiesContext>();
+            
             DependencyRegistry.Register(services);
 
             services.AddMvc(options => options.EnableEndpointRouting = false);

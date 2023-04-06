@@ -2,6 +2,7 @@
 using System.Linq;
 using ACJudge.Data.Models;
 using ACJudge.Data.Repositories.Interfaces;
+using ACJudge.ViewModels.ProblemViewsModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace ACJudge.Data.Repositories.DataBaseRepositories
@@ -52,21 +53,13 @@ namespace ACJudge.Data.Repositories.DataBaseRepositories
             Commit();
         }
 
-        public IList<Submission> GetSpecificSubmission(int problemType, string userName, 
-            string problemName, string problemSource, string problemResult, string problemLanguage, int? contestId)
+        public IList<Submission> GetSpecificSubmission(StatusFilter filter)
         {
+            
             return _dbContext.Submissions
                .Include(p => p.Problem)
                .Include(p => p.User)
-               .Where(s =>
-                s.Problem.ProblemType == problemType &&
-                (userName==""? s.User.UserName.Contains(userName) : s.User.UserName == userName) &&
-                s.Problem.ProblemSourceId.Contains(problemName) &&
-                s.Problem.ProblemSource.Contains(problemSource) &&
-                s.Verdict.Contains(problemResult) &&
-                s.ProgrammingLanguage.Contains(problemLanguage) &&
-                s.ContestId == contestId
-               ).ToList();
+               .Where(filter.Valid).ToList();
         }
 
         public IList<Submission> FindUserSubmissions(int id)

@@ -3,6 +3,7 @@ using System.Linq;
 using ACJudge.Data.API;
 using ACJudge.Data.Models;
 using ACJudge.Data.Repositories.Interfaces;
+using ACJudge.ViewModels.ProblemViewsModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace ACJudge.Data.Repositories.DataBaseRepositories
@@ -49,41 +50,26 @@ namespace ACJudge.Data.Repositories.DataBaseRepositories
             Commit();
         }
 
-        public IList<Problem> Search(int x, IList<string> list)
+        public IList<Problem> Search(ProblemFilter filter)
         {
             var items = new List<Problem>();
-            switch (x)
+            var typeIndex = (int)filter.Type;
+            var problemId= filter.ProblemId;
+            var problemName = filter.ProblemName;
+            var problemSource = filter.ProblemSource;
+            
+            for (var i = 0; i < 2; i++)
             {
-                case 1:
-                {
-                    var type = int.Parse(list[0]);
-                    items = _dbContext.Problems.Where(item => item.ProblemType == type).ToList();
-                    break;
-                }
-                case 2:
-                {
-                    
-                    for (int i = 0; i < 2; i++)
-                    {
-                        var type = int.Parse(list[0]);
-                        var problemId = list[1];
-                        var problemName = list[2];
-                        var problemSource = (list[3] == "All" ? "" : list[3]);
-                        problemId ??= "";
-                        problemName ??= "";
-                        problemSource ??= "";
-                        items = _dbContext.Problems.Where(item =>
-                            item.ProblemType == type
-                            && item.ProblemSourceId.Contains(problemId)
-                            && item.ProblemTitle.Contains(problemName)
-                            && item.ProblemSource.Contains(problemSource)
-                        ).ToList();
-                        if (items.Count != 0) break;
-                        _addProblemFromOnlineJudge(list[3],list[1]);
-                    }
-                    break;
-                }
+                items = _dbContext.Problems.Where(item =>
+                    item.ProblemType == typeIndex
+                    && item.ProblemSourceId.Contains(problemId)
+                    && item.ProblemTitle.Contains(problemName)
+                    && item.ProblemSource.Contains(problemSource)
+                ).ToList();
+                if (items.Count != 0) break;
+                _addProblemFromOnlineJudge(problemSource,problemId);
             }
+        
             return items;
         }
 
@@ -113,22 +99,30 @@ namespace ACJudge.Data.Repositories.DataBaseRepositories
             var problemIdentifiers = _getProblemIdentifiers(problemSourceId);
             var id = problemIdentifiers[0];
             var c = problemIdentifiers[1];
-            var p = APi.GetProblem(onlineJudge, id, c).Result;
-            
-            if (p == null) return;
-            
-            var newProblem = new Problem()
+            // TODO check if id, c are correct before call API 
+            try
             {
-                ProblemSource = p.Source,
-                ProblemSourceId = p.ProblemId,
-                ProblemTitle = p.Title[2..],
-                ProblemType = 1,
-                ProblemInHtmlForm = p.Problem,
-                Rating = p.Rate,
-                UrlSource = "https://codeforces.com/problemset/problem/" + id + "/" + c
-            };
-            Add(newProblem);
-            _addProblemTags(newProblem.ProblemId, p.Tags);
+                var p = APi.GetProblem(onlineJudge, id, c).Result;
+
+                if (p == null) return;
+
+                var newProblem = new Problem()
+                {
+                    ProblemSource = p.Source,
+                    ProblemSourceId = p.ProblemId,
+                    ProblemTitle = p.Title[2..],
+                    ProblemType = 1,
+                    ProblemInHtmlForm = p.Problem,
+                    Rating = p.Rate,
+                    UrlSource = "https://codeforces.com/problemset/problem/" + id + "/" + c
+                };
+                Add(newProblem);
+                _addProblemTags(newProblem.ProblemId, p.Tags);
+            }
+            catch
+            {
+                return;
+            }
         }
 
         private void _addProblemTags(int problemId, IList<string> tags)

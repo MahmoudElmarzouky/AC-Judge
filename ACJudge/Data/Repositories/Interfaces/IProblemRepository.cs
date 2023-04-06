@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ACJudge.ViewModels.ProblemViewsModel;
 
 namespace ACJudge.Data.Repositories.Interfaces
 {
@@ -11,6 +12,6 @@ namespace ACJudge.Data.Repositories.Interfaces
         void Commit();
         T Find(int id);
         T FindByName(string onlineJudge,string problemSourceId); 
-        IList<T> Search(int x, IList<string> list);
+        IList<T> Search(ProblemFilter filter);
     }
 }

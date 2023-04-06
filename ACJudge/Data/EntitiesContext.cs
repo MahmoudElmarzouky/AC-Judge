@@ -1,15 +1,17 @@
-﻿using ACJudge.Data.Models;
+﻿using ACJudge.Areas.Identity.Data;
+using ACJudge.Data.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ACJudge.Data
 {
-    public class EntitiesContext : DbContext
+    public class EntitiesContext :  IdentityDbContext<AuthUser>
     {
         public EntitiesContext(DbContextOptions options) : base(options)
         {
 
         }
-        public DbSet<User> Users { get; set; }
+        public DbSet<User> UsersProfile { get; set; }
         public DbSet<Contest> Contests { get; set; }
         public DbSet<Problem> Problems { get; set; }
         public DbSet<Group> Groups { get; set; }
@@ -26,6 +28,8 @@ namespace ACJudge.Data
         public DbSet<CodeforcesStatistics> CodeforcesStatistics { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+            
             modelBuilder.Entity<ProblemTag>()
             .HasKey(p => new { p.ProblemId, p.TagId });
             
@@ -52,6 +56,11 @@ namespace ACJudge.Data
                 pu.UserId,
                 pu.ProblemId
             });
+            
+            // identity 
+            modelBuilder.Entity<AuthUser>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
         }
     }
 }

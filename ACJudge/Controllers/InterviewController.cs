@@ -48,6 +48,8 @@ namespace ACJudge.Controllers
 
         public ActionResult Index(int? page)
         {
+            throw new NotImplementedException();
+            /*
             ViewBag.function = "Index";
             var pageNumber = page ?? 1;
             var listProblems = _problemRepository.Search(1, new List<string> { "2" });
@@ -59,6 +61,7 @@ namespace ACJudge.Controllers
             ViewBag.Pagenum = pageNumber;
             var list = model.ToPagedList(pageNumber, _pageSize);
             return View(list);
+            */
         }
 
         public bool CanSeeSubmission(int submissionId)
@@ -69,6 +72,8 @@ namespace ACJudge.Controllers
 
         public ActionResult Status(int? page)
         {
+            throw new NotImplementedException();
+            /*
             var pageNumber = page ?? 1;
             ViewBag.function = "Status";
             var submissions = _submissionRepository.GetSpecificSubmission(
@@ -85,6 +90,7 @@ namespace ACJudge.Controllers
             ViewBag.Pagenum = pageNumber;
             var newList = list.ToPagedList(pageNumber, _pageSize);
             return View(newList);
+            */
         }
 
         [HttpPost]
@@ -96,6 +102,8 @@ namespace ACJudge.Controllers
 
         public ActionResult Filter(int? page, string problemId, string problemName, string problemSource)
         {
+            throw new NotImplementedException();
+            /*
             var pageNumber = page ?? 1;
             ViewBag.problemid = problemId;
             ViewBag.problemname = problemName;
@@ -110,12 +118,15 @@ namespace ACJudge.Controllers
             ViewBag.Pagenum = pageNumber;
             var list = model.ToPagedList(pageNumber, _pageSize);
             return View("Index", list);
+            */
         }
 
         public ActionResult FilterStatus(int? page,
             string userName, string problemName, string problemSource,
             string problemResult, string problemLang)
         {
+            throw new NotImplementedException();
+            /*
             var pageNumber = page ?? 1;
             ViewBag.function = "FilterStatus";
             userName ??= "";
@@ -138,6 +149,7 @@ namespace ACJudge.Controllers
             ViewBag.Pagenum = pageNumber;
             var model = list.ToPagedList(pageNumber, _pageSize);
             return View("Status", model);
+            */
         }
 
         public ActionResult FlipFavourite(int id)
