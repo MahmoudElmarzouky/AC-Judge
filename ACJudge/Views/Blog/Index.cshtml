@@ -3,18 +3,21 @@
 @{
 	ViewData["Title"] = "Blog Page";
 }
+@using Microsoft.Extensions.Localization
+@using ACJudge.Resources.Blog
 
+@inject IStringLocalizer<BlogResource> BlogLocalizer
 <section class="all-blog-page">
 	<div class="container">
 		<div class="page-header">
-			<h2>Blog <span class="text-muted">All Blog view</span></h2>
-			<a class="btn btn-primary" asp-action="Create" asp-route-id="@null"><i class="fas fa-plus"></i> New Blog</a>
+			<h2>@BlogLocalizer["Blog"]<span class="text-muted">All Blog view</span></h2>
+			<a class="btn btn-primary" asp-action="Create" asp-route-id="@null"><i class="fas fa-plus"></i>@BlogLocalizer["NewBlog"]</a>
 		</div>
 		<section class="blog-table">
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<div class="panel-title">
-						<i class="fas fa-filter"></i> Filter
+						<i class="fas fa-filter"></i> @BlogLocalizer["Filter"]
 					</div>
 					<i class="fas fa-angle-down" data-toggle="OpenFilterPanel"></i>
 				</div>
@@ -22,13 +25,13 @@
 					<form class="form-horizontal" asp-action="Filter" method="POST">
 						<input type="hidden" name="page" class="form-control" value ="1"/>
 						<div class="form-group row">
-							<label class="control-label col-md-2">Blog Title</label>
+							<label class="control-label col-md-2">@BlogLocalizer["BlogTitle"]</label>
 							<div class="col-md-8">
 								<input type="text" name="Title" class="form-control" value="@Model.Filter.Title"/>
 							</div>
 						</div>
 						<div class="form-group row">
-							<label class="control-label col-md-2">Prepeard By</label>
+							<label class="control-label col-md-2">@BlogLocalizer["PrepeardBy"]</label>
 							<div class="col-md-8">
 								<input type="text" name="preparedBy" class="form-control" value="@Model.Filter.PreparedBy"/>
 							</div>
@@ -45,11 +48,11 @@
 					<table class="table table-bordered text-center">
 						<thead>
 						<tr class="active">
-							<th class="text-center">Favorite</th>
-							<th class="text-center">Title</th>
-							<th class="text-center">Create Time</th>
-							<th class="text-center">Vote</th>
-							<th class="text-center">Prepeard By</th>
+								<th class="text-center">@BlogLocalizer["Favorite"]</th>
+								<th class="text-center">@BlogLocalizer["Title"]</th>
+								<th class="text-center">@BlogLocalizer["CreateTime"]</th>
+								<th class="text-center">@BlogLocalizer["Vote"]</th>
+								<th class="text-center">@BlogLocalizer["PrepeardBy"]</th>
 						</tr>
 						</thead>
 						<tbody>
