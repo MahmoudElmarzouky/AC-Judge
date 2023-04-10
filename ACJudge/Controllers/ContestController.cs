@@ -95,7 +95,7 @@ namespace ACJudge.Controllers
             }
             catch
             {
-                return View("Index");
+                return View("ErrorLink");
             }
         }
 
