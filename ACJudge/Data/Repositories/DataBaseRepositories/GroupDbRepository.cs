@@ -84,6 +84,7 @@ namespace ACJudge.Data.Repositories.DataBaseRepositories
 
         private void LoadCurrentGroup(Group group)
         {
+            if (group == null) return;
            _dbContext.Entry(group).Collection(c => c.UserGroup).Load();
            _dbContext.Entry(group).Collection(c => c.Contests).Load();
            _dbContext.Entry(group).Collection(c => c.Blogs).Load();
