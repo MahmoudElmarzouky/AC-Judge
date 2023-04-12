@@ -13,7 +13,7 @@ namespace ACJudge.Data.Models
         public int DownVote { get; set; }
         public DateTime CreationTime { get; set; } = DateTime.Now;
         public int BlogId { get; set; }
-        public Blog Blog { get; set; }
+        public virtual Blog Blog { get; set; }
         public virtual ICollection<CommentVote> CommentVotes { get; set; } = new HashSet<CommentVote>();
     }
 }
