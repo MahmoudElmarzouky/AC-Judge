@@ -46,7 +46,20 @@ namespace ACJudge.ViewModels.ProblemViewsModel
 
         public bool Valid(Submission submission)
         {
-            throw new NotImplementedException();
+            // TODO complete the method 
+            try
+            {
+                if (submission.User.UserName.Equals(UserName)) return true;
+                if (submission.Problem.ProblemTitle.Equals(ProblemName)) return true;
+                if (submission.Problem.ProblemSource.Equals(ProblemSource)) return true;
+                if (submission.ProgrammingLanguage.Equals(ProblemLanguage)) return true;
+                if (submission.ContestId == ContestId) return true;
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 

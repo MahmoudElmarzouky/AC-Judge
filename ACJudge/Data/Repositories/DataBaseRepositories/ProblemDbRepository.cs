@@ -55,8 +55,8 @@ namespace ACJudge.Data.Repositories.DataBaseRepositories
             var items = new List<Problem>();
             var typeIndex = (int)filter.Type;
             var problemId= filter.ProblemId;
-            var problemName = filter.ProblemName;
-            var problemSource = filter.ProblemSource;
+            var problemName = string.IsNullOrEmpty(filter.ProblemName)? string.Empty: filter.ProblemName;
+            var problemSource = string.IsNullOrEmpty(filter.ProblemSource) || filter.ProblemSource.Contains("all")? string.Empty: filter.ProblemSource;
             
             for (var i = 0; i < 2; i++)
             {
@@ -81,16 +81,13 @@ namespace ACJudge.Data.Repositories.DataBaseRepositories
 
         public Problem FindByName(string onlineJudge, string problemSourceId)
         {
-            // we are currently working with codeforces only 
-            if (onlineJudge != "CodeForces") return null;
-            
             problemSourceId = problemSourceId.ToUpper();
-            var problem = List().FirstOrDefault(u => u.ProblemSourceId == problemSourceId && 
-                                                     u.ProblemSource == onlineJudge);
+            var problem = List().FirstOrDefault(u => u.ProblemSourceId.Equals(problemSourceId) && 
+                                                     u.ProblemSource.Equals(onlineJudge));
             if (problem != null) return problem;
             _addProblemFromOnlineJudge(onlineJudge, problemSourceId);
-            problem = List().FirstOrDefault(u => u.ProblemSourceId == problemSourceId && 
-                                                 u.ProblemSource == onlineJudge);
+            problem = List().FirstOrDefault(u => u.ProblemSourceId.Equals(problemSourceId) && 
+                                                 u.ProblemSource.Equals(onlineJudge));
             return problem;
         }
 
@@ -103,7 +100,6 @@ namespace ACJudge.Data.Repositories.DataBaseRepositories
             try
             {
                 var p = APi.GetProblem(onlineJudge, id, c).Result;
-
                 if (p == null) return;
 
                 var newProblem = new Problem()
@@ -111,7 +107,7 @@ namespace ACJudge.Data.Repositories.DataBaseRepositories
                     ProblemSource = p.Source,
                     ProblemSourceId = p.ProblemId,
                     ProblemTitle = p.Title[2..],
-                    ProblemType = 1,
+                    ProblemType = 0,
                     ProblemInHtmlForm = p.Problem,
                     Rating = p.Rate,
                     UrlSource = "https://codeforces.com/problemset/problem/" + id + "/" + c
@@ -121,7 +117,7 @@ namespace ACJudge.Data.Repositories.DataBaseRepositories
             }
             catch
             {
-                return;
+                // ignored 
             }
         }
 

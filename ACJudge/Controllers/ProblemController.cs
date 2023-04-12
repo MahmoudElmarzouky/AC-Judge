@@ -129,11 +129,10 @@ namespace ACJudge.Controllers
             return View("Index", problemPage);
         }
 
-        public ActionResult FilterStatus(int? page, ProblemPageView<ViewStatusModel, StatusFilter> model = null)
+        public ActionResult FilterStatus(int page, ProblemPageView<ViewStatusModel, StatusFilter> model = null)
         {
             var filter = model?.Filter ?? new StatusFilter();
 
-            // TODO Pass StatusFilter to GetSpecificSubmission method 
             var submissions = _submissionRepository.GetSpecificSubmission(filter).
                 OrderByDescending(s => s.SubmissionId)
                 .Select(GetViewStatusModel).ToList();
@@ -141,7 +140,8 @@ namespace ACJudge.Controllers
             
             if (page < 1 || page > totalPages) page = 1;
             
-            var problemPage = new ProblemPageView<ViewStatusModel, StatusFilter>(submissions, (int)page, totalPages, filter, _login);
+            var problemPage = new ProblemPageView<ViewStatusModel, StatusFilter>
+                (submissions, page, totalPages, filter, _login);
             
             return View("Status", problemPage);
         }
@@ -244,8 +244,7 @@ namespace ACJudge.Controllers
 
         private ViewProblemDetails GetDetailProblem(Problem problem)
         {
-            // TODO Fix Details 
-            var model = new ViewProblemDetails()
+            var model = new ViewProblemDetails
             {
                 problemId = problem.ProblemId,
                 problemSource = problem.ProblemSource,
@@ -256,13 +255,13 @@ namespace ACJudge.Controllers
                 Rating = problem.Rating,
                 NumberAc = problem.Submissions.Count(p => p.Verdict == "Accepted"),
                 Numbersubmission = problem.Submissions.Count,
-                userName = _user.UserName
+                userName = _user.UserName,
+                IsFavorite = _login &&
+                             _listMyFavorite.FirstOrDefault(f =>
+                                 f.IsFavourite && f.ProblemId == problem.ProblemId) != null,
+                problemTag = problem.ProblemTag.Select(problemTag => problemTag.Tag.TagName).ToList()
             };
-            model.IsFavorite = _login &&
-                                _listMyFavorite.FirstOrDefault(f =>
-                                    f.IsFavourite && f.ProblemId == problem.ProblemId) != null;
-            
-            model.problemTag = problem.ProblemTag.Select(problemTag => problemTag.Tag.TagName).ToList();
+
             return model;
         }
 

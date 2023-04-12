@@ -9,27 +9,17 @@ namespace ACJudge.Data.API;
 
 public static class APi
 {
-    public static ProblemInfo GetProblemData(string onlineJudge, string url)
-    {
-        return onlineJudge switch
-        {
-            "CodeForces" => new CodeForcesGetProblemApi().GetProblem(url),
-            _ => null
-        };
-    }
     public static async Task<ProblemInfo> GetProblem(string onlineJudge, string contestId, string problemIndex)
     {
+        
         var url = $@"https://localhost:7222/Api?contestId={contestId}&problemId={problemIndex}";
-        
-        HttpClient client = new HttpClient();
-        
-        // Make the GET request and get the response
-        HttpResponseMessage response = await client.GetAsync(url);
 
-        // Get the response content as a string
+        var client = new HttpClient();
+
+        var response = await client.GetAsync(url);
+
         var responseContent = await response.Content.ReadAsStringAsync();
 
-        // Deserialize the JSON response to a C# object
         var problem = JsonConvert.DeserializeObject<ProblemInfo>(responseContent);
 
         return problem;
