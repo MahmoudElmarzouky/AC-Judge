@@ -114,7 +114,7 @@ namespace ACJudge.Controllers
             }
             catch
             {
-                return View();
+                return Index();
             }
         }
 
@@ -617,6 +617,7 @@ namespace ACJudge.Controllers
                         Alias = pair.problem.Alias,
                         PlatForm = pair.problem.PlatForm,
                         ProblemSourceId = pair.problem.problemId
+                        // Problem = pair.problem
                     }).ToList();
             return contestProblems;
         }
