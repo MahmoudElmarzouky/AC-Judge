@@ -31,7 +31,6 @@ namespace ACJudge.ViewModels.BlogViewModel
         public int? GroupId { get; set; }
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
     }
-
     public class Filter
     {
         public string PreparedBy { get; set; } = "";
@@ -51,4 +50,5 @@ namespace ACJudge.ViewModels.BlogViewModel
             Filter = filter ?? new Filter();
         }
     }
+    
 }

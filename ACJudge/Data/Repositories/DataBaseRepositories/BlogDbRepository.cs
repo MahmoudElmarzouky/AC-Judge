@@ -39,6 +39,7 @@ namespace ACJudge.Data.Repositories.DataBaseRepositories
                 .ThenInclude(user => user.User)
                 .Include(comment => comment.Comments)
                 .ThenInclude(commentVote => commentVote.CommentVotes)
+                .ThenInclude(u=>u.User)
                 .Include(group=>group.Group)
                 .ToList();
         }
