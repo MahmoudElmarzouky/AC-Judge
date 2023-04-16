@@ -455,7 +455,18 @@ function Divide_And_Merge_Codeforcess_Problem(){
     ProblmeStatment.css('display', 'block');
    
 }
-
+function VoteBlog(blogId, voteValue){
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function (){
+      if (this.readyState === 4 && this.status === 200){
+          document.getElementById("voteValue").innerText = this.response.toString();
+      }  
+    };
+    // TODO Fix Url to be relative 
+    var functionUrl = "https://localhost:5021/Blog/" + (voteValue === 1? "UpVote": "DownVote") + "/" + blogId;
+    request.open("GET", functionUrl, true);
+    request.send();
+}
 $(function(){
     
     'use strict';

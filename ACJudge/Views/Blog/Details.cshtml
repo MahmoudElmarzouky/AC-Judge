@@ -30,9 +30,8 @@
 					@Model.BlogContent
 				</p>
 				<div class="well well-sm">
-
 					<div>
-						<a asp-action="UpVote" asp-route-id="@Model.BlogId" class="fas fa-caret-up text-success"></a> <span class="text-primary">@Model.BlogVote</span> <a asp-action="DownVote" asp-route-id="@Model.BlogId" class="fas fa-caret-down text-danger"></a>
+						<button onclick="VoteBlog(@Model.BlogId, 1)" class="fas fa-caret-up text-success"></button> <span id = "voteValue" class="text-primary">@Model.BlogVote</span> <button onclick="VoteBlog(@Model.BlogId, -1)" class="fas fa-caret-down text-danger"></button>
 					</div>
 					<div>
 						<a asp-action="Favourite" asp-route-id="@Model.BlogId" class="fas fa-heart @(Model.IsFavorite == true ? "active" : "")" data-favorite="IconFav"></a>
