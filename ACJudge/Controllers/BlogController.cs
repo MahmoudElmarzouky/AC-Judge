@@ -260,22 +260,6 @@ namespace ACJudge.Controllers
                 return -1;
             }
         }
-        /*
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult UpVote(Blog model)
-        {
-            try
-            {
-                _blogs.UpdateVote(model.BlogId,_user.UserId,1);
-                return RedirectToAction("Details", new { id = model.BlogId });
-            }
-            catch
-            {
-                return RedirectToAction(nameof(Index));
-            }
-        }
-        */
         public int DownVote(int id)
         {
             try { 
@@ -288,22 +272,6 @@ namespace ACJudge.Controllers
                 return -1;
             }
         }
-        /*
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult DownVote(Blog model)
-        {
-            try
-            {
-                _blogs.UpdateVote(model.BlogId, _user.UserId, -1);
-                return RedirectToAction("Details", new { id = model.BlogId });
-            }
-            catch
-            {
-                return RedirectToAction(nameof(Index));
-            }
-        }
-        */
         public ActionResult Favourite(int id)
         {
             try { 
