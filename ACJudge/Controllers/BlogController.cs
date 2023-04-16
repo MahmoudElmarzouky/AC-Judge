@@ -247,20 +247,23 @@ namespace ACJudge.Controllers
             }
         }
 
-        public ActionResult UpVote(int id)
+        public int UpVote(int id)
         {
-            try { 
+            try
+            {
+                _blogs.UpdateVote(id,_user.UserId,1);
                 var blog = _blogs.Find(id);
-                return UpVote(blog);
+                return blog.BlogVote;
             }
             catch (Exception)
             {
-                return RedirectToAction(nameof(Index));
+                return -1;
             }
         }
+        /*
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UpVote(Blog model )
+        public ActionResult UpVote(Blog model)
         {
             try
             {
@@ -272,17 +275,20 @@ namespace ACJudge.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
-        public ActionResult DownVote(int id)
+        */
+        public int DownVote(int id)
         {
             try { 
+                _blogs.UpdateVote(id, _user.UserId, -1);
                 var blog = _blogs.Find(id);
-                return DownVote(blog);
+                return blog.BlogVote;
             }
             catch (Exception)
             {
-                return RedirectToAction(nameof(Index));
+                return -1;
             }
         }
+        /*
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult DownVote(Blog model)
@@ -297,6 +303,7 @@ namespace ACJudge.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
+        */
         public ActionResult Favourite(int id)
         {
             try { 
