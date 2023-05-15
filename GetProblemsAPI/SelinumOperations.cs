@@ -14,28 +14,44 @@ public class SelinumOperations: ISelinum
         _driver = new ChromeDriver();
         _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
     }
+
+    ~SelinumOperations() => _driver.Quit();
+
     public void Login()
     {
-        if (_driver.Manage().Cookies.AllCookies.Count > 0)
-        {
-            return;
-        }
+        LoadCookies();
         const string email = "TheWaterIsHot";
         const string password = "0112609288";
         const string url = "https://codeforces.com/enter";
         const string emailXpath = "//*[@id=\"handleOrEmail\"]";
         const string passwordXPath = "//*[@id=\"password\"]";
         const string loginButtonXPath = "//*[@id=\"enterForm\"]/table/tbody/tr[4]/td/div[1]/input";
-        
-        _driver.Navigate().GoToUrl(url);
-        
-        _wait.Until(driver=>driver.FindElement(By.XPath(emailXpath)));
-        
-        _driver.FindElement(By.XPath(emailXpath)).SendKeys(email);
-        _driver.FindElement(By.XPath(passwordXPath)).SendKeys(password);
-        _driver.FindElement(By.Id("remember")).Click();
-        _driver.FindElement(By.XPath(loginButtonXPath)).Submit();
-        CookieOperations.SaveCookies(_driver.Manage().Cookies.AllCookies);
+        const string myProfileXPath = "//*[@id=\"header\"]/div[2]/div[2]/a[1]";
+        while (true)
+        {
+            try
+            {
+                 _wait.Until(driver => driver.FindElement(By.XPath(myProfileXPath)));
+            }
+            catch
+            {
+                if (_driver.Url.Equals(url) == false)
+                    _driver.Navigate().GoToUrl(url);
+            
+                _wait.Until(driver => driver.FindElement(By.XPath(emailXpath)));
+                
+                _driver.FindElement(By.XPath(emailXpath)).SendKeys(email);
+                _driver.FindElement(By.XPath(passwordXPath)).SendKeys(password);
+                _driver.FindElement(By.Id("remember")).Click();
+                _driver.FindElement(By.XPath(loginButtonXPath)).Submit();
+                
+            
+                CookieOperations.SaveCookies(_driver.Manage().Cookies.AllCookies);
+                continue;
+            }
+
+            break;
+        }
     }
 
     public void LoadCookies()
@@ -51,24 +67,45 @@ public class SelinumOperations: ISelinum
         {
             _driver.Manage().Cookies.AddCookie(cookie);
         }
+        _driver.Navigate().Refresh();
     }
 
-    public SubmissionStatus Submit(string problemName, string code, string language)
+    public async Task<SubmissionStatus> Submit(string problemName, string code, string language, string fileName)
     {
-        File.WriteAllText("code.txt", code);
-        var path = Directory.GetCurrentDirectory() + "/code.txt";
         
+        await File.WriteAllTextAsync(fileName, code);
+        var path = Directory.GetCurrentDirectory() + "/" + fileName;
         _driver.Navigate().GoToUrl(SubmitUrl);
-        _wait.Until(driver=>driver.FindElement(By.Name("submittedProblemCode")));
-        
-        
+        while (true)
+        {
+            try
+            {
+                _wait.Until(driver => driver.FindElement(By.Name("submittedProblemCode")));
+                break;
+            }
+            catch
+            {
+            }
+        }
+
         _driver.FindElement(By.Name("sourceFile")).SendKeys(path);
         _driver.FindElement(By.Name("submittedProblemCode")).SendKeys(problemName);
         var dropDown = new SelectElement(_driver.FindElement(By.Name("programTypeId")));
         dropDown.SelectByValue(language);
         _driver.FindElement(By.Id("singlePageSubmitButton")).Submit();
         
-        _wait.Until(driver=>driver.FindElement(By.ClassName("status-frame-datatable")));
+        while (true)
+        {
+            try
+            {
+                _wait.Until(driver=>driver.FindElement(By.ClassName("status-frame-datatable")));
+                break;
+            }
+            catch
+            {
+            }
+        }
+        File.Delete(fileName);
         var firstRow = _driver.
             FindElement(By.ClassName("status-frame-datatable")).
             FindElements(By.TagName("tr"))[1];
@@ -79,8 +116,10 @@ public class SelinumOperations: ISelinum
             var verdict = list[size-3].Text;
             var time = list[size - 2].Text;
             var space =  list[size - 1].Text;
-            if (verdict.Contains("Running ") || verdict.Contains("queue"))
+            if (verdict.Contains("Running") || verdict.Contains("queue"))
                 continue;
+            _driver.Close();
+            _driver.Quit();
             return new SubmissionStatus(verdict, time, space);
         }
     }
