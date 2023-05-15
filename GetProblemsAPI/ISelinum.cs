@@ -4,6 +4,6 @@ public interface ISelinum
 {
     void Login();
     void LoadCookies();
-    SubmissionStatus Submit(string problemName, string code, string language);
+    Task<SubmissionStatus> Submit(string problemName, string code, string language, string fileName);
     ProblemInfo GetCodeForcesProblem(string contestId, string problemId);
 }
