@@ -122,7 +122,7 @@ function Get_Submision(URL, SubID, ElementShow){
         method: "POST",
         cache: false,
         url: URL ,
-        data: { SubmisionId: SubID },
+        data: { submissionId: SubID },
         success: function (data, status) {
             var result = '';
             for(var i=0;i < data.length; ++i){
@@ -169,6 +169,9 @@ function Submision_Status_Page(){
         
         var URL = button.data('link');
         var SetCode = modal.find('.modal-body .submision pre');
+        console.log(URL);
+        console.log(SubID);
+        console.log(SetCode);
         Get_Submision(URL, SubID, SetCode);
     });
     

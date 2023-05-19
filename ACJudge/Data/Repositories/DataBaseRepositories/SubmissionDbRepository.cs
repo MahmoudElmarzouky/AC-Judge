@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ACJudge.Data.Models;
 using ACJudge.Data.Repositories.Interfaces;
 using ACJudge.ViewModels.ProblemViewsModel;
@@ -17,6 +18,12 @@ namespace ACJudge.Data.Repositories.DataBaseRepositories
         public Submission Add(Submission newSubmission)
         {
             _dbContext.Submissions.Add(newSubmission);
+            Commit();
+            return newSubmission;
+        }
+        public async Task<Submission> AddAsync(Submission newSubmission)
+        {
+            await _dbContext.Submissions.AddAsync(newSubmission);
             Commit();
             return newSubmission;
         }

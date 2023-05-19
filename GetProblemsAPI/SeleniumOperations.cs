@@ -25,7 +25,8 @@ public class SeleniumOperations: ISelinum
     }
     public void Login()
     {
-        LoadCookies();
+        if (LoadCookies())
+            return;
         while (true)
         {
             try
@@ -34,8 +35,7 @@ public class SeleniumOperations: ISelinum
             }
             catch
             {
-                if (_driver.Url.Equals(LoginUrl) == false)
-                    _driver.Navigate().GoToUrl(LoginUrl);
+                _goTo(LoginUrl);
             
                 _wait.Until(driver => driver.FindElement(By.XPath(EmailInputXPath)));
                 
@@ -50,20 +50,24 @@ public class SeleniumOperations: ISelinum
             break;
         }
     }
-    public void LoadCookies()
+
+    private void _goTo(string url)
+    {
+        while (_driver.Url.Equals(url) == false)
+            _driver.Navigate().GoToUrl(url);
+    }
+    public bool LoadCookies()
     {
         var cookies = CookieOperations.GetCookies();
         if (cookies.Count == 0)
-        {
-            Login();
-            return;
-        }
-        _driver.Navigate().GoToUrl("https://codeforces.com/");
+            return false;
+        _goTo("https://codeforces.com/");
         foreach (var cookie in cookies)
         {
             _driver.Manage().Cookies.AddCookie(cookie);
         }
         _driver.Navigate().Refresh();
+        return true;
     }
     private void _waitObjectToLoad(By accessType)
     {
@@ -82,10 +86,9 @@ public class SeleniumOperations: ISelinum
     }
     public async Task<SubmissionStatus> Submit(string problemName, string code, string language, string fileName)
     {
-        
         await File.WriteAllTextAsync(fileName, code);
         var path = Directory.GetCurrentDirectory() + "/" + fileName;
-        _driver.Navigate().GoToUrl(SubmitUrl);
+        _goTo(SubmitUrl);
         _waitObjectToLoad(By.Name("submittedProblemCode"));
 
         _driver.FindElement(By.Name("sourceFile")).SendKeys(path);
@@ -121,7 +124,7 @@ public class SeleniumOperations: ISelinum
     public ProblemInfo GetCodeForcesProblem(string contestId, string problemId)
     {
         var url = $"https://www.codeforces.com/problemset/problem/{contestId}/{problemId}";
-        _driver.Navigate().GoToUrl(url);
+        _goTo(url);
         var title = _driver.FindElement(By.ClassName("title")).Text;
         var pageHtml = _driver.FindElement(By.ClassName("problem-statement")).
             GetAttribute("outerHTML");

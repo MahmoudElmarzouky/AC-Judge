@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using ACJudge.ViewModels.ProblemViewsModel;
 
 namespace ACJudge.Data.Repositories.Interfaces
@@ -7,6 +8,7 @@ namespace ACJudge.Data.Repositories.Interfaces
     {
         IList<T> List();
         T Add(T entity);
+        Task<T> AddAsync(T entity);
         void Update(T entity);
         void Remove(int id);
         void Commit();

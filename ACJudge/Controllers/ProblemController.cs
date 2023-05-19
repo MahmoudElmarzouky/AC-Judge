@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using ACJudge.Data.API;
 using ACJudge.Data.Models;
 using ACJudge.Data.Repositories.Interfaces;
@@ -65,24 +67,35 @@ namespace ACJudge.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult Submit(int problemId, string problemSourceId, string language)
+        public async Task<ActionResult> Submit(int problemId, string problemSourceId, string language)
         {
-            var submitText = Request.Form["SubmitText"];
-
+            var solutionCode = Request.Form["SubmitText"];
+            var encodedString = Uri.EscapeDataString(solutionCode);
+            
             var submission = new Submission
             {
                 MemoryConsumeBytes = "",
                 TimeConsumeMillis = "",
                 Visible = false,
                 CreationTime = DateTime.Now,
-                Verdict = "Inqueue",
+                Verdict = "Running",
+                // TODO language will be a number, Fix it latter
                 ProgrammingLanguage = language,
                 UserId = _user.UserId,
                 ProblemId = problemId,
-                SubmissionText = submitText
+                SubmissionText = solutionCode.ToString()
             };
-            submission = _submissionRepository.Add(submission);
-            APi.GetVerdict(problemSourceId, submitText, language, submission.SubmissionId);
+            await _submissionRepository.AddAsync(submission);
+            
+            var submissionStatus = await APi.GetVerdict(problemSourceId,
+                encodedString, language);
+            
+            submission.Verdict = submissionStatus.Verdict;
+            submission.TimeConsumeMillis = submissionStatus.Time;
+            submission.MemoryConsumeBytes = submissionStatus.Space;
+            
+            _submissionRepository.Commit();
+            
             return RedirectToAction("Details", new { id = problemId });
         }
 

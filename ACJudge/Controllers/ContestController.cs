@@ -663,14 +663,16 @@ namespace ACJudge.Controllers
         {
             try
             {
+                // TODO Fix This 
                 var userId = _user.UserId;
                 if (!CanAccessTheContest(contestId, userId))
                     return RedirectToAction("MySubmission", new { contestId });
 
                 var problemSourceId = _problems.Find(problemId).ProblemSourceId;
 
-                var submissionId = _contests.Submit(userId, contestId, problemId, code, lang);
-                APi.GetVerdict(problemSourceId, code, lang, submissionId);
+                _contests.Submit(userId, contestId, problemId, code, lang);
+                var submissionStatus = APi.GetVerdict(problemSourceId, code,
+                    lang);
                 RegisterInContest(contestId);
                 return RedirectToAction("MySubmission", new { id = contestId });
             }
