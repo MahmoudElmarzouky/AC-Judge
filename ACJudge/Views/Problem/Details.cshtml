@@ -99,7 +99,7 @@
             <!-- View Modal Submit-->
             <section class="modal fade" id="SubmitProblmeMain" tabindex="-1" role="dialog">
                 <div class="modal-dialog modal-lg">
-                    <form class="modal-content" method="Post" asp-action="Submit">
+                    <form id = "modal-content" class="modal-content" method="Post">
                         <div class="modal-header">
                             <div class="model-header-flex">
                                 <h3 class="modal-title">
@@ -192,7 +192,7 @@
                             <input hidden name="ProblemId" value="@Model.problemId"/>
                             <input hidden name="problemSourceId" value="@Model.problemsourceId"/>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-info">Submit</button>
+                            <button  type="submit" onclick="SubmitCode()" class="btn btn-info">Submit</button>
                         </div>
                     </form>
                 </div>

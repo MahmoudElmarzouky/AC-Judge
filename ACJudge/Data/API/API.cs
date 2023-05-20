@@ -34,7 +34,8 @@ public static class APi
     public static async Task<SubmissionStatus> GetVerdict(string problemName, string solution, 
         string language)
     {
-        var url = $"https://localhost:7222/SubmitCode?problemName={problemName}&code={solution}&language={language}";
+        var encodedSolution = Uri.EscapeDataString(solution);
+        var url = $"https://localhost:7222/SubmitCode?problemName={problemName}&code={encodedSolution}&language={language}";
         var responseContent = await _getResponse(url);
         var submitStatus = JsonConvert.DeserializeObject<SubmissionStatus>(responseContent);
         return submitStatus;

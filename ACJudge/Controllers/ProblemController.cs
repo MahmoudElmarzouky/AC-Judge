@@ -67,18 +67,16 @@ namespace ACJudge.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult> Submit(int problemId, string problemSourceId, string language)
+        public async Task<int> Submit(int problemId, string problemSourceId, string language)
         {
             var solutionCode = Request.Form["SubmitText"];
-            var encodedString = Uri.EscapeDataString(solutionCode);
-            
             var submission = new Submission
             {
                 MemoryConsumeBytes = "",
                 TimeConsumeMillis = "",
                 Visible = false,
                 CreationTime = DateTime.Now,
-                Verdict = "Running",
+                Verdict = "InQueue",
                 // TODO language will be a number, Fix it latter
                 ProgrammingLanguage = language,
                 UserId = _user.UserId,
@@ -88,15 +86,14 @@ namespace ACJudge.Controllers
             await _submissionRepository.AddAsync(submission);
             
             var submissionStatus = await APi.GetVerdict(problemSourceId,
-                encodedString, language);
+                solutionCode, language);
             
             submission.Verdict = submissionStatus.Verdict;
             submission.TimeConsumeMillis = submissionStatus.Time;
             submission.MemoryConsumeBytes = submissionStatus.Space;
             
             _submissionRepository.Commit();
-            
-            return RedirectToAction("Details", new { id = problemId });
+            return 1;
         }
 
         public bool CanSeeSubmission(int submissionId)
