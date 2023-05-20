@@ -122,7 +122,7 @@ function Get_Submision(URL, SubID, ElementShow){
         method: "POST",
         cache: false,
         url: URL ,
-        data: { SubmisionId: SubID },
+        data: { submissionId: SubID },
         success: function (data, status) {
             var result = '';
             for(var i=0;i < data.length; ++i){
@@ -464,6 +464,56 @@ function VoteBlog(blogId, voteValue){
         url: URL ,
         success: function (data, status) {
             document.getElementById("voteValue").innerText = data.toString();
+        },
+        error: function(xhr, status, error){
+            console.log(error);
+        }
+    });
+}
+function SubmitCode(){
+    var problemId = document.getElementsByName("ProblemId")[0].value; 
+    var problemSourceId = document.getElementsByName("problemSourceId")[0].value;
+    var code = document.forms["modal-content"].SubmitText.value;
+    var language = document.forms["modal-content"].Language.value;
+    var URL = "https://localhost:5021/Problem/Submit";
+    $.ajax({
+        method: "POST",
+        cache: false,
+        url: URL ,
+        data: { 
+            problemId: problemId, 
+            problemSourceId: problemSourceId,
+            language: language,
+            SubmitText: code
+        },
+        success: function (data, status) {
+            // Done
+        },
+        error: function(xhr, status, error){
+            console.log(error);
+        }
+    });
+}
+function SubmitCodeFromAContest(){
+    var problemId = document.forms["modal-content"].problemId.value
+    var problemSourceId = document.forms["modal-content"].problemSourceId.value
+    var code = document.forms["modal-content"].SubmitText.value;
+    var language = document.forms["modal-content"].Language.value;
+    var contestId = document.forms["modal-content"].contestId.value;
+    var URL = "https://localhost:5021/Contest/Submit";
+    $.ajax({
+        method: "POST",
+        cache: false,
+        url: URL ,
+        data: {
+            problemId: problemId,
+            problemSourceId: problemSourceId,
+            language: language,
+            SubmitText: code,
+            contestId: contestId
+        },
+        success: function (data, status) {
+            // Done
         },
         error: function(xhr, status, error){
             console.log(error);

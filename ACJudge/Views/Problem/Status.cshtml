@@ -102,7 +102,11 @@
                                 <tr>
                                     @if (item.Visiable == true)
                                     {
-                                        <td><a href="" data-link="@Url.Action("GetTextSubmission")" data-user="@item.UserName" data-id="@item.RunID" data-toggle="modal" data-target="#ShowSubmisionStatusModal">@item.RunID</a></td>  
+                                        <td>
+                                            <a href = "" data-link="@Url.Action("GetTextSubmission")" data-user="@item.UserName" data-id="@item.RunID" data-toggle="modal" data-target="#ShowSubmisionStatusModal">
+                                                @item.RunID
+                                            </a>
+                                        </td>  
                                     }
                                     else
                                     {
@@ -113,8 +117,8 @@
                                     <td>@item.OnlineJudge</td>
                                     <td><a href="#" data-toggle="tooltip" data-placement="top" title="@item.Title">@item.ProblemSourcesId</a></td>
                                     <td class="text-@(@item.Verdict=="Accepted"?"success":"danger")">@item.Verdict</td>
-                                    <td>@item.TimeConsumed ms</td>
-                                    <td>@item.MemoryConsumed KB</td>
+                                    <td>@item.TimeConsumed</td>
+                                    <td>@item.MemoryConsumed</td>
                                     <td>@item.Language</td>
                                     <td>
                                         <div>@item.SubmitTime.ToShortDateString()</div>

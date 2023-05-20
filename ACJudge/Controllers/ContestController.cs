@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using ACJudge.Data.API;
 using ACJudge.Data.Models;
 using ACJudge.Data.Repositories.Interfaces;
@@ -20,21 +21,21 @@ namespace ACJudge.Controllers
         private readonly IContestRepository<Contest> _contests;
         private readonly IProblemRepository<Problem> _problems;
         private readonly IGroupRepository<Group> _groups;
-        private readonly ISubmissionRepository<Submission> _submissions;
+        private readonly ISubmissionRepository<Submission> _submissionRepository;
         private readonly User _user;
         private const int NumberOfItemsForPage = 8;
 
         public ContestController(IContestRepository<Contest> contests, IUserRepository<User> userRepository,
             IHttpContextAccessor httpContextAccessor,
             IProblemRepository<Problem> problems,
-            IGroupRepository<Group> groups, ISubmissionRepository<Submission> submissions)
+            IGroupRepository<Group> groups, ISubmissionRepository<Submission> submissionRepository)
         {
             var userId = httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             _user = userRepository.Find(userId);
             _contests = contests;
             _problems = problems;
             _groups = groups;
-            _submissions = submissions;
+            _submissionRepository = submissionRepository;
         }
 
         // GET: HomeController
@@ -659,31 +660,53 @@ namespace ACJudge.Controllers
             }
         }
 
-        public ActionResult SubmitCode(int contestId, int problemId, string code, string lang)
+        [Authorize]
+        [HttpPost]
+        public async Task<int> Submit(int contestId, int problemId, string language, string problemSourceId)
         {
+            var solutionCode = Request.Form["SubmitText"];
             try
             {
                 var userId = _user.UserId;
                 if (!CanAccessTheContest(contestId, userId))
-                    return RedirectToAction("MySubmission", new { contestId });
+                    return 0;
 
-                var problemSourceId = _problems.Find(problemId).ProblemSourceId;
-
-                var submissionId = _contests.Submit(userId, contestId, problemId, code, lang);
-                APi.GetVerdict(problemSourceId, code, lang, submissionId);
-                RegisterInContest(contestId);
-                return RedirectToAction("MySubmission", new { id = contestId });
+                var submission = new Submission
+                {
+                    MemoryConsumeBytes = "",
+                    TimeConsumeMillis = "",
+                    Visible = false,
+                    CreationTime = DateTime.Now,
+                    Verdict = "InQueue",
+                    // TODO language will be a number, Fix it latter
+                    ProgrammingLanguage = language,
+                    UserId = _user.UserId,
+                    ProblemId = problemId,
+                    SubmissionText = solutionCode.ToString(),
+                    ContestId = contestId
+                };
+                await _submissionRepository.AddAsync(submission);
+            
+                var submissionStatus = await APi.GetVerdict(problemSourceId,
+                    solutionCode, language);
+            
+                submission.Verdict = submissionStatus.Verdict;
+                submission.TimeConsumeMillis = submissionStatus.Time;
+                submission.MemoryConsumeBytes = submissionStatus.Space;
+            
+                _submissionRepository.Commit();
+                return 1;
             }
             catch
             {
-                return RedirectToAction("MySubmission", new { contestId });
+                return 0;
             }
         }
 
         [HttpPost]
         public ActionResult GetTextSubmission(int submissionId)
         {
-            var result = _submissions.Find(submissionId).SubmissionText;
+            var result = _submissionRepository.Find(submissionId).SubmissionText;
             return Content(result, "text/plain");
         }
     }

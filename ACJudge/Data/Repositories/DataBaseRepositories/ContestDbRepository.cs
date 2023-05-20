@@ -261,7 +261,7 @@ namespace ACJudge.Data.Repositories.DataBaseRepositories
             var newSubmission = _createNewSubmission(userId, contestId, problemId, code, language);
             contest.Submissions.Add(newSubmission);
             Commit(); 
-            return newSubmission.SubmissionId;
+            return 1;
         }
         private static Submission _createNewSubmission(int userId, int contestId, int problemId, string code, string lang)
         {
@@ -273,10 +273,9 @@ namespace ACJudge.Data.Repositories.DataBaseRepositories
                 SubmissionText = code, 
                 UserId = userId, 
                 Visible = false,
-                Verdict = "Inqueue",
+                Verdict = "InQueue",
                 MemoryConsumeBytes = "",
                 TimeConsumeMillis = ""
-                
             };
         }
         public bool IsOwner(int contestId, int userId)

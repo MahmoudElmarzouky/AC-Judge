@@ -1,110 +1,104 @@
+using System.Linq.Expressions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 
 namespace GetProblemsAPI;
 
-public class SelinumOperations: ISelinum
+public class SeleniumOperations: ISelinum
 {
     private readonly ChromeDriver _driver;
     private readonly WebDriverWait _wait;
     private const string SubmitUrl = "https://codeforces.com/problemset/submit";
-    public SelinumOperations()
+    private const string LoginUrl = "https://codeforces.com/enter";
+    private const string EmailInputXPath = "//*[@id=\"handleOrEmail\"]";
+    private const string PasswordInputXPath = "//*[@id=\"password\"]";
+    private const string LoginButtonXPath = "//*[@id=\"enterForm\"]/table/tbody/tr[4]/td/div[1]/input";
+    private const string MyProfileHrefXPath = "//*[@id=\"header\"]/div[2]/div[2]/a[1]";
+    private const string Email = "TheWaterIsHot";
+    private const string Password = "0112609288";
+    
+    public SeleniumOperations()
     {
         _driver = new ChromeDriver();
         _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
     }
-
-    ~SelinumOperations() => _driver.Quit();
-
     public void Login()
     {
-        LoadCookies();
-        const string email = "TheWaterIsHot";
-        const string password = "0112609288";
-        const string url = "https://codeforces.com/enter";
-        const string emailXpath = "//*[@id=\"handleOrEmail\"]";
-        const string passwordXPath = "//*[@id=\"password\"]";
-        const string loginButtonXPath = "//*[@id=\"enterForm\"]/table/tbody/tr[4]/td/div[1]/input";
-        const string myProfileXPath = "//*[@id=\"header\"]/div[2]/div[2]/a[1]";
+        if (LoadCookies())
+            return;
         while (true)
         {
             try
             {
-                 _wait.Until(driver => driver.FindElement(By.XPath(myProfileXPath)));
+                 _wait.Until(driver => driver.FindElement(By.XPath(MyProfileHrefXPath)));
             }
             catch
             {
-                if (_driver.Url.Equals(url) == false)
-                    _driver.Navigate().GoToUrl(url);
+                _goTo(LoginUrl);
             
-                _wait.Until(driver => driver.FindElement(By.XPath(emailXpath)));
+                _wait.Until(driver => driver.FindElement(By.XPath(EmailInputXPath)));
                 
-                _driver.FindElement(By.XPath(emailXpath)).SendKeys(email);
-                _driver.FindElement(By.XPath(passwordXPath)).SendKeys(password);
+                _driver.FindElement(By.XPath(EmailInputXPath)).SendKeys(Email);
+                _driver.FindElement(By.XPath(PasswordInputXPath)).SendKeys(Password);
                 _driver.FindElement(By.Id("remember")).Click();
-                _driver.FindElement(By.XPath(loginButtonXPath)).Submit();
+                _driver.FindElement(By.XPath(LoginButtonXPath)).Submit();
                 
-            
                 CookieOperations.SaveCookies(_driver.Manage().Cookies.AllCookies);
                 continue;
             }
-
             break;
         }
     }
 
-    public void LoadCookies()
+    private void _goTo(string url)
+    {
+        while (_driver.Url.Equals(url) == false)
+            _driver.Navigate().GoToUrl(url);
+    }
+    public bool LoadCookies()
     {
         var cookies = CookieOperations.GetCookies();
         if (cookies.Count == 0)
-        {
-            Login();
-            return;
-        }
-        _driver.Navigate().GoToUrl("https://codeforces.com/");
+            return false;
+        _goTo("https://codeforces.com/");
         foreach (var cookie in cookies)
         {
             _driver.Manage().Cookies.AddCookie(cookie);
         }
         _driver.Navigate().Refresh();
+        return true;
     }
-
-    public async Task<SubmissionStatus> Submit(string problemName, string code, string language, string fileName)
+    private void _waitObjectToLoad(By accessType)
     {
-        
-        await File.WriteAllTextAsync(fileName, code);
-        var path = Directory.GetCurrentDirectory() + "/" + fileName;
-        _driver.Navigate().GoToUrl(SubmitUrl);
         while (true)
         {
             try
             {
-                _wait.Until(driver => driver.FindElement(By.Name("submittedProblemCode")));
+                _wait.Until(driver => driver.FindElement(accessType));
                 break;
             }
             catch
             {
+                // ignored
             }
         }
+    }
+    public async Task<SubmissionStatus> Submit(string problemName, string code, string language, string fileName)
+    {
+        await File.WriteAllTextAsync(fileName, code);
+        var path = Directory.GetCurrentDirectory() + "/" + fileName;
+        _goTo(SubmitUrl);
+        _waitObjectToLoad(By.Name("submittedProblemCode"));
 
         _driver.FindElement(By.Name("sourceFile")).SendKeys(path);
         _driver.FindElement(By.Name("submittedProblemCode")).SendKeys(problemName);
         var dropDown = new SelectElement(_driver.FindElement(By.Name("programTypeId")));
         dropDown.SelectByValue(language);
         _driver.FindElement(By.Id("singlePageSubmitButton")).Submit();
+
+        _waitObjectToLoad(By.ClassName("status-frame-datatable"));
         
-        while (true)
-        {
-            try
-            {
-                _wait.Until(driver=>driver.FindElement(By.ClassName("status-frame-datatable")));
-                break;
-            }
-            catch
-            {
-            }
-        }
         File.Delete(fileName);
         var firstRow = _driver.
             FindElement(By.ClassName("status-frame-datatable")).
@@ -118,16 +112,19 @@ public class SelinumOperations: ISelinum
             var space =  list[size - 1].Text;
             if (verdict.Contains("Running") || verdict.Contains("queue"))
                 continue;
-            _driver.Close();
-            _driver.Quit();
+            _finish();
             return new SubmissionStatus(verdict, time, space);
         }
     }
-
+    private void _finish()
+    {
+        _driver.Close();
+        _driver.Quit();
+    }
     public ProblemInfo GetCodeForcesProblem(string contestId, string problemId)
     {
         var url = $"https://www.codeforces.com/problemset/problem/{contestId}/{problemId}";
-        _driver.Navigate().GoToUrl(url);
+        _goTo(url);
         var title = _driver.FindElement(By.ClassName("title")).Text;
         var pageHtml = _driver.FindElement(By.ClassName("problem-statement")).
             GetAttribute("outerHTML");
@@ -146,6 +143,7 @@ public class SelinumOperations: ISelinum
             Tags = tags,
             Title = title
         };
+        _finish();
         return p;
     }
 }
