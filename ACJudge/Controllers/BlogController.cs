@@ -8,6 +8,7 @@ using ACJudge.Data.Models;
 using ACJudge.Data.Repositories.Interfaces;
 using ACJudge.ExtensionMethods;
 using ACJudge.ViewModels.BlogViewModel;
+using Microsoft.Extensions.Logging;
 
 namespace ACJudge.Controllers
 {
@@ -17,15 +18,18 @@ namespace ACJudge.Controllers
         private readonly IBlogRepository<Blog> _blogs;
         private readonly IRepository<Comment> _comments;
         private readonly User _user;
+        private readonly ILogger<BlogController> _logger;
         private const int BlogsPerPage = 10;
         private const int NonGroupId = -1;
 
         public BlogController(IBlogRepository<Blog> blogs
             , IUserRepository<User> userRepository
             , IHttpContextAccessor httpContextAccessor,
-            IRepository<Comment>comments
+            IRepository<Comment>comments,
+            ILogger<BlogController> logger
             )
         {
+            _logger = logger;
             _blogs = blogs;
             _comments = comments;
             var userId = httpContextAccessor.HttpContext?.User.
@@ -38,7 +42,6 @@ namespace ACJudge.Controllers
         {
             try
             {
-                
                 var blogs = _blogs.List().
                     Select(blog => BlogViewMapper.GetViewModel(blog, _user)).ToList();
                 var pageNumber = page ?? 1;
@@ -47,8 +50,9 @@ namespace ACJudge.Controllers
                 var currentPage = new BlogPage(currentPageBlogs, pageNumber, Enumerable.Range(1, numberOfPages));
                 return View(currentPage);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _logger.LogError(e, e.Message);
                 return View("ErrorLink");
             }
         }
@@ -61,7 +65,8 @@ namespace ACJudge.Controllers
                 var blog = _blogs.Find(id);
                 return blog == null ? View("ErrorLink") : 
                     View(BlogViewMapper.GetViewModel(blog, _user));
-            }catch(Exception){
+            }catch(Exception e){
+                _logger.LogError(e, e.Message);
                 return View("ErrorLink");
             }
         }
@@ -86,8 +91,9 @@ namespace ACJudge.Controllers
                 _comments.Add(newComment);
                 return RedirectToAction("Details",new { id = blogId});
             }
-            catch (Exception)
+            catch(Exception e)
             {
+                _logger.LogError(e, e.Message);
                 return View("ErrorLink");
             }
         }
@@ -100,8 +106,9 @@ namespace ACJudge.Controllers
                 var groupId = idString.Equals(string.Empty) ? NonGroupId : int.Parse(idString);
                 return View(new Blog { GroupId = groupId });
             }
-            catch (Exception)
+            catch(Exception e)
             {
+                _logger.LogError(e, e.Message);
                 return View("ErrorLink");
             }
         }
@@ -135,8 +142,9 @@ namespace ACJudge.Controllers
                     RedirectToAction(nameof(Index)) : 
                     RedirectToAction("Details", "Group", new { id = model.GroupId });
             }
-            catch
+            catch(Exception e)
             {
+                _logger.LogError(e, e.Message);
                 return View();
             }
         }
@@ -152,9 +160,10 @@ namespace ACJudge.Controllers
                 var blog = _blogs.Find(id);
                 return View(blog);
             }
-            catch (Exception)
+            catch(Exception e)
             {
-                return View("ErrorLink");
+                _logger.LogError(e, e.Message);
+                 return View("ErrorLink");
             }
         }
 
@@ -175,8 +184,9 @@ namespace ACJudge.Controllers
                 _blogs.Update(blog);
                 return RedirectToAction("Details", new { id = model.BlogId });
             }
-            catch
+            catch(Exception e)
             {
+                _logger.LogError(e, e.Message);
                 return View("ErrorLink");
             }
         }
@@ -192,8 +202,9 @@ namespace ACJudge.Controllers
                 var blog = _blogs.Find(id);
                 return View(blog);
             }
-            catch (Exception)
+            catch(Exception e)
             {
+                _logger.LogError(e, e.Message);
                 return View("ErrorLink");
             }
         }
@@ -211,8 +222,9 @@ namespace ACJudge.Controllers
                 _blogs.Remove(model.BlogId);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch(Exception e)
             {
+                _logger.LogError(e, e.Message);
                 return View("ErrorLink");
             }
         }
@@ -241,8 +253,9 @@ namespace ACJudge.Controllers
                 
                 return View("Index", blogPage);
             }
-            catch (Exception)
+            catch(Exception e)
             {
+                _logger.LogError(e, e.Message);
                 return View("ErrorLink");
             }
         }
@@ -255,9 +268,10 @@ namespace ACJudge.Controllers
                 var blog = _blogs.Find(id);
                 return blog.BlogVote;
             }
-            catch (Exception)
+            catch(Exception e)
             {
-                return -1;
+                _logger.LogError(e, e.Message);
+                 return -1;
             }
         }
         public int DownVote(int id)
@@ -267,8 +281,9 @@ namespace ACJudge.Controllers
                 var blog = _blogs.Find(id);
                 return blog.BlogVote;
             }
-            catch (Exception)
+            catch(Exception e)
             {
+                _logger.LogError(e, e.Message);
                 return -1;
             }
         }
@@ -278,9 +293,10 @@ namespace ACJudge.Controllers
                 var blog = _blogs.Find(id);
                 return Favourite(blog);
             }
-            catch (Exception)
+            catch(Exception e)
             {
-                return View("ErrorLink");
+                _logger.LogError(e, e.Message);
+                 return View("ErrorLink");
             }
         }
         [HttpPost]
@@ -292,8 +308,9 @@ namespace ACJudge.Controllers
                 _blogs.UpdateFavourite(model.BlogId, _user.UserId);
                 return RedirectToAction("Details", new { id = model.BlogId });
             }
-            catch
+            catch(Exception e)
             {
+                _logger.LogError(e, e.Message);
                 return View("ErrorLink");
             }
         }
