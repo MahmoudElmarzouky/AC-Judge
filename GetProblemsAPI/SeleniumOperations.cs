@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using HtmlAgilityPack;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
@@ -23,38 +24,51 @@ public class SeleniumOperations: ISelinum
         _driver = new ChromeDriver();
         _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
     }
+
+    private bool _isLoggedIn()
+    {
+        try
+        {
+            _wait.Until(driver => driver.FindElement(By.XPath(MyProfileHrefXPath)));
+            var handle = _driver.FindElement(By.XPath(MyProfileHrefXPath)).Text;
+            if (handle.Equals(Email) == false)
+                return false;
+        }
+        catch
+        {
+            return false;
+        }
+        return true;
+    }
+
     public void Login()
     {
-        if (LoadCookies())
-            return;
-        while (true)
+        LoadCookies();
+        while (!_isLoggedIn())
         {
-            try
-            {
-                 _wait.Until(driver => driver.FindElement(By.XPath(MyProfileHrefXPath)));
-            }
-            catch
-            {
-                _goTo(LoginUrl);
+            _goTo(LoginUrl);
             
-                _wait.Until(driver => driver.FindElement(By.XPath(EmailInputXPath)));
+            _wait.Until(driver => driver.FindElement(By.XPath(EmailInputXPath)));
+
+            _driver.FindElement(By.XPath(EmailInputXPath)).Clear();
+            _driver.FindElement(By.XPath(EmailInputXPath)).SendKeys(Email);
                 
-                _driver.FindElement(By.XPath(EmailInputXPath)).SendKeys(Email);
-                _driver.FindElement(By.XPath(PasswordInputXPath)).SendKeys(Password);
-                _driver.FindElement(By.Id("remember")).Click();
-                _driver.FindElement(By.XPath(LoginButtonXPath)).Submit();
-                
-                CookieOperations.SaveCookies(_driver.Manage().Cookies.AllCookies);
-                continue;
-            }
-            break;
+            _driver.FindElement(By.XPath(PasswordInputXPath)).Clear();
+            _driver.FindElement(By.XPath(PasswordInputXPath)).SendKeys(Password);
+            _driver.FindElement(By.Id("remember")).Click();
+            _driver.FindElement(By.XPath(LoginButtonXPath)).Submit();
+            while (_driver.Url.Equals(LoginUrl)){}
+            CookieOperations.SaveCookies(_driver.Manage().Cookies.AllCookies);
         }
     }
 
     private void _goTo(string url)
     {
-        while (_driver.Url.Equals(url) == false)
-            _driver.Navigate().GoToUrl(url);
+        if (_driver.Url.Equals(url)) return;
+        Console.WriteLine(url);
+        Console.WriteLine(_driver.Url);
+        _driver.Navigate().GoToUrl(url);
+        _wait.Until(driver => driver.FindElement(By.TagName("html")));
     }
     public bool LoadCookies()
     {
@@ -121,6 +135,7 @@ public class SeleniumOperations: ISelinum
         _driver.Close();
         _driver.Quit();
     }
+
     public ProblemInfo GetCodeForcesProblem(string contestId, string problemId)
     {
         var url = $"https://www.codeforces.com/problemset/problem/{contestId}/{problemId}";
@@ -145,5 +160,25 @@ public class SeleniumOperations: ISelinum
         };
         _finish();
         return p;
+    }
+
+    public void SaveSubmitParameters()
+    {
+        // TODO Not Implemented Yet
+        throw new NotImplementedException();
+        Login();
+        _goTo(SubmitUrl);
+        _waitObjectToLoad(By.Name("submittedProblemCode"));
+        var doc = new HtmlDocument(); 
+        doc.Load(_driver.PageSource);
+        Console.WriteLine(doc.Text);
+        File.WriteAllText("pagesource.txt", doc.Text);
+        var csrf = _driver.FindElement(By.Name("csrf_token"));
+        var ftaa = _driver.FindElement(By.Name("ftaa"));
+        var bfaa = _driver.FindElement(By.Name("bfaa"));
+       //_driver.FindElement(By.Name("contestId"));
+       Console.WriteLine(csrf);
+       Console.WriteLine(ftaa);
+       Console.WriteLine(bfaa);
     }
 }
