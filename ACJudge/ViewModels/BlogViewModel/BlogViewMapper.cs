@@ -8,20 +8,17 @@ public static class BlogViewMapper
 {
     public static ViewBlogModel GetViewModel(Blog blog, Data.Models.User user)
     {
-        try
-        {
+        try{
             var blogOwner = blog.UserBlog.First(b => b.BlogOwner).User;
-
-            var isOwner = blogOwner?.UserIdentityId == user?.UserIdentityId;
-            var isFavorite = user?.UserBlogs.FirstOrDefault(innerUserBlog => innerUserBlog.IsFavourite
-                                                                             && innerUserBlog.BlogId == blog.BlogId) !=
-                             null;
+            var currentUserBlog = blog.UserBlog.First(ub => ub.UserId == user.UserId);
+            var isOwner = blogOwner.UserId == user.UserId;
+            var isFavorite = currentUserBlog.IsFavourite;
 
             var blogOwnerObject = new BlogOwner
             {
-                Id = blogOwner!.UserId,
-                UserName = blogOwner!.UserName,
-                PhotoUrl = blogOwner!.PhotoUrl
+                Id = blogOwner.UserId,
+                UserName = blogOwner.UserName,
+                PhotoUrl = blogOwner.PhotoUrl
             };
             var model = new ViewBlogModel
             {
@@ -38,10 +35,9 @@ public static class BlogViewMapper
                 IsFavorite = isFavorite
             };
             return model;
-        }
-        catch(Exception e)
+        }catch
         {
-            throw;
+            return new ViewBlogModel();
         }
     }
 }

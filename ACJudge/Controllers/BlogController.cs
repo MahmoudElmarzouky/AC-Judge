@@ -42,11 +42,12 @@ namespace ACJudge.Controllers
         {
             try
             {
-                var blogs = _blogs.List().
-                    Select(blog => BlogViewMapper.GetViewModel(blog, _user)).ToList();
-                var pageNumber = page ?? 1;
+                var blogs = _blogs.List();
+                    var pageNumber = page ?? 1;
                 var numberOfPages = (int)Math.Ceiling((decimal)blogs.Count / BlogsPerPage);
-                var currentPageBlogs = blogs.Paginate(pageNumber, BlogsPerPage);
+                var currentPageBlogs = blogs.Paginate(pageNumber, BlogsPerPage).
+                    Select(blog => BlogViewMapper.GetViewModel(blog, _user)).
+                    ToList();
                 var currentPage = new BlogPage(currentPageBlogs, pageNumber, Pagination.GetAccessiblePagesNumbers(1, pageNumber, numberOfPages));
                 return View(currentPage);
             }
@@ -73,21 +74,9 @@ namespace ACJudge.Controllers
 
         public ActionResult CreateComment (int blogId, string commentContent)
         {
-            try {
-                var newComment = new Comment
-                {
-                    Content = commentContent,
-                    Upvote = 0,
-                    DownVote = 0,
-                    BlogId = blogId
-                };
-                var commentVotes = new CommentVote
-                {
-                    UserId = _user.UserId,
-                    IsFavourite = false,
-                    Value = 0,
-                };
-                newComment.CommentVotes.Add(commentVotes);
+            try
+            {
+                var newComment = _createNewComment(blogId, commentContent);
                 _comments.Add(newComment);
                 return RedirectToAction("Details",new { id = blogId});
             }
@@ -97,6 +86,26 @@ namespace ACJudge.Controllers
                 return View("ErrorLink");
             }
         }
+
+        private Comment _createNewComment(int blogId, string commentContent)
+        {
+            var comment = new Comment
+            {
+                Content = commentContent,
+                Upvote = 0,
+                DownVote = 0,
+                BlogId = blogId
+            };
+            comment.CommentVotes.Add(
+                new CommentVote
+                {
+                    UserId = _user.UserId,
+                    IsFavourite = false,
+                    Value = 0,
+                });
+            return comment;
+        }
+
         // GET: HomeController/Create
         public ActionResult Create()
         {
@@ -120,27 +129,9 @@ namespace ACJudge.Controllers
         {
             try
             {
-                var isGroupBlog = model.GroupId != NonGroupId;
-                var newBlog = new Blog
-                {
-                    BlogTitle = model.BlogTitle,
-                    BlogContent = model.BlogContent,
-                    GroupId = !isGroupBlog? null: model.GroupId,
-                    BlogVisibility = !isGroupBlog,
-                    BlogVote = 0
-                };
-                var userBlog = new UserBlog 
-                { 
-                    UserId = _user.UserId,
-                    BlogOwner = true,
-                    IsFavourite = false,
-                    VoteValue = 0
-                };
-                newBlog.UserBlog.Add(userBlog);
+                var newBlog = _createNewBlog(model);
                 _blogs.Add(newBlog);
-                return !isGroupBlog ? 
-                    RedirectToAction(nameof(Index)) : 
-                    RedirectToAction("Details", "Group", new { id = model.GroupId });
+                return RedirectToAction("Details",new { id = newBlog.BlogId});
             }
             catch(Exception e)
             {
@@ -148,6 +139,29 @@ namespace ACJudge.Controllers
                 return View();
             }
         }
+
+        private Blog _createNewBlog(Blog model)
+        {
+            var isGroupBlog = model.GroupId != NonGroupId;
+            var blog = new Blog
+            {
+                BlogTitle = model.BlogTitle,
+                BlogContent = model.BlogContent,
+                GroupId = !isGroupBlog? null: model.GroupId,
+                BlogVisibility = !isGroupBlog,
+                BlogVote = 0
+            };
+            var userBlog = new UserBlog 
+            { 
+                UserId = _user.UserId,
+                BlogOwner = true,
+                IsFavourite = false,
+                VoteValue = 0
+            };
+            blog.UserBlog.Add(userBlog);
+            return blog;
+        }
+
         // GET: HomeController/Edit/5
         public ActionResult Edit(int id)
         {
@@ -240,14 +254,15 @@ namespace ACJudge.Controllers
             {
                 title ??= "";
                 preparedBy ??= "";
-                var list = _blogs.Search(title, preparedBy).
-                    Select(blog=>BlogViewMapper.GetViewModel(blog, _user)).ToList();
-                var numberOfPages = (int)Math.Ceiling((decimal)list.Count / BlogsPerPage);
+                var list = _blogs.Search(title, preparedBy);
+                    var numberOfPages = (int)Math.Ceiling((decimal)list.Count / BlogsPerPage);
                 if (page > numberOfPages)
                     page = numberOfPages;
                 if (page < 1)
                     page = 1;
-                var currentPage = list.Paginate(page, BlogsPerPage);
+                var currentPage = list.Paginate(page, BlogsPerPage).
+                    Select(blog=>BlogViewMapper.GetViewModel(blog, _user)).
+                    ToList();
                 var blogPage = new BlogPage(currentPage, page, Pagination.GetAccessiblePagesNumbers(1, page, numberOfPages), 
                     new Filter
                     {
@@ -291,31 +306,16 @@ namespace ACJudge.Controllers
                 return -1;
             }
         }
-        public ActionResult Favourite(int id)
-        {
-            try { 
-                var blog = _blogs.Find(id);
-                return Favourite(blog);
-            }
-            catch(Exception e)
-            {
-                _logger.LogError(e, e.Message);
-                 return View("ErrorLink");
-            }
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Favourite(Blog model)
+        public int Favourite(int id)
         {
             try
             {
-                _blogs.UpdateFavourite(model.BlogId, _user.UserId);
-                return RedirectToAction("Details", new { id = model.BlogId });
+                return _blogs.UpdateFavourite(id, _user.UserId);
             }
             catch(Exception e)
             {
                 _logger.LogError(e, e.Message);
-                return View("ErrorLink");
+                return 0;
             }
         }
     }
