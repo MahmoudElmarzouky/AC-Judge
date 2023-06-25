@@ -83,13 +83,13 @@ namespace ACJudge.Data.Repositories.DataBaseRepositories
             }
             Commit();
         }
-        public void UpdateFavourite(int blogId, int userId) {
+        public int UpdateFavourite(int blogId, int userId) {
               var blog = Find(blogId);
             var userBlog = blog.UserBlog.FirstOrDefault(user => user.UserId == userId);
 
             if (userBlog == null)
             {
-                var newUserBlog = new UserBlog
+                userBlog = new UserBlog
                 {
                     BlogId = blogId,
                     UserId = userId,
@@ -97,7 +97,8 @@ namespace ACJudge.Data.Repositories.DataBaseRepositories
                     VoteValue = 0,
                     IsFavourite = true
                 };
-                blog.UserBlog.Add(newUserBlog);
+                
+                blog.UserBlog.Add(userBlog);
             }
             else
                 userBlog.IsFavourite = userBlog.IsFavourite switch
@@ -107,6 +108,7 @@ namespace ACJudge.Data.Repositories.DataBaseRepositories
                 };
 
             Commit();
+            return userBlog.IsFavourite? 1: 0;
         }
         public IList<Blog> Search(string title, string preparedBy)
         {

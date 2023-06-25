@@ -5,6 +5,18 @@ namespace ACJudge.Data.Models
 {
     public class UserBlog
     {
+        public UserBlog()
+        {
+            
+        }
+
+        public UserBlog(int userId)
+        {
+            UserId = userId;
+            IsFavourite = false;
+            VoteValue = 0;
+            BlogOwner = true;
+        }
         [Key, Column(Order = 0)]
         public int UserId { get; set; }
         [Key, Column(Order = 1)]

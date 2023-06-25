@@ -4,8 +4,22 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ACJudge.Data.Models
 {
-    public class Comment
+    public sealed class Comment
     {
+        public Comment()
+        {
+            
+        }
+
+        public Comment(string content, int blogId, int creatorId)
+        {
+            Content = content;
+            BlogId = blogId;
+            Upvote = DownVote = 0;
+            CommentVotes.Add(new CommentVote(creatorId));
+        }
+
+        
         public int CommentId { get; set; }
         [MaxLength(50)]
         public string Content { get; set; }
@@ -13,7 +27,7 @@ namespace ACJudge.Data.Models
         public int DownVote { get; set; }
         public DateTime CreationTime { get; set; } = DateTime.Now;
         public int BlogId { get; set; }
-        public virtual Blog Blog { get; set; }
-        public virtual ICollection<CommentVote> CommentVotes { get; set; } = new HashSet<CommentVote>();
+        public Blog Blog { get; set; }
+        public ICollection<CommentVote> CommentVotes { get; set; } = new HashSet<CommentVote>();
     }
 }

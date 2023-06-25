@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using ACJudge.Data.API;
+using Bogus;
+using Bogus.DataSets;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ACJudge.Data.Models
@@ -8,47 +10,43 @@ namespace ACJudge.Data.Models
     public class DbInitializer
     {
         private static EntitiesContext _dbContext;
+        private static Random rand;
+        private static bool _generate = false;
         public static void Seed(IServiceProvider serviceProvider)
         {
-            
-            var rand = new Random();
-            _dbContext =
-                serviceProvider.GetRequiredService<EntitiesContext>();
-            
-            var d = DateTime.Now;
+             if (!_generate) return;
+             rand = new Random();
+            _dbContext = serviceProvider.GetRequiredService<EntitiesContext>();
+            _generateBlogs(40);
+        }
 
+        private static void _generateBlogs(int count = 1)
+        {
+            var generator = GetBlogGenerator();
+            var blogs = generator.Generate(count);
             
-            var code = "#include<iostream>;" +
-                "using namespace std;" +
-                "int main(){" +
-                "int n;" +
-                "cin >> n;" +
-                "for(int i = 0; i < n; i++)" +
-                "{" +
-                "int x;" +
-                "cin >> x;" +
-                "if (x > 3)" +
-                "   cout << \"Hello From the other hand\";" +
-                "else " +
-                "cout << \"Hello From The hand\";" +
-                "}" +
-                "}";
-
-            string[] verdicts = { "Accepted", "Wrong Answer", "Time limit exceeded" };
-            var users = _dbContext.UsersProfile;
-            var problems = _dbContext.Problems;
-                foreach(var p in problems)
+            for (var i = 0; i < blogs.Count; i++)
+            {
+                var userBlog = new UserBlog
                 {
-                    foreach(var u in users)
-                    {
-                        var lim = 1 + rand.Next(3); 
-                        for (var i = 0; i < lim; i++)
-                        {
-                            AddSubmission(11, p.ProblemId, u.UserId, verdicts[i], code);
-                        }
-                    }
-                }
+                    UserId = 1,
+                    BlogOwner = true,
+                    IsFavourite = false,
+                    VoteValue = 0
+                };
+                blogs[i].UserBlog.Add(userBlog);
+            }
+            
+            _dbContext.Blogs.AddRange(blogs);
             _dbContext.SaveChanges();
+        }
+
+        private static Faker<Blog> GetBlogGenerator()
+        {
+            return new Faker<Blog>().RuleFor(b => b.BlogTitle, b => b.Random.Words(3 + rand.Next(1)))
+                .RuleFor(b => b.BlogContent, b => b.Random.Words(50 + rand.Next(50)))
+                .RuleFor(b => b.BlogVote, 0)
+                .RuleFor(b => b.BlogVisibility, true);
         }
         private static void GetAllProblem()
         {

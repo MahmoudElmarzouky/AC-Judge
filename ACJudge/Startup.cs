@@ -63,7 +63,7 @@ namespace ACJudge
             var supportedCultures = new[] { 
                   new CultureInfo("en-US")
             };
-
+        
             app.UseRequestLocalization(new RequestLocalizationOptions
             {
                 DefaultRequestCulture = new RequestCulture("en-US"),

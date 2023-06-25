@@ -2,7 +2,7 @@
 
 <tr>
     <td>
-        <a asp-action="Favourite" asp-route-id="@Model.BlogId" class="fas fa-heart @(Model.IsFavorite ? "active" : "")" data-favorite="IconFav">
+        <a onclick="ChangeFavourite(@Model.BlogId)" id ="fav-@Model.BlogId" class="fas fa-heart @(Model.IsFavorite ? "active" : "")" data-favorite="IconFav">
         </a>
     </td>
     <td>

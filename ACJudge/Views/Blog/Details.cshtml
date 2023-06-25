@@ -34,7 +34,7 @@
 						<button onclick="VoteBlog(@Model.BlogId, 1)" class="fas fa-caret-up text-success"></button> <span id = "voteValue" class="text-primary">@Model.BlogVote</span> <button onclick="VoteBlog(@Model.BlogId, -1)" class="fas fa-caret-down text-danger"></button>
 					</div>
 					<div>
-						<a asp-action="Favourite" asp-route-id="@Model.BlogId" class="fas fa-heart @(Model.IsFavorite == true ? "active" : "")" data-favorite="IconFav"></a>
+						<a onclick="ChangeFavourite(@Model.BlogId)" id ="fav-@Model.BlogId" class="fas fa-heart @(Model.IsFavorite == true ? "active" : "")" data-favorite="IconFav"></a>
 					</div>
 					<div>
 						<i class="far fa-comment"></i>  @Model.Comments.Count

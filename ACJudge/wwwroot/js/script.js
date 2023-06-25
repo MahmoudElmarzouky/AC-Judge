@@ -470,6 +470,22 @@ function VoteBlog(blogId, voteValue){
         }
     });
 }
+function ChangeFavourite(blogId){
+    // TODO Fix Url to be relative
+    var URL = "https://localhost:5021/Blog/Favourite/"+ blogId;
+    $.ajax({
+        method: "GET",
+        cache: false,
+        url: URL ,
+        success: function (data, status) {
+            document.getElementById("fav-" + blogId).className = "fas fa-heart" + 
+                (data.toString() === "1"? " active": "");
+        },
+        error: function(xhr, status, error){
+            console.log(error);
+        }
+    });
+}
 function SubmitCode(){
     var problemId = document.getElementsByName("ProblemId")[0].value; 
     var problemSourceId = document.getElementsByName("problemSourceId")[0].value;
