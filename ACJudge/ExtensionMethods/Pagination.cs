@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,5 +14,17 @@ public static class Pagination
         
         var currentPage = list.Skip((page - 1) * size).Take(size).ToList();
         return currentPage;
+    }
+
+    public static IEnumerable<int> GetAccessiblePagesNumbers(int startPage, int currentPage, int endPage)
+    {
+        var pages = new List<int>();
+        for (var i = Math.Max(currentPage - 3, startPage); i <= endPage && pages.Count < 5; i++)
+        {
+            if (i - currentPage == 1 || i - currentPage == -1) 
+                continue;
+            pages.Add(i);
+        }
+        return pages;
     }
 }
