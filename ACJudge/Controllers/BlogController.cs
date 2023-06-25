@@ -76,7 +76,7 @@ namespace ACJudge.Controllers
         {
             try
             {
-                var newComment = _createNewComment(blogId, commentContent);
+                var newComment = new Comment(commentContent, blogId, _user.UserId);
                 _comments.Add(newComment);
                 return RedirectToAction("Details",new { id = blogId});
             }
@@ -86,26 +86,7 @@ namespace ACJudge.Controllers
                 return View("ErrorLink");
             }
         }
-
-        private Comment _createNewComment(int blogId, string commentContent)
-        {
-            var comment = new Comment
-            {
-                Content = commentContent,
-                Upvote = 0,
-                DownVote = 0,
-                BlogId = blogId
-            };
-            comment.CommentVotes.Add(
-                new CommentVote
-                {
-                    UserId = _user.UserId,
-                    IsFavourite = false,
-                    Value = 0,
-                });
-            return comment;
-        }
-
+        
         // GET: HomeController/Create
         public ActionResult Create()
         {
@@ -129,7 +110,8 @@ namespace ACJudge.Controllers
         {
             try
             {
-                var newBlog = _createNewBlog(model);
+                var newBlog = new Blog(model.BlogTitle, model.BlogContent,
+                    model.GroupId == NonGroupId ? null : model.GroupId, _user.UserId);
                 _blogs.Add(newBlog);
                 return RedirectToAction("Details",new { id = newBlog.BlogId});
             }
@@ -139,29 +121,6 @@ namespace ACJudge.Controllers
                 return View();
             }
         }
-
-        private Blog _createNewBlog(Blog model)
-        {
-            var isGroupBlog = model.GroupId != NonGroupId;
-            var blog = new Blog
-            {
-                BlogTitle = model.BlogTitle,
-                BlogContent = model.BlogContent,
-                GroupId = !isGroupBlog? null: model.GroupId,
-                BlogVisibility = !isGroupBlog,
-                BlogVote = 0
-            };
-            var userBlog = new UserBlog 
-            { 
-                UserId = _user.UserId,
-                BlogOwner = true,
-                IsFavourite = false,
-                VoteValue = 0
-            };
-            blog.UserBlog.Add(userBlog);
-            return blog;
-        }
-
         // GET: HomeController/Edit/5
         public ActionResult Edit(int id)
         {
@@ -192,6 +151,8 @@ namespace ACJudge.Controllers
                     return View("ErrorLink");
                 
                 var blog = _blogs.Find(model.BlogId);
+                if (blog == null)
+                    throw new NullReferenceException("blog is not exist");
                 blog.BlogContent = model.BlogContent;
                 blog.BlogTitle = model.BlogTitle;
                 blog.BlogVisibility = model.BlogVisibility;

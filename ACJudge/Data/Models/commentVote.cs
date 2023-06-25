@@ -5,6 +5,17 @@ namespace ACJudge.Data.Models
 {
     public class CommentVote
     {
+        public CommentVote()
+        {
+            
+        }
+
+        public CommentVote(int userId)
+        {
+            UserId = userId;
+            Value = 0;
+            IsFavourite = false;
+        }
         [Key, Column(Order = 0)]
         public int CommentId { get; set; }
         [Key, Column(Order = 1)]
