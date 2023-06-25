@@ -1,4 +1,5 @@
 using ACJudge.Data;
+using ACJudge.Data.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,9 @@ namespace ACJudge
         {
             var webHost = CreateHostBuilder(args).Build();
             RunMigrations(webHost);
+            using var scope = webHost.Services.CreateScope();
+            var sevices = scope.ServiceProvider;
+            DbInitializer.Seed(sevices);
             webHost.Run();
         }
         private static void RunMigrations(IHost webHost)
