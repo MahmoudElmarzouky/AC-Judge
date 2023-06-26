@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using ACJudge.Data.API;
+using ACJudge.Data.Repositories.DataBaseRepositories;
+using ACJudge.ViewModels.ProblemViewsModel;
 using Bogus;
 using Bogus.DataSets;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,13 +13,35 @@ namespace ACJudge.Data.Models
     {
         private static EntitiesContext _dbContext;
         private static Random rand;
-        private static bool _generate = false;
+        private static readonly bool _generate = false;
         public static void Seed(IServiceProvider serviceProvider)
         {
              if (!_generate) return;
              rand = new Random();
             _dbContext = serviceProvider.GetRequiredService<EntitiesContext>();
-            _generateBlogs(40);
+            addProblems(50);
+        }
+
+        private static void addProblems(int count = 1)
+        {
+            var problemRepo = new ProblemDbRepository(_dbContext);
+
+            for (var i = 1; i <= count; i++)
+            {
+                for (char index = 'A'; index <= 'D'; index++)
+                {
+                    try
+                    {
+                        problemRepo.Search(new ProblemFilter { ProblemId = $"{i}{index}" });
+                        Console.WriteLine($"problem {i}{index} added ");
+                    }
+                    catch
+                    {
+                        Console.WriteLine($"problem {i}{index} can't added ");
+                        continue;
+                    }
+                }
+            }
         }
 
         private static void _generateBlogs(int count = 1)

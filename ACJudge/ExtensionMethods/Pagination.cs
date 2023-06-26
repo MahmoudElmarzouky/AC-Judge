@@ -19,12 +19,14 @@ public static class Pagination
     public static IEnumerable<int> GetAccessiblePagesNumbers(int startPage, int currentPage, int endPage)
     {
         var pages = new List<int>();
+        
         for (var i = Math.Max(currentPage - 3, startPage); i <= endPage && pages.Count < 5; i++)
         {
             if (i - currentPage == 1 || i - currentPage == -1) 
                 continue;
             pages.Add(i);
         }
+        
         return pages;
     }
 }
