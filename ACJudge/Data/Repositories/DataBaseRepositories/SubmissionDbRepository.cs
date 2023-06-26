@@ -62,10 +62,10 @@ namespace ACJudge.Data.Repositories.DataBaseRepositories
 
         public IList<Submission> GetSpecificSubmission(StatusFilter filter)
         {
-            
             return _dbContext.Submissions
                .Include(p => p.Problem)
                .Include(p => p.User)
+               .Include(p=>p.Contest)
                .Where(filter.Valid).ToList();
         }
 

@@ -57,7 +57,7 @@ namespace ACJudge.Data.Repositories.DataBaseRepositories
             var problemId= filter.ProblemId;
             var problemName = string.IsNullOrEmpty(filter.ProblemName)? string.Empty: filter.ProblemName;
             var problemSource = string.IsNullOrEmpty(filter.ProblemSource) || 
-                                filter.ProblemSource.Contains("all")? string.Empty: filter.ProblemSource;
+                                filter.ProblemSource.Contains("All")? string.Empty: filter.ProblemSource;
             
             for (var i = 0; i < 2; i++)
             {

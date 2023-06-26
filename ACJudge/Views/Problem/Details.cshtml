@@ -22,9 +22,9 @@
             @if (User.Identity.IsAuthenticated)
             {
                 <li role="presentation"><a href="" data-toggle="modal" data-target="#SubmitProblmeMain">Submit</a></li>
-                <li role="presentation"><a asp-action="FilterStatus" asp-route-ProblemName="@Model.problemsourceId" asp-route-ProblemSource="@Model.problemSource" asp-route-UserName="@Model.userName">My Submision</a></li>
+                <li role="presentation"><a asp-action="FilterStatus" asp-route-problemName="@Model.problemsourceId" asp-route-problemSource="@Model.problemSource" asp-route-contestId="0" asp-route-userName="@Model.userName">My Submision</a></li>
             }
-            <li role="presentation"><a asp-action="FilterStatus" asp-route-ProblemName="@Model.problemsourceId" asp-route-ProblemSource="@Model.problemSource">Status</a></li>
+            <li role="presentation"><a asp-action="FilterStatus" asp-route-problemName="@Model.problemsourceId" asp-route-problemSource="@Model.problemSource" asp-route-contestId="0" asp-route-userName="">Status</a></li>
             <li role="presentation"><a href="#">Custom Test</a></li>
         </ul>
         <div class="all-data-problem">
