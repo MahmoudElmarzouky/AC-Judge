@@ -206,8 +206,9 @@ namespace ACJudge.Controllers
             }
         }
 
-        public ActionResult Standing(int id, int pageNumber)
+        public ActionResult Standing(int id)
         {
+            var pageNumber = 1;
             try
             {
                 if (!CanAccessTheContest(id, _user.UserId))
@@ -670,7 +671,7 @@ namespace ACJudge.Controllers
                 var userId = _user.UserId;
                 if (!CanAccessTheContest(contestId, userId))
                     return 0;
-
+                _contests.RegisterInContest(userId, contestId);
                 var submission = new Submission
                 {
                     MemoryConsumeBytes = "",

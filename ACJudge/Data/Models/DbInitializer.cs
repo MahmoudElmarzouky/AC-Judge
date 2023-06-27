@@ -13,13 +13,43 @@ namespace ACJudge.Data.Models
     {
         private static EntitiesContext _dbContext;
         private static Random rand;
-        private static readonly bool _generate = false;
+        private static readonly bool _generate = true;
         public static void Seed(IServiceProvider serviceProvider)
         {
              if (!_generate) return;
              rand = new Random();
             _dbContext = serviceProvider.GetRequiredService<EntitiesContext>();
-            addProblems(50);
+            removeBigTitle();
+        }
+
+        private static void removeBigTitle()
+        {
+            var gorupRepo = new GroupDbRepository(_dbContext);
+            var items = gorupRepo.MyGroups(1);
+            for (var i = 0; i < items.Count; i++)
+            {
+                var title = items[i].GroupTitle.Split(" ");
+                string newTitle = null;
+                if (title.Length > 2)
+                {
+                    newTitle = title[0] + " " + title[1];
+                }
+
+                if (newTitle != null)
+                {
+                    items[i].GroupTitle = newTitle;
+                }
+            }
+            gorupRepo.Commit();
+        }
+
+        private static void addGroups(int count = 1)
+        {
+            var gorupRepo = new GroupDbRepository(_dbContext);
+            var groupGenerator = GetGroupGenerator();
+            for(var i = 0; i < count; i++)
+                gorupRepo.CreateNewGroup(1, groupGenerator.Generate());
+            gorupRepo.Commit();
         }
 
         private static void addProblems(int count = 1)
@@ -72,6 +102,13 @@ namespace ACJudge.Data.Models
                 .RuleFor(b => b.BlogVote, 0)
                 .RuleFor(b => b.BlogVisibility, true);
         }
+
+        private static Faker<Group> GetGroupGenerator()
+        {
+            return new Faker<Group>().RuleFor(g => g.Visible, true).RuleFor(g => g.GroupTitle, g => g.Name.JobTitle())
+                .RuleFor(g => g.GroupDescription, g => g.Name.JobDescriptor());
+        }
+
         private static void GetAllProblem()
         {
             for (int i = 33; i <= 60; i++)
