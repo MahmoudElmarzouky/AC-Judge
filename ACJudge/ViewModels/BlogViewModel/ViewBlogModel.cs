@@ -42,11 +42,13 @@ namespace ACJudge.ViewModels.BlogViewModel
         public int PageNumber { get; set; }
         public IEnumerable<int> Pages { get; set; }
         public Filter Filter { get; set; }
-        public BlogPage(IEnumerable<ViewBlogModel> blogs, int pageNumber, IEnumerable<int> pages, Filter filter = null)
+        public int EndPageNumber { get; set; }
+        public BlogPage(IEnumerable<ViewBlogModel> blogs, int pageNumber, IEnumerable<int> pages, int endPageNumber, Filter filter = null)
         {
             Blogs = blogs;
             PageNumber = pageNumber;
             Pages = pages;
+            EndPageNumber = endPageNumber;
             Filter = filter ?? new Filter();
         }
     }

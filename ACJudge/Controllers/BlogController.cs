@@ -48,7 +48,7 @@ namespace ACJudge.Controllers
                 var currentPageBlogs = blogs.Paginate(pageNumber, BlogsPerPage).
                     Select(blog => BlogViewMapper.GetViewModel(blog, _user)).
                     ToList();
-                var currentPage = new BlogPage(currentPageBlogs, pageNumber, Pagination.GetAccessiblePagesNumbers(1, pageNumber, numberOfPages));
+                var currentPage = new BlogPage(currentPageBlogs, pageNumber, Pagination.GetAccessiblePagesNumbers(1, pageNumber, numberOfPages), numberOfPages);
                 return View(currentPage);
             }
             catch (Exception e)
@@ -225,7 +225,7 @@ namespace ACJudge.Controllers
                     Select(blog=>BlogViewMapper.GetViewModel(blog, _user)).
                     ToList();
                 var blogPage = new BlogPage(currentPage, page, Pagination.GetAccessiblePagesNumbers(1, page, numberOfPages), 
-                    new Filter
+                    numberOfPages, new Filter
                     {
                         Title = title,
                         PreparedBy = preparedBy

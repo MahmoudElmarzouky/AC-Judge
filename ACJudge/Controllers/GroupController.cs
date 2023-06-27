@@ -35,17 +35,29 @@ namespace ACJudge.Controllers
 
         public ActionResult Index()
         {
-            return Page(1);
+            var list = _getAllowedGroups();
+            return Page(list, 1);
         }
-
-        public ActionResult Page(int pageNumber)
+        public ActionResult PageCalledFromAView(int pageNumber)
         {
             try
             {
-                ViewBag.NumberOfPages = (int)Math.Ceiling((decimal)_getAllowedGroups().Count() / NumberOfItemsForPage);
-                ViewBag.PageNumber = pageNumber;
-                var list = _getAllowedGroups().Paginate(pageNumber, NumberOfItemsForPage);
-                return View("Index", list);
+                var groups = _getAllowedGroups();
+                return Page(groups, pageNumber);
+            }
+            catch
+            {
+                return View("ErrorLink");
+            }
+        }
+        public ActionResult Page(IEnumerable<ViewGroupModel> groups, int pageNumber)
+        {
+            try
+            {
+                var viewGroupModels = groups.ToList();
+                var numberOfPages = (int)Math.Ceiling((decimal)viewGroupModels.ToList().Count / NumberOfItemsForPage);
+                var list = viewGroupModels.Paginate(pageNumber, NumberOfItemsForPage);
+                return View("Index", new GroupPage(list, pageNumber, numberOfPages));
             }
             catch
             {
@@ -57,10 +69,8 @@ namespace ACJudge.Controllers
         {
             try
             {
-                var list = _getAllowedGroups(true).Paginate(1, NumberOfItemsForPage);
-                ViewBag.NumberOfPages = (int)Math.Ceiling((decimal)_getAllowedGroups(true).Count() / NumberOfItemsForPage);
-                ViewBag.PageNumber = 1;
-                return View("Index", list);
+                var list = _getAllowedGroups(true);
+                return Page(list, 1);
             }
             catch
             {
@@ -366,18 +376,11 @@ namespace ACJudge.Controllers
             try
             {
                 var userId = _user.UserId;
-                var list = new List<ViewGroupModel>();
-                foreach (var item in _groups.List())
-                {
-                    var rel = item.UserGroup.FirstOrDefault(u => u.UserId == userId);
-                    if (rel == null || rel.UserRole != "Invite") continue;
-                    var newItem = _getViewModelFromGroup(item);
-                    list.Add(newItem);
-                }
-                ViewBag.NumberOfPages = (int)Math.Ceiling((decimal)list.Count / NumberOfItemsForPage);;
-                ViewBag.PageNumber = 1;
-                var pageOne = list.Paginate(1, NumberOfItemsForPage);
-                return View("Index", pageOne);
+                var list = (from item in _groups.List() 
+                    let rel = item.UserGroup.FirstOrDefault(u => u.UserId == userId) 
+                    where rel != null && rel.UserRole == "Invite" 
+                    select _getViewModelFromGroup(item)).ToList();
+                return Page(list, 1);
             }
             catch
             {

@@ -49,13 +49,12 @@ namespace ACJudge.ViewModels.ProblemViewsModel
             // TODO complete the method 
             try
             {
-                if (submission.User.UserName.Contains(UserName)) return true;
-                if (submission.Problem.ProblemTitle.Contains(ProblemName)) return true;
-                if (submission.Problem.ProblemSource.Contains(ProblemSource)) return true;
-                if (submission.ProgrammingLanguage.Contains(ProblemLanguage)) return true;
+                if (!submission.Problem.ProblemSourceId.Contains(ProblemName)) return false;
+                if (!submission.Problem.ProblemSource.Contains(ProblemSource)) return false;
+                if (!submission.ProgrammingLanguage.Contains(ProblemLanguage)) return false;
+                if (!submission.User.UserName.Contains(UserName)) return false;
                 // submission.ContestId = 0 means its a problem not in a contest
-                if (submission.ContestId == ContestId || submission.ContestId == 0) return true;
-                return false;
+                return submission.Contest == null || submission.Contest.ContestId == ContestId;
             }
             catch
             {

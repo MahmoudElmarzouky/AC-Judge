@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ACJudge.ViewModels.ViewGroupModel>
+﻿@model ACJudge.ViewModels.GroupViewsModel.GroupPage
 @{
     ViewData["Title"] = "Group Page";
 }
@@ -7,7 +7,8 @@
     <div class="container">
         <ul class="nav nav-tabs text-capitalize">
             @{
-                string currentAction = ViewContext.RouteData.Values.ContainsKey("Action") ? ViewContext.RouteData.Values["Action"].ToString() : "NULL";
+                var currentAction = ViewContext.RouteData.Values.ContainsKey("Action") ? 
+                    ViewContext.RouteData.Values["Action"].ToString() : "NULL";
 
             }
             @if (currentAction == "Index")
@@ -46,7 +47,7 @@
             </li>
         </ul>
         <div class="row groups">
-            @foreach (var item in Model)
+            @foreach (var item in Model.GroupModels)
             {
                 if (currentAction == "Invitations")
                 {
@@ -58,59 +59,46 @@
                 }
             }
         </div>
-        @if (currentAction != "Invitations" && ViewBag.NumerOfPages != 0)
-        {
+        
         <div aria-label="Page navigation" class="text-center">
             <ul class="pagination pagination-lg">
-                @{
-                    Boolean IsFirstPage = ViewBag.PageNumber == 1;
-                    Boolean IsLastPage = ViewBag.PageNumber == ViewBag.NumberOfPages;
-                }
-                @if (!IsFirstPage)
+                @if (!Model.IsFirstPage)
                 {
                     <li>
-                        <a asp-action="Page" asp-route-PageNumber="@(ViewBag.PageNumber - 1)" aria-label="Previous">
+                        <a asp-action="PageCalledFromAView" asp-route-PageNumber="@(Model.CurrentPage - 1)" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
                 }
 
-                @{
-                    List<int> list = new List<int>();
-                    for (int i = 1; i <= Math.Min(3, ViewBag.NumberOfPages); i++)
-                        list.Add(i);
-                    for (int i = Math.Min(3, ViewBag.NumberOfPages) + 1; i < ViewBag.NumberOfPages; i *= 2)
-                        list.Add(i);
-                    list.Add(ViewBag.PageNumber);
-                    list.Sort();
-                    list = list.Distinct().ToList();
-                    for (int i = 0; i < list.Count; i++)
+
+
+
+                @foreach (var currentPageNumber in Model.PageNumbers)
+                {
+                    if (currentPageNumber == Model.CurrentPage)
                     {
-                        if (list[i] == ViewBag.PageNumber)
-                        {
-                            <li class="active"><a>@list[i]</a></li>
-                        }
-                        else
-                        {
-                            <li><a asp-action="Page" asp-route-PageNumber="@list[i]">@list[i]</a></li>
-                        }
+                        <li class="active"><a>@currentPageNumber</a></li>
+                    }
+                    else
+                    {
+                        <li><a asp-action="PageCalledFromAView" asp-route-PageNumber="@currentPageNumber">@currentPageNumber</a></li>
                     }
                 }
 
 
-                @if (!IsLastPage)
+                @if (!Model.IsLastPage)
                 {
                     <li>
-                        <a asp-action="Page" asp-route-PageNumber="@(ViewBag.PageNumber + 1)" aria-label="Next">
+                        <a asp-action="PageCalledFromAView" asp-route-PageNumber="@(Model.CurrentPage + 1)" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
                 }
 
-
             </ul>
         </div>
-        }
+        
     </div>
 
 </section>

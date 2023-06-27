@@ -94,7 +94,7 @@
 									</a>
 								</li>
 							}
-							if (Model.PageNumber != Model.Pages.Last())
+							if (Model.PageNumber != Model.EndPageNumber)
 							{
 								<li>
 									<a asp-action="Filter"  asp-route-title="@Model.Filter.Title" asp-route-preparedBy="@Model.Filter.PreparedBy" asp-route-page="@(Model.PageNumber + 1)" aria-label="Next">

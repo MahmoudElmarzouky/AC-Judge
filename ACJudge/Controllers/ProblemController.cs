@@ -128,6 +128,9 @@ namespace ACJudge.Controllers
         {
             
             var problemFilter = model?.Filter ?? new ProblemFilter();
+            problemFilter.ProblemId ??= "";
+            problemFilter.ProblemName ??= "";
+            problemFilter.ProblemSource ??= "";
             var allProblems = _problemRepository.Search(problemFilter);
             
             var totalPages = (int)Math.Ceiling((decimal)allProblems.Count / PageSize);
@@ -139,10 +142,15 @@ namespace ACJudge.Controllers
             return View("Index", problemPage);
         }
 
-        public ActionResult FilterStatus(int page, ProblemPageView<ViewStatusModel, StatusFilter> model = null)
+        public ActionResult FilterStatus(int page, string problemName, string problemSource, int contestId, string userName)
         {
-            var filter = model?.Filter ?? new StatusFilter();
-
+            var filter = new StatusFilter
+            {
+                ProblemName = problemName?? "",
+                ProblemSource = problemSource?? "",
+                ContestId = contestId,
+                UserName = userName ?? ""
+            };
             var submissions = _submissionRepository.GetSpecificSubmission(filter).
                 OrderByDescending(s => s.SubmissionId)
                 .Select(GetViewStatusModel).ToList();
@@ -263,8 +271,8 @@ namespace ACJudge.Controllers
                 problemtitle = problem.ProblemTitle,
                 Problemhtml = problem.ProblemInHtmlForm,
                 Rating = problem.Rating,
-                NumberAc = problem.Submissions.Count(p => p.Verdict == "Accepted"),
-                Numbersubmission = problem.Submissions.Count,
+                NumberAc = problem.Submissions.Where(p=>p.Contest == null || p.ContestId == 0).Count(p => p.Verdict == "Accepted"),
+                Numbersubmission = problem.Submissions.Where(p=>p.Contest == null || p.ContestId == 0).ToList().Count,
                 userName = _user.UserName,
                 IsFavorite = _login &&
                              _listMyFavorite.FirstOrDefault(f =>
