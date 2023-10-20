@@ -273,7 +273,7 @@ namespace ACJudge.Controllers
                 Rating = problem.Rating,
                 NumberAc = problem.Submissions.Where(p=>p.Contest == null || p.ContestId == 0).Count(p => p.Verdict == "Accepted"),
                 Numbersubmission = problem.Submissions.Where(p=>p.Contest == null || p.ContestId == 0).ToList().Count,
-                userName = _user.UserName,
+                userName = _user?.UserName,
                 IsFavorite = _login &&
                              _listMyFavorite.FirstOrDefault(f =>
                                  f.IsFavourite && f.ProblemId == problem.ProblemId) != null,

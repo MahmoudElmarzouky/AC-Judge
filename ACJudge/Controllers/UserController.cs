@@ -61,11 +61,11 @@ namespace ACJudge.Controllers
             return View();
         }
 
-        [Route("User/Details/{id}")]
+        [Route("User/Details/{id:int}")]
         public ActionResult Details(int id)
         {
             var currentUser = _users.Find(id);
-            if (_login)
+            if (currentUser != null && _login)
                 TempData["userIdentity"] = _user.UserIdentityId;
             return View(currentUser);
         }
