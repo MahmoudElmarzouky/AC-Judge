@@ -8,7 +8,7 @@
 <div class="col-sm-6 col-md-4 col-lg-3">
     <div class="@classNamebox">
         <div class="panel-heading">
-            <h3 class="panel-title"><a asp-action="Details" asp-route-id="@Model.GroupId">@Model.GroupTitle</a></h3>
+            <h3 class="panel-title"><a asp-controller="Group" asp-action="Details" asp-route-id="@Model.GroupId">@Model.GroupTitle</a></h3>
 
             @{
                 var className = "fas fa-heart";
@@ -23,8 +23,8 @@
             @Model.GroupDescription
         </div>
         <div class="panel-footer invition">
-            <a asp-action="AcceptInvitation" asp-route-id="@Model.GroupId" class="btn btn-success text-right">Accept</a>
-            <a asp-action="RejectInvitation" asp-route-id="@Model.GroupId" class="btn btn-danger text-left">Reject</a>
+            <a asp-controller="Group" asp-action="AcceptInvitation" asp-route-id="@Model.GroupId" class="btn btn-success text-right">Accept</a>
+            <a asp-controller="Group" asp-action="RejectInvitation" asp-route-id="@Model.GroupId" class="btn btn-danger text-left">Reject</a>
         </div>
     </div>
 </div>
