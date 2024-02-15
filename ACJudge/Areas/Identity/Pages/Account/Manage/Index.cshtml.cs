@@ -20,13 +20,13 @@ namespace ACJudge.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<AuthUser> _userManager;
         private readonly SignInManager<AuthUser> _signInManager;
         private readonly IUserRepository<User> _userRepository;
-        private readonly IHostingEnvironment _hosting;
+        private readonly IWebHostEnvironment _hosting;
 
         public IndexModel(
             UserManager<AuthUser> userManager,
             SignInManager<AuthUser> signInManager,
             IUserRepository<User> userRepository,
-            IHostingEnvironment hosting)
+            IWebHostEnvironment hosting)
         {
             this._userManager = userManager;
             this._signInManager = signInManager;
