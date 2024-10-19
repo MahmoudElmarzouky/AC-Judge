@@ -11,4 +11,5 @@ then run this command to update the database created, make sure you run the cont
 dotnet ef database update
 ```
 
+
 now you are ready to use the database in the docker.
