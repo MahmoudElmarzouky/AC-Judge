@@ -13,7 +13,9 @@ namespace ACJudge.Migrations
 {
     [DbContext(typeof(EntitiesContext))]
     [Migration("20240210203536_init")]
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     partial class init
+#pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
